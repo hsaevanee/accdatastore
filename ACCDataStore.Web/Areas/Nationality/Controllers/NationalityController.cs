@@ -15,6 +15,7 @@ namespace ACCDataStore.Web.Areas.Nationality.Controllers
     public class NationalityController : Controller
     {
         private static ILog log = LogManager.GetLogger(typeof(IndexNationalityController));
+        //Git test 2
 
         private readonly IGenericRepository rpGeneric;
         public NationalityController(IGenericRepository rpGeneric)
