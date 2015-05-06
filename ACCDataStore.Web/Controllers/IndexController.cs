@@ -20,6 +20,7 @@ namespace ACCDataStore.Web.Controllers
 
         public ActionResult Index()
         {
+            // just git test
             var vmIndex = new IndexViewModel();
             vmIndex.ApplicationName = HttpContext.Application["APP_NAME"] as string;
             vmIndex.ApplicationVersion = HttpContext.Application["APP_VERSION"] as string;
