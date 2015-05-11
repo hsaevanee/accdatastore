@@ -4,6 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@HttpContext.Current.Application["APP_NAME"]</title>
+    <link rel="stylesheet" href="~/Content/accdatastore/views/global.css" type="text/css" />
+    <script src="~/Scripts/accdatastore/views/global.js"></script>
     <script src="~/Scripts/jquery-2.1.1.min.js"></script>
     <script src="~/Scripts/highcharts.js"></script>
     <script>
@@ -13,7 +15,28 @@
 </head>
 <body>
     <div id="divBody">
-        @RenderBody()
+        <div id="container">
+            <div id="header">
+                <h1> Aberdeen City Council Digital Data Observatory Project</h1>
+            </div>
+            <div id="content">
+                <div id="nav">
+                    <h3>Navigation</h3>
+                    <ul>
+                        <li>@Html.ActionLink("Home", "Index", "Index", new { Area = "" }, null)</li>
+                        <li>@Html.ActionLink("The Team", "Index", "theTeam", new { Area = "" }, null)</li>
+                        <li>@Html.ActionLink("School Profile", "Index", "Nationality", new { Area = "Nationality" }, null)</li>                       
+                        <li>@Html.ActionLink("Nationality", "Index", "Nationality", new { Area = "Nationality" }, null)</li>                       
+                    </ul>
+                </div>
+                <div id="main">
+                    @RenderBody()
+                </div>
+            </div>
+            <div id="footer">
+                Aberdeen City Council
+            </div>
+        </div>
     </div>
 </body>
 </html>

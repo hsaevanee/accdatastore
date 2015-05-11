@@ -30,6 +30,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -75,6 +76,9 @@
     <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NHibernate.4.0.3.4000\lib\net40\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate.JetDriver">
+      <HintPath>..\packages\NHibernate.JetDriver.2.0.0.1002\lib\net40\NHibernate.JetDriver.dll</HintPath>
     </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -138,6 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\accdatastore\areas\nationality\views\nationality\nationality.css" />
+    <Content Include="Content\accdatastore\views\global.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
@@ -185,6 +190,7 @@
     </Content>
     <Content Include="Areas\Nationality\Views\web.config" />
     <Content Include="Scripts\accdatastore\areas\nationality\views\nationality\nationality.js" />
+    <Content Include="Scripts\accdatastore\views\global.js" />
     <Content Include="Scripts\highcharts.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\jquery-2.1.1.min.map" />
@@ -207,6 +213,8 @@
     <Compile Include="Areas\Nationality\NationalityAreaRegistration.cs" />
     <Compile Include="Areas\Nationality\ViewModels\IndexNationality\IndexViewModel.cs" />
     <Compile Include="Areas\Nationality\ViewModels\Nationality\NationalityViewModel.cs" />
+    <Compile Include="Areas\SchoolProfile\Controllers\IndexSchoolProfileController.cs" />
+    <Compile Include="Areas\SchoolProfile\SchoolProfileAreaRegistration.cs" />
     <Compile Include="Controllers\IndexController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -234,7 +242,12 @@
     <Content Include="Areas\Nationality\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Nationality\Views\IndexNationality\Index.cshtml" />
     <Content Include="Areas\Nationality\Views\Nationality\Nationality.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\web.config" />
+    <Content Include="Areas\SchoolProfile\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\IndexSchoolProfile\Index.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
+    <Content Include="Views\Index\theTeam.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -245,6 +258,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Nationality\Models\" />
+    <Folder Include="Areas\SchoolProfile\Models\" />
     <Folder Include="Images\" />
     <Folder Include="Models\" />
     <Folder Include="Resources\Upload\" />

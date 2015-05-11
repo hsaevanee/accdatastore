@@ -35,12 +35,24 @@ namespace ACCDataStore.Helpers.ORM
                     sConnectionString = @"Server=" + sDbHost + ";Database=" + sDbName + ";User ID=" + sDbUser + ";Password=" + sDbPassword + ";";
                     configuration = Fluently
                         .Configure()
-                        .Database(PostgreSQLConfiguration
+                        .Database(PostgreSQLConfiguration           
                             .Standard
                             .ConnectionString(sConnectionString)
                             .ShowSql
                         )
                     .Mappings(m => m.FluentMappings.AddFromAssemblyOf<ACCDataStore.Entity.Mapping.Nationality2012Map>())
+                    .BuildConfiguration();
+                    break;
+                case "4":
+                    sConnectionString = @"C:\Users\s01hs4\Documents\Database2.accdb";
+                    configuration = Fluently
+                        .Configure()
+                        .Database(JetDriverConfiguration
+                            .Standard
+                            .ConnectionString(sConnectionString)
+                            .ShowSql
+                        )
+                    .Mappings(m => m.FluentMappings.AddFromAssemblyOf<ACCDataStore.Entity.Mapping.MSAccess.StudentSIMDMap>())
                     .BuildConfiguration();
                     break;
                 default:

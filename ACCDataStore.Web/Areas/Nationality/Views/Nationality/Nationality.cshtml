@@ -3,149 +3,138 @@
     <link rel="stylesheet" href="~/Content/accdatastore/areas/nationality/views/nationality/nationality.css" type="text/css" />
     <script src="~/Scripts/accdatastore/areas/nationality/views/nationality/nationality.js"></script>
 }
-<div id="container">
-    <div id="header">
-        <h1>Aberdeen City Council Digital Data Observatory Project</h1>
-    </div>
-    <div id="content">
-        @*<div id="nav">
-                <%@ include file="/css/menu.txt"%>
-            </div>*@
-        <div id="main">
-            <h1>Nationality - Primary Schools (%pupils)</h1>
+<div id="main">
+    <h1>Nationality - Primary Schools (%pupils)</h1>
 
-            <form id="formNationalCriteria">
+    <form id="formNationalCriteria">
 
-                <table>
-                    <tr>
-                        <td>Select Year</td>
-                        @foreach (var itemYear in Model.ListYear)
-                        {
+        <table>
+            <tr>
+                <td>Select Year</td>
+                @foreach (var itemYear in Model.ListYear)
+                {
+                    <td>
+                        <input type="checkbox" name="years" value="@itemYear"
+                               checked="checked" />@itemYear
+                        </td>
+                }
+
+                <td>
+                    <input type="checkbox" name="CheckYearAll" value="ALL"
+                           id="CheckYearAll" checked="checked" />CheckALL
+                </td>
+            </tr>
+
+            <tr>
+                <td>Select Gender</td>
+                @foreach (var itemGender in Model.ListGender)
+                {
+                    if (itemGender.Equals("F", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        <td>
+                            <input type="checkbox" name="gender" value="@itemGender"
+                                   checked="checked" />Female
+                        </td>
+                    }
+                    else if (itemGender.Equals("M", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        <td>
+                            <input type="checkbox" name="gender" value="@itemGender"
+                                   checked="checked" />Male
+                        </td>
+                    }
+                }
+                <td>
+                    <input type="checkbox" name="gender" value="Total"
+                           checked="checked" />Total
+                </td>
+                <td>
+                    <input type="checkbox" name="CheckGenderAll" value="ALL"
+                           id="CheckGenderAll" checked="checked" />CheckALL
+                </td>
+            </tr>
+
+            <tr>
+                <td>Select Nationality</td>
+                @foreach (var itemNational in Model.ListNational)
+                {
+                    if (Model.DicNational.ContainsKey(itemNational))
+                    {
+                        <td>
+                            <input type="checkbox" name="nationality" value="@itemNational"
+                                   checked="checked" /> @Model.DicNational[itemNational]
+                            </td>
+                    }
+                }
+                @*<c:foreach var="Ndata" items="${snational}" varstatus="loopStatus">
+                        <c:if test="${Ndata =='01'}">
                             <td>
-                                <input type="checkbox" name="years" value="@itemYear"
-                                       checked="checked" />@itemYear
-                                </td>
-                        }
-
-                        <td>
-                            <input type="checkbox" name="CheckYearAll" value="ALL"
-                                   id="CheckYearAll" checked="checked" />CheckALL
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Select Gender</td>
-                        @foreach (var itemGender in Model.ListGender)
-                        {
-                            if (itemGender.Equals("F", StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                <td>
-                                    <input type="checkbox" name="gender" value="@itemGender"
-                                           checked="checked" />Female
-                                </td>
-                            }
-                            else if (itemGender.Equals("M", StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                <td>
-                                    <input type="checkbox" name="gender" value="@itemGender"
-                                           checked="checked" />Male
-                                </td>
-                            }
-                        }
-                        <td>
-                            <input type="checkbox" name="gender" value="Total"
-                                   checked="checked" />Total
-                        </td>
-                        <td>
-                            <input type="checkbox" name="CheckGenderAll" value="ALL"
-                                   id="CheckGenderAll" checked="checked" />CheckALL
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Select Nationality</td>
-                        @foreach (var itemNational in Model.ListNational)
-                        {
-                            if (Model.DicNational.ContainsKey(itemNational))
-                            {
+                                <input type="checkbox" name="nationality" value="01"
+                                       checked="checked" /> Scottish
+                            </td>
+                        </c:if>
+                        <c:if test="${Ndata =='02'}">
                             <td>
-                                <input type="checkbox" name="nationality" value="@itemNational"
-                                       checked="checked" /> @Model.DicNational[itemNational]
-                                </td>
-                            }
-                        }
-                        @*<c:foreach var="Ndata" items="${snational}" varstatus="loopStatus">
-                                <c:if test="${Ndata =='01'}">
-                                    <td>
-                                        <input type="checkbox" name="nationality" value="01"
-                                               checked="checked" /> Scottish
-                                    </td>
-                                </c:if>
-                                <c:if test="${Ndata =='02'}">
-                                    <td>
-                                        <input type="checkbox" name="nationality" value="02"
-                                               checked="checked" /> English
-                                    </td>
-                                </c:if>
-                                <c:if test="${Ndata =='03'}">
-                                    <td>
-                                        <input type="checkbox" name="nationality" value="03"
-                                               checked="checked" /> Northern Irish
-                                    </td>
-                                </c:if>
-                                <c:if test="${Ndata =='04'}">
-                                    <td>
-                                        <input type="checkbox" name="nationality" value="04"
-                                               checked="checked" /> Welsh
-                                    </td>
-                                </c:if>
-                                <c:if test="${Ndata =='05'}">
-                                    <td>
-                                        <input type="checkbox" name="nationality" value="05"
-                                               checked="checked" /> British
-                                    </td>
-                                </c:if>
-                                <c:if test="${Ndata =='10'}">
-                                    <td>
-                                        <input type="checkbox" name="nationality" value="10"
-                                               checked="checked" /> Other
-                                    </td>
-                                </c:if>
-                                <c:if test="${Ndata =='98'}">
-                                    <td>
-                                        <input type="checkbox" name="nationality" value="98"
-                                               checked="checked" /> Not Disclosed
-                                    </td>
-                                </c:if>
-                                <c:if test="${Ndata =='99'}">
-                                    <td>
-                                        <input type="checkbox" name="nationality" value="99"
-                                               checked="checked" /> Not Known
-                                    </td>
-                                </c:if>
+                                <input type="checkbox" name="nationality" value="02"
+                                       checked="checked" /> English
+                            </td>
+                        </c:if>
+                        <c:if test="${Ndata =='03'}">
+                            <td>
+                                <input type="checkbox" name="nationality" value="03"
+                                       checked="checked" /> Northern Irish
+                            </td>
+                        </c:if>
+                        <c:if test="${Ndata =='04'}">
+                            <td>
+                                <input type="checkbox" name="nationality" value="04"
+                                       checked="checked" /> Welsh
+                            </td>
+                        </c:if>
+                        <c:if test="${Ndata =='05'}">
+                            <td>
+                                <input type="checkbox" name="nationality" value="05"
+                                       checked="checked" /> British
+                            </td>
+                        </c:if>
+                        <c:if test="${Ndata =='10'}">
+                            <td>
+                                <input type="checkbox" name="nationality" value="10"
+                                       checked="checked" /> Other
+                            </td>
+                        </c:if>
+                        <c:if test="${Ndata =='98'}">
+                            <td>
+                                <input type="checkbox" name="nationality" value="98"
+                                       checked="checked" /> Not Disclosed
+                            </td>
+                        </c:if>
+                        <c:if test="${Ndata =='99'}">
+                            <td>
+                                <input type="checkbox" name="nationality" value="99"
+                                       checked="checked" /> Not Known
+                            </td>
+                        </c:if>
 
-                            </c:foreach>*@
-                        <td>
-                            <input type="checkbox" name="CheckNationalityAll"
-                                   value="ALL" id="ChecknatioNalityAll" checked="checked" />CheckALL
-                        </td>
+                    </c:foreach>*@
+                <td>
+                    <input type="checkbox" name="CheckNationalityAll"
+                           value="ALL" id="ChecknatioNalityAll" checked="checked" />CheckALL
+                </td>
 
-                    </tr>
+            </tr>
 
-                    <tr>
-                        <td>
-                            <button id="buttonGetData" type="button">
-                                Get Data
-                            </button>
-                        </td>
-                    </tr>
-                </table>
-                <div id="tableNationalDataContainer"></div>
-                <br>
-                <div id="divChartContainer"></div>
-            </form>
-        </div>
+            <tr>
+                <td>
+                    <button id="buttonGetData" type="button">
+                        Get Data
+                    </button>
+                </td>
+            </tr>
+        </table>
+        <div id="tableNationalDataContainer"></div>
         <br>
-    </div>
-    <div id="footer">Aberdeen City Council</div>
+        <div id="divChartContainer"></div>
+    </form>
 </div>
+
