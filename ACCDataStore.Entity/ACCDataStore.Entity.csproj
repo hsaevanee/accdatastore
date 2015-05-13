@@ -60,12 +60,14 @@
     <Compile Include="BaseEntity.cs" />
     <Compile Include="ChartData.cs" />
     <Compile Include="CriteriaParameters.cs" />
+    <Compile Include="SchoolProfile\EthnicObj.cs" />
     <Compile Include="Mapping\Nationality2012Map.cs" />
     <Compile Include="Mapping\MSAccess\StudentSIMDMap.cs" />
     <Compile Include="Nationality2012.cs" />
     <Compile Include="NationalityData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StudentSIMD.cs" />
+    <Compile Include="SchoolProfile\SchCriteriaParameter.cs" />
+    <Compile Include="SchoolProfile\StudentSIMD.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

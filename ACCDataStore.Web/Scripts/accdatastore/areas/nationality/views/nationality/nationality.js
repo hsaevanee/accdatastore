@@ -183,7 +183,7 @@ function setNationalDataToTable(listNationalData, mNationalParams) {
 }
 
 function myFunctionBar() {
-
+    alert("myFunctionBar");
     var arrCheckboxCheckedCheckDataitem = {};
     $('input[name="CheckDataitem"]:checked').each(function () {
         arrCheckboxCheckedCheckDataitem[$(this).val()] = $(this).val();
@@ -278,6 +278,7 @@ function drawChartBar(data, categoriesData) {
 }
 
 function myFunctionColumn() {
+    alert("myFunctionBar");
 
     var arrCheckboxCheckedCheckDataitem = {};
     $('input[name="CheckDataitem"]:checked').each(function () {

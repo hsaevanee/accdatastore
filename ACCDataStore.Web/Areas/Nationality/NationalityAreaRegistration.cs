@@ -12,7 +12,8 @@ namespace ACCDataStore.Web.Areas.Nationality
             }
         }
 
-        public override void RegisterArea(AreaRegistrationContext context) 
+        public override void 
+            RegisterArea(AreaRegistrationContext context) 
         {
             context.MapRoute(
                 "Nationality_default",

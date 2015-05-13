@@ -1,7 +1,190 @@
-﻿
+﻿@model ACCDataStore.Web.Areas.SchoolProfile.ViewModels.SchoolProfileViewModel
+@section Header {
+    <link rel="stylesheet" href="~/Content/accdatastore/areas/nationality/views/nationality/nationality.css" type="text/css" />
+    <script src="~/Scripts/accdatastore/areas/schoolprofile/views/IndexSchoolProfile/IndexSchoolProfile.js"></script>
+}
 @{
     ViewBag.Title = "Index";
 }
+<div id="main">
+    <h2>School Profile</h2>
+    <form id="formSchoolCriteria">
+        <table>
+            <tr>
+                <td>Select school name </td>
+                <td>@Html.DropDownList("selectSchoolname", new SelectList(Model.ListSchoolNameData, "----Select------"))</td>         
+            </tr>
+          </table>      
 
-<h2>Index</h2>
+        <h3> <a onclick="goToCreateURL(this)" href="${pageContext.request.contextPath}/user/PIPS/">School Roll</a> </h3>
+        <table>
+            <tr>
+                <td>Total School Roll</td>
+                <td><span id="span0"></span></td>
+            </tr>
+            <tr>
+                <td>Capacity (2010 Based)</td>
+                <td><span id="span1"></span></td>
+            </tr>
+            <tr>
+                <td>% Occupancy 2013/14 (based on 2010 Capacity)</td>
+                <td><span id="span2"></span></td>
+            </tr>
+        </table>
+        <h3>
+            <a onclick="goToCreateURL(this)"
+               href="${pageContext.request.contextPath}/user/PIPS/">PIPS</a>
+        </h3>
+        <table>
+            <tr>
+                <th></th>
+                <th>School Start P1</th>
+                <th>Aberdeen Start P1</th>
+                <th>School End Start P1</th>
+                <th>Aberdeen End P1</th>
 
+            </tr>
+            <tr>
+                <td>Reading</td>
+                <td><span id="span3"></span></td>
+                <td><span id="span4"></span></td>
+                <td><span id="span5"></span></td>
+                <td><span id="span6"></span></td>
+            </tr>
+            <tr>
+                <td>Mathematics</td>
+                <td><span id="span7"></span></td>
+                <td><span id="span8"></span></td>
+                <td><span id="span9"></span></td>
+                <td><span id="span10"></span></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th> </th>
+                <th>School P3</th>
+                <th>Aberdeen P3</th>
+            </tr>
+            <tr>
+                <td>Reading</td>
+                <td><span id="span11"></span></td>
+                <td><span id="span12"></span></td>
+            </tr>
+            <tr>
+                <td>Mathematics</td>
+                <td><span id="span13"></span></td>
+                <td><span id="span14"></span></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th> </th>
+                <th>School P5</th>
+                <th>Aberdeen P5</th>
+            </tr>
+            <tr>
+                <td>Reading</td>
+                <td><span id="span15"></span></td>
+                <td><span id="span16"></span></td>
+            </tr>
+            <tr>
+                <td>Mathematics</td>
+                <td><span id="span17"></span></td>
+                <td><span id="span18"></span></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th> </th>
+                <th>School P7</th>
+                <th>Aberdeen P7</th>
+            </tr>
+            <tr>
+                <td>Reading</td>
+                <td><span id="span19"></span></td>
+                <td><span id="span20"></span></td>
+            </tr>
+            <tr>
+                <td>Mathematics</td>
+                <td><span id="span21"></span></td>
+                <td><span id="span22"></span></td>
+            </tr>
+        </table>
+        <h3> <a onclick="goToCreateURL(this)" href="${pageContext.request.contextPath}/user/Attendance/">Attendance</a> </h3>
+
+        <table>
+            <tr>
+                <th> </th>
+                <th>School</th>
+                <th>City</th>
+            </tr>
+            <tr>
+                <td>% Authorised Absence</td>
+                <td><span id="span23"></span></td>
+                <td><span id="span24"></span></td>
+            </tr>
+            <tr>
+                <td>% Unauthorised Absence</td>
+                <td><span id="span25"></span></td>
+                <td><span id="span26"></span></td>
+            </tr>
+            <tr>
+                <td>% Total Absence</td>
+                <td><span id="span27"></span></td>
+                <td><span id="span28"></span></td>
+            </tr>
+        </table>
+
+        <h3> <a onclick="goToCreateURL(this)" href="${pageContext.request.contextPath}/user/Exclusions/">Exclusions Annual</a> </h3>
+        <table>
+            <tr>
+                <th> </th>
+                <th>School</th>
+                <th>City</th>
+            </tr>
+            <tr>
+                <td>Data of Days Lost Per 1000 Pupils </td>
+                <td><span id="span29"></span></td>
+                <td><span id="span30"></span></td>
+            </tr>
+            <tr>
+                <td>Data of Removals from the Register</td>
+                <td><span id="span31"></span></td>
+                <td><span id="span32"></span></td>
+            </tr>
+        </table>
+
+        <h3><a onclick="goToCreateURL(this)" href="${pageContext.request.contextPath}/user/Violent/"> Violent Incidents  Annual</a></h3>
+
+        <table>
+            <tr>
+                <th> </th>
+                <th>School</th>
+                <th>City</th>
+            </tr>
+            <tr>
+                <td>Data of Violent Incidents Reported </td>
+                <td><span id="span33"></span></td>
+                <td><span id="span34"></span></td>
+            </tr>
+            <tr>
+                <td>Data of Violent Incidents Reported Per 100 </td>
+                <td><span id="span35"></span></td>
+                <td><span id="span36"></span></td>
+            </tr>
+        </table>
+        <br>
+        <h3> <a onclick="goToCreateURL(this)" href="${pageContext.request.contextPath}/user/SIMD/">Scottish Index of Multiple Deprivation</a></h3>
+        <br>
+        <div id="divChartContainer">
+        </div>
+
+        <h3> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/EthnicBackground/Index/">Ethnicity</a></h3>
+        <br>
+        <h3> <a onclick="goToCreateURL(this)" href="${pageContext.request.contextPath}/user/Nationality/">Nationality</a></h3>
+        <br>
+        <h3> <a onclick="goToCreateURL(this)" href="${pageContext.request.contextPath}/user/Occupancy/">Occupancy</a></h3>
+        <div id="tableSchoolProfileDataContainer"></div>
+        <br>        
+    </form>
+</div>

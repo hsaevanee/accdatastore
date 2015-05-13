@@ -44,12 +44,12 @@ namespace ACCDataStore.Helpers.ORM
                     .BuildConfiguration();
                     break;
                 case "4":
-                    sConnectionString = @"C:\Users\s01hs4\Documents\Database2.accdb";
+                    sConnectionString = @"C:\Users\s01hs4\Documents\Database2.mdb";
                     configuration = Fluently
                         .Configure()
                         .Database(JetDriverConfiguration
                             .Standard
-                            .ConnectionString(sConnectionString)
+                            .ConnectionString(c => c.DatabaseFile(sConnectionString))
                             .ShowSql
                         )
                     .Mappings(m => m.FluentMappings.AddFromAssemblyOf<ACCDataStore.Entity.Mapping.MSAccess.StudentSIMDMap>())

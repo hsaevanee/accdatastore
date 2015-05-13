@@ -30,7 +30,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -189,7 +189,10 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Areas\Nationality\Views\web.config" />
+    <Content Include="Images\spinner.gif" />
     <Content Include="Scripts\accdatastore\areas\nationality\views\nationality\nationality.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofile\views\EthnicBackground\EthnicBackground.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofile\views\IndexSchoolProfile\IndexSchoolProfile.js" />
     <Content Include="Scripts\accdatastore\views\global.js" />
     <Content Include="Scripts\highcharts.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
@@ -213,8 +216,11 @@
     <Compile Include="Areas\Nationality\NationalityAreaRegistration.cs" />
     <Compile Include="Areas\Nationality\ViewModels\IndexNationality\IndexViewModel.cs" />
     <Compile Include="Areas\Nationality\ViewModels\Nationality\NationalityViewModel.cs" />
+    <Compile Include="Areas\SchoolProfile\Controllers\EthnicBackgroundController.cs" />
     <Compile Include="Areas\SchoolProfile\Controllers\IndexSchoolProfileController.cs" />
     <Compile Include="Areas\SchoolProfile\SchoolProfileAreaRegistration.cs" />
+    <Compile Include="Areas\SchoolProfile\ViewModels\EthnicBackground\EthnicBgViewModel.cs" />
+    <Compile Include="Areas\SchoolProfile\ViewModels\SchoolProfileViewModel.cs" />
     <Compile Include="Controllers\IndexController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -246,6 +252,7 @@
     <Content Include="Areas\SchoolProfile\Views\_ViewStart.cshtml" />
     <Content Include="Areas\SchoolProfile\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\SchoolProfile\Views\IndexSchoolProfile\Index.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\EthnicBackground\Index.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <None Include="Web.Debug.config">
@@ -259,7 +266,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Nationality\Models\" />
     <Folder Include="Areas\SchoolProfile\Models\" />
-    <Folder Include="Images\" />
     <Folder Include="Models\" />
     <Folder Include="Resources\Upload\" />
   </ItemGroup>

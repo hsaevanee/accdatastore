@@ -1,0 +1,82 @@
+﻿@model ACCDataStore.Web.Areas.SchoolProfile.ViewModels.EthnicBackground.EthnicBgViewModel
+
+@section Header {
+    <link rel="stylesheet" href="~/Content/accdatastore/areas/nationality/views/nationality/nationality.css" type="text/css" />
+    <script src="~/Scripts/accdatastore/areas/schoolprofile/views/EthnicBackground/EthnicBackground.js"></script>
+}
+@{
+    ViewBag.Title = "EthnicBackground";
+}
+
+<h2>EthnicBackground</h2>
+@if (Model.IsShowCriteria)
+{
+    <form id="formSchoolCriteria">
+        <table>
+            <tr>
+                <td>Select school name </td>
+                <td>@Html.DropDownList("selectSchoolname", new SelectList(Model.ListSchoolNameData, "----Select------"))</td>
+            </tr>
+            <tr>
+                <td>Select EthnicBackground </td>
+                @foreach (var itemEthnic in Model.ListEthnicDefinition)
+                {
+                    if (Model.DicEthnicBG.ContainsKey(itemEthnic))
+                    {
+                        <td>
+                            <input type="checkbox" name="ethnicity" value="@itemEthnic"
+                                   checked="checked" /> @Model.DicEthnicBG[itemEthnic]
+                            </td>
+                    }
+                }
+                <td>
+                    <input type="checkbox" name="CheckEthnicityAll"
+                           value="ALL" id="ChecknatioNalityAll" checked="checked" />CheckALL
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    <button id="buttonGetData" type="button">
+                        Get Data
+                    </button>
+                </td>
+            </tr>
+
+
+        </table>
+    </form>
+}
+@if (Model.IsShowEthnicData)
+{ 
+    <form id="Ethnicdata">
+        <table>
+            <tr>
+                <th></th>
+                <th>@Model.selectedschoolname</th>
+                <th>All Primary Schools</th>
+                <th>Select data </th>
+            </tr>
+            @foreach (var itemEthnic in Model.ListEthnicData)
+            {
+                <tr>
+                    <td>@Model.DicEthnicBG[itemEthnic.EthinicCode]</td>
+                    <td>@itemEthnic.PercentageInSchool</td>
+                    <td>@itemEthnic.PercentageAllSchool</td>
+                    <td><input type='checkbox' name='CheckDataitem' id='item' value="@itemEthnic.EthinicCode" /></td>
+                </tr>
+
+            }
+            <tr><td><button onclick='myFunctionBar()'><label>Bar Chart</label></button></td></tr>
+            <tr><td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td></tr>
+        </table>
+        <div id="divChartContainer"></div>
+        <p>
+            Source: Pupil Census <br> *In 2011 the Scottish Government
+            introduced a new code list for Ethnicity, hence the historic data is
+            not comparable
+        </p>
+    </form>
+
+}
+

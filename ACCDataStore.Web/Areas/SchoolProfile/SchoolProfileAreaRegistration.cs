@@ -15,6 +15,12 @@ namespace ACCDataStore.Web.Areas.SchoolProfile
         public override void RegisterArea(AreaRegistrationContext context) 
         {
             context.MapRoute(
+                "SchoolProfile_SchoolName",
+                "SchoolProfile/{controller}/{action}/{sSchoolName}",
+                new { action = "Index", sSchoolName = UrlParameter.Optional }
+            );
+
+            context.MapRoute(
                 "SchoolProfile_default",
                 "SchoolProfile/{controller}/{action}/{id}",
                 new { action = "Index", id = UrlParameter.Optional }
