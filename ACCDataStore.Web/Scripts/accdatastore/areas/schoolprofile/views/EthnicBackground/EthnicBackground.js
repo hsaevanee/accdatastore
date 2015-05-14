@@ -82,22 +82,26 @@ function myFunctionBar() {
         arrCheckboxCheckedCheckDataitem.push($(this).val());
     });
 
-    $.ajax({
-        type: 'POST',
-        url: sContextPath + 'SchoolProfile/EthnicBackground/GetChartDataEthnic',
-        data: JSON.stringify(arrCheckboxCheckedCheckDataitem),
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
-        success: function (data) {
-            drawChartBar(data);
-        },
-        error: function (xhr, err) {
-            if (xhr.readyState != 0 && xhr.status != 0) {
-                alert('readyState: ' + xhr.readyState + '\nstatus: ' + xhr.status);
-                alert('responseText: ' + xhr.responseText);
+    if (arrCheckboxCheckedCheckDataitem.length == 0) {
+        alert("Please select data to create graph");
+    } else {
+        $.ajax({
+            type: 'POST',
+            url: sContextPath + 'SchoolProfile/EthnicBackground/GetChartDataEthnic',
+            data: JSON.stringify(arrCheckboxCheckedCheckDataitem),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (data) {
+                drawChartBar(data);
+            },
+            error: function (xhr, err) {
+                if (xhr.readyState != 0 && xhr.status != 0) {
+                    alert('readyState: ' + xhr.readyState + '\nstatus: ' + xhr.status);
+                    alert('responseText: ' + xhr.responseText);
+                }
             }
-        }
-    }); 
+        });
+    } 
 }
 
 function drawChartBar(data) {
@@ -148,28 +152,33 @@ function drawChartBar(data) {
 }
 
 function myFunctionColumn() {
-    alert("myFunctionColumn");
+    //alert("myFunctionColumn");
     var arrCheckboxCheckedCheckDataitem = [];
     $('input[name="CheckDataitem"]:checked').each(function () {
         arrCheckboxCheckedCheckDataitem.push($(this).val());
     });
 
-    $.ajax({
-        type: 'POST',
-        url: sContextPath + 'SchoolProfile/EthnicBackground/GetChartDataEthnic',
-        data: JSON.stringify(arrCheckboxCheckedCheckDataitem),
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
-        success: function (data) {
-            drawChartColumn(data);
-        },
-        error: function (xhr, err) {
-            if (xhr.readyState != 0 && xhr.status != 0) {
-                alert('readyState: ' + xhr.readyState + '\nstatus: ' + xhr.status);
-                alert('responseText: ' + xhr.responseText);
+    if (arrCheckboxCheckedCheckDataitem.length == 0) {
+        alert("Please select data to create graph");
+    } else {
+
+        $.ajax({
+            type: 'POST',
+            url: sContextPath + 'SchoolProfile/EthnicBackground/GetChartDataEthnic',
+            data: JSON.stringify(arrCheckboxCheckedCheckDataitem),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (data) {
+                drawChartColumn(data);
+            },
+            error: function (xhr, err) {
+                if (xhr.readyState != 0 && xhr.status != 0) {
+                    alert('readyState: ' + xhr.readyState + '\nstatus: ' + xhr.status);
+                    alert('responseText: ' + xhr.responseText);
+                }
             }
-        }
-    });
+        });
+    }
 
 }
 

@@ -8,7 +8,9 @@
     ViewBag.Title = "EthnicBackground";
 }
 
-<h2>EthnicBackground</h2>
+<h2>@Model.selectedschoolname</h2>
+
+<h2>EthnicBackground - Primary School (%pupils)</h2>
 @if (Model.IsShowCriteria)
 {
     <form id="formSchoolCriteria">
@@ -47,36 +49,35 @@
         </table>
     </form>
 }
-@if (Model.IsShowEthnicData)
-{ 
-    <form id="Ethnicdata">
-        <table>
+@if (Model.ListEthnicData != null)
+{
+<form id="Ethnicdata">
+    <table>
+        <tr>
+            <th></th>
+            <th>@Model.selectedschoolname</th>
+            <th>All Primary Schools</th>
+            <th>Select data </th>
+        </tr>
+        @foreach (var itemEthnic in Model.ListEthnicData)
+        {
             <tr>
-                <th></th>
-                <th>@Model.selectedschoolname</th>
-                <th>All Primary Schools</th>
-                <th>Select data </th>
+                <td>@Model.DicEthnicBG[itemEthnic.EthinicCode]</td>
+                <td>@itemEthnic.PercentageInSchool</td>
+                <td>@itemEthnic.PercentageAllSchool</td>
+                <td><input type='checkbox' name='CheckDataitem' id='item' value="@itemEthnic.EthinicCode" /></td>
             </tr>
-            @foreach (var itemEthnic in Model.ListEthnicData)
-            {
-                <tr>
-                    <td>@Model.DicEthnicBG[itemEthnic.EthinicCode]</td>
-                    <td>@itemEthnic.PercentageInSchool</td>
-                    <td>@itemEthnic.PercentageAllSchool</td>
-                    <td><input type='checkbox' name='CheckDataitem' id='item' value="@itemEthnic.EthinicCode" /></td>
-                </tr>
 
-            }
-            <tr><td><button onclick='myFunctionBar()'><label>Bar Chart</label></button></td></tr>
-            <tr><td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td></tr>
-        </table>
-        <div id="divChartContainer"></div>
-        <p>
-            Source: Pupil Census <br> *In 2011 the Scottish Government
-            introduced a new code list for Ethnicity, hence the historic data is
-            not comparable
-        </p>
-    </form>
-
+        }
+        <tr><td><button onclick='myFunctionBar()'><label>Bar Chart</label></button></td></tr>
+        <tr><td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td></tr>
+    </table>
+    <div id="divChartContainer"></div>
+    <p>
+        Source: Pupil Census <br> *In 2011 the Scottish Government
+        introduced a new code list for Ethnicity, hence the historic data is
+        not comparable
+    </p>
+</form>
 }
 

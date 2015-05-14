@@ -4,11 +4,13 @@ using System.Linq;
 using System.Web;
 using ACCDataStore.Entity;
 
-namespace ACCDataStore.Web.Areas.Nationality.ViewModels.Nationality
+namespace ACCDataStore.Web.Areas.SchoolProfile.ViewModels.Nationality
 {
-    public class NationalityViewModel
+    public class NationalityViewModel: SchoolProfileViewModel
     {
-        public List<NationalityData> ListNationalityData { get; set; }
+        public List<NationalityObj> ListNationalityData { get; set; }
+        public string selectedschoolname { get; set; }
+        public List<string> ListNationalCode { get; set; }
         public List<string> ListNational { get; set; }
         public List<string> ListGender { get; set; }
         public List<string> ListYear { get; set; }

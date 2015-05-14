@@ -1,7 +1,7 @@
 ﻿using ACCDataStore.Entity;
 using ACCDataStore.Repository;
 using ACCDataStore.Web.Areas.Nationality.ViewModels.IndexNationality;
-using ACCDataStore.Web.Areas.Nationality.ViewModels.Nationality;
+using ACCDataStore.Web.Areas.SchoolProfile.ViewModels.Nationality;
 using Common.Logging;
 using System;
 using System.Collections.Generic;
@@ -114,8 +114,9 @@ namespace ACCDataStore.Web.Areas.Nationality.Controllers
             dicNational.Add("03", "Northern Irish");
             dicNational.Add("04", "Welsh");
             dicNational.Add("05", "British");
-            dicNational.Add("98", "Other");
-            dicNational.Add("99", "Not Disclosed");
+            dicNational.Add("99", "Other");
+            dicNational.Add("10", "Not Disclosed");
+            dicNational.Add("98", "Not Known");
             return dicNational;
         }
 
