@@ -31,6 +31,11 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
             var schoolname = new List<string>();
 
+            var sethnicityCriteria =  new List<string>();
+
+            List<EthnicObj> ListEthnicData = new List<EthnicObj>();
+            List<EthnicObj> temp = new List<EthnicObj>();
+
             var listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW Name FROM test_3 group by Name");
 
             List<string> fooList = listResult.OfType<string>().ToList();
@@ -45,64 +50,40 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             vmEthnicbackground.ListEthnicDefinition = fooList;
             vmEthnicbackground.DicEthnicBG = GetDicEhtnicBG();
 
-            vmEthnicbackground.IsShowCriteria = false;
-            vmEthnicbackground.IsShowEthnicData = true;
-            sSchoolName = Request["selectSchoolname"];
-            vmEthnicbackground.selectedschoolname = sSchoolName;
-            vmEthnicbackground.ListEthnicData = GetEthnicityDatabySchoolname(sSchoolName);
-            Session["SessionListEthnicData"] = vmEthnicbackground.ListEthnicData;
+            if (Request.HttpMethod == "GET") // get method
+            {
+                if (sSchoolName == null) // case of index page, show criteria
+                {
+                    vmEthnicbackground.IsShowCriteria = true;
+                }
+                else // case of detail page, by pass criteria
+                {
+                    vmEthnicbackground.IsShowCriteria = false;
+                }
 
-
-            //if (Request["selectSchoolname"] == null)
-            //{
-            //    vmEthnicbackground.IsShowCriteria = true;
-            //}
-            //else
-            //{
-            //    if (sSchoolName != null)
-            //    {
-            //        vmEthnicbackground.selectedschoolname = sSchoolName;
-            //        vmEthnicbackground.ListEthnicData = GetEthnicityDatabySchoolname(sSchoolName);
-            //        Session["SessionListEthnicData"] = vmEthnicbackground.ListEthnicData;
-            //    }
-            //}
-
-            //if (Request["selectSchoolname"] != null && Request["ethnicity"] == null)
-            //{
-            //    vmEthnicbackground.IsShowCriteria = false;
-            //    vmEthnicbackground.IsShowEthnicData = true;
-            //    sSchoolName = Request["selectSchoolname"];
-            //    vmEthnicbackground.selectedschoolname = sSchoolName;
-            //    vmEthnicbackground.ListEthnicData = GetEthnicityDatabySchoolname(sSchoolName);
-            //    Session["SessionListEthnicData"] = vmEthnicbackground.ListEthnicData;
-
-            //}
-            //else if (Request["selectSchoolname"] != null && Request["ethnicity"] != null)
-            //{
-            //    vmEthnicbackground.IsShowCriteria = true;
-            //    vmEthnicbackground.IsShowEthnicData = false;
-            //    //vmEthnicbackground.selectedschoolname = sSchoolName;
-
-            //}
-            //else if (Request["selectSchoolname"] == null && Request["ethnicity"] == null)
-            //{
-            //    vmEthnicbackground.IsShowCriteria = true;
-            //    vmEthnicbackground.IsShowEthnicData = false;
-            //    //vmEthnicbackground.selectedschoolname = sSchoolName;
-
-            //}
-
-            //if (sSchoolName != null)
-            //{
-            //    vmEthnicbackground.IsShowCriteria = false;
-            //    vmEthnicbackground.selectedschoolname = sSchoolName;
-            //    vmEthnicbackground.ListEthnicData = GetEthnicityDatabySchoolname(sSchoolName);
-            //    Session["SessionListEthnicData"] = vmEthnicbackground.ListEthnicData;
-            //}
-            //else
-            //{
-            //    vmEthnicbackground.IsShowCriteria = true;
-            //}
+            }
+            else // post method
+            {
+                vmEthnicbackground.IsShowCriteria = true;
+                sSchoolName = Request["selectSchoolname"];
+                sethnicityCriteria = Request["ethnicity"].Split(',').ToList();
+                // get parameter from Request object
+            }
+           
+            // process data
+            if (sSchoolName != null)
+            {
+                vmEthnicbackground.selectedschoolname = sSchoolName;
+                ListEthnicData = GetEthnicityDatabySchoolname(sSchoolName);
+                if (sethnicityCriteria.Count != 0)
+                {
+                    vmEthnicbackground.ListEthnicData = ListEthnicData.Where(x => sethnicityCriteria.Contains(x.EthinicCode)).ToList();
+                }
+                else {
+                    vmEthnicbackground.ListEthnicData = ListEthnicData;
+                }                
+                Session["SessionListEthnicData"] = vmEthnicbackground.ListEthnicData;
+            }
 
             return View("index", vmEthnicbackground);
 
@@ -117,14 +98,9 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             List<EthnicObj> listDataseries = new List<EthnicObj>();
             List<EthnicObj> listtemp = new List<EthnicObj>();
             EthnicObj tempEthnicObj = new EthnicObj();
-            
 
-            //% for specific schoolname
-            string query = " Select EthnicBackground, (Count(EthnicBackground)* 100 /";
-            query += " (Select Count(*) From test_3 where Name in ('" + mSchoolname + " ')))";
-            query += " From test_3 where Name in ('" + mSchoolname + " ') Group By EthnicBackground ";
-
-            var listResult = this.rpGeneric.FindByNativeSQL(query);
+            //% for All school
+            var listResult = this.rpGeneric.FindByNativeSQL("Select EthnicBackground, (Count(EthnicBackground)* 100 / (Select Count(*) From test_3))  From test_3  Group By EthnicBackground ");
             if (listResult != null)
             {
                 foreach (var itemRow in listResult)
@@ -132,36 +108,10 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                     tempEthnicObj = new EthnicObj();
                     tempEthnicObj.EthinicCode = Convert.ToString(itemRow[0]);
                     tempEthnicObj.EthinicName = GetDicEhtnicBG().ContainsKey(tempEthnicObj.EthinicCode) ? GetDicEhtnicBG()[tempEthnicObj.EthinicCode] : "NO NAME";
-                    tempEthnicObj.EthinicName = GetDicEhtnicBG()[tempEthnicObj.EthinicCode];
-                    tempEthnicObj.PercentageInSchool = Convert.ToDouble(itemRow[1]);
-                    listtemp.Add(tempEthnicObj);
-                }
-            }
-            //% for All school
-            listResult = this.rpGeneric.FindByNativeSQL("Select EthnicBackground, (Count(EthnicBackground)* 100 / (Select Count(*) From test_3))  From test_3  Group By EthnicBackground ");
-            if (listResult != null)
-            {
-                foreach (var itemRow in listResult)
-                {
-                    tempEthnicObj = listtemp.Find(x => x.EthinicCode.Equals(Convert.ToString(itemRow[0])));
                     tempEthnicObj.PercentageAllSchool = Convert.ToDouble(itemRow[1]);
-
-                    listDataseries.Add(tempEthnicObj);
+                    listtemp.Add(tempEthnicObj);  
                 }
             }
-
-
-            return listDataseries;
-        }
-
-        public List<EthnicObj> GetEthnicityDatabyCriteria(string mSchoolname, string zz)
-        {
-            Console.Write("GetEthnicityData ==> ");
-
-            var singlelistChartData = new List<ChartData>();
-            List<EthnicObj> listDataseries = new List<EthnicObj>();
-            List<EthnicObj> listtemp = new List<EthnicObj>();
-            EthnicObj tempEthnicObj = new EthnicObj();
 
 
             //% for specific schoolname
@@ -169,113 +119,24 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             query += " (Select Count(*) From test_3 where Name in ('" + mSchoolname + " ')))";
             query += " From test_3 where Name in ('" + mSchoolname + " ') Group By EthnicBackground ";
 
-            var listResult = this.rpGeneric.FindByNativeSQL(query);
-            if (listResult != null)
-            {
-                foreach (var itemRow in listResult)
-                {
-                    tempEthnicObj = new EthnicObj();
-                    tempEthnicObj.EthinicCode = Convert.ToString(itemRow[0]);
-                    tempEthnicObj.EthinicName = GetDicEhtnicBG().ContainsKey(tempEthnicObj.EthinicCode) ? GetDicEhtnicBG()[tempEthnicObj.EthinicCode] : "NO NAME";
-                    tempEthnicObj.EthinicName = GetDicEhtnicBG()[tempEthnicObj.EthinicCode];
-                    tempEthnicObj.PercentageInSchool = Convert.ToDouble(itemRow[1]);
-                    listtemp.Add(tempEthnicObj);
-                }
-            }
-            //% for All school
-            listResult = this.rpGeneric.FindByNativeSQL("Select EthnicBackground, (Count(EthnicBackground)* 100 / (Select Count(*) From test_3))  From test_3  Group By EthnicBackground ");
+            listResult = this.rpGeneric.FindByNativeSQL(query);
             if (listResult != null)
             {
                 foreach (var itemRow in listResult)
                 {
                     tempEthnicObj = listtemp.Find(x => x.EthinicCode.Equals(Convert.ToString(itemRow[0])));
-                    tempEthnicObj.PercentageAllSchool = Convert.ToDouble(itemRow[1]);
+                    tempEthnicObj.PercentageInSchool = Convert.ToDouble(itemRow[1]);
 
                     listDataseries.Add(tempEthnicObj);
+ 
                 }
             }
-
+  
 
             return listDataseries;
         }
 
-
-        [HttpPost]
-        public JsonResult GetEthnicityData(SchCriteriaParameter mSchCriteriaParams)
-        {
-            Console.Write("GetEthnicityData ==> ");
-            string query, queryfromDB = "";
-
-            var singlelistChartData = new List<ChartData>();
-            //List<double> listDataseries;
-
-            ////List<object[]> listResult ;
-
-            //foreach (var Ethnicbg in mSchCriteriaParams.ListConditionEthnicbg)
-            //{
-            //    listDataseries = new List<double>();
-            //        foreach (var Ethnicbg in mSchCriteriaParams.ListConditionEthnicbg)
-            //        {
-            //            //System.out.print("nationalitity =>"+ nationality);
-            //            if (Ethnicbg.Equals("TOTAL", StringComparison.CurrentCultureIgnoreCase))
-            //            {
-            //                // PostgreSql query
-            //                query = " SELECT national_identity, COUNT(*) ";
-            //                query += queryfromDB;
-            //                query += " WHERE national_identity IN ('" + nationality + "')";
-            //                query += " GROUP BY national_identity";
-            //                // MySQL and Access query
-            //                //						query = " SELECT National_Identity, COUNT(*) ";
-            //                //						query += queryfromDB;
-            //                //						query += " WHERE National_Identity IN ('"+nationality+"')";
-            //                //						query += " GROUP BY National_Identity";
-
-
-            //            }
-            //            else
-            //            {
-            //                //PostgreSql query
-            //                query = " SELECT national_identity, COUNT(*)";
-            //                query += queryfromDB;
-            //                query += " WHERE national_identity IN ('" + nationality + "')";
-            //                query += " AND gender IN ('" + gender + "')";
-            //                query += " GROUP BY national_identity, gender ";
-            //                // MySQL and Access Query
-            //                //query = " SELECT National_Identity, COUNT(*)";
-            //                //						query += queryfromDB;
-            //                //						query += " WHERE National_Identity IN ('"+nationality+"')";						
-            //                //						query += " AND Gender IN ('"+gender+"')";
-            //                //						query += " GROUP BY National_Identity, Gender ";
-
-            //            }
-
-            //            var listResult = this.rpGeneric.FindByNativeSQL(query);
-            //            if (listResult != null)
-            //            {
-            //                listDataseries.Add(Convert.ToInt32(listResult[0][1]));
-            //            }
-
-            //            query = "";
-            //        }
-
-            //        singlelistChartData.Add(new ChartData(string.Concat(gender, year), listDataseries));
-            //        //sumData.add(singlelistChartData);
-            //    }
-            //}
-
-            //foreach (ChartData a in singlelistChartData)
-            //{
-            //    //System.out.println(" Cahrt name==>"+a.getName());
-            //    foreach (double num in a.data)
-            //    {
-            //        Console.Write(" Chart Data Series ==> " + num);
-            //    }
-            //    Console.WriteLine();
-            //}
-            return Json(singlelistChartData, JsonRequestBehavior.AllowGet);
-        }
-
-        private Dictionary<string, string> GetDicEhtnicBG()
+         private Dictionary<string, string> GetDicEhtnicBG()
         {
             var dicNational = new Dictionary<string, string>();
             dicNational.Add("01", "White – Scottish");

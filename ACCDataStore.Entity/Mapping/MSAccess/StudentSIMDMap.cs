@@ -20,8 +20,7 @@ namespace ACCDataStore.Entity.Mapping.MSAccess
             Map(x => x.DateOfBirth);
             Map(x => x.AdmissionDate);
             Map(x => x.EthnicBackground);
-            Map(x => x.NationalIdentity);
-            Map(x => x.AsylumStatus);
+            Map(x => x.NationalIdentity); 
             Map(x => x.FreeSchoolMealRegistered);
             Map(x => x.BaseSchoolCode);
             Map(x => x.ParentLaCode);

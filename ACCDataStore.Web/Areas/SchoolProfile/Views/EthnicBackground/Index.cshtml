@@ -3,6 +3,7 @@
 @section Header {
     <link rel="stylesheet" href="~/Content/accdatastore/areas/nationality/views/nationality/nationality.css" type="text/css" />
     <script src="~/Scripts/accdatastore/areas/schoolprofile/views/EthnicBackground/EthnicBackground.js"></script>
+    <script type="text/javascript" src="http://code.highcharts.com/modules/exporting.js"></script>
 }
 @{
     ViewBag.Title = "EthnicBackground";
@@ -13,24 +14,37 @@
 <h2>EthnicBackground - Primary School (%pupils)</h2>
 @if (Model.IsShowCriteria)
 {
-    <form id="formSchoolCriteria">
+    using (Html.BeginForm("Index", "EthnicBackground", new { area = "SchoolProfile" }))
+    {
         <table>
             <tr>
-                <td>Select school name </td>
+                <th colspan ="2">Please select Criteria</th>
+            </tr>
+            <tr>
+                <td colspan="2">Select school name </td>
+            </tr>
+            <tr>
+                <td></td>
                 <td>@Html.DropDownList("selectSchoolname", new SelectList(Model.ListSchoolNameData, "----Select------"))</td>
             </tr>
             <tr>
-                <td>Select EthnicBackground </td>
+                <td colspan="2">Select EthnicBackground </td>
+            </tr>
+                
                 @foreach (var itemEthnic in Model.ListEthnicDefinition)
                 {
                     if (Model.DicEthnicBG.ContainsKey(itemEthnic))
                     {
-                        <td>
+                         <tr><td></td>
+                             <td>
                             <input type="checkbox" name="ethnicity" value="@itemEthnic"
                                    checked="checked" /> @Model.DicEthnicBG[itemEthnic]
                             </td>
+                         </tr>
                     }
                 }
+            <tr>
+                <td></td>
                 <td>
                     <input type="checkbox" name="CheckEthnicityAll"
                            value="ALL" id="ChecknatioNalityAll" checked="checked" />CheckALL
@@ -39,7 +53,7 @@
             </tr>
             <tr>
                 <td>
-                    <button id="buttonGetData" type="button">
+                    <button id="buttonGetData" type="submit">
                         Get Data
                     </button>
                 </td>
@@ -47,37 +61,42 @@
 
 
         </table>
-    </form>
+    }
 }
 @if (Model.ListEthnicData != null)
 {
-<form id="Ethnicdata">
-    <table>
-        <tr>
-            <th></th>
-            <th>@Model.selectedschoolname</th>
-            <th>All Primary Schools</th>
-            <th>Select data </th>
-        </tr>
-        @foreach (var itemEthnic in Model.ListEthnicData)
-        {
+    <br>
+    <form id="Ethnicdata">
+        <table>
             <tr>
-                <td>@Model.DicEthnicBG[itemEthnic.EthinicCode]</td>
-                <td>@itemEthnic.PercentageInSchool</td>
-                <td>@itemEthnic.PercentageAllSchool</td>
-                <td><input type='checkbox' name='CheckDataitem' id='item' value="@itemEthnic.EthinicCode" /></td>
+                <th>EthnicBackground</th>
+                <th>@Model.selectedschoolname</th>
+                <th>All Primary Schools</th>
+                <th>Select data </th>
             </tr>
+            @foreach (var itemEthnic in Model.ListEthnicData)
+            {
+                <tr>
+                    <td>@Model.DicEthnicBG[itemEthnic.EthinicCode]</td>
+                    <td>@itemEthnic.PercentageInSchool</td>
+                    <td>@itemEthnic.PercentageAllSchool</td>
+                    <td><input type='checkbox' name='CheckDataitem' value="@itemEthnic.EthinicCode" checked="checked" /></td>
+                </tr>
 
-        }
-        <tr><td><button onclick='myFunctionBar()'><label>Bar Chart</label></button></td></tr>
-        <tr><td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td></tr>
-    </table>
-    <div id="divChartContainer"></div>
-    <p>
-        Source: Pupil Census <br> *In 2011 the Scottish Government
-        introduced a new code list for Ethnicity, hence the historic data is
-        not comparable
-    </p>
-</form>
+            }
+            <tr>
+                <td colspan="3"></td>
+                <td><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
+            </tr>
+            <tr><td><button onclick='myFunctionBar()'><label>Bar Chart</label></button></td></tr>
+            <tr><td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td></tr>
+        </table>
+        <div id="divChartContainer"></div>
+        <p>
+            Source: Pupil Census <br> *In 2011 the Scottish Government
+            introduced a new code list for Ethnicity, hence the historic data is
+            not comparable
+        </p>
+    </form>
 }
 

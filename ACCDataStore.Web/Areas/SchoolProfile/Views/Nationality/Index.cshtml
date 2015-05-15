@@ -2,6 +2,7 @@
 @section Header {
     <link rel="stylesheet" href="~/Content/accdatastore/areas/nationality/views/nationality/nationality.css" type="text/css" />
     <script src="~/Scripts/accdatastore/areas/schoolprofile/views/Nationality/Nationality.js"></script>
+    <script type="text/javascript" src="http://code.highcharts.com/modules/exporting.js"></script>
 }
 @{
     ViewBag.Title = "Index";
@@ -10,34 +11,48 @@
 <h2>@Model.selectedschoolname</h2>
 
 <h2>Nationality - Primary School (%pupils)</h2>
-
-    <form id="formSchoolCriteria">
+@if (Model.IsShowCriteria)
+{
+   using (Html.BeginForm("Index", "Nationality", new { area = "SchoolProfile" }))
+    {
         <table>
             <tr>
-                <td>Select school name </td>
+                <th colspan="2">Please select Criteria</th>
+            </tr>
+            <tr>
+                <td colspan="2">Select school name </td>
+            </tr>
+            <tr>
+                <td></td>
                 <td>@Html.DropDownList("selectSchoolname", new SelectList(Model.ListSchoolNameData, "----Select------"))</td>
             </tr>
             <tr>
-                <td>Select EthnicBackground </td>
-                @foreach (var itemNational in Model.ListNationalCode)
+                <td colspan="2">Select Natioanlity </td>
+            </tr>
+            @foreach (var itemNational in Model.ListNationalCode)
                 {
                     if (Model.DicNational.ContainsKey(itemNational))
                     {
-                        <td>
-                            <input type="checkbox" name="nationality" value="@itemNational"
-                                   checked="checked" /> @Model.DicNational[itemNational]
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input type="checkbox" name="nationality" value="@itemNational"
+                                       checked="checked" /> @Model.DicNational[itemNational]
                             </td>
+                        </tr>
                     }
                 }
+            <tr>
+                <td></td>
                 <td>
-                    <input type="checkbox" name="CheckEthnicityAll"
+                    <input type="checkbox" name="CheckNationalityAll"
                            value="ALL" id="ChecknatioNalityAll" checked="checked" />CheckALL
                 </td>
 
             </tr>
             <tr>
                 <td>
-                    <button id="buttonGetData" type="button">
+                    <button id="buttonGetData" type="submit">
                         Get Data
                     </button>
                 </td>
@@ -45,8 +60,11 @@
 
 
         </table>
-    </form>
-
+}
+}
+@if (Model.ListNationalityData != null)
+{
+    <br />
     <form id="Ethnicdata">
         <table>
             <tr>
@@ -55,18 +73,22 @@
                 <th>All Primary Schools</th>
                 <th>Select data </th>
             </tr>
-            @foreach (var itemEthnic in Model.ListEthnicData)
+            @foreach (var itemNational in Model.ListNationalityData)
             {
                 <tr>
-                    <td>@Model.DicEthnicBG[itemEthnic.EthinicCode]</td>
-                    <td>@itemEthnic.PercentageInSchool</td>
-                    <td>@itemEthnic.PercentageAllSchool</td>
-                    <td><input type='checkbox' name='CheckDataitem' id='item' value="@itemEthnic.EthinicCode" /></td>
+                    <td>@Model.DicNational[itemNational.IdentityCode]</td>
+                    <td>@itemNational.PercentageInSchool</td>
+                    <td>@itemNational.PercentageAllSchool</td>
+                    <td><input type='checkbox' name='CheckDataitem' value="@itemNational.IdentityCode" checked="checked" /></td>
                 </tr>
 
             }
-            <tr><td><button onclick='myFunctionBar()'>Bar Chart</button></td></tr>
-            <tr><td><button onclick='myFunctionColumn()'>Column Chart</button></td></tr>
+            <tr>
+                <td colspan="3"></td>
+                <td><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
+            </tr>
+            <tr><td><button onclick='myFunctionBar()'><label>Bar Chart</label></button></td></tr>
+            <tr><td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td></tr>
         </table>
         <div id="divChartContainer"></div>
         <p>
@@ -75,4 +97,4 @@
             not comparable
         </p>
     </form>
-
+}

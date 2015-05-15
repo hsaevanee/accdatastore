@@ -18,14 +18,22 @@ namespace ACCDataStore.Web.Controllers
             this.rpGeneric = rpGeneric;
         }
 
-        public ActionResult Index()
+        public ActionResult Index(string id)
         {
             // just git test
-            var vmIndex = new IndexViewModel();
-            vmIndex.ApplicationName = HttpContext.Application["APP_NAME"] as string;
-            vmIndex.ApplicationVersion = HttpContext.Application["APP_VERSION"] as string;
-
-            return View(vmIndex);
+            if (id == null)
+            {
+                var vmIndex = new IndexViewModel();
+                vmIndex.ApplicationName = HttpContext.Application["APP_NAME"] as string;
+                vmIndex.ApplicationVersion = HttpContext.Application["APP_VERSION"] as string;
+                return View("index", vmIndex);
+               
+            }
+            else
+            {
+                return View("theTeam");
+            }
+            
         }
     }
 }

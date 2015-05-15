@@ -1,4 +1,5 @@
-﻿using ACCDataStore.Repository;
+﻿using ACCDataStore.Entity;
+using ACCDataStore.Repository;
 using ACCDataStore.Web.Areas.SchoolProfile.ViewModels.Nationality;
 using Common.Logging;
 using System;
@@ -20,11 +21,15 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             this.rpGeneric = rpGeneric;
         }
         // GET: SchoolProfile/Nationality
-        public ActionResult Index()
+        public ActionResult Index(string sSchoolName)
         {
             var vmNationality = new NationalityViewModel();
 
             var schoolname = new List<string>();
+            var sNationalCriteria = new List<string>();
+
+            List<NationalityObj> ListNationalData = new List<NationalityObj>();
+            List<NationalityObj> temp = new List<NationalityObj>();
 
             var listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW Name FROM test_3 group by Name");
 
@@ -39,8 +44,102 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             vmNationality.ListNationalCode = fooList;
             vmNationality.DicNational = GetDicNational();
 
-            return View();
+            if (Request.HttpMethod == "GET") // get method
+            {
+                if (sSchoolName == null) // case of index page, show criteria
+                {
+                    vmNationality.IsShowCriteria = true;
+                }
+                else // case of detail page, by pass criteria
+                {
+                    vmNationality.IsShowCriteria = false;
+                }
+
+            }
+            else // post method
+            {
+                vmNationality.IsShowCriteria = true;
+                sSchoolName = Request["selectSchoolname"];
+                sNationalCriteria = Request["nationality"].Split(',').ToList();
+                // get parameter from Request object
+            }
+
+            // process data
+            if (sSchoolName != null)
+            {
+                vmNationality.selectedschoolname = sSchoolName;
+                ListNationalData = GetNationalityDatabySchoolname(sSchoolName);
+                if (sNationalCriteria.Count != 0)
+                {
+                    vmNationality.ListNationalityData = ListNationalData.Where(x => sNationalCriteria.Contains(x.IdentityCode)).ToList();
+                }
+                else
+                {
+                    vmNationality.ListNationalityData = ListNationalData;
+                }
+                Session["SessionListNationalityData"] = vmNationality.ListNationalityData;
+            }
+            return View("Index", vmNationality);
         }
+
+        public List<NationalityObj> GetNationalityDatabySchoolname(string mSchoolname)
+        {
+            Console.Write("GetNationalityData ==> ");
+
+            var singlelistChartData = new List<ChartData>();
+            List<NationalityObj> listDataseries = new List<NationalityObj>();
+            List<NationalityObj> listtemp = new List<NationalityObj>();
+            NationalityObj tempNationalObj = new NationalityObj();
+            
+
+            //% for All school
+            var listResult = this.rpGeneric.FindByNativeSQL("Select NationalIdentity, (Count(NationalIdentity)* 100 / (Select Count(*) From test_3))  From test_3  Group By NationalIdentity ");
+            if (listResult != null)
+            {
+                foreach (var itemRow in listResult)
+                {
+                    tempNationalObj = new NationalityObj();
+                    tempNationalObj.IdentityCode = Convert.ToString(itemRow[0]);
+                    tempNationalObj.IdentityName = GetDicNational().ContainsKey(tempNationalObj.IdentityCode) ? GetDicNational()[tempNationalObj.IdentityCode] : "NO NAME";
+                    tempNationalObj.PercentageAllSchool = Convert.ToDouble(itemRow[1]);
+                    listtemp.Add(tempNationalObj);
+
+                    //tempNationalObj = listtemp.Find(x => x.IdentityCode.Equals(Convert.ToString(itemRow[0])));
+                    //tempNationalObj.PercentageAllSchool = Convert.ToDouble(itemRow[1]);
+
+                    //listDataseries.Add(tempNationalObj);
+                }
+            }
+
+
+            //% for specific schoolname
+            string query = " Select NationalIdentity, (Count(NationalIdentity)* 100 /";
+            query += " (Select Count(*) From test_3 where Name in ('" + mSchoolname + " ')))";
+            query += " From test_3 where Name in ('" + mSchoolname + " ') Group By NationalIdentity ";
+
+            listResult = this.rpGeneric.FindByNativeSQL(query);
+
+            if (listResult != null)
+            {
+                foreach (var itemRow in listResult)
+                {
+                    //tempNationalObj = new NationalityObj();
+                    //tempNationalObj.IdentityCode = Convert.ToString(itemRow[0]);
+                    //tempNationalObj.IdentityName = GetDicNational().ContainsKey(tempNationalObj.IdentityCode) ? GetDicNational()[tempNationalObj.IdentityCode] : "NO NAME";
+                    //tempNationalObj.PercentageInSchool = Convert.ToDouble(itemRow[1]);
+                    //listtemp.Add(tempNationalObj);
+                    tempNationalObj = listtemp.Find(x => x.IdentityCode.Equals(Convert.ToString(itemRow[0])));
+                    tempNationalObj.PercentageInSchool = Convert.ToDouble(itemRow[1]);
+
+                    listDataseries.Add(tempNationalObj);
+ 
+                }
+            }
+
+
+            return listDataseries;
+        }
+
         private Dictionary<string, string> GetDicNational()
         {
             var dicNational = new Dictionary<string, string>();
@@ -53,6 +152,49 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             dicNational.Add("10", "Not Disclosed");
             dicNational.Add("98", "Not Known");
             return dicNational;
+        }
+
+        [HttpPost]
+        public JsonResult GetChartDataNationality(string[] arrParameterFilter)
+        {
+            try
+            {
+                object oChartData = new object();
+                string[] Categories = new string[arrParameterFilter.Length];
+
+                var listNationalData = Session["SessionListNationalityData"] as List<NationalityObj>;
+                if (listNationalData != null)
+                {
+                    var listNationalFilter = listNationalData.Where(x => arrParameterFilter.Contains(x.IdentityCode)).ToList();
+
+
+                    // process chart data
+                    oChartData = new
+                    {
+                        ChartTitle = "test",
+                        ChartCategories = listNationalFilter.Select(x => x.IdentityName).ToArray(),
+                        ChartSeries = ProcessChartDataEthnic(listNationalFilter)
+                    };
+                }
+
+
+                return Json(oChartData, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.Message, ex);
+                throw ex;
+            }
+        }
+
+        private List<object> ProcessChartDataEthnic(List<NationalityObj> listNationalFilter)
+        {
+            var listChartData = new List<object>();
+
+            listChartData.Add(new { name = "Data 1", data = listNationalFilter.Select(x => x.PercentageAllSchool).ToArray() });
+            listChartData.Add(new { name = "Data 2", data = listNationalFilter.Select(x => x.PercentageInSchool).ToArray() });
+
+            return listChartData;
         }
     }
 }

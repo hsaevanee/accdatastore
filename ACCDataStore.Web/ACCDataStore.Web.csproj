@@ -189,6 +189,12 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Areas\Nationality\Views\web.config" />
+    <Content Include="Images\bruce_scharlau.JPG" />
+    <Content Include="Images\Do_Coyle.jpg" />
+    <Content Include="Images\Ian_Heywood.jpg" />
+    <Content Include="Images\Jan2.png" />
+    <Content Include="Images\Kevin.jpeg" />
+    <Content Include="Images\Pamela_Bain.jpeg" />
     <Content Include="Images\spinner.gif" />
     <Content Include="Scripts\accdatastore\areas\nationality\views\nationality\nationality.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\EthnicBackground\EthnicBackground.js" />

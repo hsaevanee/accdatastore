@@ -23,10 +23,10 @@
                 <div id="nav">
                     <h3>Navigation</h3>
                     <ul>
-                        <li>@Html.ActionLink("Home", "Index", "Index", new { Area = "" }, null)</li>
-                        <li>@Html.ActionLink("The Team", "Index", "theTeam", new { Area = "" }, null)</li>
+                        <li>@Html.ActionLink("Home", "Index", "Index", new { id = "" }, null)</li>
+                        <li>@Html.ActionLink("The Team", "Index", "Index", new { id = "theTeam" }, null)</li>
                         <li>@Html.ActionLink("School Profile", "Index", "IndexSchoolProfile", new { Area = "SchoolProfile" }, null)</li>                       
-                        <li>@Html.ActionLink("Nationality", "Index", "Nationality", new { Area = "Nationality" }, null)</li>                               
+                        @*<li>@Html.ActionLink("Nationality", "Index", "Nationality", new { Area = "Nationality" }, null)</li>*@                               
                     </ul>
                 </div>
                 <div id="main">
