@@ -229,6 +229,7 @@
     <Compile Include="Areas\Nationality\Controllers\NationalityController.cs" />
     <Compile Include="Areas\Nationality\NationalityAreaRegistration.cs" />
     <Compile Include="Areas\Nationality\ViewModels\IndexNationality\IndexViewModel.cs" />
+    <Compile Include="Areas\Nationality\ViewModels\Nationality\NationalityViewModel.cs" />
     <Compile Include="Areas\SchoolProfile\ViewModels\Nationality\NationalityViewModel.cs" />
     <Compile Include="Areas\SchoolProfile\Controllers\EthnicBackgroundController.cs" />
     <Compile Include="Areas\SchoolProfile\Controllers\IndexSchoolProfileController.cs" />
@@ -281,7 +282,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Nationality\Models\" />
-    <Folder Include="Areas\Nationality\ViewModels\Nationality\" />
     <Folder Include="Areas\SchoolProfile\Models\" />
     <Folder Include="Models\" />
     <Folder Include="Resources\Upload\" />
