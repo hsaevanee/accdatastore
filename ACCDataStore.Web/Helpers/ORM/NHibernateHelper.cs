@@ -44,7 +44,7 @@ namespace ACCDataStore.Helpers.ORM
                     .BuildConfiguration();
                     break;
                 case "4":
-                    sConnectionString = @"C:\Users\s01hs4\Documents\Database2.mdb";
+                    sConnectionString = sDbName;
                     configuration = Fluently
                         .Configure()
                         .Database(JetDriverConfiguration

@@ -2,8 +2,11 @@
 
 @section Header {
     <link rel="stylesheet" href="~/Content/accdatastore/areas/nationality/views/nationality/nationality.css" type="text/css" />
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.css" type="text/css" />
     <script src="~/Scripts/accdatastore/areas/schoolprofile/views/EthnicBackground/EthnicBackground.js"></script>
     <script type="text/javascript" src="http://code.highcharts.com/modules/exporting.js"></script>
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+
 }
 @{
     ViewBag.Title = "EthnicBackground";
@@ -67,30 +70,39 @@
 {
     <br>
     <form id="Ethnicdata">
-        <table>
-            <tr>
-                <th>EthnicBackground</th>
-                <th>@Model.selectedschoolname</th>
-                <th>All Primary Schools</th>
-                <th>Select data </th>
-            </tr>
-            @foreach (var itemEthnic in Model.ListEthnicData)
-            {
+        <table id="datatable" class="table table-striped table-bordered">
+            <thead>
                 <tr>
-                    <td>@Model.DicEthnicBG[itemEthnic.EthinicCode]</td>
-                    <td>@itemEthnic.PercentageInSchool</td>
-                    <td>@itemEthnic.PercentageAllSchool</td>
-                    <td><input type='checkbox' name='CheckDataitem' value="@itemEthnic.EthinicCode" checked="checked" /></td>
+                    <th>EthnicBackground</th>
+                    <th>@Model.selectedschoolname</th>
+                    <th>All Primary Schools</th>
+                    <th>Select data </th>
                 </tr>
+            </thead>
+            <tbody>
+                @foreach (var itemEthnic in Model.ListEthnicData)
+                {
+                    <tr>
+                        <td>@Model.DicEthnicBG[itemEthnic.EthinicCode]</td>
+                        <td>@String.Format("{0:#,0.000}",@itemEthnic.PercentageInSchool)</td>
+                        <td>@String.Format("{0:#,0.000}",@itemEthnic.PercentageAllSchool)</td>
+                        <td><input type='checkbox' name='CheckDataitem' value="@itemEthnic.EthinicCode" checked="checked" /></td>
+                    </tr>
 
-            }
+                }
+            </tbody>
             <tr>
                 <td colspan="3"></td>
                 <td><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
             </tr>
             <tr><td><button onclick='myFunctionBar()'><label>Bar Chart</label></button></td></tr>
             <tr><td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td></tr>
+            <tr><td>@Html.ActionLink("Export Excel", "ExportExcel", "EthnicBackground", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td></tr>
         </table>
+        <script type="text/javascript">
+            $('#datatable').DataTable();
+        </script>
+
         <div id="divChartContainer"></div>
         <p>
             Source: Pupil Census <br> *In 2011 the Scottish Government

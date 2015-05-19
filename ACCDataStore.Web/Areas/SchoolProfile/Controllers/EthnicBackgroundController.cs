@@ -8,6 +8,10 @@ using System.Web.Mvc;
 using ACCDataStore.Web.Areas.SchoolProfile.ViewModels.EthnicBackground;
 using ACCDataStore.Entity.SchoolProfile;
 using ACCDataStore.Entity;
+using System.Data;
+using System.IO;
+using ClosedXML.Excel;
+using System.Collections;
 
 namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 {
@@ -203,6 +207,47 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             listChartData.Add(new { name = "Data 2", data = listEthnicFilter.Select(x => x.PercentageInSchool).ToArray() });
 
             return listChartData;
+        }
+
+        public ActionResult ExportExcel()
+        {
+            var dataStream = GetWorkbookDataStream(GetData());
+            return File(dataStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "export.xlsx");
+        }
+
+        private List<EthnicObj> GetData()
+        {
+            // simulate datatable
+            var listEthnicData = Session["SessionListEthnicData"] as List<EthnicObj>;
+            //var dtResult = new DataTable();
+            //dtResult.Columns.Add("EthnicBackground", typeof(string));
+            //dtResult.Columns.Add("Drug", typeof(string));
+            //dtResult.Columns.Add("Patient", typeof(string));
+            //dtResult.Columns.Add("Date", typeof(DateTime));
+
+            //// add row
+            //dtResult.Rows.Add(25, "Indocin", "David", DateTime.Now);
+            //dtResult.Rows.Add(50, "Enebrel", "Sam", DateTime.Now);
+            //dtResult.Rows.Add(10, "Hydralazine", "Christoff", DateTime.Now);
+            //dtResult.Rows.Add(21, "Combivent", "Janet", DateTime.Now);
+            //dtResult.Rows.Add(100, "Dilantin", "Melanie", DateTime.Now);
+
+            return listEthnicData;
+        }
+
+        private MemoryStream GetWorkbookDataStream(List<EthnicObj> dtResult)
+        {
+            var workbook = new XLWorkbook();
+            var worksheet = workbook.Worksheets.Add("Sheet 1");
+            worksheet.Cell("A1").Value = "Ethnicbackground"; // use cell address in range
+            worksheet.Cell(2, 1).InsertTable(dtResult); // use row & column index
+            worksheet.Rows().AdjustToContents();
+            worksheet.Columns().AdjustToContents();
+
+            var memoryStream = new MemoryStream();
+            workbook.SaveAs(memoryStream);
+            memoryStream.Seek(0, SeekOrigin.Begin);
+            return memoryStream;
         }
     }
 }
