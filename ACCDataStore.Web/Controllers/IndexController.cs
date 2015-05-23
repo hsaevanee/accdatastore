@@ -8,7 +8,7 @@ using ACCDataStore.Web.ViewModels;
 
 namespace ACCDataStore.Web.Controllers
 {
-    public class IndexController : Controller
+    public class IndexController : BaseController
     {
         private static ILog log = LogManager.GetLogger(typeof(IndexController));
 

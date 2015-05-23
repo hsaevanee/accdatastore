@@ -33,8 +33,40 @@
             <tr>
                 <td colspan="2">Select EthnicBackground </td>
             </tr>
+
+            @foreach (var itemGender in Model.ListGenderCode)
+            {
+                if (Model.DicGender.ContainsKey(itemGender))
+                {
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type="checkbox" name="gender" value="@itemGender"
+                                   checked="checked" /> @Model.DicGender[itemGender]
+                            </td>
+                        </tr>
+                }
+            }
+            <tr>
+                <td></td>
+                <td>
+                    <input type="checkbox" name="gender" value="Total"
+                           checked="checked" />Total
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="checkbox" name="CheckGenderAll"
+                           value="ALL" id="CheckGenderAll" checked="checked" />CheckALL
+                </td>
+
+            </tr>
+            <tr>
+                <td colspan="2">Select EthnicBackground </td>
+            </tr>
                 
-                @foreach (var itemEthnic in Model.ListEthnicDefinition)
+                @foreach (var itemEthnic in Model.ListEthnicCode)
                 {
                     if (Model.DicEthnicBG.ContainsKey(itemEthnic))
                     {
@@ -82,18 +114,17 @@
             <tbody>
                 @foreach (var itemEthnic in Model.ListEthnicData)
                 {
-                    <tr>
-                        <td>@Model.DicEthnicBG[itemEthnic.EthinicCode]</td>
-                        <td>@String.Format("{0:#,0.000}",@itemEthnic.PercentageInSchool)</td>
-                        <td>@String.Format("{0:#,0.000}",@itemEthnic.PercentageAllSchool)</td>
-                        <td><input type='checkbox' name='CheckDataitem' value="@itemEthnic.EthinicCode" checked="checked" /></td>
-                    </tr>
-
+                        <tr>
+                            <td>@itemEthnic.EthinicName</td>
+                            <td align="center">@String.Format("{0:#,0.00}",@itemEthnic.PercentageInSchool)</td>
+                            <td align="center">@String.Format("{0:#,0.00}",@itemEthnic.PercentageAllSchool)</td>
+                            <td align="center"><input type='checkbox' name='CheckDataitem' value="@itemEthnic.EthinicCode" checked="checked" /></td>
+                        </tr>
                 }
             </tbody>
             <tr>
                 <td colspan="3"></td>
-                <td><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
+                <td align="center"><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
             </tr>
             <tr><td><button onclick='myFunctionBar()'><label>Bar Chart</label></button></td></tr>
             <tr><td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td></tr>

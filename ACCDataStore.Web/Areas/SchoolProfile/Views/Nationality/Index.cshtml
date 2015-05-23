@@ -82,16 +82,16 @@
                 {
                     <tr>
                         <td>@Model.DicNational[itemNational.IdentityCode]</td>
-                        <td>@String.Format("{0:#,0.00}", @itemNational.PercentageInSchool)</td>
-                        <td>@String.Format("{0:#,0.00}",@itemNational.PercentageAllSchool)</td>
-                        <td><input type='checkbox' name='CheckDataitem' value="@itemNational.IdentityCode" checked="checked" /></td>
+                        <td align="center">@String.Format("{0:#,0.00}", @itemNational.PercentageInSchool)</td>
+                        <td align="center">@String.Format("{0:#,0.00}",@itemNational.PercentageAllSchool)</td>
+                        <td align="center"><input type='checkbox' name='CheckDataitem' value="@itemNational.IdentityCode" checked="checked" /></td>
                     </tr>
 
                 }
             </tbody>
             <tr>
                 <td colspan="3"></td>
-                <td><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
+                <td align="center"><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
             </tr>
             <tr><td><button onclick='myFunctionBar()'><label>Bar Chart</label></button></td></tr>
             <tr><td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td></tr>

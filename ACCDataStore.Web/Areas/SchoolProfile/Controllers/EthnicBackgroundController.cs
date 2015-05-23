@@ -12,12 +12,14 @@ using System.Data;
 using System.IO;
 using ClosedXML.Excel;
 using System.Collections;
+using Rotativa;
+using Rotativa.Options;
 
 namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 {
-    public class EthnicBackgroundController : Controller
+    public class EthnicBackgroundController : BaseSchoolProfileController
     {
-        private static ILog log = LogManager.GetLogger(typeof(IndexSchoolProfileController));
+        private static ILog log = LogManager.GetLogger(typeof(EthnicBackgroundController));
 
         private readonly IGenericRepository rpGeneric;
 
@@ -36,6 +38,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             var schoolname = new List<string>();
 
             var sethnicityCriteria =  new List<string>();
+            var setGenderCriteria = new List<string>();
+
 
             List<EthnicObj> ListEthnicData = new List<EthnicObj>();
             List<EthnicObj> temp = new List<EthnicObj>();
@@ -51,8 +55,15 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
             fooList = listResult.OfType<string>().ToList();
 
-            vmEthnicbackground.ListEthnicDefinition = fooList;
+            vmEthnicbackground.ListEthnicCode = fooList;
             vmEthnicbackground.DicEthnicBG = GetDicEhtnicBG();
+
+            listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW Gender FROM test_3 group by Gender");
+
+            fooList = listResult.OfType<string>().ToList();
+
+            vmEthnicbackground.ListGenderCode = fooList;
+            vmEthnicbackground.DicGender = GetDicGender();
 
             if (Request.HttpMethod == "GET") // get method
             {
@@ -71,6 +82,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 vmEthnicbackground.IsShowCriteria = true;
                 sSchoolName = Request["selectSchoolname"];
                 sethnicityCriteria = Request["ethnicity"].Split(',').ToList();
+                setGenderCriteria = Request["gender"].Split(',').ToList();
                 // get parameter from Request object
             }
            
@@ -78,7 +90,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             if (sSchoolName != null)
             {
                 vmEthnicbackground.selectedschoolname = sSchoolName;
-                ListEthnicData = GetEthnicityDatabySchoolname(sSchoolName);
+                ListEthnicData = GetEthnicityDatabySchoolname(rpGeneric, sSchoolName);
                 if (sethnicityCriteria.Count != 0)
                 {
                     vmEthnicbackground.ListEthnicData = ListEthnicData.Where(x => sethnicityCriteria.Contains(x.EthinicCode)).ToList();
@@ -90,81 +102,87 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             }
 
             return View("index", vmEthnicbackground);
-
+            // export pdf
+            //return new ViewAsPdf("index", vmEthnicbackground)
+            //{
+            //    FileName = "testexport.pdf",
+            //    PageOrientation = Orientation.Landscape,
+            //    PageMargins = new Margins(0, 0, 0, 0)
+            //};
 
         }
 
-        public List<EthnicObj> GetEthnicityDatabySchoolname(string mSchoolname)
-        {
-            Console.Write("GetEthnicityData ==> ");
+        //public List<EthnicObj> GetEthnicityDatabySchoolname(string mSchoolname)
+        //{
+        //    Console.Write("GetEthnicityData ==> ");
 
-            var singlelistChartData = new List<ChartData>();
-            List<EthnicObj> listDataseries = new List<EthnicObj>();
-            List<EthnicObj> listtemp = new List<EthnicObj>();
-            EthnicObj tempEthnicObj = new EthnicObj();
+        //    var singlelistChartData = new List<ChartData>();
+        //    List<EthnicObj> listDataseries = new List<EthnicObj>();
+        //    List<EthnicObj> listtemp = new List<EthnicObj>();
+        //    EthnicObj tempEthnicObj = new EthnicObj();
 
-            //% for All school
-            var listResult = this.rpGeneric.FindByNativeSQL("Select EthnicBackground, (Count(EthnicBackground)* 100 / (Select Count(*) From test_3))  From test_3  Group By EthnicBackground ");
-            if (listResult != null)
-            {
-                foreach (var itemRow in listResult)
-                {
-                    tempEthnicObj = new EthnicObj();
-                    tempEthnicObj.EthinicCode = Convert.ToString(itemRow[0]);
-                    tempEthnicObj.EthinicName = GetDicEhtnicBG().ContainsKey(tempEthnicObj.EthinicCode) ? GetDicEhtnicBG()[tempEthnicObj.EthinicCode] : "NO NAME";
-                    tempEthnicObj.PercentageAllSchool = Convert.ToDouble(itemRow[1]);
-                    listtemp.Add(tempEthnicObj);  
-                }
-            }
+        //    //% for All school
+        //    var listResult = this.rpGeneric.FindByNativeSQL("Select EthnicBackground, (Count(EthnicBackground)* 100 / (Select Count(*) From test_3))  From test_3  Group By EthnicBackground ");
+        //    if (listResult != null)
+        //    {
+        //        foreach (var itemRow in listResult)
+        //        {
+        //            tempEthnicObj = new EthnicObj();
+        //            tempEthnicObj.EthinicCode = Convert.ToString(itemRow[0]);
+        //            tempEthnicObj.EthinicName = GetDicEhtnicBG().ContainsKey(tempEthnicObj.EthinicCode) ? GetDicEhtnicBG()[tempEthnicObj.EthinicCode] : "NO NAME";
+        //            tempEthnicObj.PercentageAllSchool = Convert.ToDouble(itemRow[1]);
+        //            listtemp.Add(tempEthnicObj);  
+        //        }
+        //    }
 
 
-            //% for specific schoolname
-            string query = " Select EthnicBackground, (Count(EthnicBackground)* 100 /";
-            query += " (Select Count(*) From test_3 where Name in ('" + mSchoolname + " ')))";
-            query += " From test_3 where Name in ('" + mSchoolname + " ') Group By EthnicBackground ";
+        //    //% for specific schoolname
+        //    string query = " Select EthnicBackground, (Count(EthnicBackground)* 100 /";
+        //    query += " (Select Count(*) From test_3 where Name in ('" + mSchoolname + " ')))";
+        //    query += " From test_3 where Name in ('" + mSchoolname + " ') Group By EthnicBackground ";
 
-            listResult = this.rpGeneric.FindByNativeSQL(query);
-            if (listResult != null)
-            {
-                foreach (var itemRow in listResult)
-                {
-                    tempEthnicObj = listtemp.Find(x => x.EthinicCode.Equals(Convert.ToString(itemRow[0])));
-                    tempEthnicObj.PercentageInSchool = Convert.ToDouble(itemRow[1]);
+        //    listResult = this.rpGeneric.FindByNativeSQL(query);
+        //    if (listResult != null)
+        //    {
+        //        foreach (var itemRow in listResult)
+        //        {
+        //            tempEthnicObj = listtemp.Find(x => x.EthinicCode.Equals(Convert.ToString(itemRow[0])));
+        //            tempEthnicObj.PercentageInSchool = Convert.ToDouble(itemRow[1]);
 
-                    listDataseries.Add(tempEthnicObj);
+        //            listDataseries.Add(tempEthnicObj);
  
-                }
-            }
+        //        }
+        //    }
   
 
-            return listDataseries;
-        }
+        //    return listDataseries;
+        //}
 
-         private Dictionary<string, string> GetDicEhtnicBG()
-        {
-            var dicNational = new Dictionary<string, string>();
-            dicNational.Add("01", "White – Scottish");
-            dicNational.Add("02", "African – African / Scottish / British");
-            dicNational.Add("03", "Caribbean or Black – Caribbean / British / Scottish");
-            dicNational.Add("05", "Asian – Indian/British/Scottish");
-            dicNational.Add("06", "Asian – Pakistani / British / Scottish");
-            dicNational.Add("07", "Asian –Bangladeshi / British / Scottish");
-            dicNational.Add("08", "Asian – Chinese / British / Scottish");
-            dicNational.Add("09", "White – Other");
-            dicNational.Add("10", "Not Disclosed");
-            dicNational.Add("12", "Mixed or multiple ethnic groups");
-            dicNational.Add("17", "Asian – Other");
-            dicNational.Add("19", "White – Gypsy/Traveller");
-            dicNational.Add("21", "White – Other British");
-            dicNational.Add("22", "White – Irish");
-            dicNational.Add("23", "White – Polish");
-            dicNational.Add("24", "Caribbean or Black – Other");
-            dicNational.Add("25", "African – Other");
-            dicNational.Add("27", "Other – Arab");
-            dicNational.Add("98", "Not Known");
-            dicNational.Add("99", "Other – Other");
-            return dicNational;
-        }
+        // private Dictionary<string, string> GetDicEhtnicBG()
+        //{
+        //    var dicNational = new Dictionary<string, string>();
+        //    dicNational.Add("01", "White – Scottish");
+        //    dicNational.Add("02", "African – African / Scottish / British");
+        //    dicNational.Add("03", "Caribbean or Black – Caribbean / British / Scottish");
+        //    dicNational.Add("05", "Asian – Indian/British/Scottish");
+        //    dicNational.Add("06", "Asian – Pakistani / British / Scottish");
+        //    dicNational.Add("07", "Asian –Bangladeshi / British / Scottish");
+        //    dicNational.Add("08", "Asian – Chinese / British / Scottish");
+        //    dicNational.Add("09", "White – Other");
+        //    dicNational.Add("10", "Not Disclosed");
+        //    dicNational.Add("12", "Mixed or multiple ethnic groups");
+        //    dicNational.Add("17", "Asian – Other");
+        //    dicNational.Add("19", "White – Gypsy/Traveller");
+        //    dicNational.Add("21", "White – Other British");
+        //    dicNational.Add("22", "White – Irish");
+        //    dicNational.Add("23", "White – Polish");
+        //    dicNational.Add("24", "Caribbean or Black – Other");
+        //    dicNational.Add("25", "African – Other");
+        //    dicNational.Add("27", "Other – Arab");
+        //    dicNational.Add("98", "Not Known");
+        //    dicNational.Add("99", "Other – Other");
+        //    return dicNational;
+        //}
 
         [HttpPost]
         public JsonResult GetChartDataEthnic(string[] arrParameterFilter)

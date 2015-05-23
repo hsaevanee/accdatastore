@@ -67,6 +67,7 @@
     <Compile Include="SchoolProfile\NationalityObj.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SchoolProfile\SchCriteriaParameter.cs" />
+    <Compile Include="SchoolProfile\SIMDObj.cs" />
     <Compile Include="SchoolProfile\StudentSIMD.cs" />
   </ItemGroup>
   <ItemGroup>

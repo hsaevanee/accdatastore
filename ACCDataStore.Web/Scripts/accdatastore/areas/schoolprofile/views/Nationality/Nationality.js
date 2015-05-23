@@ -1,4 +1,4 @@
-﻿var dataNationality;
+﻿//var dataNationality;
 var mNationalParams;
 $(function () {
     InitSpinner();
