@@ -29,6 +29,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             //var result = this.rpGeneric.FindAll<StudentSIMD>();
             var vmIndexSchoolProfile = new IndexSchoolProfileViewModel();
 
+            var sSchoolName = Request["selectedschoolname"];
+
             var schoolname = new List<string>();
 
             var listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW Name FROM test_3 group by Name");
@@ -36,11 +38,23 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             List<string> fooList = listResult.OfType<string>().ToList();
 
             vmIndexSchoolProfile.ListSchoolNameData = fooList;
-            vmIndexSchoolProfile.selectedschoolname = fooList[0];
 
-            vmIndexSchoolProfile.ListEthnicData = GetEthnicityDatabySchoolname(this.rpGeneric,fooList[0]);
-            vmIndexSchoolProfile.ListNationalityData= GetNationalityDatabySchoolname(this.rpGeneric, fooList[0]);
-            vmIndexSchoolProfile.ListSIMDData = GetSIMDDatabySchoolname(this.rpGeneric, fooList[0]);
+            if (sSchoolName == null)
+            {
+                vmIndexSchoolProfile.selectedschoolname = fooList[0];
+                vmIndexSchoolProfile.ListEthnicData = GetEthnicityDatabySchoolname(this.rpGeneric, fooList[0]);
+                vmIndexSchoolProfile.ListNationalityData = GetNationalityDatabySchoolname(this.rpGeneric, fooList[0]);
+                vmIndexSchoolProfile.ListSIMDData = GetSIMDDatabySchoolname(this.rpGeneric, fooList[0], new List<string>(new string[] { "2012" }));
+            }
+            else {
+                vmIndexSchoolProfile.selectedschoolname = sSchoolName;
+                vmIndexSchoolProfile.ListEthnicData = GetEthnicityDatabySchoolname(this.rpGeneric, sSchoolName);
+                vmIndexSchoolProfile.ListNationalityData = GetNationalityDatabySchoolname(this.rpGeneric, sSchoolName);
+                vmIndexSchoolProfile.ListSIMDData = GetSIMDDatabySchoolname(this.rpGeneric, sSchoolName, new List<string>(new string[] { "2012" }));
+            
+            }
+
+
 
             return View("index", vmIndexSchoolProfile);
 

@@ -15,7 +15,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.ViewModels.EthnicBackground
         public List<string> ListEthnicCode { get; set; }
         public Dictionary<string, string> DicEthnicBG { get; set; }
         public bool IsShowCriteria { get; set; }
-        public List<string> ListGenderCode { get; set; }
-        public Dictionary<string, string> DicGender { get; set; }
+        //public List<string> ListGenderCode { get; set; }
+        //public Dictionary<string, string> DicGender { get; set; }
     }
 }

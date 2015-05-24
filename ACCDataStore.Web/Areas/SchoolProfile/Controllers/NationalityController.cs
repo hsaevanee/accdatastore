@@ -29,9 +29,11 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
             var schoolname = new List<string>();
             var sNationalCriteria = new List<string>();
+            var setGenderCriteria = new List<string>();
 
             List<NationalityObj> ListNationalData = new List<NationalityObj>();
             List<NationalityObj> temp = new List<NationalityObj>();
+
 
             var listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW Name FROM test_3 group by Name");
 
@@ -46,6 +48,14 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             vmNationality.ListNationalCode = fooList;
             vmNationality.DicNational = GetDicNational();
 
+            listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW Gender FROM test_3 group by Gender");
+
+            fooList = listResult.OfType<string>().ToList();
+
+            vmNationality.ListGenderCode = fooList;
+            vmNationality.DicGender = GetDicGender();
+
+
             if (Request.HttpMethod == "GET") // get method
             {
                 if (sSchoolName == null) // case of index page, show criteria
@@ -55,6 +65,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 else // case of detail page, by pass criteria
                 {
                     vmNationality.IsShowCriteria = false;
+                    vmNationality.ListSelectedGender = new List<string>(new string[] { "Total" });
+                    Session["ListSelectedGender"] = vmNationality.ListSelectedGender;
                 }
 
             }
@@ -63,6 +75,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 vmNationality.IsShowCriteria = true;
                 sSchoolName = Request["selectSchoolname"];
                 sNationalCriteria = Request["nationality"].Split(',').ToList();
+                vmNationality.ListSelectedGender = Request["gender"].Split(',').ToList();
+                Session["ListSelectedGender"] = vmNationality.ListSelectedGender;
                 // get parameter from Request object
             }
 
@@ -192,10 +206,28 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         private List<object> ProcessChartDataEthnic(List<NationalityObj> listNationalFilter)
         {
             var listChartData = new List<object>();
+            var ListSelectedGender = Session["ListSelectedGender"] as List<string>;
 
-            listChartData.Add(new { name = "Data 1", data = listNationalFilter.Select(x => x.PercentageAllSchool).ToArray() });
-            listChartData.Add(new { name = "Data 2", data = listNationalFilter.Select(x => x.PercentageInSchool).ToArray() });
+            foreach (var itemGender in ListSelectedGender)
+            {
+                if (itemGender.Equals("F"))
+                {
+                    listChartData.Add(new { name = "FemaleAllSchool", data = listNationalFilter.Select(x => x.PercentageFemaleAllSchool).ToArray() });
+                    listChartData.Add(new { name = "Female", data = listNationalFilter.Select(x => x.PercentageFemaleInSchool).ToArray() });
+                }
 
+                if (itemGender.Equals("M"))
+                {
+                    listChartData.Add(new { name = "MaleAllSchool", data = listNationalFilter.Select(x => x.PercentageMaleAllSchool).ToArray() });
+                    listChartData.Add(new { name = "Male", data = listNationalFilter.Select(x => x.PercentageMaleInSchool).ToArray() });
+                }
+                if (itemGender.Equals("Total"))
+                {
+                    listChartData.Add(new { name = "TotalAllSchool", data = listNationalFilter.Select(x => x.PercentageAllSchool).ToArray() });
+                    listChartData.Add(new { name = "Total", data = listNationalFilter.Select(x => x.PercentageInSchool).ToArray() });
+                }
+
+            }
             return listChartData;
         }
 

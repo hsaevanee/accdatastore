@@ -81,7 +81,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             if (sSchoolName != null)
             {
                 vmSIMD.selectedschoolname = sSchoolName;
-                ListSIMDData = GetSIMDDatabySchoolname(rpGeneric, sSchoolName);
+                ListSIMDData = GetSIMDDatabySchoolname(rpGeneric, sSchoolName, setYearCriteria);
                 if (setSIMDCriteria.Count != 0)
                 {
                     vmSIMD.ListSIMDData= ListSIMDData.Where(x => setSIMDCriteria.Contains(x.SIMDCode)).ToList();

@@ -20,18 +20,31 @@ $(document).ready(function () {
         }
     });
 
+    $("input[name='gender']").click(function () {
+        $('input[name="CheckGenderAll"]').prop("checked", false);
+    });
+
     $("input[name='CheckDataitem']").click(function () {
         $('input[name="CheckDataitemAll"]').prop("checked", false);
     });
 
     $("input[name='CheckDataitemAll']").change(function () {
         if (this.checked) {
-            //alert('ChecknationalityAll check');
             $('input[name="CheckDataitem"]').prop("checked", true);
         } else {
             $('input[name="CheckDataitem"]').prop("checked", false);
         }
     });
+
+    $("input[name='CheckGenderAll']").change(function () {
+        if (this.checked) {
+            //alert('ChecknationalityAll check');
+            $('input[name="gender"]').prop("checked", true);
+        } else {
+            $('input[name="gender"]').prop("checked", false);
+        }
+    });
+
 });
 
 function validateCheckBoxs() {

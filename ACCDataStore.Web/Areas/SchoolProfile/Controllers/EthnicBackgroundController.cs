@@ -74,6 +74,9 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 else // case of detail page, by pass criteria
                 {
                     vmEthnicbackground.IsShowCriteria = false;
+                    // set default criteria
+                    vmEthnicbackground.ListSelectedGender = new List<string>(new string[] { "Total" });
+                    Session["ListSelectedGender"] = vmEthnicbackground.ListSelectedGender;
                 }
 
             }
@@ -82,9 +85,12 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 vmEthnicbackground.IsShowCriteria = true;
                 sSchoolName = Request["selectSchoolname"];
                 sethnicityCriteria = Request["ethnicity"].Split(',').ToList();
-                setGenderCriteria = Request["gender"].Split(',').ToList();
+                vmEthnicbackground.ListSelectedGender = Request["gender"].Split(',').ToList();
+                Session["ListSelectedGender"] = vmEthnicbackground.ListSelectedGender;
                 // get parameter from Request object
             }
+
+            vmEthnicbackground.DicGenderWithSelected = GetDicGenderWithSelected(vmEthnicbackground.ListSelectedGender);
            
             // process data
             if (sSchoolName != null)
@@ -193,6 +199,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 string[] Categories = new string[arrParameterFilter.Length];
 
                 var listEthnicData = Session["SessionListEthnicData"] as List<EthnicObj>;
+
                 if (listEthnicData != null)
                 {
                     var listEthnicFilter = listEthnicData.Where(x => arrParameterFilter.Contains(x.EthinicCode)).ToList();
@@ -221,8 +228,28 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         {
             var listChartData = new List<object>();
 
-            listChartData.Add(new { name = "Data 1", data = listEthnicFilter.Select(x => x.PercentageAllSchool).ToArray() });
-            listChartData.Add(new { name = "Data 2", data = listEthnicFilter.Select(x => x.PercentageInSchool).ToArray() });
+            var ListSelectedGender = Session["ListSelectedGender"] as List<string>;
+
+            foreach (var itemGender in ListSelectedGender) {
+                if (itemGender.Equals("F"))
+                {
+                    listChartData.Add(new { name = "FemaleAllSchool", data = listEthnicFilter.Select(x => x.PercentageFemaleAllSchool).ToArray() });
+                    listChartData.Add(new { name = "Female", data = listEthnicFilter.Select(x => x.PercentageFemaleInSchool).ToArray() });
+                }                
+
+                if (itemGender.Equals("M"))
+                {
+                    listChartData.Add(new { name = "MaleAllSchool", data = listEthnicFilter.Select(x => x.PercentageMaleAllSchool).ToArray() });
+                    listChartData.Add(new { name = "Male", data = listEthnicFilter.Select(x => x.PercentageMaleInSchool).ToArray() });
+                }
+                if (itemGender.Equals("Total"))
+                {
+                    listChartData.Add(new { name = "TotalAllSchool", data = listEthnicFilter.Select(x => x.PercentageAllSchool).ToArray() });
+                    listChartData.Add(new { name = "Total", data = listEthnicFilter.Select(x => x.PercentageInSchool).ToArray() });
+                }                
+
+            }
+
 
             return listChartData;
         }

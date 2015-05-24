@@ -8,25 +8,28 @@ namespace ACCDataStore.Entity.SchoolProfile
 {
     public class SIMDObj:BaseEntity
     {
-        public SIMDObj(string sSIMDcode, double sdata, double sdata2)
+        public SIMDObj(string sSIMDcode)
         {
             this.SIMDCode = sSIMDcode;
-            //this.SIMDName = sSIMDname;
-            this.PercentageInSchool = sdata;
-            this.PercentageAllSchool= sdata2;
+            this.PercentageInSchool2009 = 0;
+            this.PercentageAllSchool2009 = 0;
+            this.PercentageInSchool2012 = 0;
+            this.PercentageAllSchool2012 = 0;
         }
 
         public SIMDObj()
         {
             this.SIMDCode = null;
-            //this.SIMDName = null;
-            this.PercentageInSchool = 0;
-            this.PercentageAllSchool = 0;
+            this.PercentageInSchool2009 = 0;
+            this.PercentageAllSchool2009 = 0;
+            this.PercentageInSchool2012 = 0;
+            this.PercentageAllSchool2012 = 0;
         }
         public string SIMDCode { get; set; }
-        //public string SIMDName { get; set; }
-        public double PercentageInSchool { get; set; }
-        public double PercentageAllSchool { get; set; }
+        public double PercentageInSchool2009 { get; set; }
+        public double PercentageAllSchool2009 { get; set; }
+        public double PercentageInSchool2012 { get; set; }
+        public double PercentageAllSchool2012 { get; set; }
     }
     
 }

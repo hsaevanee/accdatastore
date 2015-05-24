@@ -10,20 +10,29 @@ $(document).ready(function () {
         $('input[name="CheckNationalityAll"]').prop("checked", false);
     });
 
-    //$("input[name='gender']").click(function () {
-    //    $('input[name="CheckGenderAll"]').prop("checked", false);
-    //});
-
-    //$("input[name='years']").click(function () {
-    //    $('input[name="CheckYearAll"]').prop("checked", false);
-    //});
-
     $("input[name='CheckNationalityAll']").change(function () {
         if (this.checked) {
             //alert('ChecknationalityAll check');
             $('input[name="nationality"]').prop("checked", true);
         } else {
             $('input[name="nationality"]').prop("checked", false);
+        }
+    });
+
+    $("input[name='gender']").click(function () {
+        $('input[name="CheckGenderAll"]').prop("checked", false);
+    });
+
+    //$("input[name='years']").click(function () {
+    //    $('input[name="CheckYearAll"]').prop("checked", false);
+    //});
+
+    $("input[name='CheckGenderAll']").change(function () {
+        if (this.checked) {
+            //alert('ChecknationalityAll check');
+            $('input[name="gender"]').prop("checked", true);
+        } else {
+            $('input[name="gender"]').prop("checked", false);
         }
     });
 
@@ -49,16 +58,6 @@ $(document).ready(function () {
     //        $('input[name="years"]').prop("checked", false);
     //    }
     //});
-
-    //$("input[name='CheckGenderAll']").change(function () {
-    //    if (this.checked) {
-    //        //alert('ChecknationalityAll check');
-    //        $('input[name="gender"]').prop("checked", true);
-    //    } else {
-    //        $('input[name="gender"]').prop("checked", false);
-    //    }
-    //});
-
 
 });
 
@@ -103,6 +102,8 @@ function validateCheckBoxs() {
 
 function myFunctionBar() {
     var arrCheckboxCheckedCheckDataitem = [];
+    var arrCheckboxCheckedCheckgender = [];
+
     $('input[name="CheckDataitem"]:checked').each(function () {
         arrCheckboxCheckedCheckDataitem.push($(this).val());
     });

@@ -16,6 +16,16 @@ $(document).ready(function () {
         $('input[name="CheckYearAll"]').prop("checked", false);
     });
 
+    $("input[name='CheckYearAll']").change(function () {
+        if (this.checked) {
+            //alert('ChecknationalityAll check');
+            $('input[name="years"]').prop("checked", true);
+            //$('input[name="years"]').attr( "disabled", "disabled" );
+        } else {
+            $('input[name="years"]').prop("checked", false);
+        }
+    });
+
     $("input[name='CheckSIMDAll']").change(function () {
         if (this.checked) {
             //alert('ChecknationalityAll check');
@@ -38,15 +48,7 @@ $(document).ready(function () {
         }
     });
 
-    $("input[name='CheckYearAll']").change(function () {
-        if (this.checked) {
-            //alert('ChecknationalityAll check');
-            $('input[name="years"]').prop("checked", true);
-            //$('input[name="years"]').attr( "disabled", "disabled" );
-        } else {
-            $('input[name="years"]').prop("checked", false);
-        }
-    });
+
 
     //$("input[name='CheckGenderAll']").change(function () {
     //    if (this.checked) {

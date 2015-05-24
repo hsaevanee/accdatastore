@@ -10,7 +10,7 @@ using System.Web;
 
 namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 {
-    public class BaseSchoolProfileController: BaseController
+    public class BaseSchoolProfileController : BaseController
     {
         private static ILog log = LogManager.GetLogger(typeof(BaseSchoolProfileController));
 
@@ -29,7 +29,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         protected List<EthnicObj> GetEthnicityDatabySchoolname(IGenericRepository rpGeneric, string mSchoolname)
         {
             Console.Write("GetEthnicityData in BaseSchoolProfileController==> ");
-            
+
             List<EthnicObj> listDataseries = new List<EthnicObj>();
             List<EthnicObj> listtemp = new List<EthnicObj>();
             List<EthnicObj> listtemp1 = new List<EthnicObj>();
@@ -85,22 +85,24 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 foreach (var Ethniccode in DistinctItems)
                 {
                     tempEthnicObj = listtemp.Find(x => x.EthinicCode.Equals(Ethniccode.Key));
-                    if (tempEthnicObj!=null)
-                    listDataseries.Add(tempEthnicObj);
+                    if (tempEthnicObj != null)
+                        listDataseries.Add(tempEthnicObj);
                 }
 
 
                 foreach (var itemRow in listResult)
                 {
                     var x = (from a in listtemp where a.EthinicCode.Equals(Convert.ToString(itemRow[0])) select a).ToList();
-                    if (x.Count!=0) {
+                    if (x.Count != 0)
+                    {
                         tempEthnicObj = x[0];
                         if ("F".Equals(Convert.ToString(itemRow[1])))
                         {
                             tempEthnicObj.PercentageFemaleInSchool = Convert.ToDouble(itemRow[2]);
                         }
-                        else {
-                            tempEthnicObj.PercentageMaleInSchool= Convert.ToDouble(itemRow[2]);
+                        else
+                        {
+                            tempEthnicObj.PercentageMaleInSchool = Convert.ToDouble(itemRow[2]);
                         }
                         //listDataseries.Add(tempEthnicObj);
                     }
@@ -147,7 +149,37 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         {
             var dicNational = new Dictionary<string, string>();
             dicNational.Add("F", "Female");
-            dicNational.Add("M", "Male");            
+            dicNational.Add("M", "Male");
+            return dicNational;
+        }
+
+        protected Dictionary<string, string[]> GetDicGenderWithSelected(List<string> listSelectedGender)
+        {
+            var dicNational = new Dictionary<string, string[]>();
+            if (listSelectedGender != null)
+            {
+                if (listSelectedGender.FirstOrDefault(x => x.Equals("F")) != null)
+                {
+                    dicNational.Add("F", new string[] { "Female", "checked" });
+                }
+                else
+                {
+                    dicNational.Add("F", new string[] { "Female", "" });
+                }
+                if (listSelectedGender.FirstOrDefault(x => x.Equals("M")) != null)
+                {
+                    dicNational.Add("M", new string[] { "Male", "checked" });
+                }
+                else
+                {
+                    dicNational.Add("M", new string[] { "Male", "" });
+                }
+            }
+            else
+            {
+                dicNational.Add("F", new string[] { "Female", "checked" });
+                dicNational.Add("M", new string[] { "Male", "checked" });
+            }
             return dicNational;
         }
 
@@ -161,39 +193,110 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
 
             //% for All school
-            var listResult = rpGeneric.FindByNativeSQL("Select NationalIdentity, (Count(NationalIdentity)* 100 / (Select Count(*) From test_3))  From test_3  Group By NationalIdentity ");
+            var listResult = rpGeneric.FindByNativeSQL("Select NationalIdentity,Gender, (Count(NationalIdentity)* 100 / (Select Count(*) From test_3))  From test_3  Group By NationalIdentity, Gender ");
+            //if (listResult != null)
+            //{
+            //    foreach (var itemRow in listResult)
+            //    {
+            //        tempNationalObj = new NationalityObj();
+            //        tempNationalObj.IdentityCode = Convert.ToString(itemRow[0]);
+            //        tempNationalObj.IdentityName = GetDicNational().ContainsKey(tempNationalObj.IdentityCode) ? GetDicNational()[tempNationalObj.IdentityCode] : "NO NAME";
+            //        tempNationalObj.PercentageAllSchool = Convert.ToDouble(itemRow[1]);
+            //        listtemp.Add(tempNationalObj);
+            //    }
+            //}
             if (listResult != null)
             {
-                foreach (var itemRow in listResult)
+                var DistinctItems = listResult.GroupBy(x => x.ElementAt(0).ToString()).ToList();
+
+                foreach (var Ethniccode in DistinctItems)
                 {
-                    tempNationalObj = new NationalityObj();
-                    tempNationalObj.IdentityCode = Convert.ToString(itemRow[0]);
-                    tempNationalObj.IdentityName = GetDicNational().ContainsKey(tempNationalObj.IdentityCode) ? GetDicNational()[tempNationalObj.IdentityCode] : "NO NAME";
-                    tempNationalObj.PercentageAllSchool = Convert.ToDouble(itemRow[1]);
-                    listtemp.Add(tempNationalObj);
+                    var templist2 = (from a in listResult where a.ElementAt(0).ToString().Equals(Ethniccode.Key) select a).ToList();
+
+                    if (templist2.Count != 0)
+                    {
+                        tempNationalObj = new NationalityObj();
+                        foreach (var itemRow in templist2)
+                        {
+                            tempNationalObj.IdentityCode = Convert.ToString(itemRow[0]);
+                            tempNationalObj.IdentityName = GetDicEhtnicBG().ContainsKey(tempNationalObj.IdentityCode) ? GetDicEhtnicBG()[tempNationalObj.IdentityCode] : "NO NAME";
+
+                            //tempEthnicObj.EthnicGender = Convert.ToString(itemRow[1]);
+                            if ("F".Equals(Convert.ToString(itemRow[1])))
+                            {
+                                tempNationalObj.PercentageFemaleAllSchool = Convert.ToDouble(itemRow[2]);
+                            }
+                            else
+                            {
+                                tempNationalObj.PercentageMaleAllSchool = Convert.ToDouble(itemRow[2]);
+                            }
+
+                        }
+
+                        listtemp.Add(tempNationalObj);
+                    }
                 }
             }
 
-
             //% for specific schoolname
-            string query = " Select NationalIdentity, (Count(NationalIdentity)* 100 /";
+            string query = " Select NationalIdentity, Gender, (Count(NationalIdentity)* 100 /";
             query += " (Select Count(*) From test_3 where Name in ('" + mSchoolname + " ')))";
-            query += " From test_3 where Name in ('" + mSchoolname + " ') Group By NationalIdentity ";
+            query += " From test_3 where Name in ('" + mSchoolname + " ') Group By NationalIdentity, Gender ";
 
             listResult = rpGeneric.FindByNativeSQL(query);
 
+            //if (listResult != null)
+            //{
+            //    foreach (var itemRow in listResult)
+            //    {
+            //        tempNationalObj = listtemp.Find(x => x.IdentityCode.Equals(Convert.ToString(itemRow[0])));
+            //        tempNationalObj.PercentageInSchool = Convert.ToDouble(itemRow[1]);
+
+            //        listDataseries.Add(tempNationalObj);
+
+            //    }
+            //}
+
+
+            //return listDataseries;
             if (listResult != null)
             {
+                // need to select only the Ethniccode that appear for this specific school
+                var DistinctItems = listResult.GroupBy(x => x.ElementAt(0).ToString()).ToList();
+
+                foreach (var Ethniccode in DistinctItems)
+                {
+                    tempNationalObj = listtemp.Find(x => x.IdentityCode.Equals(Ethniccode.Key));
+                    if (tempNationalObj != null)
+                        listDataseries.Add(tempNationalObj);
+                }
+
+
                 foreach (var itemRow in listResult)
                 {
-                    tempNationalObj = listtemp.Find(x => x.IdentityCode.Equals(Convert.ToString(itemRow[0])));
-                    tempNationalObj.PercentageInSchool = Convert.ToDouble(itemRow[1]);
-
-                    listDataseries.Add(tempNationalObj);
-
+                    var x = (from a in listtemp where a.IdentityCode.Equals(Convert.ToString(itemRow[0])) select a).ToList();
+                    if (x.Count != 0)
+                    {
+                        tempNationalObj = x[0];
+                        if ("F".Equals(Convert.ToString(itemRow[1])))
+                        {
+                            tempNationalObj.PercentageFemaleInSchool = Convert.ToDouble(itemRow[2]);
+                        }
+                        else
+                        {
+                            tempNationalObj.PercentageMaleInSchool = Convert.ToDouble(itemRow[2]);
+                        }
+                        //listDataseries.Add(tempEthnicObj);
+                    }
                 }
             }
 
+            foreach (var itemRow in listDataseries)
+            {
+                tempNationalObj = itemRow;
+                tempNationalObj.PercentageInSchool = tempNationalObj.PercentageFemaleInSchool + tempNationalObj.PercentageMaleInSchool;
+                tempNationalObj.PercentageAllSchool = tempNationalObj.PercentageFemaleAllSchool + tempNationalObj.PercentageMaleAllSchool;
+            }
 
             return listDataseries;
         }
@@ -212,7 +315,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             return dicNational;
         }
 
-        protected List<SIMDObj> GetSIMDDatabySchoolname(IGenericRepository rpGeneric, string mSchoolname)
+        protected List<SIMDObj> GetSIMDDatabySchoolname(IGenericRepository rpGeneric, string mSchoolname, List<string> myear)
         {
             Console.Write("GetSIMDDatabySchoolname in BaseSchoolProfileController ==> ");
 
@@ -228,13 +331,21 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 {
                     tempSIMDObj = new SIMDObj();
                     tempSIMDObj.SIMDCode = Convert.ToString(itemRow[0]);
-                    tempSIMDObj.PercentageAllSchool = Convert.ToDouble(itemRow[1]);
+                    tempSIMDObj.PercentageAllSchool2012 = Convert.ToDouble(itemRow[1]);
                     listtemp.Add(tempSIMDObj);
                 }
             }
 
+            listResult = rpGeneric.FindByNativeSQL("Select SIMD_2009_decile, (Count(SIMD_2009_decile)* 100 / (Select Count(*) From test_3))  From test_3  Group By SIMD_2009_decile ");
+            if (listResult != null)
+            {
+                foreach (var itemRow in listResult)
+                {
+                    tempSIMDObj = listtemp.Find(x => x.SIMDCode.Equals(Convert.ToString(itemRow[0])));
+                    tempSIMDObj.PercentageAllSchool2009 = Convert.ToDouble(itemRow[1]);
+                }
+            }
 
-            //% for specific schoolname
             string query = " Select SIMD_2012_decile, (Count(SIMD_2012_decile)* 100 /";
             query += " (Select Count(*) From test_3 where Name in ('" + mSchoolname + " ')))";
             query += " From test_3 where Name in ('" + mSchoolname + " ') Group By SIMD_2012_decile ";
@@ -245,13 +356,68 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 foreach (var itemRow in listResult)
                 {
                     tempSIMDObj = listtemp.Find(x => x.SIMDCode.Equals(Convert.ToString(itemRow[0])));
-                    tempSIMDObj.PercentageInSchool = Convert.ToDouble(itemRow[1]);
+                    tempSIMDObj.PercentageInSchool2012 = Convert.ToDouble(itemRow[1]);
 
-                    listDataseries.Add(tempSIMDObj);
+
 
                 }
             }
-            return listDataseries;
+
+            query = " Select SIMD_2009_decile, (Count(SIMD_2009_decile)* 100 /";
+            query += " (Select Count(*) From test_3 where Name in ('" + mSchoolname + " ')))";
+            query += " From test_3 where Name in ('" + mSchoolname + " ') Group By SIMD_2009_decile ";
+
+            listResult = rpGeneric.FindByNativeSQL(query);
+            if (listResult != null)
+            {
+                foreach (var itemRow in listResult)
+                {
+                    tempSIMDObj = listtemp.Find(x => x.SIMDCode.Equals(Convert.ToString(itemRow[0])));
+                    tempSIMDObj.PercentageInSchool2009 = Convert.ToDouble(itemRow[1]);
+
+
+
+                }
+            }
+
+
+
+
+
+
+
+            //% for All school
+            //var listResult = rpGeneric.FindByNativeSQL("Select SIMD_2012_decile, (Count(SIMD_2012_decile)* 100 / (Select Count(*) From test_3))  From test_3  Group By SIMD_2012_decile ");
+            //if (listResult != null)
+            //{
+            //    foreach (var itemRow in listResult)
+            //    {
+            //        tempSIMDObj = new SIMDObj();
+            //        tempSIMDObj.SIMDCode = Convert.ToString(itemRow[0]);
+            //        tempSIMDObj.PercentageAllSchool2012 = Convert.ToDouble(itemRow[1]);
+            //        listtemp.Add(tempSIMDObj);
+            //    }
+            //}
+
+
+            ////% for specific schoolname
+            //string query = " Select SIMD_2012_decile, (Count(SIMD_2012_decile)* 100 /";
+            //query += " (Select Count(*) From test_3 where Name in ('" + mSchoolname + " ')))";
+            //query += " From test_3 where Name in ('" + mSchoolname + " ') Group By SIMD_2012_decile ";
+
+            //listResult = rpGeneric.FindByNativeSQL(query);
+            //if (listResult != null)
+            //{
+            //    foreach (var itemRow in listResult)
+            //    {
+            //        tempSIMDObj = listtemp.Find(x => x.SIMDCode.Equals(Convert.ToString(itemRow[0])));
+            //        tempSIMDObj.PercentageInSchool2012 = Convert.ToDouble(itemRow[1]);
+
+            //        listDataseries.Add(tempSIMDObj);
+
+            //    }
+            //}
+            return listtemp;
         }
 
 

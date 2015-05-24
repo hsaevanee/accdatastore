@@ -7,5 +7,5 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.ViewModels.IndexSchoolProfile
 {
     public class IndexSchoolProfileViewModel : SchoolProfileViewModel
     {
-   }
+    }
 }
