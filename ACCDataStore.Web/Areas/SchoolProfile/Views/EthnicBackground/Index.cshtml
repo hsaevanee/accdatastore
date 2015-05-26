@@ -33,20 +33,6 @@
             <tr>
                 <td colspan="2">Select Gender </td>
             </tr>
-
-            @*@foreach (var itemGender in Model.ListGenderCode)
-            {
-                if (Model.DicGender.ContainsKey(itemGender))
-                {
-                    <tr>
-                        <td></td>
-                        <td>
-                            <input type="checkbox" name="gender" value="@itemGender"
-                                   checked="checked" /> @Model.DicGender[itemGender]
-                            </td>
-                        </tr>
-                }
-            }*@
             @foreach (var itemGender in Model.ListGenderCode)
             {
                 if (Model.DicGenderWithSelected.ContainsKey(itemGender))
@@ -116,7 +102,7 @@
 {
     <br>
     <form id="Ethnicdata">
-        <table id="datatable" class="table table-striped table-bordered">
+        <table id="datatable" class="display">
             <thead>
                 <tr>
                     <th rowspan="2">EthnicBackground</th>
@@ -200,7 +186,8 @@
                 }
             </tbody>
             <tr>
-                <td colspan="3"></td>
+                @{var colspan = (@Model.ListSelectedGender.Count * 2) + 1;}
+                <td colspan=@colspan></td>
                 <td align="center"><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
             </tr>
             <tr><td><button onclick='myFunctionBar()'><label>Bar Chart</label></button></td></tr>
@@ -208,7 +195,10 @@
             <tr><td>@Html.ActionLink("Export Excel", "ExportExcel", "EthnicBackground", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td></tr>
         </table>
         <script type="text/javascript">
-            $('#datatable').DataTable();
+            $('#datatable').DataTable({
+                paging: false
+            });
+
         </script>
 
         <div  id="divChartContainer"></div>

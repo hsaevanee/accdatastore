@@ -74,25 +74,48 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             {
                 vmNationality.IsShowCriteria = true;
                 sSchoolName = Request["selectSchoolname"];
-                sNationalCriteria = Request["nationality"].Split(',').ToList();
-                vmNationality.ListSelectedGender = Request["gender"].Split(',').ToList();
+
+                if (Request["nationality"] != null)
+                {
+                    sNationalCriteria = Request["nationality"].Split(',').ToList();
+                }
+                else
+                {
+                    sNationalCriteria = null;
+                }
+                if (Request["gender"] != null)
+                {
+                    vmNationality.ListSelectedGender = Request["gender"].Split(',').ToList();
+                }
+                else
+                {
+                    vmNationality.ListSelectedGender = new List<string>(new string[] { "Total" });
+                }               
+                
                 Session["ListSelectedGender"] = vmNationality.ListSelectedGender;
                 // get parameter from Request object
             }
+
+            vmNationality.DicGenderWithSelected = GetDicGenderWithSelected(vmNationality.ListSelectedGender);
 
             // process data
             if (sSchoolName != null)
             {
                 vmNationality.selectedschoolname = sSchoolName;
                 ListNationalData = GetNationalityDatabySchoolname(rpGeneric,sSchoolName);
-                if (sNationalCriteria.Count != 0)
+
+                if (sNationalCriteria == null)
+                {
+                    vmNationality.ListNationalityData = null;
+                }
+                else if (sNationalCriteria.Count != 0 && sNationalCriteria != null)
                 {
                     vmNationality.ListNationalityData = ListNationalData.Where(x => sNationalCriteria.Contains(x.IdentityCode)).ToList();
                 }
                 else
                 {
                     vmNationality.ListNationalityData = ListNationalData;
-                }
+                }                
                 Session["SessionListNationalityData"] = vmNationality.ListNationalityData;
             }
             return View("Index", vmNationality);

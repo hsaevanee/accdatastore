@@ -7,6 +7,14 @@ $(function () {
 
 $(document).ready(function () {
 
+    $('#buttonGetData').click(function () {
+        if (validateCheckBoxs() == true) {
+            document.forms[0].submit();
+        }
+        
+    });
+
+
     $("input[name='ethnicity']").click(function () {
         $('input[name="CheckEthnicityAll"]').prop("checked", false);
     });
@@ -53,13 +61,6 @@ function validateCheckBoxs() {
     $('input[name="ethnicity"]:checked').each(function () {
         arrCheckboxCheckedEthnic.push($(this).val());
     });
-
-    var sSchoolNameText = $('#selectSchoolname option:selected').text();
-
-    mSchCriteriaParams = {
-        selectedschoolname: sSchoolNameText,
-        ListConditionEthnicbg: arrCheckboxCheckedEthnic,        
-    };
 
     if (arrCheckboxCheckedEthnic.length == 0) {
         alert('Please select EthnicBackground');

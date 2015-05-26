@@ -84,8 +84,21 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             {
                 vmEthnicbackground.IsShowCriteria = true;
                 sSchoolName = Request["selectSchoolname"];
-                sethnicityCriteria = Request["ethnicity"].Split(',').ToList();
-                vmEthnicbackground.ListSelectedGender = Request["gender"].Split(',').ToList();
+                if (Request["ethnicity"] != null){
+                    sethnicityCriteria = Request["ethnicity"].Split(',').ToList();
+                }
+                else
+                {
+                    sethnicityCriteria = null;
+                }                    
+                if (Request["gender"] != null){
+                    vmEthnicbackground.ListSelectedGender = Request["gender"].Split(',').ToList();
+                }                    
+                else
+                {
+                    vmEthnicbackground.ListSelectedGender = new List<string>(new string[] { "Total" });
+                }
+                
                 Session["ListSelectedGender"] = vmEthnicbackground.ListSelectedGender;
                 // get parameter from Request object
             }
@@ -97,7 +110,11 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             {
                 vmEthnicbackground.selectedschoolname = sSchoolName;
                 ListEthnicData = GetEthnicityDatabySchoolname(rpGeneric, sSchoolName);
-                if (sethnicityCriteria.Count != 0)
+                if (sethnicityCriteria == null)
+                {
+                    vmEthnicbackground.ListEthnicData = null;
+                }
+                else if (sethnicityCriteria.Count != 0 && sethnicityCriteria != null)
                 {
                     vmEthnicbackground.ListEthnicData = ListEthnicData.Where(x => sethnicityCriteria.Contains(x.EthinicCode)).ToList();
                 }

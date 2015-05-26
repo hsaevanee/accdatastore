@@ -6,6 +6,14 @@ $(function () {
 
 $(document).ready(function () {
 
+    $('#buttonGetData').click(function () {
+        if (validateCheckBoxs() == true) {
+            document.forms[0].submit();
+        }
+
+    });
+
+
     $("input[name='nationality']").click(function () {
         $('input[name="CheckNationalityAll"]').prop("checked", false);
     });
@@ -76,12 +84,6 @@ function validateCheckBoxs() {
     $('input[name="nationality"]:checked').each(function () {
         arrCheckboxCheckedNationality.push($(this).val());
     });
-    // create 'NationalParams' object as a parameter to controller
-    mNationalParams = {
-        ListConditionYear: arrCheckboxCheckedYear,
-        ListConditionGender: arrCheckboxCheckedGender,
-        ListConditionNationality: arrCheckboxCheckedNationality
-    };
 
     //if (arrCheckboxCheckedYear.length == 0) {
     //    alert('Please select Year');
