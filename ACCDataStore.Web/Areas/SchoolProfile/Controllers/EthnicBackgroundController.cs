@@ -77,6 +77,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                     // set default criteria
                     vmEthnicbackground.ListSelectedGender = new List<string>(new string[] { "Total" });
                     Session["ListSelectedGender"] = vmEthnicbackground.ListSelectedGender;
+                    Session["sSchoolName"] = sSchoolName;
                 }
 
             }
@@ -84,6 +85,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             {
                 vmEthnicbackground.IsShowCriteria = true;
                 sSchoolName = Request["selectSchoolname"];
+                Session["sSchoolName"] = sSchoolName;
                 if (Request["ethnicity"] != null){
                     sethnicityCriteria = Request["ethnicity"].Split(',').ToList();
                 }
@@ -246,23 +248,24 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             var listChartData = new List<object>();
 
             var ListSelectedGender = Session["ListSelectedGender"] as List<string>;
+            var schoolname = Session["sSchoolName"];
 
             foreach (var itemGender in ListSelectedGender) {
                 if (itemGender.Equals("F"))
                 {
                     listChartData.Add(new { name = "FemaleAllSchool", data = listEthnicFilter.Select(x => x.PercentageFemaleAllSchool).ToArray() });
-                    listChartData.Add(new { name = "Female", data = listEthnicFilter.Select(x => x.PercentageFemaleInSchool).ToArray() });
+                    listChartData.Add(new { name = schoolname+" Female", data = listEthnicFilter.Select(x => x.PercentageFemaleInSchool).ToArray() });
                 }                
 
                 if (itemGender.Equals("M"))
                 {
                     listChartData.Add(new { name = "MaleAllSchool", data = listEthnicFilter.Select(x => x.PercentageMaleAllSchool).ToArray() });
-                    listChartData.Add(new { name = "Male", data = listEthnicFilter.Select(x => x.PercentageMaleInSchool).ToArray() });
+                    listChartData.Add(new { name = schoolname+" Male", data = listEthnicFilter.Select(x => x.PercentageMaleInSchool).ToArray() });
                 }
                 if (itemGender.Equals("Total"))
                 {
                     listChartData.Add(new { name = "TotalAllSchool", data = listEthnicFilter.Select(x => x.PercentageAllSchool).ToArray() });
-                    listChartData.Add(new { name = "Total", data = listEthnicFilter.Select(x => x.PercentageInSchool).ToArray() });
+                    listChartData.Add(new { name = schoolname+" Total", data = listEthnicFilter.Select(x => x.PercentageInSchool).ToArray() });
                 }                
 
             }
@@ -273,7 +276,10 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
         public ActionResult ExportExcel()
         {
-            var dataStream = GetWorkbookDataStream(GetData());
+            var listEthnicData = Session["SessionListEthnicData"] as List<EthnicObj>;
+            string schoolname = Session["sSchoolName"].ToString();
+
+            var dataStream = GetWorkbookDataStream(listEthnicData, schoolname);
             return File(dataStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "export.xlsx");
         }
 
@@ -281,6 +287,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         {
             // simulate datatable
             var listEthnicData = Session["SessionListEthnicData"] as List<EthnicObj>;
+
             //var dtResult = new DataTable();
             //dtResult.Columns.Add("EthnicBackground", typeof(string));
             //dtResult.Columns.Add("Drug", typeof(string));
@@ -297,12 +304,13 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             return listEthnicData;
         }
 
-        private MemoryStream GetWorkbookDataStream(List<EthnicObj> dtResult)
+        private MemoryStream GetWorkbookDataStream(List<EthnicObj> dtResult, string schoolname)
         {
             var workbook = new XLWorkbook();
             var worksheet = workbook.Worksheets.Add("Sheet 1");
-            worksheet.Cell("A1").Value = "Ethnicbackground"; // use cell address in range
-            worksheet.Cell(2, 1).InsertTable(dtResult); // use row & column index
+            worksheet.Cell("A1").Value = schoolname; // use cell address in range
+            worksheet.Cell("A2").Value = "Ethnicbackground"; // use cell address in range
+            worksheet.Cell(3, 1).InsertTable(dtResult); // use row & column index
             worksheet.Rows().AdjustToContents();
             worksheet.Columns().AdjustToContents();
 

@@ -1,9 +1,11 @@
-﻿$(function () {
+﻿var mSchCriteriaParams, mdataParams;
+var dataNationality;
+
+$(function () {
     InitSpinner();
 });
 
 $(document).ready(function () {
-
 
     $('#buttonGetData').click(function () {
         if (validateCheckBoxs() == true) {
@@ -12,35 +14,22 @@ $(document).ready(function () {
 
     });
 
-    $("input[name='SIMD']").click(function () {
-        $('input[name="CheckSIMDAll"]').prop("checked", false);
+
+    $("input[name='stages']").click(function () {
+        $('input[name="CheckStageAll"]').prop("checked", false);
     });
 
-    //$("input[name='gender']").click(function () {
-    //    $('input[name="CheckGenderAll"]').prop("checked", false);
-    //});
-
-    $("input[name='years']").click(function () {
-        $('input[name="CheckYearAll"]').prop("checked", false);
-    });
-
-    $("input[name='CheckYearAll']").change(function () {
+    $("input[name='CheckStageAll']").change(function () {
         if (this.checked) {
             //alert('ChecknationalityAll check');
-            $('input[name="years"]').prop("checked", true);
-            //$('input[name="years"]').attr( "disabled", "disabled" );
+            $('input[name="stages"]').prop("checked", true);
         } else {
-            $('input[name="years"]').prop("checked", false);
+            $('input[name="stages"]').prop("checked", false);
         }
     });
 
-    $("input[name='CheckSIMDAll']").change(function () {
-        if (this.checked) {
-            //alert('ChecknationalityAll check');
-            $('input[name="SIMD"]').prop("checked", true);
-        } else {
-            $('input[name="SIMD"]').prop("checked", false);
-        }
+    $("input[name='gender']").click(function () {
+        $('input[name="CheckGenderAll"]').prop("checked", false);
     });
 
     $("input[name='CheckDataitem']").click(function () {
@@ -49,10 +38,18 @@ $(document).ready(function () {
 
     $("input[name='CheckDataitemAll']").change(function () {
         if (this.checked) {
-            //alert('ChecknationalityAll check');
             $('input[name="CheckDataitem"]').prop("checked", true);
         } else {
             $('input[name="CheckDataitem"]').prop("checked", false);
+        }
+    });
+
+    $("input[name='CheckGenderAll']").change(function () {
+        if (this.checked) {
+            //alert('ChecknationalityAll check');
+            $('input[name="gender"]').prop("checked", true);
+        } else {
+            $('input[name="gender"]').prop("checked", false);
         }
     });
 
@@ -60,32 +57,23 @@ $(document).ready(function () {
 
 function validateCheckBoxs() {
     // get all checked checkbox
-    var arrCheckboxCheckedYear = [];
-    $('input[name="years"]:checked').each(function () {
-        arrCheckboxCheckedYear.push($(this).val());
-    });
-    var arrCheckboxCheckedSIMD = [];
-    $('input[name="SIMD"]:checked').each(function () {
-        arrCheckboxCheckedSIMD.push($(this).val());
+    var arrCheckboxCheckedStage = [];
+    $('input[name="stages"]:checked').each(function () {
+        arrCheckboxCheckedStage.push($(this).val());
     });
 
-    if (arrCheckboxCheckedSIMD.length == 0) {
-        alert('Please select Deciles');
+    if (arrCheckboxCheckedStage.length == 0) {
+        alert('Please select Stages');
         return false;
-    } else if(arrCheckboxCheckedYear.length ==0)
-    {
-        alert('Please select Years');
-        return false;
-    }else{
-         return true;
+    } else {
+        return true;
     }
 
 }
 
+
 function myFunctionBar() {
     var arrCheckboxCheckedCheckDataitem = [];
-    var arrCheckboxCheckedCheckgender = [];
-
     $('input[name="CheckDataitem"]:checked').each(function () {
         arrCheckboxCheckedCheckDataitem.push($(this).val());
     });
@@ -95,7 +83,7 @@ function myFunctionBar() {
     } else {
         $.ajax({
             type: 'POST',
-            url: sContextPath + 'SchoolProfile/SIMD/GetChartDataSIMD',
+            url: sContextPath + 'SchoolProfile/StudentStage/GetChartDataStudentStage',
             data: JSON.stringify(arrCheckboxCheckedCheckDataitem),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
@@ -110,7 +98,6 @@ function myFunctionBar() {
             }
         });
     }
-
 }
 
 function drawChartBar(data) {
@@ -121,7 +108,7 @@ function drawChartBar(data) {
                             type: 'bar'
                         },
                         title: {
-                            text: 'Scottish Index of Multiple Deprivation'
+                            text: 'Student Stage - Primary Schools (%pupils)'
                         },
                         subtitle: {
                             text: ''
@@ -130,13 +117,13 @@ function drawChartBar(data) {
                             //categories: [ '0%', '5%', '10%', '15%','20%','25%','30%'],
                             categories: data.ChartCategories,
                             title: {
-                                text: 'Deciles'
+                                text: 'Stages'
                             }
                         },
                         yAxis: {
                             min: 0,
                             title: {
-                                text: '% Pupils in Each Decile'
+                                text: '% Pupils in Each Stage'
                             }
                         },
                         tooltip: {
@@ -173,7 +160,7 @@ function myFunctionColumn() {
 
         $.ajax({
             type: 'POST',
-            url: sContextPath + 'SchoolProfile/SIMD/GetChartDataSIMD',
+            url: sContextPath + 'SchoolProfile/StudentStage/GetChartDataStudentStage',
             data: JSON.stringify(arrCheckboxCheckedCheckDataitem),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
@@ -199,7 +186,7 @@ function drawChartColumn(data) {
                             type: 'column'
                         },
                         title: {
-                            text: 'Scottish Index of Multiple Deprivation'
+                            text: 'Student Stage - Primary Schools (%pupils)'
                         },
                         subtitle: {
                             text: ''
@@ -208,13 +195,13 @@ function drawChartColumn(data) {
                             //categories: [ '0%', '5%', '10%', '15%','20%','25%','30%'],
                             categories: data.ChartCategories,
                             title: {
-                                text: 'Deciles'
+                                text: 'Stages'
                             }
                         },
                         yAxis: {
                             min: 0,
                             title: {
-                                text: '% Pupils in Each Decile'
+                                text: '% Pupils in Each Stage'
                             }
                         },
                         tooltip: {
@@ -237,3 +224,5 @@ function drawChartColumn(data) {
                         }
                     });
 }
+
+

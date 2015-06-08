@@ -212,6 +212,7 @@
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\IndexSchoolProfile\IndexSchoolProfile.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\Nationality\Nationality.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\SIMD\SIMD.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofile\views\StudentStage\StudentStage.js" />
     <Content Include="Scripts\accdatastore\views\global.js" />
     <Content Include="Scripts\highcharts.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
@@ -237,6 +238,7 @@
     <Compile Include="Areas\Nationality\ViewModels\Nationality\NationalityViewModel.cs" />
     <Compile Include="Areas\SchoolProfile\Controllers\BaseSchoolProfileController.cs" />
     <Compile Include="Areas\SchoolProfile\Controllers\SIMDController.cs" />
+    <Compile Include="Areas\SchoolProfile\Controllers\StudentStageController.cs" />
     <Compile Include="Areas\SchoolProfile\ViewModels\IndexSchoolProfile\IndexSchoolProfileViewModel.cs" />
     <Compile Include="Areas\SchoolProfile\ViewModels\Nationality\NationalityViewModel.cs" />
     <Compile Include="Areas\SchoolProfile\Controllers\EthnicBackgroundController.cs" />
@@ -246,6 +248,7 @@
     <Compile Include="Areas\SchoolProfile\ViewModels\EthnicBackground\EthnicBgViewModel.cs" />
     <Compile Include="Areas\SchoolProfile\ViewModels\SchoolProfileViewModel.cs" />
     <Compile Include="Areas\SchoolProfile\ViewModels\SIMD\SIMDViewModel.cs" />
+    <Compile Include="Areas\SchoolProfile\ViewModels\StudentStage\StudentStageViewModel.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\IndexController.cs" />
     <Compile Include="Global.asax.cs">
@@ -282,6 +285,7 @@
     <Content Include="Areas\SchoolProfile\Views\Nationality\Index.cshtml" />
     <Content Include="App_Browsers\qt.browser" />
     <Content Include="Areas\SchoolProfile\Views\SIMD\Index.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\StudentStage\Index.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <None Include="Web.Debug.config">

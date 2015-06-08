@@ -12,5 +12,6 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.ViewModels.SIMD
         public List<string> ListSIMDdefinition { get; set; }
         public bool IsShowCriteria { get; set; }
         public List<string> ListYear { get; set; }
+        public List<string> ListSelectedYear { get; set; }
     }
 }

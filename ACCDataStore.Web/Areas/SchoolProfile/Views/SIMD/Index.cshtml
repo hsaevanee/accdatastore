@@ -92,9 +92,9 @@
             <thead>
                 <tr>
                     <th rowspan="2">Decile</th>
-                    @if (!Request["years"].IsEmpty())
+                    @if (Model.ListSelectedYear != null && Model.ListSelectedYear.Count != 0)
                     {
-                        foreach (var selection in Request["years"].Split(','))
+                        foreach (var selection in Model.ListSelectedYear)
                         {
                             if (selection.Equals("2009"))
                             {
@@ -110,12 +110,12 @@
                 </tr>
                 <tr>
 
-                    @if (!Request["years"].IsEmpty())
-                    {
-                        foreach (var selection in Request["years"].Split(','))
-                        {
-                            if (selection.Equals("2009"))
-                            {
+                   @if (Model.ListSelectedYear != null && Model.ListSelectedYear.Count != 0)
+                   {
+                       foreach (var selection in Model.ListSelectedYear)
+                       {
+                           if (selection.Equals("2009"))
+                           {
                                 <th>@Model.selectedschoolname</th>
                                 <th>All Primary Schools</th>
                             }
@@ -134,9 +134,9 @@
                 {
                     <tr>
                         <td>@itemSIMD.SIMDCode</td>
-                        @if (!Request["years"].IsEmpty())
+                        @if (Model.ListSelectedYear != null && Model.ListSelectedYear.Count != 0)
                         {
-                            foreach (var selection in Request["years"].Split(','))
+                            foreach (var selection in Model.ListSelectedYear)
                             {
                                 if (selection.Equals("2009"))
                                 {
@@ -156,13 +156,13 @@
                 }
             </tbody>
             <tr>
-                @*@{var colspan = (@Model.ListSelectedGender.Count * 2) + 1;}*@
-                <td colspan="5"></td>
+                @{var colspanSize = (@Model.ListSelectedYear.Count * 2) + 1;}
+                <td colspan=@colspanSize></td>
                 <td><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
             </tr>
             <tr><td><button onclick='myFunctionBar()'><label>Bar Chart</label></button></td></tr>
             <tr><td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td></tr>
-            @*<tr><td>@Html.ActionLink("Export Excel", "ExportExcel", "SIMD", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td></tr>*@
+            <tr><td>@Html.ActionLink("Export Excel", "ExportExcel", "SIMD", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td></tr>
         </table>
         <script type="text/javascript">
             $('#datatable').DataTable({

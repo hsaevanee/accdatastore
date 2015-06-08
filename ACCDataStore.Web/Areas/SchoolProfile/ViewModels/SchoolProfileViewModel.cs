@@ -16,6 +16,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.ViewModels
         //public Dictionary<string, string> DicEthnicBG { get; set; }
         public List<NationalityObj> ListNationalityData { get; set; }
         public List<SIMDObj> ListSIMDData { get; set; }
+        public List<StdStageObj> ListStdStageData { get; set; }
         public Dictionary<string, string> DicGender { get; set; }
         public Dictionary<string, string[]> DicGenderWithSelected { get; set; }
         public List<string> ListGenderCode { get; set; }

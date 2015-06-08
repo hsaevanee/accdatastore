@@ -1,23 +1,21 @@
-﻿@model ACCDataStore.Web.Areas.SchoolProfile.ViewModels.EthnicBackground.EthnicBgViewModel
-
+﻿@model ACCDataStore.Web.Areas.SchoolProfile.ViewModels.StudentStage.StudentStageViewModel
 @section Header {
     <link rel="stylesheet" href="~/Content/accdatastore/areas/nationality/views/nationality/nationality.css" type="text/css" />
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.css" type="text/css" />
-    <script src="~/Scripts/accdatastore/areas/schoolprofile/views/EthnicBackground/EthnicBackground.js"></script>
+    <script src="~/Scripts/accdatastore/areas/schoolprofile/views/StudentStage/StudentStage.js"></script>
     <script type="text/javascript" src="http://code.highcharts.com/modules/exporting.js"></script>
     <script type="text/javascript" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
-
 }
 @{
-    ViewBag.Title = "EthnicBackground";
+    ViewBag.Title = "Index";
 }
 
 <h2>@Model.selectedschoolname</h2>
 
-<h2>EthnicBackground - Primary School (%pupils)</h2>
+<h2>Stage - Primary School (%pupils)</h2>
 @if (Model.IsShowCriteria)
 {
-    using (Html.BeginForm("Index", "EthnicBackground", new { area = "SchoolProfile" }))
+    using (Html.BeginForm("Index", "StudentStage", new { area = "SchoolProfile" }))
     {
         <table>
             <tr>
@@ -33,6 +31,20 @@
             <tr>
                 <td colspan="2">Select Gender </td>
             </tr>
+
+            @*@foreach (var itemGender in Model.ListGenderCode)
+                {
+                    if (Model.DicGender.ContainsKey(itemGender))
+                    {
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input type="checkbox" name="gender" value="@itemGender"
+                                       checked="checked" /> @Model.DicGender[itemGender]
+                                </td>
+                            </tr>
+                    }
+                }*@
             @foreach (var itemGender in Model.ListGenderCode)
             {
                 if (Model.DicGenderWithSelected.ContainsKey(itemGender))
@@ -62,27 +74,23 @@
 
             </tr>
             <tr>
-                <td colspan="2">Select EthnicBackground </td>
+                <td colspan="2">Select Stage </td>
             </tr>
-
-            @foreach (var itemEthnic in Model.ListEthnicCode)
+            @foreach (var itemStage in Model.ListStage)
             {
-                if (Model.DicEthnicBG.ContainsKey(itemEthnic))
-                {
-                    <tr>
-                        <td></td>
-                        <td>
-                            <input type="checkbox" name="ethnicity" value="@itemEthnic"
-                                   checked="checked" /> @Model.DicEthnicBG[itemEthnic]
-                            </td>
-                        </tr>
-                }
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="checkbox" name="stages" value="@itemStage"
+                               checked="checked" /> @itemStage
+                        </td>
+                    </tr>
             }
-            <tr>
+           <tr>
                 <td></td>
                 <td>
-                    <input type="checkbox" name="CheckEthnicityAll"
-                           value="ALL" id="ChecknatioNalityAll" checked="checked" />CheckALL
+                    <input type="checkbox" name="CheckStageAll"
+                           value="ALL" id="CheckStageAll" checked="checked" />CheckALL
                 </td>
 
             </tr>
@@ -98,14 +106,14 @@
         </table>
     }
 }
-@if (Model.ListEthnicData != null)
+@if (Model.ListStdStageData != null)
 {
-    <br>
-    <form id="Ethnicdata">
+    <br />
+    <form id="StdStageData">
         <table id="datatable" class="display">
             <thead>
                 <tr>
-                    <th rowspan="2">EthnicBackground</th>
+                    <th rowspan="2">Stage</th>
                     @if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
                     {
                         foreach (var selection in Model.ListSelectedGender)
@@ -153,11 +161,11 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var itemEthnic in Model.ListEthnicData)
+                @foreach (var itemStdStage in Model.ListStdStageData)
                 {
 
                     <tr>
-                        <td>@itemEthnic.EthinicName</td>
+                        <td>@itemStdStage.StageCode</td>
 
                         @if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
                         {
@@ -165,23 +173,23 @@
                             {
                                 if (selection.Equals("F"))
                                 {
-                                    <td align="center">@String.Format("{0:#,0.00}", @itemEthnic.PercentageFemaleInSchool)</td>
-                                    <td align="center">@String.Format("{0:#,0.00}", @itemEthnic.PercentageFemaleAllSchool)</td>
+                                    <td align="center">@String.Format("{0:#,0.00}", @itemStdStage.PercentageFemaleInSchool)</td>
+                                    <td align="center">@String.Format("{0:#,0.00}", @itemStdStage.PercentageFemaleAllSchool)</td>
                                 }
                                 if (selection.Equals("M"))
                                 {
-                                    <td align="center">@String.Format("{0:#,0.00}", @itemEthnic.PercentageMaleInSchool)</td>
-                                    <td align="center">@String.Format("{0:#,0.00}", @itemEthnic.PercentageMaleAllSchool)</td>
+                                    <td align="center">@String.Format("{0:#,0.00}", @itemStdStage.PercentageMaleInSchool)</td>
+                                    <td align="center">@String.Format("{0:#,0.00}", @itemStdStage.PercentageMaleAllSchool)</td>
                                 }
                                 if (selection.Equals("Total"))
                                 {
-                                    <td align="center">@String.Format("{0:#,0.00}", @itemEthnic.PercentageInSchool)</td>
-                                    <td align="center">@String.Format("{0:#,0.00}", @itemEthnic.PercentageAllSchool)</td>
+                                    <td align="center">@String.Format("{0:#,0.00}", @itemStdStage.PercentageInSchool)</td>
+                                    <td align="center">@String.Format("{0:#,0.00}", @itemStdStage.PercentageAllSchool)</td>
                                 }
                             }
                         }
 
-                        <td align="center"><input type='checkbox' name='CheckDataitem' value="@itemEthnic.EthinicCode" checked="checked" /></td>
+                        <td align="center"><input type='checkbox' name='CheckDataitem' value="@itemStdStage.StageCode" checked="checked" /></td>
                     </tr>
                 }
             </tbody>
@@ -192,22 +200,17 @@
             </tr>
             <tr><td><button onclick='myFunctionBar()'><label>Bar Chart</label></button></td></tr>
             <tr><td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td></tr>
-            <tr><td><button onclick='myFunctionLine()'><label>Line Chart</label></button></td></tr>
-            <tr><td>@Html.ActionLink("Export Excel", "ExportExcel", "EthnicBackground", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td></tr>
+            <tr><td>@Html.ActionLink("Export Excel", "ExportExcel", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td></tr>
         </table>
         <script type="text/javascript">
+            // Put your javascript code here
             $('#datatable').DataTable({
                 paging: false
             });
-
         </script>
 
-        <div  id="divChartContainer"></div>
-        <p>
-            Source: Pupil Census <br> *In 2011 the Scottish Government
-            introduced a new code list for Ethnicity, hence the historic data is
-            not comparable
-        </p>
+        <div id="divChartContainer"></div>
+
+        <br>
     </form>
 }
-

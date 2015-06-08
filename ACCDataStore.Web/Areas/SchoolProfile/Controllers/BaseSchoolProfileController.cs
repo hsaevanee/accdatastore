@@ -322,6 +322,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             List<SIMDObj> listDataseries = new List<SIMDObj>();
             List<SIMDObj> listtemp = new List<SIMDObj>();
             SIMDObj tempSIMDObj = new SIMDObj();
+            
+            //should loop through myear
 
             //% for All school
             var listResult = rpGeneric.FindByNativeSQL("Select SIMD_2012_decile, (Count(SIMD_2012_decile)* 100 / (Select Count(*) From test_3))  From test_3  Group By SIMD_2012_decile ");
@@ -420,7 +422,97 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             return listtemp;
         }
 
+        protected List<StdStageObj> GetStudentStageDatabySchoolname(IGenericRepository rpGeneric, string mSchoolname)
+        {
+            Console.Write("GetStdStageDatabySchoolname in BaseSchoolProfileController==> ");
 
+            List<StdStageObj> listDataseries = new List<StdStageObj>();
+            List<StdStageObj> listtemp = new List<StdStageObj>();
+            List<StdStageObj> listtemp1 = new List<StdStageObj>();
+            StdStageObj tempStdStageObj = new StdStageObj();
+
+            //% for All school
+            var listResult = rpGeneric.FindByNativeSQL("Select StudentStage,Gender,(Count(StudentStage)* 100 / (Select Count(*) From test_3))  From test_3  Group By StudentStage, Gender ");
+            if (listResult != null)
+            {
+                var DistinctItems = listResult.GroupBy(x => x.ElementAt(0).ToString()).ToList();
+
+                foreach (var StdStagecode in DistinctItems)
+                {
+                    var templist2 = (from a in listResult where a.ElementAt(0).ToString().Equals(StdStagecode.Key) select a).ToList();
+
+                    if (templist2.Count != 0)
+                    {
+                        tempStdStageObj = new StdStageObj();
+                        foreach (var itemRow in templist2)
+                        {
+                            tempStdStageObj.StageCode = Convert.ToString(itemRow[0]);                            
+
+                            //tempEthnicObj.EthnicGender = Convert.ToString(itemRow[1]);
+                            if ("F".Equals(Convert.ToString(itemRow[1])))
+                            {
+                                tempStdStageObj.PercentageFemaleAllSchool = Convert.ToDouble(itemRow[2]);
+                            }
+                            else
+                            {
+                                tempStdStageObj.PercentageMaleAllSchool = Convert.ToDouble(itemRow[2]);
+                            }
+
+                        }
+
+                        listtemp.Add(tempStdStageObj);
+                    }
+                }
+            }
+
+
+            //% for specific schoolname
+            string query = " Select StudentStage,Gender, (Count(StudentStage)* 100 /";
+            query += " (Select Count(*) From test_3 where Name in ('" + mSchoolname + " ')))";
+            query += " From test_3 where Name in ('" + mSchoolname + " ') Group By StudentStage, Gender ";
+
+            listResult = rpGeneric.FindByNativeSQL(query);
+            if (listResult != null)
+            {
+                // need to select only the Ethniccode that appear for this specific school
+                var DistinctItems = listResult.GroupBy(x => x.ElementAt(0).ToString()).ToList();
+
+                foreach (var StdStagecode in DistinctItems)
+                {
+                    tempStdStageObj = listtemp.Find(x => x.StageCode.Equals(StdStagecode.Key));
+                    if (tempStdStageObj != null)
+                        listDataseries.Add(tempStdStageObj);
+                }
+
+
+                foreach (var itemRow in listResult)
+                {
+                    var x = (from a in listtemp where a.StageCode.Equals(Convert.ToString(itemRow[0])) select a).ToList();
+                    if (x.Count != 0)
+                    {
+                        tempStdStageObj = x[0];
+                        if ("F".Equals(Convert.ToString(itemRow[1])))
+                        {
+                            tempStdStageObj.PercentageFemaleInSchool = Convert.ToDouble(itemRow[2]);
+                        }
+                        else
+                        {
+                            tempStdStageObj.PercentageMaleInSchool = Convert.ToDouble(itemRow[2]);
+                        }
+                        //listDataseries.Add(tempEthnicObj);
+                    }
+                }
+            }
+
+            foreach (var itemRow in listDataseries)
+            {
+                tempStdStageObj = itemRow;
+                tempStdStageObj.PercentageInSchool = tempStdStageObj.PercentageFemaleInSchool + tempStdStageObj.PercentageMaleInSchool;
+                tempStdStageObj.PercentageAllSchool = tempStdStageObj.PercentageFemaleAllSchool + tempStdStageObj.PercentageMaleAllSchool;
+            }
+
+            return listDataseries;
+        }
 
 
     }

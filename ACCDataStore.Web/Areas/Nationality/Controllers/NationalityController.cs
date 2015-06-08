@@ -93,8 +93,6 @@ namespace ACCDataStore.Web.Areas.Nationality.Controllers
                 //System.out.println(gender.size() + " distinct gender: " + gender);
 
                 vmNationality.ListNational = national;
-                vmNationality.ListGender = gender;
-                vmNationality.ListYear = Years;
                 vmNationality.DicNational = GetDicNational();
 
                 return View("Nationality", vmNationality);
