@@ -6,6 +6,14 @@ $(function () {
 
 $(document).ready(function () {
 
+    $('#buttonGetData').click(function () {
+        if (validateCheckBoxs() == true) {
+            document.forms[0].submit();
+        }
+
+    });
+
+
     $("input[name='nationality']").click(function () {
         $('input[name="CheckNationalityAll"]').prop("checked", false);
     });
@@ -76,12 +84,6 @@ function validateCheckBoxs() {
     $('input[name="nationality"]:checked').each(function () {
         arrCheckboxCheckedNationality.push($(this).val());
     });
-    // create 'NationalParams' object as a parameter to controller
-    mNationalParams = {
-        ListConditionYear: arrCheckboxCheckedYear,
-        ListConditionGender: arrCheckboxCheckedGender,
-        ListConditionNationality: arrCheckboxCheckedNationality
-    };
 
     //if (arrCheckboxCheckedYear.length == 0) {
     //    alert('Please select Year');
@@ -139,7 +141,7 @@ function drawChartBar(data) {
                             type: 'bar'
                         },
                         title: {
-                            text: 'Ethnic Background - Primary Schools (%pupils)'
+                            text: 'Nationality - Primary Schools (%pupils)'
                         },
                         subtitle: {
                             text: ''
@@ -148,13 +150,13 @@ function drawChartBar(data) {
                             //categories: [ '0%', '5%', '10%', '15%','20%','25%','30%'],
                             categories: data.ChartCategories,
                             title: {
-                                text: 'Deciles'
+                                text: 'Nationality'
                             }
                         },
                         yAxis: {
                             min: 0,
                             title: {
-                                text: '% Pupils in Each Decile (Census 2013)'
+                                text: '% Pupils in Each Nationality'
                             }
                         },
                         tooltip: {
@@ -226,13 +228,13 @@ function drawChartColumn(data) {
                             //categories: [ '0%', '5%', '10%', '15%','20%','25%','30%'],
                             categories: data.ChartCategories,
                             title: {
-                                text: 'Deciles'
+                                text: 'Nationality'
                             }
                         },
                         yAxis: {
                             min: 0,
                             title: {
-                                text: '% Pupils in Each Decile (Census 2013)'
+                                text: '% Pupils in Each Nationality'
                             }
                         },
                         tooltip: {

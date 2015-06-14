@@ -10,9 +10,9 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.ViewModels.Nationality
     {
         //public List<NationalityObj> ListNationalityData { get; set; }
         //public string selectedschoolname { get; set; }
-        public List<string> ListNationalCode { get; set; }
-        public List<string> ListNational { get; set; }        
-        public Dictionary<string, string> DicNational { get; set; }
+        //public List<string> ListNationalCode { get; set; }
+        public List<string> ListNational { get; set; }      
+
         public bool IsShowCriteria { get; set; }
     }
 }

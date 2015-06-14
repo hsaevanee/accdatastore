@@ -6,7 +6,6 @@
     <script src="~/Scripts/accdatastore/areas/schoolprofile/views/EthnicBackground/EthnicBackground.js"></script>
     <script type="text/javascript" src="http://code.highcharts.com/modules/exporting.js"></script>
     <script type="text/javascript" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
-
 }
 @{
     ViewBag.Title = "EthnicBackground";
@@ -190,9 +189,10 @@
                 <td colspan=@colspan></td>
                 <td align="center"><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
             </tr>
+
             <tr><td><button onclick='myFunctionBar()'><label>Bar Chart</label></button></td></tr>
             <tr><td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td></tr>
-            <tr><td><button onclick='myFunctionLine()'><label>Line Chart</label></button></td></tr>
+            <tr><td><button onclick='myFunctionLine()'><label>Line Chart</label></button></td></tr>            
             <tr><td>@Html.ActionLink("Export Excel", "ExportExcel", "EthnicBackground", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td></tr>
         </table>
         <script type="text/javascript">
@@ -202,7 +202,12 @@
 
         </script>
 
-        <div  id="divChartContainer"></div>
+        <div  id="divBarChartContainer"></div>
+        <br>
+        <div id="divColumnChartContainer"></div>
+        <br>
+        <div id="divLineChartContainer"></div>
+        <br>
         <p>
             Source: Pupil Census <br> *In 2011 the Scottish Government
             introduced a new code list for Ethnicity, hence the historic data is

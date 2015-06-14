@@ -208,7 +208,9 @@
     <Content Include="Images\spinner.gif" />
     <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\accdatastore\areas\nationality\views\nationality\nationality.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofile\views\EthnicBackground\EthnicBackground2.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\EthnicBackground\EthnicBackground.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofile\views\IndexSchoolProfile\Index2SchoolProfile.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\IndexSchoolProfile\IndexSchoolProfile.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\Nationality\Nationality.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\SIMD\SIMD.js" />
@@ -239,13 +241,15 @@
     <Compile Include="Areas\SchoolProfile\Controllers\BaseSchoolProfileController.cs" />
     <Compile Include="Areas\SchoolProfile\Controllers\SIMDController.cs" />
     <Compile Include="Areas\SchoolProfile\Controllers\StudentStageController.cs" />
+    <Compile Include="Areas\SchoolProfile\ViewModels\EthnicBackground\EthnicBgViewModel.cs" />
+    <Compile Include="Areas\SchoolProfile\ViewModels\IndexSchoolProfile\Index2SchoolProfileViewModel.cs" />
     <Compile Include="Areas\SchoolProfile\ViewModels\IndexSchoolProfile\IndexSchoolProfileViewModel.cs" />
     <Compile Include="Areas\SchoolProfile\ViewModels\Nationality\NationalityViewModel.cs" />
     <Compile Include="Areas\SchoolProfile\Controllers\EthnicBackgroundController.cs" />
     <Compile Include="Areas\SchoolProfile\Controllers\IndexSchoolProfileController.cs" />
     <Compile Include="Areas\SchoolProfile\Controllers\NationalityController.cs" />
     <Compile Include="Areas\SchoolProfile\SchoolProfileAreaRegistration.cs" />
-    <Compile Include="Areas\SchoolProfile\ViewModels\EthnicBackground\EthnicBgViewModel.cs" />
+    <Compile Include="Areas\SchoolProfile\ViewModels\EthnicBackground\EthnicBgViewModel2.cs" />
     <Compile Include="Areas\SchoolProfile\ViewModels\SchoolProfileViewModel.cs" />
     <Compile Include="Areas\SchoolProfile\ViewModels\SIMD\SIMDViewModel.cs" />
     <Compile Include="Areas\SchoolProfile\ViewModels\StudentStage\StudentStageViewModel.cs" />
@@ -286,6 +290,8 @@
     <Content Include="App_Browsers\qt.browser" />
     <Content Include="Areas\SchoolProfile\Views\SIMD\Index.cshtml" />
     <Content Include="Areas\SchoolProfile\Views\StudentStage\Index.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\IndexSchoolProfile\Index2.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\EthnicBackground\Index2.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <None Include="Web.Debug.config">

@@ -82,12 +82,12 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 // need to select only the Ethniccode that appear for this specific school
                 var DistinctItems = listResult.GroupBy(x => x.ElementAt(0).ToString()).ToList();
 
-                foreach (var Ethniccode in DistinctItems)
-                {
-                    tempEthnicObj = listtemp.Find(x => x.EthinicCode.Equals(Ethniccode.Key));
-                    if (tempEthnicObj != null)
-                        listDataseries.Add(tempEthnicObj);
-                }
+                //foreach (var Ethniccode in DistinctItems)
+                //{
+                //    tempEthnicObj = listtemp.Find(x => x.EthinicCode.Equals(Ethniccode.Key));
+                //    if (tempEthnicObj != null)
+                //        listDataseries.Add(tempEthnicObj);
+                //}
 
 
                 foreach (var itemRow in listResult)
@@ -109,14 +109,14 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 }
             }
 
-            foreach (var itemRow in listDataseries)
+            foreach (var itemRow in listtemp)
             {
                 tempEthnicObj = itemRow;
                 tempEthnicObj.PercentageInSchool = tempEthnicObj.PercentageFemaleInSchool + tempEthnicObj.PercentageMaleInSchool;
                 tempEthnicObj.PercentageAllSchool = tempEthnicObj.PercentageFemaleAllSchool + tempEthnicObj.PercentageMaleAllSchool;
             }
 
-            return listDataseries;
+            return listtemp;
         }
 
         protected Dictionary<string, string> GetDicEhtnicBG()

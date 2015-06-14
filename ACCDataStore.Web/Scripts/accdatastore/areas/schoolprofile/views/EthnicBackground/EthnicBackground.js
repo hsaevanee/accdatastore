@@ -73,6 +73,10 @@ function validateCheckBoxs() {
 
 
 function myFunctionBar() {
+    // clear divContainer
+    //$("#divBarChartContainer").html("");
+    //$("#divColumnChartContainer").html("");
+    //$("#divLineChartContainer").html("");
     var arrCheckboxCheckedCheckDataitem = [];
     $('input[name="CheckDataitem"]:checked').each(function () {
         arrCheckboxCheckedCheckDataitem.push($(this).val());
@@ -101,7 +105,7 @@ function myFunctionBar() {
 }
 
 function drawChartBar(data) {
-    $('#divChartContainer')
+    $('#divBarChartContainer')
             .highcharts(
                     {
                         chart: {
@@ -179,7 +183,7 @@ function myFunctionColumn() {
 }
 
 function drawChartColumn(data) {
-    $('#divChartContainer')
+    $('#divColumnChartContainer')
             .highcharts(
                     {
                         chart: {
@@ -254,7 +258,7 @@ function myFunctionLine() {
 }
 
 function drawChartLine(data) {
-    $('#divChartContainer').highcharts({
+    $('#divLineChartContainer').highcharts({
         title: {
             text: 'Ethnic Background'
         },
@@ -290,3 +294,6 @@ function drawChartLine(data) {
         series: data.ChartSeries,
     });
 }
+
+
+

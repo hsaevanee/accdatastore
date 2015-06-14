@@ -196,14 +196,26 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var itemSIMD in Model.ListSIMDData)
+            @foreach (var itemSIMD in Model.ListSIMDCode)
             {
+
+
+                var temp1 = Model.ListSIMDData.Find(x => x.SIMDCode.Equals(Convert.ToString(itemSIMD)));               
+                var data1 = 0.0;
+                var data2 = 0.0;
+
+                if (temp1 != null)
+                {
+                    data1 = temp1.PercentageInSchool2012;
+                    data2 = temp1.PercentageAllSchool2012;
+                }                
                 <tr>
-                    <td>@itemSIMD.SIMDCode</td>
-                    <td align="center">@String.Format("{0:#,0.00}", @itemSIMD.PercentageInSchool2012)</td>
-                    <td align="center">@String.Format("{0:#,0.00}", @itemSIMD.PercentageAllSchool2012)</td>
+                    <td>@itemSIMD</td>
+                    <td align="center">@String.Format("{0:#,0.00}", data1)</td>
+                    <td align="center">@String.Format("{0:#,0.00}", data2)</td>
                 </tr>
             }
+
         </tbody>
     </table>
     <h3> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Ethnicbackground/Index/">Ethnicity</a></h3>
@@ -218,14 +230,26 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var itemEthnic in Model.ListEthnicData)
+            @foreach (var itemEthnic in Model.ListEthnicCode)
             {
+
+
+                var temp1 = Model.ListEthnicData.Find(x => x.EthinicCode.Equals(Convert.ToString(itemEthnic)));                
+                var data1 = 0.0;
+                var data2 = 0.0;               
+
+                if (temp1 != null)
+                {
+                    data1 = temp1.PercentageInSchool;
+                    data2 = temp1.PercentageAllSchool;
+                }
                 <tr>
-                    <td>@itemEthnic.EthinicName</td>
-                    <td align="center">@String.Format("{0:#,0.00}", @itemEthnic.PercentageInSchool)</td>
-                    <td align="center">@String.Format("{0:#,0.00}", @itemEthnic.PercentageAllSchool)</td>
+                    <td>@Model.DicEthnicBG[itemEthnic]</td>
+                    <td align="center">@String.Format("{0:#,0.00}", data1)</td>
+                    <td align="center">@String.Format("{0:#,0.00}", data2)</td>
                 </tr>
             }
+
         </tbody>
     </table>
 
@@ -242,7 +266,28 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var itemNational in Model.ListNationalityData)
+            @foreach (var itemNational in Model.ListNationalityCode)
+            {
+
+
+                var temp1 = Model.ListNationalityData.Find(x => x.IdentityCode.Equals(Convert.ToString(itemNational)));               
+                var data1 = 0.0;
+                var data2 = 0.0;                
+
+                if (temp1 != null)
+                {
+                    data1 = temp1.PercentageInSchool;
+                    data2 = temp1.PercentageAllSchool;
+                }
+
+                <tr>
+                    <td>@Model.DicNational[itemNational]</td>
+                    <td align="center">@String.Format("{0:#,0.00}", data1)</td>
+                    <td align="center">@String.Format("{0:#,0.00}", data2)</td>
+
+                </tr>
+            }
+            @*@foreach (var itemNational in Model.ListNationalityData)
             {
                 <tr>
                     <td>@itemNational.IdentityName</td>
@@ -250,7 +295,7 @@
                     <td align="center">@String.Format("{0:#,0.00}", @itemNational.PercentageAllSchool)</td>
                 </tr>
 
-            }
+            }*@
         </tbody>
     </table>
     <h4>*In 2011  the Scottish Government introduced a new code list for Nationality, hence the historic data is not comparable.</h4>
@@ -268,12 +313,23 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var itemStdStage in Model.ListStdStageData)
+            @foreach (var itemStdCode in Model.ListStageCode)
             {
+
+
+                var temp1 = Model.ListStdStageData.Find(x => x.StageCode.Equals(Convert.ToString(itemStdCode)));                
+                var data1 = 0.0;
+                var data2 = 0.0;
+
+                if (temp1 != null)
+                {
+                    data1 = temp1.PercentageInSchool;
+                    data2 = temp1.PercentageAllSchool;
+                }
                 <tr>
-                    <td>@itemStdStage.StageCode</td>
-                    <td align="center">@String.Format("{0:#,0.00}", @itemStdStage.PercentageInSchool)</td>
-                    <td align="center">@String.Format("{0:#,0.00}", @itemStdStage.PercentageAllSchool)</td>
+                    <td>@itemStdCode</td>
+                    <td align="center">@String.Format("{0:#,0.00}", data1)</td>
+                    <td align="center">@String.Format("{0:#,0.00}", data2)</td>
                 </tr>
             }
         </tbody>

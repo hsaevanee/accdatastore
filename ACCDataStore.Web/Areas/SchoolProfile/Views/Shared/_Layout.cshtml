@@ -54,17 +54,20 @@
                     <h3>Navigation</h3>
                     <ul>
                         <li>@Html.ActionLink("Home", "Index", "Index", new { Area = "" }, null)</li>  
-                        <li>@Html.ActionLink("School Profile", "Index", "IndexSchoolProfile", new { Area = "SchoolProfile" }, null)</li>  
+                        @*<li>@Html.ActionLink("School Profile", "Index", "IndexSchoolProfile", new { Area = "SchoolProfile" }, null)</li>*@     
+                        @* compare two school profiles *@      
+                        <li>@Html.ActionLink("School Profile", "Compareable", "IndexSchoolProfile", new { Area = "SchoolProfile" }, null)</li>                
                         @*<li>@Html.ActionLink("School Roll", "Index", "Nationality", new { Area = "SchoolProfile" }, null)</li>
                         <li>@Html.ActionLink("PIPS", "Index", "Nationality", new { Area = "SchoolProfile" }, null)</li>
                         <li>@Html.ActionLink("Attendance", "Index", "SchoolProfile", new { Area = "SchoolProfile" }, null)</li>
                         <li>@Html.ActionLink("Exclusion Annual", "Index", "SchoolProfile", new { Area = "SchoolProfile" }, null)</li>
                         <li>@Html.ActionLink("Violent Incidents Annual", "Index", "SchoolProfile", new { Area = "SchoolProfile" }, null)</li>
-                        <li>@Html.ActionLink("Scottish Index of Multiple Deprivation", "Index", "SchoolProfile", new { Area = "SchoolProfile" }, null)</li>*@
-                        <li>@Html.ActionLink("EthnicBackground", "Index", "EthnicBackground", new { Area = "SchoolProfile", sSchoolName = "" }, null)</li>
+                        <li>@Html.ActionLink("Scottish Index of Multiple Deprivation", "Index", "SchoolProfile", new { Area = "SchoolProfile" }, null)</li>*@      
+                        @* compare ethnicbackgroound between two school profiles*@                                          
+                        <li>@Html.ActionLink("EthnicBackground", "Compareable", "EthnicBackground", new { Area = "SchoolProfile", sSchoolName = "" }, null)</li>
                         <li>@Html.ActionLink("Nationality", "Index", "Nationality", new { Area = "SchoolProfile", sSchoolName = "" }, null)</li>
                         <li>@Html.ActionLink("SIMD", "Index", "SIMD", new { Area = "SchoolProfile", sSchoolName = "" }, null)</li>
-                        <li>@Html.ActionLink("Stage", "Index", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</li>
+                        <li>@Html.ActionLink("Student Stage", "Index", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</li>
                         @*<li>@Html.ActionLink("Occupancy", "Index", "SchoolProfile", new { Area = "SchoolProfile" }, null)</li>*@
                     </ul>
                 </div>

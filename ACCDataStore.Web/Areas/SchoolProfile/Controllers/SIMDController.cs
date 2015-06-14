@@ -39,6 +39,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             var listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW Name FROM test_3 group by Name");
 
             List<string> fooList = listResult.OfType<string>().ToList();
+            fooList.Add("Select School");
 
             vmSIMD.ListSchoolNameData = fooList;
 

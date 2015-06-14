@@ -7,6 +7,14 @@ $(function () {
 
 $(document).ready(function () {
 
+    $('#buttonGetData').click(function () {
+        if (validateCheckBoxs() == true) {
+            document.forms[0].submit();
+        }
+        
+    });
+
+
     $("input[name='ethnicity']").click(function () {
         $('input[name="CheckEthnicityAll"]').prop("checked", false);
     });
@@ -54,13 +62,6 @@ function validateCheckBoxs() {
         arrCheckboxCheckedEthnic.push($(this).val());
     });
 
-    var sSchoolNameText = $('#selectSchoolname option:selected').text();
-
-    mSchCriteriaParams = {
-        selectedschoolname: sSchoolNameText,
-        ListConditionEthnicbg: arrCheckboxCheckedEthnic,        
-    };
-
     if (arrCheckboxCheckedEthnic.length == 0) {
         alert('Please select EthnicBackground');
         return false;    
@@ -72,6 +73,10 @@ function validateCheckBoxs() {
 
 
 function myFunctionBar() {
+    // clear divContainer
+    //$("#divBarChartContainer").html("");
+    //$("#divColumnChartContainer").html("");
+    //$("#divLineChartContainer").html("");
     var arrCheckboxCheckedCheckDataitem = [];
     $('input[name="CheckDataitem"]:checked').each(function () {
         arrCheckboxCheckedCheckDataitem.push($(this).val());
@@ -100,7 +105,7 @@ function myFunctionBar() {
 }
 
 function drawChartBar(data) {
-    $('#divChartContainer')
+    $('#divBarChartContainer')
             .highcharts(
                     {
                         chart: {
@@ -116,13 +121,13 @@ function drawChartBar(data) {
                             //categories: [ '0%', '5%', '10%', '15%','20%','25%','30%'],
                             categories: data.ChartCategories,
                             title: {
-                                text: 'Deciles'
+                                text: 'Ethnic Background'
                             }
                         },
                         yAxis: {
                             min: 0,
                             title: {
-                                text: '% Pupils in Each Decile (Census 2013)'
+                                text: '% Pupils in Each Ethnic Background'
                             }
                         },
                         tooltip: {
@@ -178,7 +183,7 @@ function myFunctionColumn() {
 }
 
 function drawChartColumn(data) {
-    $('#divChartContainer')
+    $('#divColumnChartContainer')
             .highcharts(
                     {
                         chart: {
@@ -194,13 +199,13 @@ function drawChartColumn(data) {
                             //categories: [ '0%', '5%', '10%', '15%','20%','25%','30%'],
                             categories: data.ChartCategories,
                             title: {
-                                text: 'Deciles'
+                                text: 'Ethnic Background'
                             }
                         },
                         yAxis: {
                             min: 0,
                             title: {
-                                text: '% Pupils in Each Decile (Census 2013)'
+                                text: '% Pupils in Each Ethnic Background'
                             }
                         },
                         tooltip: {
@@ -223,5 +228,72 @@ function drawChartColumn(data) {
                         }
                     });
 }
+
+function myFunctionLine() {
+    var arrCheckboxCheckedCheckDataitem = [];
+    $('input[name="CheckDataitem"]:checked').each(function () {
+        arrCheckboxCheckedCheckDataitem.push($(this).val());
+    });
+
+    if (arrCheckboxCheckedCheckDataitem.length == 0) {
+        alert("Please select data to create graph");
+    } else {
+        $.ajax({
+            type: 'POST',
+            url: sContextPath + 'SchoolProfile/EthnicBackground/GetChartDataEthnic',
+            data: JSON.stringify(arrCheckboxCheckedCheckDataitem),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (data) {
+                drawChartLine(data);
+            },
+            error: function (xhr, err) {
+                if (xhr.readyState != 0 && xhr.status != 0) {
+                    alert('readyState: ' + xhr.readyState + '\nstatus: ' + xhr.status);
+                    alert('responseText: ' + xhr.responseText);
+                }
+            }
+        });
+    }
+}
+
+function drawChartLine(data) {
+    $('#divLineChartContainer').highcharts({
+        title: {
+            text: 'Ethnic Background'
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            categories: data.ChartCategories,
+            title: {
+                text: 'Ethnic Background'
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: '% Pupils in Each Ethnic Background'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: '°C'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: data.ChartSeries,
+    });
+}
+
 
 

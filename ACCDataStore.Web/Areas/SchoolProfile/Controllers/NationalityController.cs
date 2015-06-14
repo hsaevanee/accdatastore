@@ -45,7 +45,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW NationalIdentity FROM test_3 group by NationalIdentity");
 
             fooList = listResult.OfType<string>().ToList();
-            vmNationality.ListNationalCode = fooList;
+            vmNationality.ListNationalityCode = fooList;
             vmNationality.DicNational = GetDicNational();
 
             listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW Gender FROM test_3 group by Gender");
