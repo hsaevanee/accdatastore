@@ -1,4 +1,5 @@
 ﻿using ACCDataStore.Repository;
+using ACCDataStore.Web.Helpers;
 using Common.Logging;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,10 @@ using ClosedXML.Excel;
 using System.Collections;
 using Rotativa;
 using Rotativa.Options;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 {
@@ -434,41 +439,178 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
         public ActionResult ExportExcel()
         {
-            var listEthnicData = Session["SessionListEthnicData"] as List<EthnicObj>;
-            string schoolname = Session["sSchoolName"].ToString();
-
-            var dataStream = GetWorkbookDataStream(GetData(), schoolname);
+            var dataStream = GetWorkbookDataStream(GetData());
             return File(dataStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "export.xlsx");
         }
 
-        private List<EthnicObj> GetData()
+        private DataTable GetData()
         {
             // simulate datatable
             var listEthnicData = Session["SessionListEthnicData"] as List<EthnicObj>;
             var listEthnicData2 = Session["SessionListEthnicData2"] as List<EthnicObj>;
+            string sSchoolName = Session["sSchoolName"] as string;
+            string sSchoolName2 = Session["sSchoolName2"] as string;
 
-            var dtResult = new DataTable();
+            //var transformObject = new Object();
+
+            DataTable dtResult = new DataTable();
+
+            if (sSchoolName.Equals(sSchoolName2))
+            {
+                dtResult = listEthnicData.AsDataTable();
+            }
+            else {
+                if (!sSchoolName.Equals("") && sSchoolName2.Equals(""))
+                {
+                    dtResult.Columns.Add("EthinicCode", typeof(string));
+                    dtResult.Columns.Add("Ethinic", typeof(string));
+                    dtResult.Columns.Add("Female in " + sSchoolName, typeof(double));
+                    dtResult.Columns.Add("Female in All Primary school", typeof(double));
+                    dtResult.Columns.Add("Male in " + sSchoolName, typeof(double));
+                    dtResult.Columns.Add("Male in All  Primary school ", typeof(double));
+                    dtResult.Columns.Add("Total in " + sSchoolName, typeof(double));
+                    dtResult.Columns.Add("Total in All Primary school", typeof(double));
+                   // dtResult = listEthnicData.AsDataTable();
+                    var transformObject = new
+                    {
+                        Col1 = listEthnicData.Select(x => x.EthinicCode),
+                        Col2 = listEthnicData.Select(x => x.EthinicName),
+                        Col3 = listEthnicData.Select(x => x.PercentageFemaleInSchool),                        
+                        Col4 = listEthnicData.Select(x => x.PercentageFemaleAllSchool),
+                        Col5 = listEthnicData.Select(x => x.PercentageMaleInSchool),                        
+                        Col6 = listEthnicData.Select(x => x.PercentageMaleAllSchool),
+                        Col7 = listEthnicData.Select(x => x.PercentageInSchool),
+                        Col8 = listEthnicData.Select(x => x.PercentageAllSchool),                         
+                    };
+
+                    for (var i = 0; i < listEthnicData.Count; i++)
+                    {
+                        dtResult.Rows.Add(
+                            transformObject.Col1.ToList()[i],
+                            transformObject.Col2.ToList()[i],
+                            transformObject.Col3.ToList()[i],
+                            transformObject.Col4.ToList()[i],
+                            transformObject.Col5.ToList()[i],
+                            transformObject.Col6.ToList()[i],
+                            transformObject.Col7.ToList()[i],
+                            transformObject.Col8.ToList()[i]
+                            );
+                    }
+
+
+                }
+                else if (!sSchoolName.Equals("") && !sSchoolName2.Equals(""))
+                {
+                    var transformObject = new
+                    {
+                        Col1 = listEthnicData.Select(x => x.EthinicCode),
+                        Col2 = listEthnicData.Select(x => x.EthinicName),
+                        Col3 = listEthnicData.Select(x => x.PercentageFemaleInSchool),
+                        Col4 = listEthnicData2.Select(x => x.PercentageFemaleInSchool),
+                        Col5 = listEthnicData2.Select(x => x.PercentageFemaleAllSchool),
+                        Col6 = listEthnicData.Select(x => x.PercentageMaleInSchool),
+                        Col7 = listEthnicData2.Select(x => x.PercentageMaleInSchool),
+                        Col8 = listEthnicData2.Select(x => x.PercentageMaleAllSchool),
+                        Col9 = listEthnicData.Select(x => x.PercentageInSchool),
+                        Col10 = listEthnicData2.Select(x => x.PercentageInSchool),
+                        Col11 = listEthnicData2.Select(x => x.PercentageAllSchool),
+                    };
+
+                    dtResult.Columns.Add("EthinicCode", typeof(string));
+                    dtResult.Columns.Add("Ethinic", typeof(string));
+                    dtResult.Columns.Add("Female in "+sSchoolName, typeof(double));
+                    dtResult.Columns.Add("Female in " + sSchoolName2, typeof(double));
+                    dtResult.Columns.Add("Female in All Primary school", typeof(double));
+                    dtResult.Columns.Add("Male in " + sSchoolName, typeof(double));
+                    dtResult.Columns.Add("Male in " + sSchoolName2, typeof(double));
+                    dtResult.Columns.Add("Male in All  Primary school ", typeof(double));
+                    dtResult.Columns.Add("Total in " + sSchoolName, typeof(double));
+                    dtResult.Columns.Add("Total in " + sSchoolName2, typeof(double));
+                    dtResult.Columns.Add("Total in All Primary school", typeof(double));
+
+                    for (var i = 0; i < listEthnicData.Count; i++)
+                    {
+                        dtResult.Rows.Add(
+                            transformObject.Col1.ToList()[i],
+                            transformObject.Col2.ToList()[i],
+                            transformObject.Col3.ToList()[i],
+                            transformObject.Col4.ToList()[i],
+                            transformObject.Col5.ToList()[i],
+                            transformObject.Col6.ToList()[i],
+                            transformObject.Col7.ToList()[i],
+                            transformObject.Col8.ToList()[i],
+                            transformObject.Col9.ToList()[i],
+                            transformObject.Col10.ToList()[i],
+                            transformObject.Col11.ToList()[i]
+                            );
+                    }
+
+
+                }
+                else if (sSchoolName.Equals("") && !sSchoolName2.Equals(""))
+                {
+                    dtResult.Columns.Add("EthinicCode", typeof(string));
+                    dtResult.Columns.Add("Ethinic", typeof(string));
+                    dtResult.Columns.Add("Female in " + sSchoolName2, typeof(double));
+                    dtResult.Columns.Add("Female in All Primary school", typeof(double));
+                    dtResult.Columns.Add("Male in " + sSchoolName2, typeof(double));
+                    dtResult.Columns.Add("Male in All  Primary school ", typeof(double));
+                    dtResult.Columns.Add("Total in " + sSchoolName2, typeof(double));
+                    dtResult.Columns.Add("Total in All Primary school", typeof(double));
+                    // dtResult = listEthnicData.AsDataTable();
+                    var transformObject = new
+                    {
+                        Col1 = listEthnicData2.Select(x => x.EthinicCode),
+                        Col2 = listEthnicData2.Select(x => x.EthinicName),
+                        Col3 = listEthnicData2.Select(x => x.PercentageFemaleInSchool),
+                        Col4 = listEthnicData2.Select(x => x.PercentageFemaleAllSchool),
+                        Col5 = listEthnicData2.Select(x => x.PercentageMaleInSchool),
+                        Col6 = listEthnicData2.Select(x => x.PercentageMaleAllSchool),
+                        Col7 = listEthnicData2.Select(x => x.PercentageInSchool),
+                        Col8 = listEthnicData2.Select(x => x.PercentageAllSchool),
+                    };
+
+                    for (var i = 0; i < listEthnicData2.Count; i++)
+                    {
+                        dtResult.Rows.Add(
+                            transformObject.Col1.ToList()[i],
+                            transformObject.Col2.ToList()[i],
+                            transformObject.Col3.ToList()[i],
+                            transformObject.Col4.ToList()[i],
+                            transformObject.Col5.ToList()[i],
+                            transformObject.Col6.ToList()[i],
+                            transformObject.Col7.ToList()[i],
+                            transformObject.Col8.ToList()[i]
+                            );
+                    }
+                
+                }
+
+            }
+
+
             //dtResult.Columns.Add("EthnicBackground", typeof(string));
             //dtResult.Columns.Add("Drug", typeof(string));
             //dtResult.Columns.Add("Patient", typeof(string));
             //dtResult.Columns.Add("Date", typeof(DateTime));
 
             //// add row
-            //dtResult.Rows.Add(25, "Indocin", "David", DateTime.Now);
+            //dtResult.Rows.Add(2, dtObject);
             //dtResult.Rows.Add(50, "Enebrel", "Sam", DateTime.Now);
             //dtResult.Rows.Add(10, "Hydralazine", "Christoff", DateTime.Now);
             //dtResult.Rows.Add(21, "Combivent", "Janet", DateTime.Now);
             //dtResult.Rows.Add(100, "Dilantin", "Melanie", DateTime.Now);
 
-            return listEthnicData;
+
+            return dtResult;
         }
 
-        private MemoryStream GetWorkbookDataStream(List<EthnicObj> dtResult, string schoolname)
+        private MemoryStream GetWorkbookDataStream(DataTable dtResult)
         {
             var workbook = new XLWorkbook();
             var worksheet = workbook.Worksheets.Add("Sheet 1");
-            worksheet.Cell("A1").Value = schoolname; // use cell address in range
-            worksheet.Cell("A2").Value = "Ethnicbackground"; // use cell address in range
+            worksheet.Cell("A1").Value = "Ethnicbackground"; // use cell address in range
+            worksheet.Cell("A2").Value = "% of pupils in each ethnic group"; // use cell address in range
             worksheet.Cell(3, 1).InsertTable(dtResult); // use row & column index
             worksheet.Rows().AdjustToContents();
             worksheet.Columns().AdjustToContents();

@@ -259,6 +259,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ConstantHelper.cs" />
+    <Compile Include="Helpers\ConvertHelper.cs" />
     <Compile Include="Helpers\ORM\INHibernateHelper.cs" />
     <Compile Include="Helpers\ORM\IUnitOfWork.cs" />
     <Compile Include="Helpers\ORM\MVCApplicationModule.cs" />
