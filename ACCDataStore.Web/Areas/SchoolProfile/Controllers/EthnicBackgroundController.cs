@@ -80,7 +80,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 {
                     vmEthnicbackground.IsShowCriteria = false;
                     // set default criteria
-                    vmEthnicbackground.ListSelectedGender = new List<string>(new string[] { "Total" });
+                    vmEthnicbackground.ListSelectedGender = new List<string>(new string[] { "T" });
                     Session["ListSelectedGender"] = vmEthnicbackground.ListSelectedGender;
                     Session["sSchoolName"] = sSchoolName;
                 }
@@ -103,7 +103,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 }                    
                 else
                 {
-                    vmEthnicbackground.ListSelectedGender = new List<string>(new string[] { "Total" });
+                    vmEthnicbackground.ListSelectedGender = vmEthnicbackground.ListGenderCode;
                 }
                 
                 Session["ListSelectedGender"] = vmEthnicbackground.ListSelectedGender;
@@ -267,7 +267,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                     listChartData.Add(new { name = "MaleAllSchool", data = listEthnicFilter.Select(x => x.PercentageMaleAllSchool).ToArray() });
                     listChartData.Add(new { name = schoolname+" Male", data = listEthnicFilter.Select(x => x.PercentageMaleInSchool).ToArray() });
                 }
-                if (itemGender.Equals("Total"))
+                if (itemGender.Equals("T"))
                 {
                     listChartData.Add(new { name = "TotalAllSchool", data = listEthnicFilter.Select(x => x.PercentageAllSchool).ToArray() });
                     listChartData.Add(new { name = schoolname+" Total", data = listEthnicFilter.Select(x => x.PercentageInSchool).ToArray() });
@@ -398,7 +398,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                     //listChartData.Add(new { name = "MaleAllSchool", data = listEthnicFilter.Select(x => x.PercentageMaleAllSchool).ToArray() });
                     //listChartData.Add(new { name = sSchoolName + " Male", data = listEthnicFilter.Select(x => x.PercentageMaleInSchool).ToArray() });
                 }
-                if (itemGender.Equals("Total"))
+                if (itemGender.Equals("T"))
                 {
                     if (sSchoolName.Equals(sSchoolName2))
                     {
@@ -660,7 +660,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW Gender FROM test_3 group by Gender");
 
             fooList = listResult.OfType<string>().ToList();
-
+            fooList.Add("T");
             vmEthnicbackground2.ListGenderCode = fooList;
             vmEthnicbackground2.DicGender = GetDicGender();
 
@@ -696,7 +696,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 }
                 else
                 {
-                    vmEthnicbackground2.ListSelectedGender = new List<string>(new string[] { "Total" });
+                    vmEthnicbackground2.ListSelectedGender = vmEthnicbackground2.ListGenderCode;
                 }
 
                 vmEthnicbackground2.ListSelectedEthnicBg = sethnicityCriteria;

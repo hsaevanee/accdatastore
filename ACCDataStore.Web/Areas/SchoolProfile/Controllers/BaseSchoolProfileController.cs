@@ -30,9 +30,9 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         {
             Console.Write("GetEthnicityData in BaseSchoolProfileController==> ");
 
-            List<EthnicObj> listDataseries = new List<EthnicObj>();
+            //List<EthnicObj> listDataseries = new List<EthnicObj>();
             List<EthnicObj> listtemp = new List<EthnicObj>();
-            List<EthnicObj> listtemp1 = new List<EthnicObj>();
+            //List<EthnicObj> listtemp1 = new List<EthnicObj>();
             EthnicObj tempEthnicObj = new EthnicObj();
 
             //% for All school
@@ -80,7 +80,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             if (listResult != null)
             {
                 // need to select only the Ethniccode that appear for this specific school
-                var DistinctItems = listResult.GroupBy(x => x.ElementAt(0).ToString()).ToList();
+                //var DistinctItems = listResult.GroupBy(x => x.ElementAt(0).ToString()).ToList();
 
                 //foreach (var Ethniccode in DistinctItems)
                 //{
@@ -119,6 +119,20 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             return listtemp;
         }
 
+        protected Dictionary<string, string> GetDicNational()
+        {
+            var dicNational = new Dictionary<string, string>();
+            dicNational.Add("01", "Scottish");
+            dicNational.Add("02", "English");
+            dicNational.Add("03", "Northern Irish");
+            dicNational.Add("04", "Welsh");
+            dicNational.Add("05", "British");
+            dicNational.Add("99", "Other");
+            dicNational.Add("10", "Not Disclosed");
+            dicNational.Add("98", "Not Known");
+            return dicNational;
+        }
+
         protected Dictionary<string, string> GetDicEhtnicBG()
         {
             var dicNational = new Dictionary<string, string>();
@@ -150,6 +164,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             var dicNational = new Dictionary<string, string>();
             dicNational.Add("F", "Female");
             dicNational.Add("M", "Male");
+            dicNational.Add("T", "Total");
             return dicNational;
         }
 
@@ -174,11 +189,20 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 {
                     dicNational.Add("M", new string[] { "Male", "" });
                 }
+                if (listSelectedGender.FirstOrDefault(x => x.Equals("T")) != null)
+                {
+                    dicNational.Add("T", new string[] { "Total", "checked" });
+                }
+                else
+                {
+                    dicNational.Add("T", new string[] { "Total", "" });
+                }
             }
             else
             {
                 dicNational.Add("F", new string[] { "Female", "checked" });
                 dicNational.Add("M", new string[] { "Male", "checked" });
+                dicNational.Add("T", new string[] { "Total", "checked" });
             }
             return dicNational;
         }
@@ -219,7 +243,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                         foreach (var itemRow in templist2)
                         {
                             tempNationalObj.IdentityCode = Convert.ToString(itemRow[0]);
-                            tempNationalObj.IdentityName = GetDicEhtnicBG().ContainsKey(tempNationalObj.IdentityCode) ? GetDicEhtnicBG()[tempNationalObj.IdentityCode] : "NO NAME";
+                            tempNationalObj.IdentityName = GetDicNational().ContainsKey(tempNationalObj.IdentityCode) ? GetDicNational()[tempNationalObj.IdentityCode] : "NO NAME";
 
                             //tempEthnicObj.EthnicGender = Convert.ToString(itemRow[1]);
                             if ("F".Equals(Convert.ToString(itemRow[1])))
@@ -262,14 +286,14 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             if (listResult != null)
             {
                 // need to select only the Ethniccode that appear for this specific school
-                var DistinctItems = listResult.GroupBy(x => x.ElementAt(0).ToString()).ToList();
+                //var DistinctItems = listResult.GroupBy(x => x.ElementAt(0).ToString()).ToList();
 
-                foreach (var Ethniccode in DistinctItems)
-                {
-                    tempNationalObj = listtemp.Find(x => x.IdentityCode.Equals(Ethniccode.Key));
-                    if (tempNationalObj != null)
-                        listDataseries.Add(tempNationalObj);
-                }
+                //foreach (var Ethniccode in DistinctItems)
+                //{
+                //    tempNationalObj = listtemp.Find(x => x.IdentityCode.Equals(Ethniccode.Key));
+                //    if (tempNationalObj != null)
+                //        listDataseries.Add(tempNationalObj);
+                //}
 
 
                 foreach (var itemRow in listResult)
@@ -291,28 +315,14 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 }
             }
 
-            foreach (var itemRow in listDataseries)
+            foreach (var itemRow in listtemp)
             {
                 tempNationalObj = itemRow;
                 tempNationalObj.PercentageInSchool = tempNationalObj.PercentageFemaleInSchool + tempNationalObj.PercentageMaleInSchool;
                 tempNationalObj.PercentageAllSchool = tempNationalObj.PercentageFemaleAllSchool + tempNationalObj.PercentageMaleAllSchool;
             }
 
-            return listDataseries;
-        }
-
-        protected Dictionary<string, string> GetDicNational()
-        {
-            var dicNational = new Dictionary<string, string>();
-            dicNational.Add("01", "Scottish");
-            dicNational.Add("02", "English");
-            dicNational.Add("03", "Northern Irish");
-            dicNational.Add("04", "Welsh");
-            dicNational.Add("05", "British");
-            dicNational.Add("99", "Other");
-            dicNational.Add("10", "Not Disclosed");
-            dicNational.Add("98", "Not Known");
-            return dicNational;
+            return listtemp;
         }
 
         protected List<SIMDObj> GetSIMDDatabySchoolname(IGenericRepository rpGeneric, string mSchoolname, List<string> myear)

@@ -5,6 +5,7 @@ using ClosedXML.Excel;
 using Common.Logging;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -51,7 +52,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW Gender FROM test_3 group by Gender");
 
             fooList = listResult.OfType<string>().ToList();
-
+            fooList.Add("T");
             vmStudentStage.ListGenderCode = fooList;
             vmStudentStage.DicGender = GetDicGender();
 
@@ -65,8 +66,10 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 else // case of detail page, by pass criteria
                 {
                     vmStudentStage.IsShowCriteria = false;
-                    vmStudentStage.ListSelectedGender = new List<string>(new string[] { "Total" });
+                    vmStudentStage.ListSelectedGender = vmStudentStage.ListGenderCode;
                     Session["ListSelectedGender"] = vmStudentStage.ListSelectedGender;
+                    vmStudentStage.ListSelectedStdStage = vmStudentStage.ListStageCode;
+                    vmStudentStage.selectedschoolname = sSchoolName;
                     Session["sSchoolName"] = sSchoolName;
                 }
 
@@ -74,12 +77,14 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             else // post method
             {
                 vmStudentStage.IsShowCriteria = true;
-                sSchoolName = Request["selectSchoolname"];
+                sSchoolName = Request["selectedschoolname"];
+                vmStudentStage.selectedschoolname = sSchoolName;
                 Session["sSchoolName"] = sSchoolName;
 
                 if (Request["stages"] != null)
                 {
                     sStageCriteria = Request["stages"].Split(',').ToList();
+                    vmStudentStage.ListSelectedStdStage = sStageCriteria;
                 }
                 else
                 {
@@ -91,7 +96,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 }
                 else
                 {
-                    vmStudentStage.ListSelectedGender = new List<string>(new string[] { "Total" });
+                    vmStudentStage.ListSelectedGender = vmStudentStage.ListGenderCode;
                 }
 
                 Session["ListSelectedGender"] = vmStudentStage.ListSelectedGender;
@@ -101,7 +106,11 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             vmStudentStage.DicGenderWithSelected = GetDicGenderWithSelected(vmStudentStage.ListSelectedGender);
 
             // process data
-            if (sSchoolName != null)
+            if (sSchoolName ==null || sSchoolName.Equals(""))
+            {
+                vmStudentStage.IsShowData = false;
+            }
+            else if (sSchoolName!= null)
             {
                 vmStudentStage.selectedschoolname = sSchoolName;
                 ListStdStageData = GetStudentStageDatabySchoolname(rpGeneric, sSchoolName);
@@ -109,13 +118,16 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 if (sStageCriteria == null)
                 {
                     vmStudentStage.ListStdStageData = null;
+                    vmStudentStage.IsShowData = false;
                 }
                 else if (sStageCriteria.Count != 0 && sStageCriteria != null)
                 {
+                    vmStudentStage.IsShowData = true;
                     vmStudentStage.ListStdStageData = ListStdStageData.Where(x => sStageCriteria.Contains(x.StageCode)).ToList();
                 }
                 else
                 {
+                    vmStudentStage.IsShowData = true;
                     vmStudentStage.ListStdStageData = ListStdStageData;
                 }
                 Session["SessionListStudentStageData"] = vmStudentStage.ListStdStageData;
@@ -175,7 +187,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                     listChartData.Add(new { name = "MaleAllSchool", data = listStdStageFilter.Select(x => x.PercentageMaleAllSchool).ToArray() });
                     listChartData.Add(new { name = schoolname + " Male", data = listStdStageFilter.Select(x => x.PercentageMaleInSchool).ToArray() });
                 }
-                if (itemGender.Equals("Total"))
+                if (itemGender.Equals("T"))
                 {
                     listChartData.Add(new { name = "TotalAllSchool", data = listStdStageFilter.Select(x => x.PercentageAllSchool).ToArray() });
                     listChartData.Add(new { name = schoolname + " Total", data = listStdStageFilter.Select(x => x.PercentageInSchool).ToArray() });
@@ -188,18 +200,65 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         public ActionResult ExportExcel()
         {
             var listStdStageData = Session["SessionListStudentStageData"] as List<StdStageObj>;
-            string schoolname = Session["sSchoolName"].ToString();
-
-            var dataStream = GetWorkbookDataStream(listStdStageData, schoolname);
+            var dataStream = GetWorkbookDataStream(GetData());
             return File(dataStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "export.xlsx");
         }
 
-        private MemoryStream GetWorkbookDataStream(List<StdStageObj> dtResult, string schoolname)
+        private DataTable GetData()
+        {
+            // simulate datatable
+            var listStdStageData = Session["SessionListStudentStageData"] as List<StdStageObj>;
+            // var listEthnicData2 = Session["SessionListEthnicData2"] as List<EthnicObj>;
+            string sSchoolName = Session["sSchoolName"] as string;
+            //string sSchoolName2 = Session["sSchoolName2"] as string;
+
+            //var transformObject = new Object();
+
+            DataTable dtResult = new DataTable();
+
+            dtResult.Columns.Add("Stage", typeof(string));
+            //dtResult.Columns.Add("Nationality", typeof(string));
+            dtResult.Columns.Add("Female in " + sSchoolName, typeof(double));
+            dtResult.Columns.Add("Female in All Primary school", typeof(double));
+            dtResult.Columns.Add("Male in " + sSchoolName, typeof(double));
+            dtResult.Columns.Add("Male in All  Primary school ", typeof(double));
+            dtResult.Columns.Add("Total in " + sSchoolName, typeof(double));
+            dtResult.Columns.Add("Total in All Primary school", typeof(double));
+
+            var transformObject = new
+            {
+                Col1 = listStdStageData.Select(x => x.StageCode),
+                //Col2 = listNationalityData.Select(x => x.IdentityName),
+                Col2 = listStdStageData.Select(x => x.PercentageFemaleInSchool),
+                Col3 = listStdStageData.Select(x => x.PercentageFemaleAllSchool),
+                Col4 = listStdStageData.Select(x => x.PercentageMaleInSchool),
+                Col5 = listStdStageData.Select(x => x.PercentageMaleAllSchool),
+                Col6 = listStdStageData.Select(x => x.PercentageInSchool),
+                Col7 = listStdStageData.Select(x => x.PercentageAllSchool),
+            };
+
+            for (var i = 0; i < listStdStageData.Count; i++)
+            {
+                dtResult.Rows.Add(
+                    transformObject.Col1.ToList()[i],
+                    transformObject.Col2.ToList()[i],
+                    transformObject.Col3.ToList()[i],
+                    transformObject.Col4.ToList()[i],
+                    transformObject.Col5.ToList()[i],
+                    transformObject.Col6.ToList()[i],
+                    transformObject.Col7.ToList()[i]                    
+                    );
+            }
+            return dtResult;
+        }
+
+        private MemoryStream GetWorkbookDataStream(DataTable dtResult)
         {
             var workbook = new XLWorkbook();
             var worksheet = workbook.Worksheets.Add("Sheet 1");
-            worksheet.Cell("A1").Value = schoolname; // use cell address in range
-            worksheet.Cell("A2").Value = "Student Stages"; // use cell address in range
+            //worksheet.Cell("A1").Value = schoolname; // use cell address in range
+            worksheet.Cell("A1").Value = "Student Stages"; // use cell address in range
+            worksheet.Cell("A2").Value = "% of pupils in each stage"; 
             worksheet.Cell(3, 1).InsertTable(dtResult); // use row & column index
             worksheet.Rows().AdjustToContents();
             worksheet.Columns().AdjustToContents();

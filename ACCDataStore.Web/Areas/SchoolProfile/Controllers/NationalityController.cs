@@ -5,6 +5,7 @@ using ClosedXML.Excel;
 using Common.Logging;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -51,7 +52,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW Gender FROM test_3 group by Gender");
 
             fooList = listResult.OfType<string>().ToList();
-
+            fooList.Add("T");
             vmNationality.ListGenderCode = fooList;
             vmNationality.DicGender = GetDicGender();
 
@@ -65,8 +66,10 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 else // case of detail page, by pass criteria
                 {
                     vmNationality.IsShowCriteria = false;
-                    vmNationality.ListSelectedGender = new List<string>(new string[] { "Total" });
+                    vmNationality.ListSelectedGender = vmNationality.ListGenderCode;
+                    vmNationality.ListSelectedNationality = vmNationality.ListNationalityCode;
                     Session["ListSelectedGender"] = vmNationality.ListSelectedGender;
+                    //Session["ListSelectedNationality"] = vmNationality.ListSelectedNationality;
                     Session["sSchoolName"] = sSchoolName;
                 }
 
@@ -74,12 +77,14 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             else // post method
             {
                 vmNationality.IsShowCriteria = true;
-                sSchoolName = Request["selectSchoolname"];
+                sSchoolName = Request["selectedschoolname"];
+                vmNationality.selectedschoolname = sSchoolName;
                 Session["sSchoolName"] = sSchoolName;
 
                 if (Request["nationality"] != null)
                 {
-                    sNationalCriteria = Request["nationality"].Split(',').ToList();
+                   sNationalCriteria = Request["nationality"].Split(',').ToList();
+                   vmNationality.ListSelectedNationality = sNationalCriteria;
                 }
                 else
                 {
@@ -91,31 +96,39 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 }
                 else
                 {
-                    vmNationality.ListSelectedGender = new List<string>(new string[] { "Total" });
+                    vmNationality.ListSelectedGender = vmNationality.ListGenderCode;
                 }               
                 
                 Session["ListSelectedGender"] = vmNationality.ListSelectedGender;
+                //Session["ListSelectedNationality"] = vmNationality.ListSelectedNationality;
                 // get parameter from Request object
             }
 
             vmNationality.DicGenderWithSelected = GetDicGenderWithSelected(vmNationality.ListSelectedGender);
 
             // process data
-            if (sSchoolName != null)
+            if (sSchoolName == null || sSchoolName.Equals(""))
+            {
+                vmNationality.IsShowData = false;
+            }
+            else if (sSchoolName != null)
             {
                 vmNationality.selectedschoolname = sSchoolName;
                 ListNationalData = GetNationalityDatabySchoolname(rpGeneric,sSchoolName);
 
                 if (sNationalCriteria == null)
                 {
+                    vmNationality.IsShowData = false;
                     vmNationality.ListNationalityData = null;
                 }
                 else if (sNationalCriteria.Count != 0 && sNationalCriteria != null)
                 {
+                    vmNationality.IsShowData = true;
                     vmNationality.ListNationalityData = ListNationalData.Where(x => sNationalCriteria.Contains(x.IdentityCode)).ToList();
                 }
                 else
                 {
+                    vmNationality.IsShowData = true;
                     vmNationality.ListNationalityData = ListNationalData;
                 }                
                 Session["SessionListNationalityData"] = vmNationality.ListNationalityData;
@@ -247,7 +260,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                     listChartData.Add(new { name = "MaleAllSchool", data = listNationalFilter.Select(x => x.PercentageMaleAllSchool).ToArray() });
                     listChartData.Add(new { name = schoolname+" Male", data = listNationalFilter.Select(x => x.PercentageMaleInSchool).ToArray() });
                 }
-                if (itemGender.Equals("Total"))
+                if (itemGender.Equals("T"))
                 {
                     listChartData.Add(new { name = "TotalAllSchool", data = listNationalFilter.Select(x => x.PercentageAllSchool).ToArray() });
                     listChartData.Add(new { name = schoolname+" Total", data = listNationalFilter.Select(x => x.PercentageInSchool).ToArray() });
@@ -261,37 +274,67 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         {
             var listNationalityData = Session["SessionListNationalityData"] as List<NationalityObj>;
             string schoolname = Session["sSchoolName"].ToString();
-            var dataStream = GetWorkbookDataStream(listNationalityData, schoolname);
+            var dataStream = GetWorkbookDataStream(GetData());
             return File(dataStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "export.xlsx");
         }
 
-        private List<NationalityObj> GetData()
+        private DataTable GetData()
         {
             // simulate datatable
             var listNationalityData = Session["SessionListNationalityData"] as List<NationalityObj>;
-            //var dtResult = new DataTable();
-            //dtResult.Columns.Add("EthnicBackground", typeof(string));
-            //dtResult.Columns.Add("Drug", typeof(string));
-            //dtResult.Columns.Add("Patient", typeof(string));
-            //dtResult.Columns.Add("Date", typeof(DateTime));
+           // var listEthnicData2 = Session["SessionListEthnicData2"] as List<EthnicObj>;
+            string sSchoolName = Session["sSchoolName"] as string;
+            //string sSchoolName2 = Session["sSchoolName2"] as string;
 
-            //// add row
-            //dtResult.Rows.Add(25, "Indocin", "David", DateTime.Now);
-            //dtResult.Rows.Add(50, "Enebrel", "Sam", DateTime.Now);
-            //dtResult.Rows.Add(10, "Hydralazine", "Christoff", DateTime.Now);
-            //dtResult.Rows.Add(21, "Combivent", "Janet", DateTime.Now);
-            //dtResult.Rows.Add(100, "Dilantin", "Melanie", DateTime.Now);
+            //var transformObject = new Object();
 
-            return listNationalityData;
+            DataTable dtResult = new DataTable();
+
+            dtResult.Columns.Add("IdentityCode", typeof(string));
+            dtResult.Columns.Add("Nationality", typeof(string));
+            dtResult.Columns.Add("Female in " + sSchoolName, typeof(double));
+            dtResult.Columns.Add("Female in All Primary school", typeof(double));
+            dtResult.Columns.Add("Male in " + sSchoolName, typeof(double));
+            dtResult.Columns.Add("Male in All  Primary school ", typeof(double));
+            dtResult.Columns.Add("Total in " + sSchoolName, typeof(double));
+            dtResult.Columns.Add("Total in All Primary school", typeof(double));
+
+            var transformObject = new
+                {
+                    Col1 = listNationalityData.Select(x => x.IdentityCode),
+                    Col2 = listNationalityData.Select(x => x.IdentityName),
+                    Col3 = listNationalityData.Select(x => x.PercentageFemaleInSchool),
+                    Col4 = listNationalityData.Select(x => x.PercentageFemaleAllSchool),
+                    Col5 = listNationalityData.Select(x => x.PercentageMaleInSchool),
+                    Col6 = listNationalityData.Select(x => x.PercentageMaleAllSchool),
+                    Col7 = listNationalityData.Select(x => x.PercentageInSchool),
+                    Col8 = listNationalityData.Select(x => x.PercentageAllSchool),
+                };
+
+            for (var i = 0; i < listNationalityData.Count; i++)
+                {
+                    dtResult.Rows.Add(
+                        transformObject.Col1.ToList()[i],
+                        transformObject.Col2.ToList()[i],
+                        transformObject.Col3.ToList()[i],
+                        transformObject.Col4.ToList()[i],
+                        transformObject.Col5.ToList()[i],
+                        transformObject.Col6.ToList()[i],
+                        transformObject.Col7.ToList()[i],
+                        transformObject.Col8.ToList()[i]
+                        );
+                }
+            return dtResult;
         }
 
-        private MemoryStream GetWorkbookDataStream(List<NationalityObj> dtResult, string schoolname)
+        private MemoryStream GetWorkbookDataStream(DataTable dtResult)
         {
             var workbook = new XLWorkbook();
             var worksheet = workbook.Worksheets.Add("Sheet 1");
-            worksheet.Cell("A1").Value = schoolname; // use cell address in range
-            worksheet.Cell("A2").Value = "Nationality"; // use cell address in range
-            worksheet.Cell(2, 1).InsertTable(dtResult); // use row & column index
+            worksheet.Cell("A1").Value = "Nationality"; // use cell address in range
+            //worksheet.Cell("A2").Value = "Nationality"; // use cell address in range
+            worksheet.Cell("A2").Value = "% of pupils in each ethnic group"; 
+            worksheet.Cell(3, 1).InsertTable(dtResult); // use row & column index
             worksheet.Rows().AdjustToContents();
             worksheet.Columns().AdjustToContents();
 

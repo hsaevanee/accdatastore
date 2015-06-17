@@ -53,43 +53,97 @@
                         </tr>
                 }
             }
+            @{
+                var check = "";
+                if (Model.ListSelectedGender != null)
+                {
+                    if (Model.ListSelectedGender.Count == 3)
+                    {
+                        check = "checked";
+                    }
+
+                }
+                else
+                {
+                    check = "checked";
+                }
+            }
             <tr>
                 <td></td>
                 <td>
-                    <input type="checkbox" name="gender" value="Total"
-                           checked="checked" />Total
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
+
                     <input type="checkbox" name="CheckGenderAll"
-                           value="ALL" id="CheckGenderAll" checked="checked" />CheckALL
+                           value="ALL" id="CheckGenderAll" @check />CheckALL
                 </td>
 
             </tr>
             <tr>
                 <td colspan="2">Select EthnicBackground </td>
             </tr>
+            @{
 
-            @foreach (var itemEthnic in Model.ListEthnicCode)
-            {
-                if (Model.DicEthnicBG.ContainsKey(itemEthnic))
+                foreach (var itemEthnic in Model.ListEthnicCode)
                 {
-                    <tr>
-                        <td></td>
-                        <td>
-                            <input type="checkbox" name="ethnicity" value="@itemEthnic"
-                                   checked="checked" /> @Model.DicEthnicBG[itemEthnic]
-                            </td>
-                        </tr>
+                    check = "";
+                    if (Model.ListSelectedEthnicBg != null)
+                    {
+                        if (Model.ListSelectedEthnicBg.Contains(itemEthnic))
+                        {
+                            check = "checked";
+                        }
+
+                    }
+                    else
+                    {
+                        check = "checked";
+                    }
+
+                    if (Model.DicEthnicBG.ContainsKey(itemEthnic))
+                    {
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input type="checkbox" name="ethnicity" value="@itemEthnic"
+                                       @check /> @Model.DicEthnicBG[itemEthnic]
+                                </td>
+                            </tr>
+                    }
                 }
             }
+            @*@foreach (var itemEthnic in Model.ListEthnicCode)
+                {
+                    if (Model.DicEthnicBG.ContainsKey(itemEthnic))
+                    {
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input type="checkbox" name="ethnicity" value="@itemEthnic"
+                                       checked="checked" /> @Model.DicEthnicBG[itemEthnic]
+                                </td>
+                            </tr>
+                    }
+                }*@
             <tr>
                 <td></td>
                 <td>
+                    @{
+                        check = "";
+                        if (Model.ListSelectedEthnicBg != null)
+                        {
+                            if (Model.ListSelectedEthnicBg.Count == 20)
+                            {
+                                check = "checked";
+                            }
+
+                        }
+                        else
+                        {
+                            check = "checked";
+                        }
+                    }
+
                     <input type="checkbox" name="CheckEthnicityAll"
-                           value="ALL" id="ChecknatioNalityAll" checked="checked" />CheckALL
+                           value="ALL" id="CheckEthnicityAll" @check />CheckALL
                 </td>
 
             </tr>
@@ -125,7 +179,7 @@
                             {
                                 <th colspan=@colspanSize>Male</th>
                             }
-                            if (selection.Equals("Total"))
+                            if (selection.Equals("T"))
                             {
                                 <th colspan=@colspanSize>Total</th>
                             }
@@ -257,7 +311,7 @@
                                     @*<td align="center">@String.Format("{0:#,0.00}", @itemEthnic.PercentageMaleInSchool)</td>
                                         <td align="center">@String.Format("{0:#,0.00}", @itemEthnic.PercentageMaleAllSchool)</td>*@
                                 }
-                                if (selection.Equals("Total"))
+                                if (selection.Equals("T"))
                                 {
                                     @*if (!Model.selectedschoolname.Equals(""))
                                     {
