@@ -194,6 +194,19 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         //    return listDataseries;
         //}
 
+        //private Dictionary<string, string> GetDicNational()
+        //{
+        //    var dicNational = new Dictionary<string, string>();
+        //    dicNational.Add("01", "Scottish");
+        //    dicNational.Add("02", "English");
+        //    dicNational.Add("03", "Northern Irish");
+        //    dicNational.Add("04", "Welsh");
+        //    dicNational.Add("05", "British");
+        //    dicNational.Add("99", "Other");
+        //    dicNational.Add("10", "Not Disclosed");
+        //    dicNational.Add("98", "Not Known");
+        //    return dicNational;
+        //}
 
         [HttpPost]
         public JsonResult GetChartDataNationality(string[] arrParameterFilter)
@@ -260,9 +273,9 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         public ActionResult ExportExcel()
         {
             var listNationalityData = Session["SessionListNationalityData"] as List<NationalityObj>;
-            //string schoolname = Session["sSchoolName"].ToString();
+            string schoolname = Session["sSchoolName"].ToString();
             var dataStream = GetWorkbookDataStream(GetData());
-            return File(dataStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "NationalityExport.xlsx");
+            return File(dataStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "export.xlsx");
         }
 
         private DataTable GetData()
@@ -288,27 +301,27 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
             var transformObject = new
                 {
-                    Col1 = listNationalityData.Select(x => x.IdentityCode).ToList(),
-                    Col2 = listNationalityData.Select(x => x.IdentityName).ToList(),
-                    Col3 = listNationalityData.Select(x => x.PercentageFemaleInSchool).ToList(),
-                    Col4 = listNationalityData.Select(x => x.PercentageFemaleAllSchool).ToList(),
-                    Col5 = listNationalityData.Select(x => x.PercentageMaleInSchool).ToList(),
-                    Col6 = listNationalityData.Select(x => x.PercentageMaleAllSchool).ToList(),
-                    Col7 = listNationalityData.Select(x => x.PercentageInSchool).ToList(),
-                    Col8 = listNationalityData.Select(x => x.PercentageAllSchool).ToList(),
+                    Col1 = listNationalityData.Select(x => x.IdentityCode),
+                    Col2 = listNationalityData.Select(x => x.IdentityName),
+                    Col3 = listNationalityData.Select(x => x.PercentageFemaleInSchool),
+                    Col4 = listNationalityData.Select(x => x.PercentageFemaleAllSchool),
+                    Col5 = listNationalityData.Select(x => x.PercentageMaleInSchool),
+                    Col6 = listNationalityData.Select(x => x.PercentageMaleAllSchool),
+                    Col7 = listNationalityData.Select(x => x.PercentageInSchool),
+                    Col8 = listNationalityData.Select(x => x.PercentageAllSchool),
                 };
 
             for (var i = 0; i < listNationalityData.Count; i++)
                 {
                     dtResult.Rows.Add(
-                        transformObject.Col1[i],
-                        transformObject.Col2[i],
-                        transformObject.Col3[i],
-                        transformObject.Col4[i],
-                        transformObject.Col5[i],
-                        transformObject.Col6[i],
-                        transformObject.Col7[i],
-                        transformObject.Col8[i]
+                        transformObject.Col1.ToList()[i],
+                        transformObject.Col2.ToList()[i],
+                        transformObject.Col3.ToList()[i],
+                        transformObject.Col4.ToList()[i],
+                        transformObject.Col5.ToList()[i],
+                        transformObject.Col6.ToList()[i],
+                        transformObject.Col7.ToList()[i],
+                        transformObject.Col8.ToList()[i]
                         );
                 }
             return dtResult;

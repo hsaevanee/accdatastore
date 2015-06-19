@@ -6,7 +6,7 @@ $(document).ready(function () {
 
 
     $('#buttonGetData').click(function () {
-        if (validateCheckBoxs() == true && validateDropdownlist() == true) {
+        if (validateCheckBoxs() == true) {
             document.forms[0].submit();
         }
 
@@ -15,6 +15,10 @@ $(document).ready(function () {
     $("input[name='SIMD']").click(function () {
         $('input[name="CheckSIMDAll"]').prop("checked", false);
     });
+
+    //$("input[name='gender']").click(function () {
+    //    $('input[name="CheckGenderAll"]').prop("checked", false);
+    //});
 
     $("input[name='years']").click(function () {
         $('input[name="CheckYearAll"]').prop("checked", false);
@@ -74,19 +78,6 @@ function validateCheckBoxs() {
         return false;
     }else{
          return true;
-    }
-
-}
-
-function validateDropdownlist() {
-    var value1 = $('#selectedschoolname :selected').text();
-    //var value2 = $('#selectedschoolname2 :selected').text();
-
-    if (value1 == "---Please Select School---") {
-        alert('Please select School');
-        return false;
-    } else {
-        return true;
     }
 
 }

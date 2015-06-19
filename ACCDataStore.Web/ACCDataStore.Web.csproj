@@ -199,7 +199,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Areas\Nationality\Views\web.config" />
-    <Content Include="Images\acc-logo.gif" />
     <Content Include="Images\bruce_scharlau.JPG" />
     <Content Include="Images\Do_Coyle.jpg" />
     <Content Include="Images\Ian_Heywood.jpg" />
@@ -296,7 +295,6 @@
     <Content Include="Areas\SchoolProfile\Views\EthnicBackground\Index2.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
-    <Content Include="Views\Index\What-is-data-observatory.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

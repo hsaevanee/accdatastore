@@ -5,7 +5,6 @@ using ClosedXML.Excel;
 using Common.Logging;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -39,7 +38,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
             var listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW Name FROM test_3 group by Name");
 
-            List<string> fooList = listResult.OfType<string>().ToList();            
+            List<string> fooList = listResult.OfType<string>().ToList();
+            fooList.Add("Select School");
 
             vmSIMD.ListSchoolNameData = fooList;
 
@@ -68,9 +68,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 else // case of detail page, by pass criteria
                 {
                     vmSIMD.IsShowCriteria = false;
-                    vmSIMD.ListSelectedYear = new List<string>(new string[] { "2009", "2012" });
+                    vmSIMD.ListSelectedYear = new List<string>(new string[] { "2012" });
                     Session["ListSelectedYears"] = vmSIMD.ListSelectedYear;
-                    vmSIMD.ListSelectedDeciles = vmSIMD.ListSIMDdefinition;
                     Session["sSchoolName"] = sSchoolName;
                 }
 
@@ -79,14 +78,13 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             {
                 // get parameter from Request object
                 vmSIMD.IsShowCriteria = true;
-                sSchoolName = Request["selectedschoolname"];
-                vmSIMD.selectedschoolname = sSchoolName;
+                sSchoolName  = Request["selectSchoolname"];
+
                 Session["sSchoolName"] = sSchoolName;
 
                 if (Request["SIMD"] != null)
                 {
                     setSIMDCriteria = Request["SIMD"].Split(',').ToList();
-                    vmSIMD.ListSelectedDeciles = setSIMDCriteria;
                 }
                 else
                 {
@@ -99,7 +97,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 }
                 else
                 {
-                    vmSIMD.ListSelectedYear = new List<string>(new string[] { "2009", "2012" });
+                    vmSIMD.ListSelectedYear = new List<string>(new string[] { "2012" });
                 }
 
                Session["ListSelectedYears"] = vmSIMD.ListSelectedYear;
@@ -107,27 +105,20 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             }
 
             // process data
-            if (sSchoolName == null || sSchoolName.Equals(""))
-            {
-                vmSIMD.IsShowData = false;
-            }
-            else if (sSchoolName != null)
+            if (sSchoolName != null)
             {
                 vmSIMD.selectedschoolname = sSchoolName;
                 ListSIMDData = GetSIMDDatabySchoolname(rpGeneric, sSchoolName, setYearCriteria);
                 if (setSIMDCriteria == null) {
                     vmSIMD.ListSIMDData = null;
-                    vmSIMD.IsShowData = false;
                 }
                 else if (setSIMDCriteria.Count != 0 && setSIMDCriteria != null)
                 {
                     vmSIMD.ListSIMDData= ListSIMDData.Where(x => setSIMDCriteria.Contains(x.SIMDCode)).ToList();
-                    vmSIMD.IsShowData = true;
                 }
                 else
                 {
                     vmSIMD.ListSIMDData = ListSIMDData;
-                    vmSIMD.IsShowData = true;
                 }
                 Session["SessionListSIMDData"] = vmSIMD.ListSIMDData;
             }
@@ -197,57 +188,16 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             var listSIMDData = Session["SessionListSIMDData"] as List<SIMDObj>;
             string schoolname = Session["sSchoolName"].ToString();
 
-            var dataStream = GetWorkbookDataStream(GetData());
-            return File(dataStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "SIMDexport.xlsx");
+            var dataStream = GetWorkbookDataStream(listSIMDData, schoolname);
+            return File(dataStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "export.xlsx");
         }
 
-        private DataTable GetData()
-        {
-            // simulate datatable
-            var listSIMDData = Session["SessionListSIMDData"] as List<SIMDObj>;
-            // var listEthnicData2 = Session["SessionListEthnicData2"] as List<EthnicObj>;
-            string sSchoolName = Session["sSchoolName"] as string;
-            //string sSchoolName2 = Session["sSchoolName2"] as string;
-
-            //var transformObject = new Object();
-
-            DataTable dtResult = new DataTable();
-
-            dtResult.Columns.Add("Deciles", typeof(string));
-            dtResult.Columns.Add("(2009) % pupils in " + sSchoolName, typeof(double));
-            dtResult.Columns.Add("(2009) % pupils in All Primary school", typeof(double));
-            dtResult.Columns.Add("(2012) % pupils in " + sSchoolName, typeof(double));
-            dtResult.Columns.Add("(2012) % pupils in All Primary school ", typeof(double));
-            
-            var transformObject = new
-            {
-                Col1 = listSIMDData.Select(x => x.SIMDCode).ToList(),                
-                Col2 = listSIMDData.Select(x => x.PercentageInSchool2009).ToList(),
-                Col3 = listSIMDData.Select(x => x.PercentageAllSchool2009).ToList(),
-                Col4 = listSIMDData.Select(x => x.PercentageInSchool2012).ToList(),
-                Col5 = listSIMDData.Select(x => x.PercentageAllSchool2012).ToList(),
-            };
-
-            for (var i = 0; i < listSIMDData.Count; i++)
-            {
-                dtResult.Rows.Add(
-                    transformObject.Col1[i],
-                    transformObject.Col2[i],
-                    transformObject.Col3[i],
-                    transformObject.Col4[i],
-                    transformObject.Col5[i]
-                    );
-            }
-            return dtResult;
-        }
-
-        private MemoryStream GetWorkbookDataStream(DataTable dtResult)
+        private MemoryStream GetWorkbookDataStream(List<SIMDObj> dtResult, string schoolname)
         {
             var workbook = new XLWorkbook();
             var worksheet = workbook.Worksheets.Add("Sheet 1");
-            worksheet.Cell("A1").Value = "Scottish Index of Multiple Deprivation "; // use cell address in range
-            //worksheet.Cell("A2").Value = "Nationality"; // use cell address in range
-            worksheet.Cell("A2").Value = "% of pupils in each Decile";
+            worksheet.Cell("A1").Value = schoolname; // use cell address in range
+            worksheet.Cell("A2").Value = "Scottish Index of Multiple Deprivation "; // use cell address in range
             worksheet.Cell(3, 1).InsertTable(dtResult); // use row & column index
             worksheet.Rows().AdjustToContents();
             worksheet.Columns().AdjustToContents();

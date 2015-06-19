@@ -22,33 +22,20 @@
             <div id="content">
                 <div id="nav">
                     <h3>Navigation</h3>
-                    @*<ul>
+                    <ul>
                         <li>@Html.ActionLink("Home", "Index", "Index", new { id = "" }, null)</li>
                         <li>@Html.ActionLink("The Team", "Index", "Index", new { id = "theTeam" }, null)</li>
                         <li>@Html.ActionLink("School Profile", "Compareable", "IndexSchoolProfile", new { Area = "SchoolProfile" }, null)</li>  
                         @*<li>@Html.ActionLink("School Profile", "Index", "IndexSchoolProfile", new { Area = "SchoolProfile" }, null)</li>*@                       
                         @*<li>@Html.ActionLink("Nationality", "Index", "Nationality", new { Area = "Nationality" }, null)</li>*@                               
-                    @*</ul>*@
-
-                    @Html.ActionLink("Home", "Index", "Index", new { id = "" }, null)
-                    <br>
-                    @Html.ActionLink("The Team", "Index", "Index", new { id = "theTeam" }, null)
-                    <br>
-                    @Html.ActionLink("School Profile", "Compareable", "IndexSchoolProfile", new { Area = "SchoolProfile" }, null)
-                    <br>
+                    </ul>
                 </div>
                 <div id="main">
                     @RenderBody()
                 </div>
             </div>
             <div id="footer">
-                <p>
-                    Aberdeen City Council
-                </p>
-                <p>
-                    Feedback Contact:-  <a href="mailto:HSaevanee@aberdeencity.gov.uk">HSaevanee@aberdeencity.gov.uk</a>
-                </p>
-
+                Aberdeen City Council
             </div>
         </div>
         <div id="divSpinner" class="modal" style="display: none;">
