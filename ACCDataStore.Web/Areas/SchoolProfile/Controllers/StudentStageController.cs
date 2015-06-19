@@ -201,7 +201,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         {
             var listStdStageData = Session["SessionListStudentStageData"] as List<StdStageObj>;
             var dataStream = GetWorkbookDataStream(GetData());
-            return File(dataStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "export.xlsx");
+            return File(dataStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "STDStageExport.xlsx");
         }
 
         private DataTable GetData()
@@ -227,26 +227,25 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
             var transformObject = new
             {
-                Col1 = listStdStageData.Select(x => x.StageCode),
-                //Col2 = listNationalityData.Select(x => x.IdentityName),
-                Col2 = listStdStageData.Select(x => x.PercentageFemaleInSchool),
-                Col3 = listStdStageData.Select(x => x.PercentageFemaleAllSchool),
-                Col4 = listStdStageData.Select(x => x.PercentageMaleInSchool),
-                Col5 = listStdStageData.Select(x => x.PercentageMaleAllSchool),
-                Col6 = listStdStageData.Select(x => x.PercentageInSchool),
-                Col7 = listStdStageData.Select(x => x.PercentageAllSchool),
+                Col1 = listStdStageData.Select(x => x.StageCode).ToList(),
+                Col2 = listStdStageData.Select(x => x.PercentageFemaleInSchool).ToList(),
+                Col3 = listStdStageData.Select(x => x.PercentageFemaleAllSchool).ToList(),
+                Col4 = listStdStageData.Select(x => x.PercentageMaleInSchool).ToList(),
+                Col5 = listStdStageData.Select(x => x.PercentageMaleAllSchool).ToList(),
+                Col6 = listStdStageData.Select(x => x.PercentageInSchool).ToList(),
+                Col7 = listStdStageData.Select(x => x.PercentageAllSchool).ToList(),
             };
 
             for (var i = 0; i < listStdStageData.Count; i++)
             {
                 dtResult.Rows.Add(
-                    transformObject.Col1.ToList()[i],
-                    transformObject.Col2.ToList()[i],
-                    transformObject.Col3.ToList()[i],
-                    transformObject.Col4.ToList()[i],
-                    transformObject.Col5.ToList()[i],
-                    transformObject.Col6.ToList()[i],
-                    transformObject.Col7.ToList()[i]                    
+                    transformObject.Col1[i],
+                    transformObject.Col2[i],
+                    transformObject.Col3[i],
+                    transformObject.Col4[i],
+                    transformObject.Col5[i],
+                    transformObject.Col6[i],
+                    transformObject.Col7[i]                    
                     );
             }
             return dtResult;

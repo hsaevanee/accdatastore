@@ -132,14 +132,6 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             }
 
             return View("index", vmEthnicbackground);
-            // export pdf
-            //return new ViewAsPdf("index", vmEthnicbackground)
-            //{
-            //    FileName = "testexport.pdf",
-            //    PageOrientation = Orientation.Landscape,
-            //    PageMargins = new Margins(0, 0, 0, 0)
-            //};
-
         }
 
         //public List<EthnicObj> GetEthnicityDatabySchoolname(string mSchoolname)
@@ -187,33 +179,6 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
         //    return listDataseries;
         //}
-
-        // private Dictionary<string, string> GetDicEhtnicBG()
-        //{
-        //    var dicNational = new Dictionary<string, string>();
-        //    dicNational.Add("01", "White – Scottish");
-        //    dicNational.Add("02", "African – African / Scottish / British");
-        //    dicNational.Add("03", "Caribbean or Black – Caribbean / British / Scottish");
-        //    dicNational.Add("05", "Asian – Indian/British/Scottish");
-        //    dicNational.Add("06", "Asian – Pakistani / British / Scottish");
-        //    dicNational.Add("07", "Asian –Bangladeshi / British / Scottish");
-        //    dicNational.Add("08", "Asian – Chinese / British / Scottish");
-        //    dicNational.Add("09", "White – Other");
-        //    dicNational.Add("10", "Not Disclosed");
-        //    dicNational.Add("12", "Mixed or multiple ethnic groups");
-        //    dicNational.Add("17", "Asian – Other");
-        //    dicNational.Add("19", "White – Gypsy/Traveller");
-        //    dicNational.Add("21", "White – Other British");
-        //    dicNational.Add("22", "White – Irish");
-        //    dicNational.Add("23", "White – Polish");
-        //    dicNational.Add("24", "Caribbean or Black – Other");
-        //    dicNational.Add("25", "African – Other");
-        //    dicNational.Add("27", "Other – Arab");
-        //    dicNational.Add("98", "Not Known");
-        //    dicNational.Add("99", "Other – Other");
-        //    return dicNational;
-        //}
-
         [HttpPost]
         public JsonResult GetChartDataEthnic(string[] arrParameterFilter)
         {
@@ -440,7 +405,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         public ActionResult ExportExcel()
         {
             var dataStream = GetWorkbookDataStream(GetData());
-            return File(dataStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "export.xlsx");
+            return File(dataStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "EthinicExport.xlsx");
         }
 
         private DataTable GetData()
@@ -457,7 +422,40 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
             if (sSchoolName.Equals(sSchoolName2))
             {
-                dtResult = listEthnicData.AsDataTable();
+                dtResult.Columns.Add("EthinicCode", typeof(string));
+                dtResult.Columns.Add("Ethinic", typeof(string));
+                dtResult.Columns.Add("Female in " + sSchoolName, typeof(double));
+                dtResult.Columns.Add("Female in All Primary school", typeof(double));
+                dtResult.Columns.Add("Male in " + sSchoolName, typeof(double));
+                dtResult.Columns.Add("Male in All  Primary school ", typeof(double));
+                dtResult.Columns.Add("Total in " + sSchoolName, typeof(double));
+                dtResult.Columns.Add("Total in All Primary school", typeof(double));
+                // dtResult = listEthnicData.AsDataTable();
+                var transformObject = new
+                {
+                    Col1 = listEthnicData.Select(x => x.EthinicCode).ToList(),
+                    Col2 = listEthnicData.Select(x => x.EthinicName).ToList(),
+                    Col3 = listEthnicData.Select(x => x.PercentageFemaleInSchool).ToList(),
+                    Col4 = listEthnicData.Select(x => x.PercentageFemaleAllSchool).ToList(),
+                    Col5 = listEthnicData.Select(x => x.PercentageMaleInSchool).ToList(),
+                    Col6 = listEthnicData.Select(x => x.PercentageMaleAllSchool).ToList(),
+                    Col7 = listEthnicData.Select(x => x.PercentageInSchool).ToList(),
+                    Col8 = listEthnicData.Select(x => x.PercentageAllSchool).ToList(),
+                };
+
+                for (var i = 0; i < listEthnicData.Count; i++)
+                {
+                    dtResult.Rows.Add(
+                        transformObject.Col1[i],
+                        transformObject.Col2[i],
+                        transformObject.Col3[i],
+                        transformObject.Col4[i],
+                        transformObject.Col5[i],
+                        transformObject.Col6[i],
+                        transformObject.Col7[i],
+                        transformObject.Col8[i]
+                        );
+                }
             }
             else {
                 if (!sSchoolName.Equals("") && sSchoolName2.Equals(""))
@@ -587,21 +585,6 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 }
 
             }
-
-
-            //dtResult.Columns.Add("EthnicBackground", typeof(string));
-            //dtResult.Columns.Add("Drug", typeof(string));
-            //dtResult.Columns.Add("Patient", typeof(string));
-            //dtResult.Columns.Add("Date", typeof(DateTime));
-
-            //// add row
-            //dtResult.Rows.Add(2, dtObject);
-            //dtResult.Rows.Add(50, "Enebrel", "Sam", DateTime.Now);
-            //dtResult.Rows.Add(10, "Hydralazine", "Christoff", DateTime.Now);
-            //dtResult.Rows.Add(21, "Combivent", "Janet", DateTime.Now);
-            //dtResult.Rows.Add(100, "Dilantin", "Melanie", DateTime.Now);
-
-
             return dtResult;
         }
 

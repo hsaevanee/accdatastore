@@ -7,7 +7,7 @@ $(function () {
 $(document).ready(function () {
 
     $('#buttonGetData').click(function () {
-        if (validateCheckBoxs() == true) {
+        if (validateCheckBoxs() == true && validateDropdownlist() == true) {
             document.forms[0].submit();
         }
 
@@ -30,10 +30,6 @@ $(document).ready(function () {
     $("input[name='gender']").click(function () {
         $('input[name="CheckGenderAll"]').prop("checked", false);
     });
-
-    //$("input[name='years']").click(function () {
-    //    $('input[name="CheckYearAll"]').prop("checked", false);
-    //});
 
     $("input[name='CheckGenderAll']").change(function () {
         if (this.checked) {
@@ -68,6 +64,19 @@ $(document).ready(function () {
     //});
 
 });
+
+function validateDropdownlist() {
+    var value1 = $('#selectedschoolname :selected').text();
+    //var value2 = $('#selectedschoolname2 :selected').text();
+
+    if (value1 == "---Please Select School---") {
+        alert('Please select School');
+        return false;
+    } else {
+        return true;
+    }
+
+}
 
 function validateCheckBoxs() {
     // get all checked checkbox
