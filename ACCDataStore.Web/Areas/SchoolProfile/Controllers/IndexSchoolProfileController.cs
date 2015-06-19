@@ -171,34 +171,5 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
             return View("index2", vmIndex2SchoolProfile);           
         }
-
-        //private Dictionary<string, string> GetDicEhtnicBG()
-        //{
-        //    var dicNational = new Dictionary<string, string>();
-        //    dicNational.Add("01", "White – Scottish");
-        //    dicNational.Add("02", "African – African / Scottish / British");
-        //    dicNational.Add("03", "Caribbean or Black – Caribbean / British / Scottish");
-        //    dicNational.Add("05", "Asian – Indian/British/Scottish");
-        //    dicNational.Add("06", "Asian – Pakistani / British / Scottish");
-        //    dicNational.Add("07", "Asian –Bangladeshi / British / Scottish");
-        //    dicNational.Add("08", "Asian – Chinese / British / Scottish");
-        //    dicNational.Add("09", "White – Other");
-        //    dicNational.Add("10", "Not Disclosed");
-        //    dicNational.Add("12", "Mixed or multiple ethnic groups");
-        //    dicNational.Add("17", "Asian – Other");
-        //    dicNational.Add("19", "White – Gypsy/Traveller");
-        //    dicNational.Add("21", "White – Other British");
-        //    dicNational.Add("22", "White – Irish");
-        //    dicNational.Add("23", "White – Polish");
-        //    dicNational.Add("24", "Caribbean or Black – Other");
-        //    dicNational.Add("25", "African – Other");
-        //    dicNational.Add("27", "Other – Arab");
-        //    dicNational.Add("98", "Not Known");
-        //    dicNational.Add("99", "Other – Other");
-        //    return dicNational;
-        //}
-
-            
-
     }
 }

@@ -2,14 +2,19 @@
     background-color: #EEEEEE;
 }
 
-#header {
+/*#header {
     background-color: black;
     color: white;
     text-align: center;
     padding: 5px;
+}*/
+
+#header {
+    background-color:black;
+    color:white;
+    text-align:center;
+    padding:5px;
 }
-
-
 #container {
     background-color: white;
     width: 96%;
@@ -22,8 +27,25 @@
 }
 
 #nav {
-    width: 10%;
-    float: left;
+    line-height:30px;
+    /*background-color:#eeeeee;*/
+    /*height:100%;*/
+    width:10%;
+    float:left;
+    padding:5px;	      
+}
+
+#section {
+    width:80%;
+    float:left;
+    padding:10px;	 	 
+}
+#footer {
+    background-color:black;
+    color:white;
+    clear:both;
+    text-align:center;
+   padding:5px;	 	 
 }
 
     #nav ul {
@@ -36,13 +58,13 @@
     float: left;
 }
 
-#footer {
+/*#footer {
     background-color: black;
     color: white;
     clear: both;
     text-align: center;
     padding: 5px;
-}
+}*/
 
 
 table {

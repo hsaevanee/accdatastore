@@ -26,35 +26,94 @@
             </tr>
             <tr>
                 <td></td>
-                <td>@Html.DropDownList("selectSchoolname", new SelectList(Model.ListSchoolNameData, "----Select------"))</td>
+                <td>@Html.DropDownListFor(x => x.selectedschoolname, new SelectList(Model.ListSchoolNameData), "---Please Select School---")</td>
+                @*<td>@Html.DropDownList("selectSchoolname", new SelectList(Model.ListSchoolNameData, "----Select------"))</td>*@
             </tr>
             <tr>
                 <td colspan="2">Data available </td>
             </tr>
-            @* select years *@
-            @foreach (var itemYear in Model.ListYear)
-            {
-                <tr>
-                    <td></td>
-                    <td>
-                        <input type="checkbox" name="years" value="@itemYear"
-                               checked="checked" /> @itemYear
-                        </td>
-                    </tr>
+            @{
+                var check = "";
+                foreach (var itemYear in Model.ListYear)
+                {
+                    check = "";
+                    if (Model.ListSelectedYear != null)
+                    {
+                        if (Model.ListSelectedYear.Contains(itemYear))
+                        {
+                            check = "checked";
+                        }
+
+                    }
+                    else
+                    {
+                        check = "checked";
+                    }
+
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type="checkbox" name="years" value="@itemYear"
+                                   @check /> @itemYear
+                            </td>
+                        </tr>
+                }
+            }
+
+
+            @{
+                check = "";
+                if (Model.ListSelectedYear != null)
+                {
+                    if (Model.ListSelectedYear.Count == 2)
+                    {
+                        check = "checked";
+                    }
+
+                }
+                else
+                {
+                    check = "checked";
+                }
             }
             <tr>
                 <td></td>
                 <td>
                     <input type="checkbox" name="CheckYearAll"
-                           value="ALL" id="CheckYearAll" checked="checked" />CheckALL
+                           value="ALL" id="CheckYearAll" @check />CheckALL
                 </td>
 
             </tr>
             <tr>
                 <td colspan="2">Select Deciles </td>
             </tr>
+            @{
+        foreach (var itemSIMD in Model.ListSIMDdefinition)
+                {
+                    check = "";
+                    if (Model.ListSelectedDeciles != null)
+                    {
+                        if (Model.ListSelectedDeciles.Contains(itemSIMD))
+                        {
+                            check = "checked";
+                        }
 
-            @foreach (var itemSIMD in Model.ListSIMDdefinition)
+                    }
+                    else
+                    {
+                        check = "checked";
+                    }
+
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type="checkbox" name="SIMD" value="@itemSIMD"
+                                   @check /> @itemSIMD
+                            </td>
+                        </tr>
+                }
+            }
+            @*@foreach (var itemSIMD in Model.ListSIMDdefinition)
             {
                 <tr>
                     <td></td>
@@ -63,12 +122,28 @@
                                checked="checked" /> @itemSIMD
                         </td>
                     </tr>
-            }            
+            }*@      
+            
+            @{
+                check = "";
+                if (Model.ListSelectedDeciles != null)
+                {
+                    if (Model.ListSelectedDeciles.Count == 10)
+                    {
+                        check = "checked";
+                    }
+
+                }
+                else
+                {
+                    check = "checked";
+                }
+            }      
             <tr>
                 <td></td>
                 <td>
                     <input type="checkbox" name="CheckSIMDAll"
-                           value="ALL" id="CheckSIMDAll" checked="checked" />CheckALL
+                           value="ALL" id="CheckSIMDAll" @check />CheckALL
                 </td>
 
             </tr>
@@ -84,7 +159,7 @@
         </table>
     }
 }
-@if (Model.ListSIMDData!= null)
+@if (Model.IsShowData)
 {
     <br>
     <form id="SIMD">
