@@ -28,7 +28,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         {
             var vmNationality = new NationalityViewModel();
 
-            var schoolname = new List<string>();
+            //var schoolname = new List<string>();
             var sNationalCriteria = new List<string>();
             var setGenderCriteria = new List<string>();
 
@@ -238,19 +238,19 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             {
                 if (itemGender.Equals("F"))
                 {
-                    listChartData.Add(new { name = "FemaleAllSchool", data = listNationalFilter.Select(x => x.PercentageFemaleAllSchool).ToArray() });
                     listChartData.Add(new { name = schoolname+" Female", data = listNationalFilter.Select(x => x.PercentageFemaleInSchool).ToArray() });
+                    listChartData.Add(new { name = "FemaleAllSchool", data = listNationalFilter.Select(x => x.PercentageFemaleAllSchool).ToArray() });
                 }
 
                 if (itemGender.Equals("M"))
                 {
-                    listChartData.Add(new { name = "MaleAllSchool", data = listNationalFilter.Select(x => x.PercentageMaleAllSchool).ToArray() });
                     listChartData.Add(new { name = schoolname+" Male", data = listNationalFilter.Select(x => x.PercentageMaleInSchool).ToArray() });
+                    listChartData.Add(new { name = "MaleAllSchool", data = listNationalFilter.Select(x => x.PercentageMaleAllSchool).ToArray() });
                 }
                 if (itemGender.Equals("T"))
-                {
-                    listChartData.Add(new { name = "TotalAllSchool", data = listNationalFilter.Select(x => x.PercentageAllSchool).ToArray() });
+                {                    
                     listChartData.Add(new { name = schoolname+" Total", data = listNationalFilter.Select(x => x.PercentageInSchool).ToArray() });
+                    listChartData.Add(new { name = "TotalAllSchool", data = listNationalFilter.Select(x => x.PercentageAllSchool).ToArray() });
                 }
 
             }

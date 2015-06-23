@@ -334,5 +334,39 @@
             }
         </tbody>
     </table>
+    <h3> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Language/Index/">Level of English</a></h3>
+    <h4>% of pupils in each Level</h4>
+    @*<form id="Ethnicdata">*@
+    <table id="EALdatatable" class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th align="center">Level of English</th>
+                <th align="center">@Model.selectedschoolname</th>
+                <th align="center">All Primary Schools</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var itemEALCode in Model.ListLevelENCode)
+            {
+
+
+                var temp1 = Model.ListLevelENData.Find(x => x.IdentityCode.Equals(Convert.ToString(itemEALCode)));
+                var data1 = 0.0;
+                var data2 = 0.0;
+
+                if (temp1 != null)
+                {
+                    data1 = temp1.PercentageInSchool;
+                    data2 = temp1.PercentageAllSchool;
+                }
+                <tr>
+                    <td>@itemEALCode</td>
+                    <td align="center">@String.Format("{0:#,0.00}", data1)</td>
+                    <td align="center">@String.Format("{0:#,0.00}", data2)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
     <br>
 </div>

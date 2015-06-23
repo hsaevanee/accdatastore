@@ -47,6 +47,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             vmIndexSchoolProfile.ListNationalityData = GetNationalityDatabySchoolname(this.rpGeneric, sSchoolName);
             vmIndexSchoolProfile.ListSIMDData = GetSIMDDatabySchoolname(this.rpGeneric, sSchoolName, new List<string>(new string[] { "2012" }));
             vmIndexSchoolProfile.ListStdStageData = GetStudentStageDatabySchoolname(this.rpGeneric, sSchoolName);
+            vmIndexSchoolProfile.ListLevelENData = GetLevelENDatabySchoolname(this.rpGeneric, sSchoolName);
 
             List<string> TempCode = new List<string>();
 
@@ -120,6 +121,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             vmIndex2SchoolProfile.ListNationalityData = GetNationalityDatabySchoolname(this.rpGeneric, sSchoolName1);
             vmIndex2SchoolProfile.ListSIMDData = GetSIMDDatabySchoolname(this.rpGeneric, sSchoolName1, new List<string>(new string[] { "2012" }));
             vmIndex2SchoolProfile.ListStdStageData = GetStudentStageDatabySchoolname(this.rpGeneric, sSchoolName1);
+            vmIndex2SchoolProfile.ListLevelENData = GetLevelENDatabySchoolname(this.rpGeneric, sSchoolName1);
 
                 // Data for sSchoolName2
 
@@ -128,6 +130,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             vmIndex2SchoolProfile.ListNationalityData2 = GetNationalityDatabySchoolname(this.rpGeneric, sSchoolName2);
             vmIndex2SchoolProfile.ListSIMDData2 = GetSIMDDatabySchoolname(this.rpGeneric, sSchoolName2, new List<string>(new string[] { "2012" }));
             vmIndex2SchoolProfile.ListStdStageData2 = GetStudentStageDatabySchoolname(this.rpGeneric, sSchoolName2);
+            vmIndex2SchoolProfile.ListLevelENData2 = GetLevelENDatabySchoolname(this.rpGeneric, sSchoolName2);
 
 
             List<string> TempCode = new List<string>();
@@ -168,6 +171,13 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
             fooList = listResult.OfType<string>().ToList();
             vmIndex2SchoolProfile.ListStageCode = fooList;
+
+            listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW LevelOfEnglish FROM test_3 group by LevelOfEnglish");
+
+            fooList = listResult.OfType<string>().ToList();
+            vmIndex2SchoolProfile.ListLevelENCode = fooList;
+            vmIndex2SchoolProfile.DicLevelEN = GetDicLevelEnglish();
+
 
             return View("index2", vmIndex2SchoolProfile);           
         }

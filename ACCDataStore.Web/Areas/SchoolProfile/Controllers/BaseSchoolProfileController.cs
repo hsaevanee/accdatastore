@@ -132,7 +132,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             dicNational.Add("98", "Not Known");
             return dicNational;
         }
-
+        
         protected Dictionary<string, string> GetDicEhtnicBG()
         {
             var dicNational = new Dictionary<string, string>();
@@ -167,6 +167,21 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             dicNational.Add("T", "Total");
             return dicNational;
         }
+
+        protected Dictionary<string, string> GetDicLevelEnglish()
+        {
+            var dicNational = new Dictionary<string, string>();
+            dicNational.Add("01", "Competent");
+            dicNational.Add("02", "Developing Competence");
+            dicNational.Add("03", "Early Acquisition");
+            dicNational.Add("EN", "English as 'first language'");
+            dicNational.Add("05", "Fluent");
+            dicNational.Add("LC", "Limited Communication");
+            dicNational.Add("04", "New to English");
+            dicNational.Add("NA", "Not Assessed");
+            return dicNational;
+        }
+
 
         protected Dictionary<string, string[]> GetDicGenderWithSelected(List<string> listSelectedGender)
         {
@@ -233,9 +248,9 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             {
                 var DistinctItems = listResult.GroupBy(x => x.ElementAt(0).ToString()).ToList();
 
-                foreach (var Ethniccode in DistinctItems)
+                foreach (var Nationalcode in DistinctItems)
                 {
-                    var templist2 = (from a in listResult where a.ElementAt(0).ToString().Equals(Ethniccode.Key) select a).ToList();
+                    var templist2 = (from a in listResult where a.ElementAt(0).ToString().Equals(Nationalcode.Key) select a).ToList();
 
                     if (templist2.Count != 0)
                     {
@@ -524,6 +539,87 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             return listDataseries;
         }
 
+
+        protected List<NationalityObj> GetLevelENDatabySchoolname(IGenericRepository rpGeneric, string mSchoolname)
+        {
+            Console.Write("GetLevelENDatabySchoolname ==> ");
+
+            //List<NationalityObj> listDataseries = new List<NationalityObj>();
+            List<NationalityObj> listtemp = new List<NationalityObj>();
+            NationalityObj tempNationalObj = new NationalityObj();
+
+
+            //% for All school
+            var listResult = rpGeneric.FindByNativeSQL("Select LevelOfEnglish,Gender, (Count(LevelOfEnglish)* 100 / (Select Count(*) From test_3))  From test_3  Group By LevelOfEnglish, Gender ");
+
+            if (listResult != null)
+            {
+                var DistinctItems = listResult.GroupBy(x => x.ElementAt(0).ToString()).ToList();
+
+                foreach (var LevelENcode in DistinctItems)
+                {
+                    var templist2 = (from a in listResult where a.ElementAt(0).ToString().Equals(LevelENcode.Key) select a).ToList();
+
+                    if (templist2.Count != 0)
+                    {
+                        tempNationalObj = new NationalityObj();
+                        foreach (var itemRow in templist2)
+                        {
+                            tempNationalObj.IdentityCode = Convert.ToString(itemRow[0]);
+                            tempNationalObj.IdentityName = GetDicLevelEnglish().ContainsKey(tempNationalObj.IdentityCode) ? GetDicLevelEnglish()[tempNationalObj.IdentityCode] : "NO NAME";
+
+                            //tempEthnicObj.EthnicGender = Convert.ToString(itemRow[1]);
+                            if ("F".Equals(Convert.ToString(itemRow[1])))
+                            {
+                                tempNationalObj.PercentageFemaleAllSchool = Convert.ToDouble(itemRow[2]);
+                            }
+                            else
+                            {
+                                tempNationalObj.PercentageMaleAllSchool = Convert.ToDouble(itemRow[2]);
+                            }
+
+                        }
+
+                        listtemp.Add(tempNationalObj);
+                    }
+                }
+            }
+
+            //% for specific schoolname
+            string query = " Select LevelOfEnglish, Gender, (Count(LevelOfEnglish)* 100 /";
+            query += " (Select Count(*) From test_3 where Name in ('" + mSchoolname + " ')))";
+            query += " From test_3 where Name in ('" + mSchoolname + " ') Group By LevelOfEnglish, Gender ";
+
+            listResult = rpGeneric.FindByNativeSQL(query);
+            if (listResult != null)
+            {
+                foreach (var itemRow in listResult)
+                {
+                    var x = (from a in listtemp where a.IdentityCode.Equals(Convert.ToString(itemRow[0])) select a).ToList();
+                    if (x.Count != 0)
+                    {
+                        tempNationalObj = x[0];
+                        if ("F".Equals(Convert.ToString(itemRow[1])))
+                        {
+                            tempNationalObj.PercentageFemaleInSchool = Convert.ToDouble(itemRow[2]);
+                        }
+                        else
+                        {
+                            tempNationalObj.PercentageMaleInSchool = Convert.ToDouble(itemRow[2]);
+                        }
+                    }
+                }
+            }
+
+            foreach (var itemRow in listtemp)
+            {
+                tempNationalObj = itemRow;
+                tempNationalObj.PercentageInSchool = tempNationalObj.PercentageFemaleInSchool + tempNationalObj.PercentageMaleInSchool;
+                tempNationalObj.PercentageAllSchool = tempNationalObj.PercentageFemaleAllSchool + tempNationalObj.PercentageMaleAllSchool;
+            }
+
+            return listtemp;
+        }
 
     }
 }

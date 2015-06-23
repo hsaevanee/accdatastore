@@ -15,6 +15,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.ViewModels.IndexSchoolProfile
         public List<NationalityObj> ListNationalityData2 { get; set; }
         public List<SIMDObj> ListSIMDData2 { get; set; }
         public List<StdStageObj> ListStdStageData2 { get; set; }        
-        public List<string> ListSelectedGender2 { get; set; }        
+        public List<string> ListSelectedGender2 { get; set; }
+        public List<NationalityObj> ListLevelENData2 { get; set; }
     }
 }

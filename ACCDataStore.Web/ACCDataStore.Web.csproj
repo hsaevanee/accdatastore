@@ -213,6 +213,7 @@
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\EthnicBackground\EthnicBackground.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\IndexSchoolProfile\Index2SchoolProfile.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\IndexSchoolProfile\IndexSchoolProfile.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofile\views\Language\LevelOfEnglish.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\Nationality\Nationality.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\SIMD\SIMD.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\StudentStage\StudentStage.js" />
@@ -240,11 +241,13 @@
     <Compile Include="Areas\Nationality\ViewModels\IndexNationality\IndexViewModel.cs" />
     <Compile Include="Areas\Nationality\ViewModels\Nationality\NationalityViewModel.cs" />
     <Compile Include="Areas\SchoolProfile\Controllers\BaseSchoolProfileController.cs" />
+    <Compile Include="Areas\SchoolProfile\Controllers\LanguageController.cs" />
     <Compile Include="Areas\SchoolProfile\Controllers\SIMDController.cs" />
     <Compile Include="Areas\SchoolProfile\Controllers\StudentStageController.cs" />
     <Compile Include="Areas\SchoolProfile\ViewModels\EthnicBackground\EthnicBgViewModel.cs" />
     <Compile Include="Areas\SchoolProfile\ViewModels\IndexSchoolProfile\Index2SchoolProfileViewModel.cs" />
     <Compile Include="Areas\SchoolProfile\ViewModels\IndexSchoolProfile\IndexSchoolProfileViewModel.cs" />
+    <Compile Include="Areas\SchoolProfile\ViewModels\Language\LanguageViewModel.cs" />
     <Compile Include="Areas\SchoolProfile\ViewModels\Nationality\NationalityViewModel.cs" />
     <Compile Include="Areas\SchoolProfile\Controllers\EthnicBackgroundController.cs" />
     <Compile Include="Areas\SchoolProfile\Controllers\IndexSchoolProfileController.cs" />
@@ -294,6 +297,7 @@
     <Content Include="Areas\SchoolProfile\Views\StudentStage\Index.cshtml" />
     <Content Include="Areas\SchoolProfile\Views\IndexSchoolProfile\Index2.cshtml" />
     <Content Include="Areas\SchoolProfile\Views\EthnicBackground\Index2.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\Language\Index.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\What-is-data-observatory.cshtml" />
