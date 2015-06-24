@@ -28,6 +28,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.ViewModels
         public Dictionary<string, string> DicNational { get; set; }
         public List<string> ListLevelENCode { get; set; }
         public List<NationalityObj> ListLevelENData { get; set; }
+        public List<FSMObj> ListFSMData { get; set; }
 
     }
 }

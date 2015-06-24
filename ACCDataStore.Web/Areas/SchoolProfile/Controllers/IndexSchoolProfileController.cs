@@ -122,6 +122,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             vmIndex2SchoolProfile.ListSIMDData = GetSIMDDatabySchoolname(this.rpGeneric, sSchoolName1, new List<string>(new string[] { "2012" }));
             vmIndex2SchoolProfile.ListStdStageData = GetStudentStageDatabySchoolname(this.rpGeneric, sSchoolName1);
             vmIndex2SchoolProfile.ListLevelENData = GetLevelENDatabySchoolname(this.rpGeneric, sSchoolName1);
+            vmIndex2SchoolProfile.ListFSMData = GetFSMDatabySchoolname(this.rpGeneric, sSchoolName1);
 
                 // Data for sSchoolName2
 

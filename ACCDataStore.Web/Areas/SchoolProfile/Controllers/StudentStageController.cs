@@ -179,20 +179,20 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 if (itemGender.Equals("F"))
                 {
                     listChartData.Add(new { name = schoolname + " Female", data = listStdStageFilter.Select(x => x.PercentageFemaleInSchool).ToArray() });
-                    listChartData.Add(new { name = "FemaleAllSchool", data = listStdStageFilter.Select(x => x.PercentageFemaleAllSchool).ToArray() });
+                    listChartData.Add(new { name = "Female All School", data = listStdStageFilter.Select(x => x.PercentageFemaleAllSchool).ToArray() });
 
                 }
 
                 if (itemGender.Equals("M"))
                 {
                     listChartData.Add(new { name = schoolname + " Male", data = listStdStageFilter.Select(x => x.PercentageMaleInSchool).ToArray() });
-                    listChartData.Add(new { name = "MaleAllSchool", data = listStdStageFilter.Select(x => x.PercentageMaleAllSchool).ToArray() });
+                    listChartData.Add(new { name = "Male All School", data = listStdStageFilter.Select(x => x.PercentageMaleAllSchool).ToArray() });
 
                 }
                 if (itemGender.Equals("T"))
                 {
                     listChartData.Add(new { name = schoolname + " Total", data = listStdStageFilter.Select(x => x.PercentageInSchool).ToArray() });
-                    listChartData.Add(new { name = "TotalAllSchool", data = listStdStageFilter.Select(x => x.PercentageAllSchool).ToArray() });
+                    listChartData.Add(new { name = "Total All School", data = listStdStageFilter.Select(x => x.PercentageAllSchool).ToArray() });
                 }
 
             }

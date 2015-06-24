@@ -321,11 +321,11 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                     if (sSchoolName != null && !sSchoolName.Equals(""))
                     {
 
-                        listChartData.Add(new { name = "FemaleAllSchool", data = listEthnicFilter.Select(x => x.PercentageFemaleAllSchool).ToArray() });
+                        listChartData.Add(new { name = "Female All School", data = listEthnicFilter.Select(x => x.PercentageFemaleAllSchool).ToArray() });
                     }
                     else
                     {
-                        listChartData.Add(new { name = "FemaleAllSchool", data = listEthnicFilter2.Select(x => x.PercentageFemaleAllSchool).ToArray() });
+                        listChartData.Add(new { name = "Female All School", data = listEthnicFilter2.Select(x => x.PercentageFemaleAllSchool).ToArray() });
 
                     }
                     
@@ -353,11 +353,11 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                     if (sSchoolName != null && !sSchoolName.Equals(""))
                     {
 
-                        listChartData.Add(new { name = "MaleAllSchool", data = listEthnicFilter.Select(x => x.PercentageMaleAllSchool).ToArray() });
+                        listChartData.Add(new { name = "Male All School", data = listEthnicFilter.Select(x => x.PercentageMaleAllSchool).ToArray() });
                     }
                     else
                     {
-                        listChartData.Add(new { name = "MaleAllSchool", data = listEthnicFilter2.Select(x => x.PercentageMaleAllSchool).ToArray() });
+                        listChartData.Add(new { name = "Male All School", data = listEthnicFilter2.Select(x => x.PercentageMaleAllSchool).ToArray() });
 
                     }
                     //listChartData.Add(new { name = "MaleAllSchool", data = listEthnicFilter.Select(x => x.PercentageMaleAllSchool).ToArray() });
@@ -385,11 +385,11 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                     if (sSchoolName != null && !sSchoolName.Equals(""))
                     {
 
-                        listChartData.Add(new { name = "TotalAllSchool", data = listEthnicFilter.Select(x => x.PercentageAllSchool).ToArray() });
+                        listChartData.Add(new { name = "Total All School", data = listEthnicFilter.Select(x => x.PercentageAllSchool).ToArray() });
                     }
                     else
                     {
-                        listChartData.Add(new { name = "TotalAllSchool", data = listEthnicFilter2.Select(x => x.PercentageAllSchool).ToArray() });
+                        listChartData.Add(new { name = "Total All School", data = listEthnicFilter2.Select(x => x.PercentageAllSchool).ToArray() });
 
                     }
                     //listChartData.Add(new { name = "TotalAllSchool", data = listEthnicFilter.Select(x => x.PercentageAllSchool).ToArray() });

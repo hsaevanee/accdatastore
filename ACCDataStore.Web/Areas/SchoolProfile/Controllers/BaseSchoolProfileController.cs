@@ -171,13 +171,13 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         protected Dictionary<string, string> GetDicLevelEnglish()
         {
             var dicNational = new Dictionary<string, string>();
-            dicNational.Add("01", "Competent");
-            dicNational.Add("02", "Developing Competence");
-            dicNational.Add("03", "Early Acquisition");
-            dicNational.Add("EN", "English as 'first language'");
+            dicNational.Add("01", "New to English");
+            dicNational.Add("02", "Early Acquisition");
+            dicNational.Add("03", "Developing Competence");
+            dicNational.Add("04", "Competent");
             dicNational.Add("05", "Fluent");
-            dicNational.Add("LC", "Limited Communication");
-            dicNational.Add("04", "New to English");
+            dicNational.Add("EN", "English as 'first language'");          
+            dicNational.Add("LC", "Limited Communication");           
             dicNational.Add("NA", "Not Assessed");
             return dicNational;
         }
@@ -621,5 +621,48 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             return listtemp;
         }
 
+        protected List<FSMObj> GetFSMDatabySchoolname(IGenericRepository rpGeneric, string mSchoolname)
+        {
+            Console.Write("GetFSMDatabySchoolname in BaseSchoolProfileController ==> ");
+
+            List<FSMObj> listtemp = new List<FSMObj>();
+            FSMObj tempFSMObj = new FSMObj();
+
+
+            //% for All school
+            var listResult = rpGeneric.FindByNativeSQL("Select Name, count (FreeSchoolMealRegistered) From test_3  Group By Name");
+
+            if (listResult != null)
+            {
+
+                foreach (var itemRow in listResult)
+                {
+                    tempFSMObj = new FSMObj();
+                    tempFSMObj.schoolname = Convert.ToString(itemRow[0]);
+                    //tempFSMObj. = Convert.ToBoolean(Convert.ToInt16(tempFSMObj.IdentityCode)) ? "Registered" : "Not Registered";
+                    tempFSMObj.schoolroll = Convert.ToInt16(itemRow[1]);
+                    listtemp.Add(tempFSMObj);
+                }
+            }
+
+            //% for Registered Schoolmeal in each school
+            listResult = rpGeneric.FindByNativeSQL("Select Name, count (FreeSchoolMealRegistered) From test_3  Where FreeSchoolMealRegistered='1'Group By Name");
+
+            if (listResult != null)
+            {
+                foreach (var itemRow in listResult)
+                {
+                    var x = (from a in listtemp where a.schoolname.Equals(Convert.ToString(itemRow[0])) select a).ToList();
+                    if (x.Count != 0)
+                    {
+                        tempFSMObj = x[0];
+                        tempFSMObj.registeredFSMInSchool = Convert.ToDouble(itemRow[1]);
+                        tempFSMObj.PercentageRegisteredInSchool = (tempFSMObj.registeredFSMInSchool / tempFSMObj.schoolroll) * 100;
+                    }
+                }
+            }
+            return listtemp;
+        }
+ 
     }
 }
