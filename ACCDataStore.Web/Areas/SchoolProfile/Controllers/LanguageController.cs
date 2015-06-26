@@ -26,11 +26,15 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         // GET: SchoolProfile/Language
         public ActionResult Index(string sSchoolName)
         {
+            //level of english page counter
+            var eGeneralSettings = TS.Core.Helper.ConvertHelper.XmlFile2Object(HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"), typeof(GeneralCounter)) as GeneralCounter;
+            eGeneralSettings.EALpgCounter++;
+            TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
+
+
             var vmLanguage = new LanguageViewModel();            
             var sNationalCriteria = new List<string>();
             var setGenderCriteria = new List<string>();
-
-
             List<NationalityObj> ListLevelENData = new List<NationalityObj>();
 
             var listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW Name FROM test_3 group by Name");

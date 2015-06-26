@@ -20,9 +20,14 @@ namespace ACCDataStore.Web.Controllers
 
         public ActionResult Index(string id)
         {
+            var eGeneralSettings = TS.Core.Helper.ConvertHelper.XmlFile2Object(HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"), typeof(GeneralCounter)) as GeneralCounter;
+
             // just git test
             if (id == null)
             {
+                eGeneralSettings.HomepgCounter++;
+                TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
+
                 var vmIndex = new IndexViewModel();
                 vmIndex.ApplicationName = HttpContext.Application["APP_NAME"] as string;
                 vmIndex.ApplicationVersion = HttpContext.Application["APP_VERSION"] as string;
@@ -31,6 +36,8 @@ namespace ACCDataStore.Web.Controllers
             }
             else
             {
+                eGeneralSettings.TeampgCounter++;
+                TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
                 return View("theTeam");
             }
             

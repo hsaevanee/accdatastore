@@ -1,4 +1,5 @@
-﻿using ACCDataStore.Entity.SchoolProfile;
+﻿using ACCDataStore.Entity;
+using ACCDataStore.Entity.SchoolProfile;
 using ACCDataStore.Repository;
 using ACCDataStore.Web.Areas.SchoolProfile.ViewModels.StudentStage;
 using ClosedXML.Excel;
@@ -26,6 +27,12 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         // GET: SchoolProfile/StudentStage
         public ActionResult Index(string sSchoolName)
         {
+
+            //page counter
+            var eGeneralSettings = TS.Core.Helper.ConvertHelper.XmlFile2Object(HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"), typeof(GeneralCounter)) as GeneralCounter;
+            eGeneralSettings.StdSatgepgCounter++;
+            TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
+
             var vmStudentStage = new StudentStageViewModel();
 
             var schoolname = new List<string>();

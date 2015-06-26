@@ -23,8 +23,22 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             this.rpGeneric = rpGeneric;
         }
 
+        //private void SetDefaultCounter()
+        //{
+        //    var eGeneralCounter = new GeneralCounter();
+        //    eGeneralCounter.Module1Counter = 10;
+        //    eGeneralCounter.Module2Counter = 20;
+        //    eGeneralCounter.SiteCounter = 100;
+        //    TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralCounter, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
+        //}
+
         public ActionResult Index()
         {
+            //SetDefaultCounter();
+            var eGeneralSettings = TS.Core.Helper.ConvertHelper.XmlFile2Object(HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"), typeof(GeneralCounter)) as GeneralCounter;
+            eGeneralSettings.SiteCounter++;
+            TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
+
             //var vmIndex = new IndexViewModel();
             //var result = this.rpGeneric.FindAll<StudentSIMD>();
             var vmIndexSchoolProfile = new IndexSchoolProfileViewModel();
@@ -96,6 +110,11 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
         public ActionResult Compareable()
         {
+            //SetDefaultCounter();
+            var eGeneralSettings = TS.Core.Helper.ConvertHelper.XmlFile2Object(HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"), typeof(GeneralCounter)) as GeneralCounter;
+            eGeneralSettings.SchProfilepgCounter++;
+            TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
+
             var vmIndex2SchoolProfile = new Index2SchoolProfileViewModel();
 
             var listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW Name FROM test_3 group by Name");
