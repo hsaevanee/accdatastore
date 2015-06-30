@@ -15,7 +15,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 {
     public class LanguageController : BaseSchoolProfileController
     {
-        private static ILog log = LogManager.GetLogger(typeof(EthnicBackgroundController));
+        private static ILog log = LogManager.GetLogger(typeof(LanguageController));
 
         private readonly IGenericRepository rpGeneric;
 

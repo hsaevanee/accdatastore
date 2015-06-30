@@ -61,6 +61,7 @@
     <Compile Include="ChartData.cs" />
     <Compile Include="CriteriaParameters.cs" />
     <Compile Include="GeneralCounter.cs" />
+    <Compile Include="SchoolProfile\CurriculumObj.cs" />
     <Compile Include="SchoolProfile\EthnicObj.cs" />
     <Compile Include="Mapping\Nationality2012Map.cs" />
     <Compile Include="Mapping\MSAccess\StudentSIMDMap.cs" />

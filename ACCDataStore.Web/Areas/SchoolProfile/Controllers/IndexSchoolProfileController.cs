@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using ACCDataStore.Entity;
 using ACCDataStore.Web.Areas.SchoolProfile.ViewModels.EthnicBackground;
 using ACCDataStore.Web.Areas.SchoolProfile.ViewModels.IndexSchoolProfile;
+using ACCDataStore.Entity.SchoolProfile;
 
 namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 {
@@ -61,8 +62,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             vmIndexSchoolProfile.ListNationalityData = GetNationalityDatabySchoolname(this.rpGeneric, sSchoolName);
             vmIndexSchoolProfile.ListSIMDData = GetSIMDDatabySchoolname(this.rpGeneric, sSchoolName, new List<string>(new string[] { "2012" }));
             vmIndexSchoolProfile.ListStdStageData = GetStudentStageDatabySchoolname(this.rpGeneric, sSchoolName);
-            vmIndexSchoolProfile.ListLevelENData = GetLevelENDatabySchoolname(this.rpGeneric, sSchoolName);
-
+            vmIndexSchoolProfile.ListLevelENData = GetLevelENDatabySchoolname(this.rpGeneric, sSchoolName);            
             List<string> TempCode = new List<string>();
 
             listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW SIMD_2012_decile FROM test_3 group by SIMD_2012_decile");
@@ -142,6 +142,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             vmIndex2SchoolProfile.ListStdStageData = GetStudentStageDatabySchoolname(this.rpGeneric, sSchoolName1);
             vmIndex2SchoolProfile.ListLevelENData = GetLevelENDatabySchoolname(this.rpGeneric, sSchoolName1);
             vmIndex2SchoolProfile.ListFSMData = GetFSMDatabySchoolname(this.rpGeneric, sSchoolName1);
+            List<CurriculumObj> temp = GetCurriculumDatabySchoolname(this.rpGeneric, sSchoolName1);
 
                 // Data for sSchoolName2
 

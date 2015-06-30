@@ -663,6 +663,98 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             }
             return listtemp;
         }
+
+        protected List<CurriculumObj> GetCurriculumDatabySchoolname(IGenericRepository rpGeneric, string mSchoolname)
+        {
+            Console.Write("GetCurriculumDatabySchoolname ==> ");
+            
+            List<CurriculumObj> listtemp = new List<CurriculumObj>();
+            CurriculumObj tempCurriculumObj = new CurriculumObj();
+
+
+            //% for All school
+            var listResult = rpGeneric.FindByNativeSQL("Select distinct StudentStage,Gender From test_3  Group By StudentStage, Gender ");
+            if (listResult != null)
+            {
+                foreach (var itemRow in listResult)
+                {
+                    tempCurriculumObj = new CurriculumObj();
+                    tempCurriculumObj.stage = Convert.ToString(itemRow[0]);
+                    tempCurriculumObj.gender = Convert.ToString(itemRow[1]);
+                    listtemp.Add(tempCurriculumObj);
+                }
+
+            }
+            
+
+            //% for specific schoolname
+            string query = " Select StudentStage, Gender, Literacy_Primary, (Count(Literacy_Primary)* 100 /";
+            query += " (Select Count(*) From test_3 where Name in ('" + mSchoolname + " ')))";
+            query += " From test_3 where Name in ('" + mSchoolname + " ') Group By StudentStage, Gender,Literacy_Primary ";
+
+            listResult = rpGeneric.FindByNativeSQL(query);
+
+            if (listResult != null)
+            {
+                foreach (var itemRow in listResult)
+                {
+                    var x = (from a in listtemp where (a.stage.Equals(Convert.ToString(itemRow[0])) && a.gender.Equals(Convert.ToString(itemRow[1]))) select a).ToList();
+                    if (x.Count != 0)
+                    {
+                        tempCurriculumObj = x[0];
+                        if (itemRow[2] ==null)
+                        {
+                            tempCurriculumObj.blank = Convert.ToDouble(itemRow[3]);
+                        }
+                        else if (Convert.ToString(itemRow[2]).Equals("Early Consolidating"))
+                        {
+                            tempCurriculumObj.earlyconsolidating= Convert.ToDouble(itemRow[3]);
+                        }
+                        else if (Convert.ToString(itemRow[2]).Equals("Early Developing"))
+                        {
+                            tempCurriculumObj.earlydeveloping = Convert.ToDouble(itemRow[3]);
+                        }
+                        else if (Convert.ToString(itemRow[2]).Equals("Early Secure"))
+                        {
+                            tempCurriculumObj.earlysecure = Convert.ToDouble(itemRow[3]);
+                        }
+                        else if (Convert.ToString(itemRow[2]).Equals("First Consolidating"))
+                        {
+                            tempCurriculumObj.firstconsolidating = Convert.ToDouble(itemRow[3]);
+                        }
+                        else if (Convert.ToString(itemRow[2]).Equals("First Developing"))
+                        {
+                            tempCurriculumObj.firstdeveloping = Convert.ToDouble(itemRow[3]);
+                        }
+                        else if (Convert.ToString(itemRow[2]).Equals("First Secure"))
+                        {
+                            tempCurriculumObj.firstsecure = Convert.ToDouble(itemRow[3]);
+                        }
+                        else if (Convert.ToString(itemRow[2]).Equals("Second Consolidating"))
+                        {
+                            tempCurriculumObj.secondconsolidating = Convert.ToDouble(itemRow[3]);
+                        }
+                        else if (Convert.ToString(itemRow[2]).Equals("Second Developing"))
+                        {
+                            tempCurriculumObj.seconddeveloping = Convert.ToDouble(itemRow[3]);
+                        }
+                        else if (Convert.ToString(itemRow[2]).Equals("Second Secure"))
+                        {
+                            tempCurriculumObj.secondsecure = Convert.ToDouble(itemRow[3]);
+                        } 
+                    }
+                }
+            }
+
+            foreach (var itemRow in listtemp)
+            {
+                tempCurriculumObj = itemRow;
+                tempCurriculumObj.grandtotal = tempCurriculumObj.blank + tempCurriculumObj.earlysecure + tempCurriculumObj.earlydeveloping + tempCurriculumObj.earlyconsolidating + tempCurriculumObj.firstsecure + tempCurriculumObj.firstdeveloping + tempCurriculumObj.firstconsolidating + tempCurriculumObj.secondsecure + tempCurriculumObj.seconddeveloping + tempCurriculumObj.secondconsolidating;                
+            }
+
+            return listtemp;
+        }
+
  
     }
 }

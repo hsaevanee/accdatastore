@@ -16,7 +16,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 {
     public class StudentStageController : BaseSchoolProfileController
     {
-        private static ILog log = LogManager.GetLogger(typeof(NationalityController));
+        private static ILog log = LogManager.GetLogger(typeof(StudentStageController));
 
         private readonly IGenericRepository rpGeneric;
 
