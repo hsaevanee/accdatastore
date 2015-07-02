@@ -83,15 +83,15 @@
 
             </tr>
             <tr>
-                <td colspan="2">Select Stages </td>
+                <td colspan="2">Select Subjects </td>
             </tr>
             @{
-                foreach (var itemStage in Model.ListStageCode)
+                foreach (var itemSubject in Model.ListSubjects)
                 {
                     check = "";
                     if (Model.ListSelectedStdStage != null)
                     {
-                        if (Model.ListSelectedStdStage.Contains(itemStage))
+                        if (Model.ListSelectedStdStage.Contains(itemSubject))
                         {
                             check = "checked";
                         }
@@ -105,8 +105,8 @@
                     <tr>
                         <td></td>
                         <td>
-                            <input type="checkbox" name="stages" value="@itemStage"
-                                   @check/> @itemStage
+                            <input type="checkbox" name="subject" value="@itemSubject"
+                                   @check/> @itemSubject
                             </td>
                         </tr>
                 }
@@ -142,8 +142,8 @@
            <tr>
                 <td></td>
                 <td>
-                    <input type="checkbox" name="CheckStageAll"
-                           value="ALL" id="CheckStageAll" @check />CheckALL
+                    <input type="checkbox" name="CheckSubjectAll"
+                           value="ALL" id="CheckSubjectAll" @check />CheckALL
                 </td>
 
             </tr>
@@ -165,90 +165,42 @@
     <form id="StdStageData">
         <table id="datatable" class="display">
             <thead>
-                <tr>
-                    <th rowspan="2">Stage</th>
-                    @if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
-                    {
-                        foreach (var selection in Model.ListSelectedGender)
+                <tr>                    
+                    <th>Stage</th>
+                    <th>Gender</th>
+                        @foreach (var selection in Model.ListSkills)
                         {
-                            if (selection.Equals("F"))
-                            {
-                                <th colspan="2">Female</th>
-                            }
-                            if (selection.Equals("M"))
-                            {
-                                <th colspan="2">Male</th>
-                            }
-                            if (selection.Equals("T"))
-                            {
-                                <th colspan="2">Total</th>
-                            }
+                           <th>@selection</th>
                         }
-                    }
-                    <th rowspan="2">Select data </th>
-                </tr>
-                <tr>
-
-                    @if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
-                    {
-                        foreach (var selection in Model.ListSelectedGender)
-                        {
-                            if (selection.Equals("F"))
-                            {
-                                <th>@Model.selectedschoolname</th>
-                                <th>All Primary Schools</th>
-                            }
-                            if (selection.Equals("M"))
-                            {
-                                <th>@Model.selectedschoolname</th>
-                                <th>All Primary Schools</th>
-                            }
-                            if (selection.Equals("T"))
-                            {
-                                <th>@Model.selectedschoolname</th>
-                                <th>All Primary Schools</th>
-                            }
-                        }
-                    }
-
+                    <th>Select data </th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var itemStdStage in Model.ListStdStageData)
+                @foreach (var itemdata in Model.ListLiteracydata)
                 {
 
                     <tr>
-                        <td>@itemStdStage.StageCode</td>
+                       <td>@itemdata.stage</td>
+                       <td>@Model.DicGender[itemdata.gender]</td>
+                       <td>@String.Format("{0:#,0.00}",@itemdata.earlydeveloping)</td>
+                        <td>@String.Format("{0:#,0.00}",@itemdata.earlyconsolidating)</td>
+                        <td>@String.Format("{0:#,0.00}",@itemdata.earlysecure)</td>
+                        <td>@String.Format("{0:#,0.00}",@itemdata.firstdeveloping)</td>
+                        <td>@String.Format("{0:#,0.00}",@itemdata.firstconsolidating)</td>
+                        <td>@String.Format("{0:#,0.00}",@itemdata.firstsecure)</td>
+                        <td>@String.Format("{0:#,0.00}",@itemdata.seconddeveloping)</td>
+                        <td>@String.Format("{0:#,0.00}",@itemdata.secondconsolidating)</td>
+                        <td>@String.Format("{0:#,0.00}",@itemdata.secondsecure)</td>
+                        <td>@String.Format("{0:#,0.00}",@itemdata.blank)</td>
+                        <td>@String.Format("{0:#,0.00}",@itemdata.grandtotal)</td>
 
-                        @if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
-                        {
-                            foreach (var selection in Model.ListSelectedGender)
-                            {
-                                if (selection.Equals("F"))
-                                {
-                                    <td align="center">@String.Format("{0:#,0.00}", @itemStdStage.PercentageFemaleInSchool)</td>
-                                    <td align="center">@String.Format("{0:#,0.00}", @itemStdStage.PercentageFemaleAllSchool)</td>
-                                }
-                                if (selection.Equals("M"))
-                                {
-                                    <td align="center">@String.Format("{0:#,0.00}", @itemStdStage.PercentageMaleInSchool)</td>
-                                    <td align="center">@String.Format("{0:#,0.00}", @itemStdStage.PercentageMaleAllSchool)</td>
-                                }
-                                if (selection.Equals("T"))
-                                {
-                                    <td align="center">@String.Format("{0:#,0.00}", @itemStdStage.PercentageInSchool)</td>
-                                    <td align="center">@String.Format("{0:#,0.00}", @itemStdStage.PercentageAllSchool)</td>
-                                }
-                            }
-                        }
-
-                        <td align="center"><input type='checkbox' name='CheckDataitem' value="@itemStdStage.StageCode" checked="checked" /></td>
+                       <td align="center"><input type='checkbox' name='CheckDataitem' value="@itemdata.stage" checked="checked" /></td>
                     </tr>
                 }
             </tbody>
             <tr>
-                @{var colspan = (@Model.ListSelectedGender.Count * 2) + 1;}
-                <td colspan=@colspan></td>
+                @*@{var colspan = (@Model.ListSelectedGender.Count * 2) + 1;}*@
+                <td colspan="13"></td>
                 <td align="center"><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
             </tr>
             <tr><td><button onclick='myFunctionBar()'><label>Bar Chart</label></button></td></tr>

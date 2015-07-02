@@ -11,6 +11,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.ViewModels.Curriculum
         public bool IsShowCriteria { get; set; }
         public List<string> ListSelectedStdStage { get; set; }
         public List<string> ListSelectedSubject { get; set; }
+        public List<string> ListSubjects { get; set; }
+        public List<string> ListSkills { get; set; }
         public List<CurriculumObj> ListNMMdata { get; set; }
         public List<CurriculumObj> ListSPMdata { get; set; }
         public List<CurriculumObj> ListIHdata { get; set; }

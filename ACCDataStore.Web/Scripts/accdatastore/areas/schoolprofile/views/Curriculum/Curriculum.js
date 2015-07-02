@@ -15,16 +15,16 @@ $(document).ready(function () {
     });
 
 
-    $("input[name='stages']").click(function () {
+    $("input[name='subject']").click(function () {
         $('input[name="CheckStageAll"]').prop("checked", false);
     });
 
-    $("input[name='CheckStageAll']").change(function () {
+    $("input[name='CheckSubjectAll']").change(function () {
         if (this.checked) {
             //alert('ChecknationalityAll check');
-            $('input[name="stages"]').prop("checked", true);
+            $('input[name="subject"]').prop("checked", true);
         } else {
-            $('input[name="stages"]').prop("checked", false);
+            $('input[name="subject"]').prop("checked", false);
         }
     });
 
@@ -71,12 +71,12 @@ function validateDropdownlist() {
 function validateCheckBoxs() {
     // get all checked checkbox
     var arrCheckboxCheckedStage = [];
-    $('input[name="stages"]:checked').each(function () {
+    $('input[name="subject"]:checked').each(function () {
         arrCheckboxCheckedStage.push($(this).val());
     });
 
     if (arrCheckboxCheckedStage.length == 0) {
-        alert('Please select Stages');
+        alert('Please select Subject');
         return false;
     } else {
         return true;

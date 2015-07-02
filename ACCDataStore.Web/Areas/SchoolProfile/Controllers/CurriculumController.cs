@@ -33,7 +33,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             var vmCurriculum = new CurriculumViewModel();
 
             //var schoolname = new List<string>();
-            var sNationalCriteria = new List<string>();
+            var sSubjectCriteria = new List<string>();
             var setGenderCriteria = new List<string>();
 
             List<CurriculumObj> ListCurriculumData = new List<CurriculumObj>();
@@ -59,6 +59,32 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             vmCurriculum.ListGenderCode = fooList;
             vmCurriculum.DicGender = GetDicGender();
 
+            fooList = new List<string>();
+
+            fooList.Add("Literacy Primary");
+            fooList.Add("Reading");
+            fooList.Add("Writting");
+            fooList.Add("L and T");
+            fooList.Add("Numeracy_Primary");
+            fooList.Add("NMM");
+            fooList.Add("SPM");
+            fooList.Add("IH");
+            vmCurriculum.ListSubjects = fooList;
+
+            fooList = new List<string>();
+
+            fooList.Add("Early Developing");
+            fooList.Add("Early Consolidating");
+            fooList.Add("Early Secure");
+            fooList.Add("First Developing");
+            fooList.Add("First Consolidating");
+            fooList.Add("First Secure");
+            fooList.Add("Second Developing");
+            fooList.Add("Second Consolidating");
+            fooList.Add("Second Secure");
+            fooList.Add("blank");
+            fooList.Add("Grand Total");
+            vmCurriculum.ListSkills = fooList;
 
             if (Request.HttpMethod == "GET") // get method
             {
@@ -70,7 +96,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 {
                     vmCurriculum.IsShowCriteria = false;
                     vmCurriculum.ListSelectedGender = vmCurriculum.ListGenderCode;
-                    vmCurriculum.ListSelectedSubject = new List<string>();
+                    vmCurriculum.ListSelectedSubject = vmCurriculum.ListSubjects;
                     Session["ListSelectedGender"] = vmCurriculum.ListSelectedGender;
                     //Session["ListSelectedNationality"] = vmNationality.ListSelectedNationality;
                     Session["sSchoolName"] = sSchoolName;
@@ -86,12 +112,12 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
                 if (Request["subject"] != null)
                 {
-                    sNationalCriteria = Request["subject"].Split(',').ToList();
-                    vmCurriculum.ListSelectedSubject = sNationalCriteria;
+                    sSubjectCriteria = Request["subject"].Split(',').ToList();
+                    vmCurriculum.ListSelectedSubject = sSubjectCriteria;
                 }
                 else
                 {
-                    sNationalCriteria = null;
+                    sSubjectCriteria = null;
                 }
                 if (Request["gender"] != null)
                 {
@@ -119,12 +145,12 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 vmCurriculum.selectedschoolname = sSchoolName;
                 ListCurriculumData = GetCurriculumDatabySchoolname(rpGeneric, sSchoolName);
 
-                if (sNationalCriteria == null)
+                if (sSubjectCriteria == null)
                 {
                     vmCurriculum.IsShowData = false;
-                    vmCurriculum.ListNationalityData = null;
+                    vmCurriculum.ListLiteracydata = null;
                 }
-                else if (sNationalCriteria.Count != 0 && sNationalCriteria != null)
+                else if (sSubjectCriteria.Count != 0 && sSubjectCriteria != null)
                 {
                     vmCurriculum.IsShowData = true;
                     //vmCurriculum.ListNationalityData = ListCurriculumData.Where(x => sNationalCriteria.Contains(x.IdentityCode)).ToList();
@@ -135,7 +161,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                     vmCurriculum.IsShowData = true;
                     vmCurriculum.ListLiteracydata = ListCurriculumData;
                 }
-                Session["SessionListNationalityData"] = vmCurriculum.ListNationalityData;
+                Session["SessionListLiteracydata"] = vmCurriculum.ListLiteracydata;
             }
             return View("Index", vmCurriculum);
         }
