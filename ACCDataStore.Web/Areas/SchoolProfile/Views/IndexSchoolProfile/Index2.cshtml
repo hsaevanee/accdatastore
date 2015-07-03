@@ -425,7 +425,7 @@
             <tr>
                 <th align="center">School Name</th>
                 <th align="center">On Roll on</th>
-                <th align="center">Entitled and Registered for FSM</th>
+                @*<th align="center">Entitled and Registered for FSM</th>*@
                 <th align="center">% of school roll entitled and registered for free meals</th>                
             </tr>
         </thead>
@@ -435,7 +435,7 @@
                 <tr>
                     <td>@itemFSM.schoolname</td>
                     <td align="center">@String.Format("{0:#,0.00}", itemFSM.schoolroll)</td>
-                    <td align="center">@String.Format("{0:#,0.00}", itemFSM.registeredFSMInSchool)</td>
+                    @*<td align="center">@String.Format("{0:#,0.00}", itemFSM.registeredFSMInSchool)</td>*@
                     <td align="center">@String.Format("{0:#,0.00}", itemFSM.PercentageRegisteredInSchool)</td>
                 </tr>
             }

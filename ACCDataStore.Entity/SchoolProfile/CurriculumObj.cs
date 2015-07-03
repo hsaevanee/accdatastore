@@ -10,6 +10,7 @@ namespace ACCDataStore.Entity.SchoolProfile
     {        
         public string stage { get; set; }
         public string gender { get; set; }
+        public double early { get; set; }
         public double earlyconsolidating { get; set; }
         public double earlydeveloping { get; set; }
         public double earlysecure { get; set; }
@@ -19,6 +20,9 @@ namespace ACCDataStore.Entity.SchoolProfile
         public double seconddeveloping { get; set; }
         public double secondconsolidating { get; set; }
         public double secondsecure { get; set; }
+        public double thirddeveloping { get; set; }
+        public double thirdconsolidating { get; set; }
+        public double thirdsecure { get; set; }
         public double blank { get; set; }
         public double grandtotal { get; set; }
 

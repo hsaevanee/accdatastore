@@ -63,16 +63,16 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
             fooList.Add("Literacy Primary");
             fooList.Add("Reading");
-            fooList.Add("Writting");
+            fooList.Add("Writing");
             fooList.Add("L and T");
-            fooList.Add("Numeracy_Primary");
+            fooList.Add("Numeracy Primary");
             fooList.Add("NMM");
             fooList.Add("SPM");
             fooList.Add("IH");
             vmCurriculum.ListSubjects = fooList;
 
             fooList = new List<string>();
-
+            fooList.Add("Early");
             fooList.Add("Early Developing");
             fooList.Add("Early Consolidating");
             fooList.Add("Early Secure");
@@ -82,6 +82,9 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             fooList.Add("Second Developing");
             fooList.Add("Second Consolidating");
             fooList.Add("Second Secure");
+            fooList.Add("Third Developing");
+            fooList.Add("Third Consolidating");
+            fooList.Add("Third Secure");
             fooList.Add("blank");
             fooList.Add("Grand Total");
             vmCurriculum.ListSkills = fooList;
@@ -119,6 +122,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 {
                     sSubjectCriteria = null;
                 }
+
                 if (Request["gender"] != null)
                 {
                     vmCurriculum.ListSelectedGender = Request["gender"].Split(',').ToList();
@@ -131,6 +135,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 Session["ListSelectedGender"] = vmCurriculum.ListSelectedGender;
                 //Session["ListSelectedNationality"] = vmNationality.ListSelectedNationality;
                 // get parameter from Request object
+
             }
 
             vmCurriculum.DicGenderWithSelected = GetDicGenderWithSelected(vmCurriculum.ListSelectedGender);
@@ -143,23 +148,61 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             else if (sSchoolName != null)
             {
                 vmCurriculum.selectedschoolname = sSchoolName;
-                ListCurriculumData = GetCurriculumDatabySchoolname(rpGeneric, sSchoolName);
-
                 if (sSubjectCriteria == null)
                 {
                     vmCurriculum.IsShowData = false;
                     vmCurriculum.ListLiteracydata = null;
+                    vmCurriculum.ListNMMdata = null;
+                    vmCurriculum.ListSPMdata = null;
+                    vmCurriculum.ListIHdata = null;
+                    vmCurriculum.ListLiteracydata = null;
+                    vmCurriculum.ListReadingdata = null;
+                    vmCurriculum.ListWritingdata = null;
+                    vmCurriculum.ListLandTdata = null;
+                    vmCurriculum.ListNumeracydata = null;
                 }
-                else if (sSubjectCriteria.Count != 0 && sSubjectCriteria != null)
-                {
-                    vmCurriculum.IsShowData = true;
-                    //vmCurriculum.ListNationalityData = ListCurriculumData.Where(x => sNationalCriteria.Contains(x.IdentityCode)).ToList();
-                    vmCurriculum.ListLiteracydata = ListCurriculumData;
-                }
+                //else if (sSubjectCriteria.Count != 0 && sSubjectCriteria != null)
+                //{
+                //    vmCurriculum.IsShowData = true;
+                //    //vmCurriculum.ListNationalityData = ListCurriculumData.Where(x => sNationalCriteria.Contains(x.IdentityCode)).ToList();
+                //    vmCurriculum.ListLiteracydata = ListCurriculumData;
+                //}
                 else
                 {
+                    foreach (var subject in sSubjectCriteria) {
+                        if (subject.Equals("Literacy Primary")) {
+                            vmCurriculum.ListLiteracydata = GetCurriculumDatabySchoolname(rpGeneric, sSchoolName, "Literacy_Primary");
+                        }
+                        else if (subject.Equals("Reading"))
+                        {
+                            vmCurriculum.ListReadingdata = GetCurriculumDatabySchoolname(rpGeneric, sSchoolName, "Reading");
+                        }
+                        else if (subject.Equals("Writing"))
+                        {
+                            vmCurriculum.ListWritingdata = GetCurriculumDatabySchoolname(rpGeneric, sSchoolName, "Writing");
+                        }
+                        else if (subject.Equals("L and T"))
+                        {
+                            vmCurriculum.ListLandTdata = GetCurriculumDatabySchoolname(rpGeneric, sSchoolName, "L_and_T");
+                        }
+                        else if (subject.Equals("Numeracy Primary"))
+                        {
+                            vmCurriculum.ListNumeracydata = GetCurriculumDatabySchoolname(rpGeneric, sSchoolName, "Numeracy_Primary");
+                        }
+                        else if (subject.Equals("NMM"))
+                        {
+                            vmCurriculum.ListNMMdata = GetCurriculumDatabySchoolname(rpGeneric, sSchoolName, "NMM");
+                        }
+                        else if (subject.Equals("SPM"))
+                        {
+                            vmCurriculum.ListSPMdata = GetCurriculumDatabySchoolname(rpGeneric, sSchoolName, "SPM");
+                        }
+                        else if (subject.Equals("IH"))
+                        {
+                            vmCurriculum.ListIHdata = GetCurriculumDatabySchoolname(rpGeneric, sSchoolName, "IH");
+                        }
+                    }
                     vmCurriculum.IsShowData = true;
-                    vmCurriculum.ListLiteracydata = ListCurriculumData;
                 }
                 Session["SessionListLiteracydata"] = vmCurriculum.ListLiteracydata;
             }

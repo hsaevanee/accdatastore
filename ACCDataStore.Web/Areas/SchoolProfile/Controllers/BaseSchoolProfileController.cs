@@ -73,8 +73,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
             //% for specific schoolname
             string query = " Select EthnicBackground,Gender, (Count(EthnicBackground)* 100 /";
-            query += " (Select Count(*) From test_3 where Name in ('" + mSchoolname + " ')))";
-            query += " From test_3 where Name in ('" + mSchoolname + " ') Group By EthnicBackground, Gender ";
+            query += " (Select Count(*) From test_3 where Name in (\"" + mSchoolname + "\")))";
+            query += " From test_3 where Name in (\"" + mSchoolname + "\") Group By EthnicBackground, Gender ";
 
             listResult = rpGeneric.FindByNativeSQL(query);
             if (listResult != null)
@@ -279,8 +279,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
             //% for specific schoolname
             string query = " Select NationalIdentity, Gender, (Count(NationalIdentity)* 100 /";
-            query += " (Select Count(*) From test_3 where Name in ('" + mSchoolname + " ')))";
-            query += " From test_3 where Name in ('" + mSchoolname + " ') Group By NationalIdentity, Gender ";
+            query += " (Select Count(*) From test_3 where Name in (\"" + mSchoolname + "\")))";
+            query += " From test_3 where Name in (\"" + mSchoolname + "\") Group By NationalIdentity, Gender ";
 
             listResult = rpGeneric.FindByNativeSQL(query);
 
@@ -374,8 +374,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             }
 
             string query = " Select SIMD_2012_decile, (Count(SIMD_2012_decile)* 100 /";
-            query += " (Select Count(*) From test_3 where Name in ('" + mSchoolname + " ')))";
-            query += " From test_3 where Name in ('" + mSchoolname + " ') Group By SIMD_2012_decile ";
+            query += " (Select Count(*) From test_3 where Name in (\"" + mSchoolname + "\")))";
+            query += " From test_3 where Name in (\"" + mSchoolname + "\") Group By SIMD_2012_decile ";
 
             listResult = rpGeneric.FindByNativeSQL(query);
             if (listResult != null)
@@ -391,8 +391,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             }
 
             query = " Select SIMD_2009_decile, (Count(SIMD_2009_decile)* 100 /";
-            query += " (Select Count(*) From test_3 where Name in ('" + mSchoolname + " ')))";
-            query += " From test_3 where Name in ('" + mSchoolname + " ') Group By SIMD_2009_decile ";
+            query += " (Select Count(*) From test_3 where Name in (\"" + mSchoolname + "\")))";
+            query += " From test_3 where Name in (\"" + mSchoolname + "\") Group By SIMD_2009_decile ";
 
             listResult = rpGeneric.FindByNativeSQL(query);
             if (listResult != null)
@@ -493,8 +493,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
             //% for specific schoolname
             string query = " Select StudentStage,Gender, (Count(StudentStage)* 100 /";
-            query += " (Select Count(*) From test_3 where Name in ('" + mSchoolname + " ')))";
-            query += " From test_3 where Name in ('" + mSchoolname + " ') Group By StudentStage, Gender ";
+            query += " (Select Count(*) From test_3 where Name in (\"" + mSchoolname + "\")))";
+            query += " From test_3 where Name in (\"" + mSchoolname + "\") Group By StudentStage, Gender ";
 
             listResult = rpGeneric.FindByNativeSQL(query);
             if (listResult != null)
@@ -587,8 +587,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
             //% for specific schoolname
             string query = " Select LevelOfEnglish, Gender, (Count(LevelOfEnglish)* 100 /";
-            query += " (Select Count(*) From test_3 where Name in ('" + mSchoolname + " ')))";
-            query += " From test_3 where Name in ('" + mSchoolname + " ') Group By LevelOfEnglish, Gender ";
+            query += " (Select Count(*) From test_3 where Name in (\"" + mSchoolname + "\")))";
+            query += " From test_3 where Name in (\"" + mSchoolname + "\") Group By LevelOfEnglish, Gender ";
 
             listResult = rpGeneric.FindByNativeSQL(query);
             if (listResult != null)
@@ -664,7 +664,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             return listtemp;
         }
 
-        protected List<CurriculumObj> GetCurriculumDatabySchoolname(IGenericRepository rpGeneric, string mSchoolname)
+        protected List<CurriculumObj> GetCurriculumDatabySchoolname(IGenericRepository rpGeneric, string mSchoolname, string colname)
         {
             Console.Write("GetCurriculumDatabySchoolname ==> ");
 
@@ -680,33 +680,19 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 {
                     listtemp.Add(new CurriculumObj(Convert.ToString(itemRow[0]), Convert.ToString(itemRow[1])));
                 }
-                //listtempdata.Add(new CurriculumObj("P1", "T"));
-                //listtempdata.Add(new CurriculumObj("P2", "T"));
-                //listtempdata.Add(new CurriculumObj("P3", "T"));
-                //listtempdata.Add(new CurriculumObj("P4", "T"));
-                //listtempdata.Add(new CurriculumObj("P5", "T"));
-                //listtempdata.Add(new CurriculumObj("P6", "T"));
-                //listtempdata.Add(new CurriculumObj("P7", "T"));
             }
 
             //List<CurriculumObj> listtemp = listtempdata.OrderBy(x => x.stage).ToList();
+            string query = "";
 
             foreach (var item in listtemp)
             {
-                string query = "";
-                //% for specific schoolname
-                //if (item.gender.Equals("T"))
-                //{
-                //    query = " Select StudentStage, Literacy_Primary, (Count(*)* 100 /";
-                //    query += " (Select Count(*) From test_3 where Name in ('" + mSchoolname + "') And StudentStage in ('" + item.stage + "'))) ";
-                //    query += " From test_3 where Name in ('" + mSchoolname + "') And StudentStage in ('" + item.stage + "') Group By StudentStage, Literacy_Primary ";
-                //}
-                //else
-                //{
-                    query = " Select StudentStage, Gender, Literacy_Primary, (Count(*)* 100 /";
-                    query += " (Select Count(*) From test_3 where Name in ('" + mSchoolname + "') And StudentStage in ('" + item.stage + "') And gender in ('" + item.gender + "'))) ";
-                    query += " From test_3 where Name in ('" + mSchoolname + "') And StudentStage in ('" + item.stage + "') And gender in ('" + item.gender + "') Group By StudentStage, Gender,Literacy_Primary ";
-                //}
+                query = "";
+
+                query = " Select StudentStage, Gender, " + colname + ", (Count(*)* 100 /";
+                query += " (Select Count(*) From test_3 where Name in (\"" + mSchoolname + "\") And StudentStage in ('" + item.stage + "') And gender in ('" + item.gender + "'))) ";
+                query += " From test_3 where Name in (\"" + mSchoolname + "\") And StudentStage in ('" + item.stage + "') And gender in ('" + item.gender + "') Group By StudentStage, Gender," + colname;
+
 
                 listResult = rpGeneric.FindByNativeSQL(query);
 
@@ -721,6 +707,10 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                             if (itemRow[2] == null)
                             {
                                 tempCurriculumObj.blank = Convert.ToDouble(itemRow[3]);
+                            }
+                            else if (Convert.ToString(itemRow[2]).Equals("Early"))
+                            {
+                                tempCurriculumObj.early = Convert.ToDouble(itemRow[3]);
                             }
                             else if (Convert.ToString(itemRow[2]).Equals("Early Consolidating"))
                             {
@@ -758,6 +748,18 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                             {
                                 tempCurriculumObj.secondsecure = Convert.ToDouble(itemRow[3]);
                             }
+                            else if (Convert.ToString(itemRow[2]).Equals("Third Consolidating"))
+                            {
+                                tempCurriculumObj.thirdconsolidating = Convert.ToDouble(itemRow[3]);
+                            }
+                            else if (Convert.ToString(itemRow[2]).Equals("Third Developing"))
+                            {
+                                tempCurriculumObj.thirddeveloping = Convert.ToDouble(itemRow[3]);
+                            }
+                            else if (Convert.ToString(itemRow[2]).Equals("Third Secure"))
+                            {
+                                tempCurriculumObj.thirdsecure = Convert.ToDouble(itemRow[3]);
+                            }
                         }
                     }
                 }
@@ -769,10 +771,10 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             {
                 tempCurriculumObj = new CurriculumObj(item, "T");
 
-                string query = "";
-                query = " Select StudentStage, Literacy_Primary, (Count(*)* 100 /";
-                query += " (Select Count(*) From test_3 where Name in ('" + mSchoolname + "') And StudentStage in ('" + item + "'))) ";
-                query += " From test_3 where Name in ('" + mSchoolname + "') And StudentStage in ('" + item + "') Group By StudentStage, Literacy_Primary ";
+                query = "";
+                query = " Select StudentStage, " + colname + ", (Count(*)* 100 /";
+                query += " (Select Count(*) From test_3 where Name in (\"" + mSchoolname + "\") And StudentStage in ('" + item + "'))) ";
+                query += " From test_3 where Name in (\"" + mSchoolname + "\") And StudentStage in ('" + item + "') Group By StudentStage," + colname;
 
                 listResult = rpGeneric.FindByNativeSQL(query);
 
@@ -783,6 +785,10 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                             if (itemRow[1] == null)
                             {
                                 tempCurriculumObj.blank = Convert.ToDouble(itemRow[2]);
+                            }
+                            else if (Convert.ToString(itemRow[1]).Equals("Early"))
+                            {
+                                tempCurriculumObj.early = Convert.ToDouble(itemRow[2]);
                             }
                             else if (Convert.ToString(itemRow[1]).Equals("Early Consolidating"))
                             {
@@ -820,6 +826,18 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                             {
                                 tempCurriculumObj.secondsecure = Convert.ToDouble(itemRow[2]);
                             }
+                            else if (Convert.ToString(itemRow[1]).Equals("Third Consolidating"))
+                            {
+                                tempCurriculumObj.thirdconsolidating = Convert.ToDouble(itemRow[2]);
+                            }
+                            else if (Convert.ToString(itemRow[1]).Equals("Third Developing"))
+                            {
+                                tempCurriculumObj.thirddeveloping = Convert.ToDouble(itemRow[2]);
+                            }
+                            else if (Convert.ToString(itemRow[1]).Equals("Third Secure"))
+                            {
+                                tempCurriculumObj.thirdsecure = Convert.ToDouble(itemRow[3]);
+                            }
                         }
                     }
                 listtemp.Add(tempCurriculumObj);
@@ -854,7 +872,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             foreach (var itemRow in listtemp1)
             {
                 tempCurriculumObj = itemRow;
-                tempCurriculumObj.grandtotal = tempCurriculumObj.blank + tempCurriculumObj.earlysecure + tempCurriculumObj.earlydeveloping + tempCurriculumObj.earlyconsolidating + tempCurriculumObj.firstsecure + tempCurriculumObj.firstdeveloping + tempCurriculumObj.firstconsolidating + tempCurriculumObj.secondsecure + tempCurriculumObj.seconddeveloping + tempCurriculumObj.secondconsolidating;                
+                tempCurriculumObj.grandtotal = tempCurriculumObj.blank + tempCurriculumObj.early + tempCurriculumObj.earlysecure + tempCurriculumObj.earlydeveloping + tempCurriculumObj.earlyconsolidating + tempCurriculumObj.firstsecure + tempCurriculumObj.firstdeveloping + tempCurriculumObj.firstconsolidating + tempCurriculumObj.secondsecure + tempCurriculumObj.seconddeveloping + tempCurriculumObj.secondconsolidating + tempCurriculumObj.thirddeveloping + tempCurriculumObj.thirdconsolidating + tempCurriculumObj.thirdsecure;                
 
             }
 
