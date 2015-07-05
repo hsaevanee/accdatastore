@@ -1,6 +1,5 @@
-﻿var mSchCriteriaParams, mdataParams;
-var dataNationality;
-
+﻿//var dataNationality;
+var mNationalParams;
 $(function () {
     InitSpinner();
 });
@@ -15,33 +14,21 @@ $(document).ready(function () {
     });
 
 
-    $("input[name='subject']").click(function () {
-        $('input[name="CheckStageAll"]').prop("checked", false);
+    $("input[name='levelofen']").click(function () {
+        $('input[name="CheckLevelENAll"]').prop("checked", false);
     });
 
-    $("input[name='CheckSubjectAll']").change(function () {
+    $("input[name='CheckLevelENAll']").change(function () {
         if (this.checked) {
             //alert('ChecknationalityAll check');
-            $('input[name="subject"]').prop("checked", true);
+            $('input[name="levelofen"]').prop("checked", true);
         } else {
-            $('input[name="subject"]').prop("checked", false);
+            $('input[name="levelofen"]').prop("checked", false);
         }
     });
 
     $("input[name='gender']").click(function () {
         $('input[name="CheckGenderAll"]').prop("checked", false);
-    });
-
-    $("input[name='CheckDataitem']").click(function () {
-        $('input[name="CheckDataitemAll"]').prop("checked", false);
-    });
-
-    $("input[name='CheckDataitemAll']").change(function () {
-        if (this.checked) {
-            $('input[name="CheckDataitem"]').prop("checked", true);
-        } else {
-            $('input[name="CheckDataitem"]').prop("checked", false);
-        }
     });
 
     $("input[name='CheckGenderAll']").change(function () {
@@ -52,6 +39,29 @@ $(document).ready(function () {
             $('input[name="gender"]').prop("checked", false);
         }
     });
+
+    $("input[name='CheckDataitem']").click(function () {
+        $('input[name="CheckDataitemAll"]').prop("checked", false);
+    });
+
+    $("input[name='CheckDataitemAll']").change(function () {
+        if (this.checked) {
+            //alert('ChecknationalityAll check');
+            $('input[name="CheckDataitem"]').prop("checked", true);
+        } else {
+            $('input[name="CheckDataitem"]').prop("checked", false);
+        }
+    });
+
+    //$("input[name='CheckYearAll']").change(function () {
+    //    if (this.checked) {
+    //        //alert('ChecknationalityAll check');
+    //        $('input[name="years"]').prop("checked", true);
+    //        //$('input[name="years"]').attr( "disabled", "disabled" );
+    //    } else {
+    //        $('input[name="years"]').prop("checked", false);
+    //    }
+    //});
 
 });
 
@@ -70,13 +80,30 @@ function validateDropdownlist() {
 
 function validateCheckBoxs() {
     // get all checked checkbox
-    var arrCheckboxCheckedStage = [];
-    $('input[name="subject"]:checked').each(function () {
-        arrCheckboxCheckedStage.push($(this).val());
+    //var arrCheckboxCheckedYear = [];
+    //$('input[name="years"]:checked').each(function () {
+    //    arrCheckboxCheckedYear.push($(this).val());
+    //});
+
+    //var arrCheckboxCheckedGender = [];
+    //$('input[name="gender"]:checked').each(function () {
+    //    arrCheckboxCheckedGender.push($(this).val());
+    //});
+    var arrCheckboxCheckedLevelofEN = [];
+    $('input[name="levelofen"]:checked').each(function () {
+        arrCheckboxCheckedLevelofEN.push($(this).val());
     });
 
-    if (arrCheckboxCheckedStage.length == 0) {
-        alert('Please select Subject');
+    //if (arrCheckboxCheckedYear.length == 0) {
+    //    alert('Please select Year');
+    //    return false;
+    //} else if (arrCheckboxCheckedGender.length == 0) {
+    //    alert('Please select Gender');
+    //    return false;
+    //    //getNationalData(mNationalParams);	
+    //} else 
+    if (arrCheckboxCheckedLevelofEN.length == 0) {
+        alert('Please select level of English');
         return false;
     } else {
         return true;
@@ -84,63 +111,21 @@ function validateCheckBoxs() {
 
 }
 
-
-function myFunctionBar(buttonID, dataname) {
-
+function myFunctionBar() {
     var arrCheckboxCheckedCheckDataitem = [];
-    if (buttonID == 1) {
-        $('input[name="CheckDataitem1"]:checked').each(function () {
-            arrCheckboxCheckedCheckDataitem.push($(this).val());
-        });
-    } else if (buttonID == 2) {
-        $('input[name="CheckDataitem2"]:checked').each(function () {
-            arrCheckboxCheckedCheckDataitem.push($(this).val());
-        });
-    }else if (buttonID == 3) {
-    $('input[name="CheckDataitem3"]:checked').each(function () {
+    var arrCheckboxCheckedCheckgender = [];
+
+    $('input[name="CheckDataitem"]:checked').each(function () {
         arrCheckboxCheckedCheckDataitem.push($(this).val());
     });
-    }else if (buttonID == 4) {
-        $('input[name="CheckDataitem4"]:checked').each(function () {
-            arrCheckboxCheckedCheckDataitem.push($(this).val());
-        });
-    }else if (buttonID == 5) {
-        $('input[name="CheckDataitem5"]:checked').each(function () {
-            arrCheckboxCheckedCheckDataitem.push($(this).val());
-        });
-    }else if (buttonID == 6) {
-        $('input[name="CheckDataitem6"]:checked').each(function () {
-            arrCheckboxCheckedCheckDataitem.push($(this).val());
-        });
-    }else if (buttonID == 7) {
-        $('input[name="CheckDataitem7"]:checked').each(function () {
-            arrCheckboxCheckedCheckDataitem.push($(this).val());
-        });
-    } else if (buttonID == 8) {
-        $('input[name="CheckDataitem8"]:checked').each(function () {
-            arrCheckboxCheckedCheckDataitem.push($(this).val());
-        });
-    }
-    
-
-
-    //var JSONObject = {
-    //    "dataname": dataname,
-    //    "arrCheckboxCheckedCheckDataitem":arrCheckboxCheckedCheckDataitem
-    //}
-
-    var JSONObject = {
-        "dataname": dataname,
-        "indexDataitem":arrCheckboxCheckedCheckDataitem
-    }
 
     if (arrCheckboxCheckedCheckDataitem.length == 0) {
         alert("Please select data to create graph");
     } else {
         $.ajax({
             type: 'POST',
-            url: sContextPath + 'SchoolProfile/Curriculum/GetChartDataCurriculum',
-            data: JSON.stringify(JSONObject),
+            url: sContextPath + 'SchoolProfile/Language/GetChartDataLevelEnglish',
+            data: JSON.stringify(arrCheckboxCheckedCheckDataitem),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function (data) {
@@ -154,6 +139,7 @@ function myFunctionBar(buttonID, dataname) {
             }
         });
     }
+
 }
 
 function drawChartBar(data) {
@@ -164,7 +150,7 @@ function drawChartBar(data) {
                             type: 'bar'
                         },
                         title: {
-                            text: 'Student Stage - Primary Schools (%pupils)'
+                            text: 'Level of English - Primary Schools (%pupils)'
                         },
                         subtitle: {
                             text: ''
@@ -173,13 +159,13 @@ function drawChartBar(data) {
                             //categories: [ '0%', '5%', '10%', '15%','20%','25%','30%'],
                             categories: data.ChartCategories,
                             title: {
-                                text: 'Stages'
+                                text: 'Level of English'
                             }
                         },
                         yAxis: {
                             min: 0,
                             title: {
-                                text: '% Pupils in Each Stage'
+                                text: '% Pupils in Each Level'
                             }
                         },
                         tooltip: {
@@ -216,7 +202,7 @@ function myFunctionColumn() {
 
         $.ajax({
             type: 'POST',
-            url: sContextPath + 'SchoolProfile/StudentStage/GetChartDataStudentStage',
+            url: sContextPath + 'SchoolProfile/Language/GetChartDataLevelEnglish',
             data: JSON.stringify(arrCheckboxCheckedCheckDataitem),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
@@ -242,7 +228,7 @@ function drawChartColumn(data) {
                             type: 'column'
                         },
                         title: {
-                            text: 'Student Stage - Primary Schools (%pupils)'
+                            text: 'Level of English - Primary Schools (%pupils)'
                         },
                         subtitle: {
                             text: ''
@@ -251,13 +237,13 @@ function drawChartColumn(data) {
                             //categories: [ '0%', '5%', '10%', '15%','20%','25%','30%'],
                             categories: data.ChartCategories,
                             title: {
-                                text: 'Stages'
+                                text: 'Level of English'
                             }
                         },
                         yAxis: {
                             min: 0,
                             title: {
-                                text: '% Pupils in Each Stage'
+                                text: '% Pupils in Each Level'
                             }
                         },
                         tooltip: {
@@ -280,5 +266,3 @@ function drawChartColumn(data) {
                         }
                     });
 }
-
-

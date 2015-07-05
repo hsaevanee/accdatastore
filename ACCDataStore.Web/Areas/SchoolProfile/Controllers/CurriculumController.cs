@@ -2,9 +2,12 @@
 using ACCDataStore.Entity.SchoolProfile;
 using ACCDataStore.Repository;
 using ACCDataStore.Web.Areas.SchoolProfile.ViewModels.Curriculum;
+using ClosedXML.Excel;
 using Common.Logging;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -170,43 +173,220 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 else
                 {
                     foreach (var subject in sSubjectCriteria) {
-                        if (subject.Equals("Literacy Primary")) {
+                        if (subject.Equals("Literacy Primary")) {                            
                             vmCurriculum.ListLiteracydata = GetCurriculumDatabySchoolname(rpGeneric, sSchoolName, "Literacy_Primary");
+                            Session["SessionListLiteracydata"] = vmCurriculum.ListLiteracydata;
                         }
                         else if (subject.Equals("Reading"))
                         {
                             vmCurriculum.ListReadingdata = GetCurriculumDatabySchoolname(rpGeneric, sSchoolName, "Reading");
+                            Session["SessionListReadingdata"] = vmCurriculum.ListReadingdata;
                         }
                         else if (subject.Equals("Writing"))
                         {
                             vmCurriculum.ListWritingdata = GetCurriculumDatabySchoolname(rpGeneric, sSchoolName, "Writing");
+                            Session["SessionListWritingdata"] = vmCurriculum.ListWritingdata;
                         }
                         else if (subject.Equals("L and T"))
                         {
                             vmCurriculum.ListLandTdata = GetCurriculumDatabySchoolname(rpGeneric, sSchoolName, "L_and_T");
+                            Session["SessionListLandTdata"] = vmCurriculum.ListLandTdata;
                         }
                         else if (subject.Equals("Numeracy Primary"))
                         {
                             vmCurriculum.ListNumeracydata = GetCurriculumDatabySchoolname(rpGeneric, sSchoolName, "Numeracy_Primary");
+                            Session["SessionListNumeracydata"] = vmCurriculum.ListNumeracydata;
                         }
                         else if (subject.Equals("NMM"))
                         {
                             vmCurriculum.ListNMMdata = GetCurriculumDatabySchoolname(rpGeneric, sSchoolName, "NMM");
+                            Session["SessionListNMMdata"] = vmCurriculum.ListNMMdata;
                         }
                         else if (subject.Equals("SPM"))
                         {
                             vmCurriculum.ListSPMdata = GetCurriculumDatabySchoolname(rpGeneric, sSchoolName, "SPM");
+                            Session["SessionListSPMdata"] = vmCurriculum.ListSPMdata;
                         }
                         else if (subject.Equals("IH"))
                         {
                             vmCurriculum.ListIHdata = GetCurriculumDatabySchoolname(rpGeneric, sSchoolName, "IH");
+                            Session["SessionListIHdata"] = vmCurriculum.ListIHdata;
                         }
                     }
                     vmCurriculum.IsShowData = true;
-                }
-                Session["SessionListLiteracydata"] = vmCurriculum.ListLiteracydata;
+                }               
             }
             return View("Index", vmCurriculum);
+        }
+
+        [HttpPost]
+        public JsonResult GetChartDataCurriculum(string dataname, string[] indexDataitem)
+        {
+            try
+            {
+                object oChartData = new object();
+                string[] Categories = new string[indexDataitem.Length];
+                var listCurriculumData = new List<CurriculumObj>();
+
+                if (dataname.Equals("ListLiteracydata"))
+                {
+                    listCurriculumData = Session["SessionListLiteracydata"] as List<CurriculumObj>;
+                }
+                else if (dataname.Equals("ListReadingdata"))
+                {
+                    listCurriculumData = Session["SessionListReadingdata"] as List<CurriculumObj>;                   
+                }
+                else if (dataname.Equals("ListWritingdata"))
+                {
+                    listCurriculumData = Session["SessionListWritingdata"] as List<CurriculumObj>;   
+                }
+                else if (dataname.Equals("ListLandTdata"))
+                {
+                    listCurriculumData = Session["SessionListLandTdata"] as List<CurriculumObj>;   
+                }
+                else if (dataname.Equals("ListNumeracydata"))
+                {
+                    listCurriculumData = Session["SessionListNumeracydata"] as List<CurriculumObj>;   
+                }
+                else if (dataname.Equals("ListNMMdata"))
+                {
+                    listCurriculumData = Session["SessionListNMMdata"] as List<CurriculumObj>;   
+                }
+                else if (dataname.Equals("ListSPMdata"))
+                {
+                    listCurriculumData = Session["SessionListSPMdata"] as List<CurriculumObj>;   
+                }
+                else if (dataname.Equals("ListIHdata"))
+                {
+                    listCurriculumData = Session["SessionListIHdata"] as List<CurriculumObj>;   
+                }
+
+                //var listNationalData = Session["SessionListNationalityData"] as List<NationalityObj>;
+                if (listCurriculumData != null)
+                {
+                    var listCurriculumFilter = listCurriculumData.Where(x => indexDataitem.Contains(x.stage)).ToList();
+
+
+                    // process chart data
+                    oChartData = new
+                    {
+                        ChartTitle = "test",
+                        ChartCategories = listCurriculumFilter.Select(x => x.stage).ToArray(),
+                        ChartSeries = ProcessChartDataCurriculum(listCurriculumFilter)
+                    };
+                }
+
+
+                return Json(oChartData, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.Message, ex);
+                throw ex;
+            }
+        }
+
+        private List<object> ProcessChartDataCurriculum(List<CurriculumObj> listCurriculumdata)
+        {
+            var listChartData = new List<object>();
+            var ListSelectedGender = Session["ListSelectedGender"] as List<string>;
+            var schoolname = Session["sSchoolName"];
+
+            foreach (var itemGender in ListSelectedGender)
+            {
+                //if (itemGender.Equals("F"))
+                //{
+                //    listChartData.Add(new { name = schoolname + " Female", data = listCurriculumdata.Select(x => x.e).ToArray() });
+                //    listChartData.Add(new { name = "Female All School", data = listCurriculumdata.Select(x => x.PercentageFemaleAllSchool).ToArray() });
+                //}
+
+                //if (itemGender.Equals("M"))
+                //{
+                //    listChartData.Add(new { name = schoolname + " Male", data = listCurriculumdata.Select(x => x.PercentageMaleInSchool).ToArray() });
+                //    listChartData.Add(new { name = "Male All School", data = listCurriculumdata.Select(x => x.PercentageMaleAllSchool).ToArray() });
+                //}
+                //if (itemGender.Equals("T"))
+                //{
+                //    listChartData.Add(new { name = schoolname + " Total", data = listCurriculumdata.Select(x => x.PercentageInSchool).ToArray() });
+                //    listChartData.Add(new { name = "Total All School", data = listCurriculumdata.Select(x => x.PercentageAllSchool).ToArray() });
+                //}
+
+            }
+            return listChartData;
+        }
+
+        public ActionResult ExportExcel()
+        {
+            var listNationalityData = Session["SessionListNationalityData"] as List<NationalityObj>;
+            //string schoolname = Session["sSchoolName"].ToString();
+            var dataStream = GetWorkbookDataStream(GetData());
+            return File(dataStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "NationalityExport.xlsx");
+        }
+
+        private DataTable GetData()
+        {
+            // simulate datatable
+            var listNationalityData = Session["SessionListNationalityData"] as List<NationalityObj>;
+            // var listEthnicData2 = Session["SessionListEthnicData2"] as List<EthnicObj>;
+            string sSchoolName = Session["sSchoolName"] as string;
+            //string sSchoolName2 = Session["sSchoolName2"] as string;
+
+            //var transformObject = new Object();
+
+            DataTable dtResult = new DataTable();
+
+            dtResult.Columns.Add("IdentityCode", typeof(string));
+            dtResult.Columns.Add("Nationality", typeof(string));
+            dtResult.Columns.Add("Female in " + sSchoolName, typeof(double));
+            dtResult.Columns.Add("Female in All Primary school", typeof(double));
+            dtResult.Columns.Add("Male in " + sSchoolName, typeof(double));
+            dtResult.Columns.Add("Male in All  Primary school ", typeof(double));
+            dtResult.Columns.Add("Total in " + sSchoolName, typeof(double));
+            dtResult.Columns.Add("Total in All Primary school", typeof(double));
+
+            var transformObject = new
+            {
+                Col1 = listNationalityData.Select(x => x.IdentityCode).ToList(),
+                Col2 = listNationalityData.Select(x => x.IdentityName).ToList(),
+                Col3 = listNationalityData.Select(x => x.PercentageFemaleInSchool).ToList(),
+                Col4 = listNationalityData.Select(x => x.PercentageFemaleAllSchool).ToList(),
+                Col5 = listNationalityData.Select(x => x.PercentageMaleInSchool).ToList(),
+                Col6 = listNationalityData.Select(x => x.PercentageMaleAllSchool).ToList(),
+                Col7 = listNationalityData.Select(x => x.PercentageInSchool).ToList(),
+                Col8 = listNationalityData.Select(x => x.PercentageAllSchool).ToList(),
+            };
+
+            for (var i = 0; i < listNationalityData.Count; i++)
+            {
+                dtResult.Rows.Add(
+                    transformObject.Col1[i],
+                    transformObject.Col2[i],
+                    transformObject.Col3[i],
+                    transformObject.Col4[i],
+                    transformObject.Col5[i],
+                    transformObject.Col6[i],
+                    transformObject.Col7[i],
+                    transformObject.Col8[i]
+                    );
+            }
+            return dtResult;
+        }
+
+        private MemoryStream GetWorkbookDataStream(DataTable dtResult)
+        {
+            var workbook = new XLWorkbook();
+            var worksheet = workbook.Worksheets.Add("Sheet 1");
+            worksheet.Cell("A1").Value = "Nationality"; // use cell address in range
+            //worksheet.Cell("A2").Value = "Nationality"; // use cell address in range
+            worksheet.Cell("A2").Value = "% of pupils in each ethnic group";
+            worksheet.Cell(3, 1).InsertTable(dtResult); // use row & column index
+            worksheet.Rows().AdjustToContents();
+            worksheet.Columns().AdjustToContents();
+
+            var memoryStream = new MemoryStream();
+            workbook.SaveAs(memoryStream);
+            memoryStream.Seek(0, SeekOrigin.Begin);
+            return memoryStream;
         }
     }
 }

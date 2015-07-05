@@ -206,13 +206,12 @@
                                         <td>@String.Format("{0:#,0.00}", @itemdata.thirdsecure)</td>
                                         <td>@String.Format("{0:#,0.00}", @itemdata.blank)</td>
                                         <td>@String.Format("{0:#,0.00}", @itemdata.grandtotal)</td>
-
-                                        <td align="center"><input type='checkbox' name='CheckDataitem' value="@itemdata.stage" checked="checked" /></td>
+                                        <td align="center"><input type='checkbox' name='CheckDataitem1' value="@itemdata.stage" checked="checked" /></td>
                                     </tr>
                                 }
                             }
                         }
-                    }
+                    }                
                 </tbody>
                 <tr>
                     @*@{var colspan = (@Model.ListSelectedGender.Count * 2) + 1;}*@
@@ -220,7 +219,7 @@
                     <td align="center"><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
                 </tr>
                 <tr>
-                    <td><button onclick='myFunctionBar()'><label>Bar Chart</label></button></td>
+                    <td><button id="1" onclick='myFunctionBar(this.id, "ListLiteracydata")'><label>Bar Chart</label></button></td>
                     <td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td>
                     <td>@Html.ActionLink("Export Excel", "ExportExcel", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td>
                 </tr>
@@ -285,7 +284,7 @@
                                         <td>@String.Format("{0:#,0.00}", @itemdata.blank)</td>
                                         <td>@String.Format("{0:#,0.00}", @itemdata.grandtotal)</td>
 
-                                        <td align="center"><input type='checkbox' name='CheckDataitem' value="@itemdata.stage" checked="checked" /></td>
+                                        <td align="center"><input type='checkbox' name='CheckDataitem2' value="@itemdata.stage" checked="checked" /></td>
                                     </tr>
                                 }
                             }
@@ -298,7 +297,7 @@
                     <td align="center"><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
                 </tr>
                 <tr>
-                    <td><button onclick='myFunctionBar()'><label>Bar Chart</label></button></td>
+                    <td><button id="2" onclick='myFunctionBar(this.id, "ListReadingdata")'><label>Bar Chart</label></button></td>
                     <td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td>
                     <td>@Html.ActionLink("Export Excel", "ExportExcel", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td>
                 </tr>
@@ -363,7 +362,7 @@
                                         <td>@String.Format("{0:#,0.00}", @itemdata.blank)</td>
                                         <td>@String.Format("{0:#,0.00}", @itemdata.grandtotal)</td>
 
-                                        <td align="center"><input type='checkbox' name='CheckDataitem' value="@itemdata.stage" checked="checked" /></td>
+                                        <td align="center"><input type='checkbox' name='CheckDataitem3' value="@itemdata.stage" checked="checked" /></td>
                                     </tr>
                                 }
                             }
@@ -376,7 +375,7 @@
                     <td align="center"><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
                 </tr>
                 <tr>
-                    <td><button onclick='myFunctionBar()'><label>Bar Chart</label></button></td>
+                    <td><button id="3" onclick='myFunctionBar(this.id, "ListWritingdata")'><label>Bar Chart</label></button></td>
                     <td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td>
                     <td>@Html.ActionLink("Export Excel", "ExportExcel", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td>
                 </tr>
@@ -442,7 +441,7 @@
                                         <td>@String.Format("{0:#,0.00}", @itemdata.blank)</td>
                                         <td>@String.Format("{0:#,0.00}", @itemdata.grandtotal)</td>
 
-                                        <td align="center"><input type='checkbox' name='CheckDataitem' value="@itemdata.stage" checked="checked" /></td>
+                                        <td align="center"><input type='checkbox' name='CheckDataitem4' value="@itemdata.stage" checked="checked" /></td>
                                     </tr>
                                 }
                             }
@@ -455,7 +454,7 @@
                     <td align="center"><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
                 </tr>
                 <tr>
-                    <td><button onclick='myFunctionBar()'><label>Bar Chart</label></button></td>
+                    <td><button id="4" onclick='myFunctionBar(this.id, "ListLandTdata")'><label>Bar Chart</label></button></td>
                     <td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td>
                     <td>@Html.ActionLink("Export Excel", "ExportExcel", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td>
                 </tr>
@@ -521,7 +520,7 @@
                                         <td>@String.Format("{0:#,0.00}", @itemdata.blank)</td>
                                         <td>@String.Format("{0:#,0.00}", @itemdata.grandtotal)</td>
 
-                                        <td align="center"><input type='checkbox' name='CheckDataitem' value="@itemdata.stage" checked="checked" /></td>
+                                        <td align="center"><input type='checkbox' name='CheckDataitem5' value="@itemdata.stage" checked="checked" /></td>
                                     </tr>
                                 }
                             }
@@ -534,7 +533,7 @@
                     <td align="center"><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
                 </tr>
                 <tr>
-                    <td><button onclick='myFunctionBar()'><label>Bar Chart</label></button></td>
+                    <td><button id="5" onclick='myFunctionBar(this.id, "ListNumeracydata")'><label>Bar Chart</label></button></td>
                     <td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td>
                     <td>@Html.ActionLink("Export Excel", "ExportExcel", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td>
                 </tr>
@@ -600,7 +599,7 @@
                                         <td>@String.Format("{0:#,0.00}", @itemdata.blank)</td>
                                         <td>@String.Format("{0:#,0.00}", @itemdata.grandtotal)</td>
 
-                                        <td align="center"><input type='checkbox' name='CheckDataitem' value="@itemdata.stage" checked="checked" /></td>
+                                        <td align="center"><input type='checkbox' name='CheckDataitem6' value="@itemdata.stage" checked="checked" /></td>
                                     </tr>
                                 }
                             }
@@ -613,7 +612,7 @@
                     <td align="center"><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
                 </tr>
                 <tr>
-                    <td><button onclick='myFunctionBar()'><label>Bar Chart</label></button></td>
+                    <td><button id="6" onclick='myFunctionBar(this.id, "ListNMMdata")'><label>Bar Chart</label></button></td>
                     <td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td>
                     <td>@Html.ActionLink("Export Excel", "ExportExcel", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td>
                 </tr>
@@ -679,7 +678,7 @@
                                         <td>@String.Format("{0:#,0.00}", @itemdata.blank)</td>
                                         <td>@String.Format("{0:#,0.00}", @itemdata.grandtotal)</td>
 
-                                        <td align="center"><input type='checkbox' name='CheckDataitem' value="@itemdata.stage" checked="checked" /></td>
+                                        <td align="center"><input type='checkbox' name='CheckDataitem7' value="@itemdata.stage" checked="checked" /></td>
                                     </tr>
                                 }
                             }
@@ -692,7 +691,7 @@
                     <td align="center"><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
                 </tr>
                 <tr>
-                    <td><button onclick='myFunctionBar()'><label>Bar Chart</label></button></td>
+                    <td><button id="7" onclick='myFunctionBar(this.id, "ListSPMdata")'><label>Bar Chart</label></button></td>
                     <td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td>
                     <td>@Html.ActionLink("Export Excel", "ExportExcel", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td>
                 </tr>
@@ -758,7 +757,7 @@
                                         <td>@String.Format("{0:#,0.00}", @itemdata.blank)</td>
                                         <td>@String.Format("{0:#,0.00}", @itemdata.grandtotal)</td>
 
-                                        <td align="center"><input type='checkbox' name='CheckDataitem' value="@itemdata.stage" checked="checked" /></td>
+                                        <td align="center"><input type='checkbox' name='CheckDataitem8' value="@itemdata.stage" checked="checked" /></td>
                                     </tr>
                                 }
                             }
@@ -771,7 +770,7 @@
                     <td align="center"><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
                 </tr>
                 <tr>
-                    <td><button onclick='myFunctionBar()'><label>Bar Chart</label></button></td>
+                    <td><button id="8" onclick='myFunctionBar(this.id,"ListIHdata")'><label>Bar Chart</label></button></td>
                     <td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td>
                     <td>@Html.ActionLink("Export Excel", "ExportExcel", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td>
                 </tr>
