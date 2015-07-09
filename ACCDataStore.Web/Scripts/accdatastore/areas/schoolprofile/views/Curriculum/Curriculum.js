@@ -14,7 +14,6 @@ $(document).ready(function () {
 
     });
 
-
     $("input[name='subject']").click(function () {
         $('input[name="CheckStageAll"]').prop("checked", false);
     });
@@ -32,15 +31,98 @@ $(document).ready(function () {
         $('input[name="CheckGenderAll"]').prop("checked", false);
     });
 
-    $("input[name='CheckDataitem']").click(function () {
-        $('input[name="CheckDataitemAll"]').prop("checked", false);
+    $("input[name='CheckDataitem1']").click(function () {
+        $('input[name="CheckDataitem1All"]').prop("checked", false);
     });
 
-    $("input[name='CheckDataitemAll']").change(function () {
+    $("input[name='CheckDataitem1All']").change(function () {
         if (this.checked) {
-            $('input[name="CheckDataitem"]').prop("checked", true);
+            $('input[name="CheckDataitem1"]').prop("checked", true);
         } else {
-            $('input[name="CheckDataitem"]').prop("checked", false);
+            $('input[name="CheckDataitem1"]').prop("checked", false);
+        }
+    });
+
+    $("input[name='CheckDataitem2']").click(function () {
+        $('input[name="CheckDataitem2All"]').prop("checked", false);
+    });
+
+    $("input[name='CheckDataitem2All']").change(function () {
+        if (this.checked) {
+            $('input[name="CheckDataitem2"]').prop("checked", true);
+        } else {
+            $('input[name="CheckDataitem2"]').prop("checked", false);
+        }
+    });
+
+    $("input[name='CheckDataitem3']").click(function () {
+        $('input[name="CheckDataitem3All"]').prop("checked", false);
+    });
+
+    $("input[name='CheckDataitem3All']").change(function () {
+        if (this.checked) {
+            $('input[name="CheckDataitem3"]').prop("checked", true);
+        } else {
+            $('input[name="CheckDataitem3"]').prop("checked", false);
+        }
+    });
+
+    $("input[name='CheckDataitem4']").click(function () {
+        $('input[name="CheckDataitem4All"]').prop("checked", false);
+    });
+
+    $("input[name='CheckDataitem4All']").change(function () {
+        if (this.checked) {
+            $('input[name="CheckDataitem4"]').prop("checked", true);
+        } else {
+            $('input[name="CheckDataitem4"]').prop("checked", false);
+        }
+    });
+
+    $("input[name='CheckDataitem5']").click(function () {
+        $('input[name="CheckDataitem5All"]').prop("checked", false);
+    });
+
+    $("input[name='CheckDataitem5All']").change(function () {
+        if (this.checked) {
+            $('input[name="CheckDataitem5"]').prop("checked", true);
+        } else {
+            $('input[name="CheckDataitem5"]').prop("checked", false);
+        }
+    });
+
+    $("input[name='CheckDataitem6']").click(function () {
+        $('input[name="CheckDataitem6All"]').prop("checked", false);
+    });
+
+    $("input[name='CheckDataitem6All']").change(function () {
+        if (this.checked) {
+            $('input[name="CheckDataitem6"]').prop("checked", true);
+        } else {
+            $('input[name="CheckDataitem6"]').prop("checked", false);
+        }
+    });
+    $("input[name='CheckDataitem7']").click(function () {
+        $('input[name="CheckDataitem7All"]').prop("checked", false);
+    });
+
+    $("input[name='CheckDataitem7All']").change(function () {
+        if (this.checked) {
+            $('input[name="CheckDataitem7"]').prop("checked", true);
+        } else {
+            $('input[name="CheckDataitem7"]').prop("checked", false);
+        }
+    });
+
+    $("input[name='CheckDataitem8']").click(function () {
+        $('input[name="CheckDataitem8All"]').prop("checked", false);
+    });
+
+    $("input[name='CheckDataitem8All']").change(function () {
+        if (this.checked) {
+            $('input[name="CheckDataitem8"]').prop("checked", true);
+        } else {
+            $('input[name="CheckDataitem8"]').prop("checked", false);
         }
     });
 
@@ -84,7 +166,6 @@ function validateCheckBoxs() {
 
 }
 
-
 function myFunctionBar(buttonID, dataname) {
 
     var arrCheckboxCheckedCheckDataitem = [];
@@ -122,13 +203,6 @@ function myFunctionBar(buttonID, dataname) {
         });
     }
     
-
-
-    //var JSONObject = {
-    //    "dataname": dataname,
-    //    "arrCheckboxCheckedCheckDataitem":arrCheckboxCheckedCheckDataitem
-    //}
-
     var JSONObject = {
         "dataname": dataname,
         "indexDataitem":arrCheckboxCheckedCheckDataitem
@@ -144,7 +218,7 @@ function myFunctionBar(buttonID, dataname) {
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function (data) {
-                drawChartBar(data);
+                drawChartBar(buttonID,data);
             },
             error: function (xhr, err) {
                 if (xhr.readyState != 0 && xhr.status != 0) {
@@ -156,15 +230,15 @@ function myFunctionBar(buttonID, dataname) {
     }
 }
 
-function drawChartBar(data) {
-    $('#divChartContainer')
+function drawChartBar(buttonID,data) {
+    $('#divChartContainer' + buttonID)
             .highcharts(
                     {
                         chart: {
                             type: 'bar'
                         },
                         title: {
-                            text: 'Student Stage - Primary Schools (%pupils)'
+                            text: data.ChartTitle
                         },
                         subtitle: {
                             text: ''
@@ -179,7 +253,7 @@ function drawChartBar(data) {
                         yAxis: {
                             min: 0,
                             title: {
-                                text: '% Pupils in Each Stage'
+                                text: ''
                             }
                         },
                         tooltip: {
@@ -203,12 +277,46 @@ function drawChartBar(data) {
                     });
 }
 
-function myFunctionColumn() {
-    //alert("myFunctionColumn");
+function myFunctionColumn(buttonID, dataname) {
     var arrCheckboxCheckedCheckDataitem = [];
-    $('input[name="CheckDataitem"]:checked').each(function () {
-        arrCheckboxCheckedCheckDataitem.push($(this).val());
-    });
+    if (buttonID == 1) {
+        $('input[name="CheckDataitem1"]:checked').each(function () {
+            arrCheckboxCheckedCheckDataitem.push($(this).val());
+        });
+    } else if (buttonID == 2) {
+        $('input[name="CheckDataitem2"]:checked').each(function () {
+            arrCheckboxCheckedCheckDataitem.push($(this).val());
+        });
+    } else if (buttonID == 3) {
+        $('input[name="CheckDataitem3"]:checked').each(function () {
+            arrCheckboxCheckedCheckDataitem.push($(this).val());
+        });
+    } else if (buttonID == 4) {
+        $('input[name="CheckDataitem4"]:checked').each(function () {
+            arrCheckboxCheckedCheckDataitem.push($(this).val());
+        });
+    } else if (buttonID == 5) {
+        $('input[name="CheckDataitem5"]:checked').each(function () {
+            arrCheckboxCheckedCheckDataitem.push($(this).val());
+        });
+    } else if (buttonID == 6) {
+        $('input[name="CheckDataitem6"]:checked').each(function () {
+            arrCheckboxCheckedCheckDataitem.push($(this).val());
+        });
+    } else if (buttonID == 7) {
+        $('input[name="CheckDataitem7"]:checked').each(function () {
+            arrCheckboxCheckedCheckDataitem.push($(this).val());
+        });
+    } else if (buttonID == 8) {
+        $('input[name="CheckDataitem8"]:checked').each(function () {
+            arrCheckboxCheckedCheckDataitem.push($(this).val());
+        });
+    }
+
+    var JSONObject = {
+        "dataname": dataname,
+        "indexDataitem": arrCheckboxCheckedCheckDataitem
+    }
 
     if (arrCheckboxCheckedCheckDataitem.length == 0) {
         alert("Please select data to create graph");
@@ -216,12 +324,12 @@ function myFunctionColumn() {
 
         $.ajax({
             type: 'POST',
-            url: sContextPath + 'SchoolProfile/StudentStage/GetChartDataStudentStage',
-            data: JSON.stringify(arrCheckboxCheckedCheckDataitem),
+            url: sContextPath + 'SchoolProfile/Curriculum/GetChartDataCurriculum',
+            data: JSON.stringify(JSONObject),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function (data) {
-                drawChartColumn(data);
+                drawChartColumn(buttonID,data);
             },
             error: function (xhr, err) {
                 if (xhr.readyState != 0 && xhr.status != 0) {
@@ -234,15 +342,15 @@ function myFunctionColumn() {
 
 }
 
-function drawChartColumn(data) {
-    $('#divChartContainer')
+function drawChartColumn(buttonID,data) {
+    $('#divChartContainer' + buttonID)
             .highcharts(
                     {
                         chart: {
                             type: 'column'
                         },
                         title: {
-                            text: 'Student Stage - Primary Schools (%pupils)'
+                            text: data.ChartTitle
                         },
                         subtitle: {
                             text: ''
@@ -257,7 +365,7 @@ function drawChartColumn(data) {
                         yAxis: {
                             min: 0,
                             title: {
-                                text: '% Pupils in Each Stage'
+                                text: ''
                             }
                         },
                         tooltip: {

@@ -351,7 +351,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             //should loop through myear
 
             //% for All school
-            var listResult = rpGeneric.FindByNativeSQL("Select SIMD_2012_decile, (Count(SIMD_2012_decile)* 100 / (Select Count(*) From test_3))  From test_3  Group By SIMD_2012_decile ");
+            var listResult = rpGeneric.FindByNativeSQL("Select SIMD_2012_decile, (Count(*)* 100 / (Select Count(*) From test_3))  From test_3  Group By SIMD_2012_decile ");
             if (listResult != null)
             {
                 foreach (var itemRow in listResult)
@@ -363,7 +363,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 }
             }
 
-            listResult = rpGeneric.FindByNativeSQL("Select SIMD_2009_decile, (Count(SIMD_2009_decile)* 100 / (Select Count(*) From test_3))  From test_3  Group By SIMD_2009_decile ");
+            listResult = rpGeneric.FindByNativeSQL("Select SIMD_2009_decile, (Count(*)* 100 / (Select Count(*) From test_3))  From test_3  Group By SIMD_2009_decile ");
             if (listResult != null)
             {
                 foreach (var itemRow in listResult)
@@ -373,7 +373,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 }
             }
 
-            string query = " Select SIMD_2012_decile, (Count(SIMD_2012_decile)* 100 /";
+            string query = " Select SIMD_2012_decile, (Count(*)* 100 /";
             query += " (Select Count(*) From test_3 where Name in (\"" + mSchoolname + "\")))";
             query += " From test_3 where Name in (\"" + mSchoolname + "\") Group By SIMD_2012_decile ";
 
@@ -390,7 +390,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 }
             }
 
-            query = " Select SIMD_2009_decile, (Count(SIMD_2009_decile)* 100 /";
+            query = " Select SIMD_2009_decile, (Count(*)* 100 /";
             query += " (Select Count(*) From test_3 where Name in (\"" + mSchoolname + "\")))";
             query += " From test_3 where Name in (\"" + mSchoolname + "\") Group By SIMD_2009_decile ";
 
@@ -457,7 +457,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             StdStageObj tempStdStageObj = new StdStageObj();
 
             //% for All school
-            var listResult = rpGeneric.FindByNativeSQL("Select StudentStage,Gender,(Count(StudentStage)* 100 / (Select Count(*) From test_3))  From test_3  Group By StudentStage, Gender ");
+            var listResult = rpGeneric.FindByNativeSQL("Select StudentStage,Gender,(Count(*)* 100 / (Select Count(*) From test_3))  From test_3  Group By StudentStage, Gender ");
             if (listResult != null)
             {
                 var DistinctItems = listResult.GroupBy(x => x.ElementAt(0).ToString()).ToList();
@@ -492,7 +492,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
 
             //% for specific schoolname
-            string query = " Select StudentStage,Gender, (Count(StudentStage)* 100 /";
+            string query = " Select StudentStage,Gender, (Count(*)* 100 /";
             query += " (Select Count(*) From test_3 where Name in (\"" + mSchoolname + "\")))";
             query += " From test_3 where Name in (\"" + mSchoolname + "\") Group By StudentStage, Gender ";
 
@@ -550,7 +550,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
 
             //% for All school
-            var listResult = rpGeneric.FindByNativeSQL("Select LevelOfEnglish,Gender, (Count(LevelOfEnglish)* 100 / (Select Count(*) From test_3))  From test_3  Group By LevelOfEnglish, Gender ");
+            var listResult = rpGeneric.FindByNativeSQL("Select LevelOfEnglish,Gender, (Count(*)* 100 / (Select Count(*) From test_3))  From test_3  Group By LevelOfEnglish, Gender ");
 
             if (listResult != null)
             {
@@ -586,7 +586,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             }
 
             //% for specific schoolname
-            string query = " Select LevelOfEnglish, Gender, (Count(LevelOfEnglish)* 100 /";
+            string query = " Select LevelOfEnglish, Gender, (Count(*)* 100 /";
             query += " (Select Count(*) From test_3 where Name in (\"" + mSchoolname + "\")))";
             query += " From test_3 where Name in (\"" + mSchoolname + "\") Group By LevelOfEnglish, Gender ";
 
@@ -836,7 +836,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                             }
                             else if (Convert.ToString(itemRow[1]).Equals("Third Secure"))
                             {
-                                tempCurriculumObj.thirdsecure = Convert.ToDouble(itemRow[3]);
+                                tempCurriculumObj.thirdsecure = Convert.ToDouble(itemRow[2]);
                             }
                         }
                     }

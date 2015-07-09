@@ -17,6 +17,7 @@ namespace ACCDataStore.Entity
         public int SIMDpgCounter { get; set; }
         public int StdSatgepgCounter { get; set; }
         // level of Englisg page
-        public int EALpgCounter { get; set; } 
+        public int EALpgCounter { get; set; }
+        public int CurriculumpgCounter { get; set; } 
     }
 }

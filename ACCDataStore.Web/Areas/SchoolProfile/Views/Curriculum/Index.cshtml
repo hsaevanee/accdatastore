@@ -106,7 +106,7 @@
                         <td></td>
                         <td>
                             <input type="checkbox" name="subject" value="@itemSubject"
-                                   @check/> @itemSubject
+                                   @check/> @Model.DicSubject[itemSubject]
                             </td>
                         </tr>
                 }
@@ -180,60 +180,63 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var itemdata in Model.ListLiteracydata)
-                    {
-                        if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
-                        {
-                            foreach (var selection in Model.ListSelectedGender)
-                            {
-                                if (selection.Equals(itemdata.gender))
-                                {
-                                    <tr>
-                                        <td>@itemdata.stage</td>
-                                        <td>@Model.DicGender[itemdata.gender]</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.early)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.earlydeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.earlyconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.earlysecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.firstdeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.firstconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.firstsecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.seconddeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.secondconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.secondsecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.thirddeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.thirdconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.thirdsecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.blank)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.grandtotal)</td>
-                                        <td align="center"><input type='checkbox' name='CheckDataitem1' value="@itemdata.stage" checked="checked" /></td>
-                                    </tr>
+                    @{  var temp = "";
+                      foreach (var itemdata in Model.ListLiteracydata)
+                      {
+                          if (!temp.Equals(itemdata.stage))
+                          {
+                            <tr>
+                                <td colspan="17">@itemdata.stage</td>
+                                <td align="center"><input type='checkbox' name='CheckDataitem1' value="@itemdata.stage" checked="checked" /></td>
+                            </tr>
+                              temp = itemdata.stage;
+                          }
+                          if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
+                          {
+                              foreach (var selection in Model.ListSelectedGender)
+                              {
+                                  if (selection.Equals(itemdata.gender))
+                                  {
+                                        <tr>
+                                            <td></td>
+                                            <td align ="center">@Model.DicGender[itemdata.gender]</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.early)</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.earlydeveloping)</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.earlyconsolidating)</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.earlysecure)</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.firstdeveloping)</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.firstconsolidating)</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.firstsecure)</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.seconddeveloping)</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.secondconsolidating)</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.secondsecure)</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.thirddeveloping)</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.thirdconsolidating)</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.thirdsecure)</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.blank)</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.grandtotal)</td>
+                                             <td></td>
+                                            @*<td align="center"><input type='checkbox' name='CheckDataitem1' value="@itemdata.stage" checked="checked" /></td>*@
+                                        </tr>
+                                  }
                                 }
                             }
                         }
-                    }                
+                    }
+                               
                 </tbody>
                 <tr>
                     @*@{var colspan = (@Model.ListSelectedGender.Count * 2) + 1;}*@
                     <td colspan="17"></td>
-                    <td align="center"><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
+                    <td align="center"><input type='checkbox' name='CheckDataitem1All' id='CheckDataitem1All' value="ALL" checked="checked" />CheckALL</td>
                 </tr>
                 <tr>
                     <td><button id="1" onclick='myFunctionBar(this.id, "ListLiteracydata")'><label>Bar Chart</label></button></td>
-                    <td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td>
-                    <td>@Html.ActionLink("Export Excel", "ExportExcel", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td>
+                    <td><button id="1" onclick='myFunctionColumn(this.id, "ListLiteracydata")'><label>Column Chart</label></button></td>
+                    <td>@Html.ActionLink("Export Excel", "ExportExcel", "Curriculum", new { Area = "SchoolProfile", dataname = "ListLiteracydata" }, null)</td>
                 </tr>
-                @*<tr><td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td></tr>
-                    <tr><td>@Html.ActionLink("Export Excel", "ExportExcel", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td></tr>*@
             </table>
-            <script type="text/javascript">
-                // Put your javascript code here
-                $('#datatable').DataTable({
-                    paging: false
-                });
-            </script>
-
-            <div id="divChartContainer"></div>
+            <div id="divChartContainer1"></div>
 
             <br>
         </form>
@@ -257,35 +260,46 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var itemdata in Model.ListReadingdata)
-                    {
-                        if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
+                    @{ var temp="";
+                        foreach (var itemdata in Model.ListReadingdata)
                         {
-                            foreach (var selection in Model.ListSelectedGender)
+                            if (!temp.Equals(itemdata.stage))
                             {
-                                if (selection.Equals(itemdata.gender))
-                                {
-                                    <tr>
-                                        <td>@itemdata.stage</td>
-                                        <td>@Model.DicGender[itemdata.gender]</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.early)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.earlydeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.earlyconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.earlysecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.firstdeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.firstconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.firstsecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.seconddeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.secondconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.secondsecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.thirddeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.thirdconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.thirdsecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.blank)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.grandtotal)</td>
+                                <tr>
+                                    <td colspan="17">@itemdata.stage</td>
+                                    <td align="center"><input type='checkbox' name='CheckDataitem2' value="@itemdata.stage" checked="checked" /></td>
+                                </tr>
+                                temp = itemdata.stage;
+                            }
 
-                                        <td align="center"><input type='checkbox' name='CheckDataitem2' value="@itemdata.stage" checked="checked" /></td>
-                                    </tr>
+                            if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
+                            {
+                                foreach (var selection in Model.ListSelectedGender)
+                                {
+                                    if (selection.Equals(itemdata.gender))
+                                    {
+                                        <tr>
+                                            <td></td>
+                                            <td align="center">@Model.DicGender[itemdata.gender]</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.early)</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.earlydeveloping)</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.earlyconsolidating)</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.earlysecure)</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.firstdeveloping)</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.firstconsolidating)</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.firstsecure)</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.seconddeveloping)</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.secondconsolidating)</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.secondsecure)</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.thirddeveloping)</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.thirdconsolidating)</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.thirdsecure)</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.blank)</td>
+                                            <td align="center">@String.Format("{0:#,0.00}", @itemdata.grandtotal)</td>
+                                            <td></td>
+                                            @*<td align="center"><input type='checkbox' name='CheckDataitem2' value="@itemdata.stage" checked="checked" /></td>*@
+                                        </tr>
+                                    }
                                 }
                             }
                         }
@@ -294,24 +308,17 @@
                 <tr>
                     @*@{var colspan = (@Model.ListSelectedGender.Count * 2) + 1;}*@
                     <td colspan="17"></td>
-                    <td align="center"><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
+                    <td align="center"><input type='checkbox' name='CheckDataitem2All' id='CheckDataitem2All' value="ALL" checked="checked" />CheckALL</td>
                 </tr>
                 <tr>
                     <td><button id="2" onclick='myFunctionBar(this.id, "ListReadingdata")'><label>Bar Chart</label></button></td>
-                    <td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td>
-                    <td>@Html.ActionLink("Export Excel", "ExportExcel", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td>
+                    <td><button id="2" onclick='myFunctionColumn(this.id, "ListReadingdata")'><label>Column Chart</label></button></td>
+                    <td>@Html.ActionLink("Export Excel", "ExportExcel", "Curriculum", new { Area = "SchoolProfile", dataname = "ListReadingdata" }, null)</td>
                 </tr>
                 @*<tr><td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td></tr>
                     <tr><td>@Html.ActionLink("Export Excel", "ExportExcel", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td></tr>*@
             </table>
-            <script type="text/javascript">
-                // Put your javascript code here
-                $('#datatable1').DataTable({
-                    paging: false
-                });
-            </script>
-
-            <div id="divChartContainer"></div>
+            <div id="divChartContainer2"></div>
 
             <br>
         </form>
@@ -335,61 +342,64 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var itemdata in Model.ListWritingdata)
-                    {
-                        if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
-                        {
-                            foreach (var selection in Model.ListSelectedGender)
-                            {
-                                if (selection.Equals(itemdata.gender))
-                                {
+                    @{  var temp = "";
+                      foreach (var itemdata in Model.ListWritingdata)
+                      {
+                          if (!temp.Equals(itemdata.stage))
+                          {
+                            <tr>
+                                <td colspan="17">@itemdata.stage</td>
+                                <td align="center"><input type='checkbox' name='CheckDataitem3' value="@itemdata.stage" checked="checked" /></td>
+                            </tr>
+                              temp = itemdata.stage;
+                          }
+                          if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
+                          {
+                              foreach (var selection in Model.ListSelectedGender)
+                              {
+                                  if (selection.Equals(itemdata.gender))
+                                  {
                                     <tr>
-                                        <td>@itemdata.stage</td>
-                                        <td>@Model.DicGender[itemdata.gender]</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.early)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.earlydeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.earlyconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.earlysecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.firstdeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.firstconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.firstsecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.seconddeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.secondconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.secondsecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.thirddeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.thirdconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.thirdsecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.blank)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.grandtotal)</td>
-
-                                        <td align="center"><input type='checkbox' name='CheckDataitem3' value="@itemdata.stage" checked="checked" /></td>
+                                        <td></td>
+                                        <td align="center">@Model.DicGender[itemdata.gender]</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.early)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.earlydeveloping)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.earlyconsolidating)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.earlysecure)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.firstdeveloping)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.firstconsolidating)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.firstsecure)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.seconddeveloping)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.secondconsolidating)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.secondsecure)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.thirddeveloping)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.thirdconsolidating)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.thirdsecure)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.blank)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.grandtotal)</td>
+                                        <td></td>
+                                        @*<td align="center"><input type='checkbox' name='CheckDataitem1' value="@itemdata.stage" checked="checked" /></td>*@
                                     </tr>
-                                }
-                            }
-                        }
+                                  }
+                              }
+                          }
+                      }
                     }
                 </tbody>
                 <tr>
                     @*@{var colspan = (@Model.ListSelectedGender.Count * 2) + 1;}*@
                     <td colspan="17"></td>
-                    <td align="center"><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
+                    <td align="center"><input type='checkbox' name='CheckDataitem3All' id='CheckDataitem3All' value="ALL" checked="checked" />CheckALL</td>
                 </tr>
                 <tr>
                     <td><button id="3" onclick='myFunctionBar(this.id, "ListWritingdata")'><label>Bar Chart</label></button></td>
-                    <td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td>
-                    <td>@Html.ActionLink("Export Excel", "ExportExcel", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td>
+                    <td><button id="3" onclick='myFunctionColumn(this.id, "ListWritingdata")'><label>Column Chart</label></button></td>
+                    <td>@Html.ActionLink("Export Excel", "ExportExcel", "Curriculum", new { Area = "SchoolProfile", dataname = "ListWritingdata" }, null)</td>
                 </tr>
                 @*<tr><td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td></tr>
                     <tr><td>@Html.ActionLink("Export Excel", "ExportExcel", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td></tr>*@
             </table>
-            <script type="text/javascript">
-                // Put your javascript code here
-                $('#datatable2').DataTable({
-                    paging: false
-                });
-            </script>
-
-            <div id="divChartContainer"></div>
+            <div id="divChartContainer3"></div>
 
             <br>
         </form>
@@ -402,7 +412,7 @@
             <table id="datatable3" class="display">
                 <thead>
                     <tr><th colspan="18">@Model.selectedschoolname</th></tr>
-                    <tr><th colspan="18">L and T</th></tr>
+                    <tr><th colspan="18">Listening and Talking</th></tr>
                     <tr>
                         <th>Stage</th>
                         <th>Gender</th>
@@ -414,61 +424,64 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var itemdata in Model.ListLandTdata)
-                    {
-                        if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
-                        {
-                            foreach (var selection in Model.ListSelectedGender)
-                            {
-                                if (selection.Equals(itemdata.gender))
-                                {
+                    @{  var temp = "";
+                      foreach (var itemdata in Model.ListLandTdata)
+                      {
+                          if (!temp.Equals(itemdata.stage))
+                          {
+                            <tr>
+                                <td colspan="17">@itemdata.stage</td>
+                                <td align="center"><input type='checkbox' name='CheckDataitem4' value="@itemdata.stage" checked="checked" /></td>
+                            </tr>
+                              temp = itemdata.stage;
+                          }
+                          if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
+                          {
+                              foreach (var selection in Model.ListSelectedGender)
+                              {
+                                  if (selection.Equals(itemdata.gender))
+                                  {
                                     <tr>
-                                        <td>@itemdata.stage</td>
-                                        <td>@Model.DicGender[itemdata.gender]</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.early)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.earlydeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.earlyconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.earlysecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.firstdeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.firstconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.firstsecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.seconddeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.secondconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.secondsecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.thirddeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.thirdconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.thirdsecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.blank)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.grandtotal)</td>
-
-                                        <td align="center"><input type='checkbox' name='CheckDataitem4' value="@itemdata.stage" checked="checked" /></td>
+                                        <td></td>
+                                        <td align="center">@Model.DicGender[itemdata.gender]</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.early)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.earlydeveloping)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.earlyconsolidating)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.earlysecure)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.firstdeveloping)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.firstconsolidating)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.firstsecure)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.seconddeveloping)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.secondconsolidating)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.secondsecure)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.thirddeveloping)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.thirdconsolidating)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.thirdsecure)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.blank)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.grandtotal)</td>
+                                        <td></td>
+                                        @*<td align="center"><input type='checkbox' name='CheckDataitem1' value="@itemdata.stage" checked="checked" /></td>*@
                                     </tr>
-                                }
-                            }
-                        }
+                                  }
+                              }
+                          }
+                      }
                     }
                 </tbody>
                 <tr>
                     @*@{var colspan = (@Model.ListSelectedGender.Count * 2) + 1;}*@
                     <td colspan="17"></td>
-                    <td align="center"><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
+                    <td align="center"><input type='checkbox' name='CheckDataitem4All' id='CheckDataitem4All' value="ALL" checked="checked" />CheckALL</td>
                 </tr>
                 <tr>
                     <td><button id="4" onclick='myFunctionBar(this.id, "ListLandTdata")'><label>Bar Chart</label></button></td>
-                    <td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td>
-                    <td>@Html.ActionLink("Export Excel", "ExportExcel", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td>
+                    <td><button id="4" onclick='myFunctionColumn(this.id, "ListLandTdata")'><label>Column Chart</label></button></td>
+                    <td>@Html.ActionLink("Export Excel", "ExportExcel", "Curriculum", new { Area = "SchoolProfile", dataname = "ListLandTdata" }, null)</td>
                 </tr>
                 @*<tr><td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td></tr>
                     <tr><td>@Html.ActionLink("Export Excel", "ExportExcel", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td></tr>*@
             </table>
-            <script type="text/javascript">
-                // Put your javascript code here
-                $('#datatable3').DataTable({
-                    paging: false
-                });
-            </script>
-
-            <div id="divChartContainer"></div>
+            <div id="divChartContainer4"></div>
 
             <br>
         </form>
@@ -493,61 +506,65 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var itemdata in Model.ListNumeracydata)
-                    {
-                        if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
-                        {
-                            foreach (var selection in Model.ListSelectedGender)
-                            {
-                                if (selection.Equals(itemdata.gender))
-                                {
+                    @{  var temp = "";
+                      foreach (var itemdata in Model.ListNumeracydata)
+                      {
+                          if (!temp.Equals(itemdata.stage))
+                          {
+                            <tr>
+                                <td colspan="17">@itemdata.stage</td>
+                                <td align="center"><input type='checkbox' name='CheckDataitem5' value="@itemdata.stage" checked="checked" /></td>
+                            </tr>
+                              temp = itemdata.stage;
+                          }
+                          if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
+                          {
+                              foreach (var selection in Model.ListSelectedGender)
+                              {
+                                  if (selection.Equals(itemdata.gender))
+                                  {
                                     <tr>
-                                        <td>@itemdata.stage</td>
-                                        <td>@Model.DicGender[itemdata.gender]</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.early)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.earlydeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.earlyconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.earlysecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.firstdeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.firstconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.firstsecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.seconddeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.secondconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.secondsecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.thirddeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.thirdconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.thirdsecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.blank)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.grandtotal)</td>
-
-                                        <td align="center"><input type='checkbox' name='CheckDataitem5' value="@itemdata.stage" checked="checked" /></td>
+                                        <td></td>
+                                        <td align="center">@Model.DicGender[itemdata.gender]</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.early)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.earlydeveloping)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.earlyconsolidating)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.earlysecure)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.firstdeveloping)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.firstconsolidating)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.firstsecure)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.seconddeveloping)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.secondconsolidating)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.secondsecure)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.thirddeveloping)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.thirdconsolidating)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.thirdsecure)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.blank)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.grandtotal)</td>
+                                        <td></td>
+                                        @*<td align="center"><input type='checkbox' name='CheckDataitem1' value="@itemdata.stage" checked="checked" /></td>*@
                                     </tr>
-                                }
-                            }
-                        }
+                                  }
+                              }
+                          }
+                      }
                     }
                 </tbody>
                 <tr>
                     @*@{var colspan = (@Model.ListSelectedGender.Count * 2) + 1;}*@
                     <td colspan="17"></td>
-                    <td align="center"><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
+                    <td align="center"><input type='checkbox' name='CheckDataitem5All' id='CheckDataitem5All' value="ALL" checked="checked" />CheckALL</td>
                 </tr>
                 <tr>
                     <td><button id="5" onclick='myFunctionBar(this.id, "ListNumeracydata")'><label>Bar Chart</label></button></td>
-                    <td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td>
-                    <td>@Html.ActionLink("Export Excel", "ExportExcel", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td>
+                    <td><button id="5" onclick='myFunctionColumn(this.id, "ListNumeracydata")'><label>Column Chart</label></button></td>
+                    <td>@Html.ActionLink("Export Excel", "ExportExcel", "Curriculum", new { Area = "SchoolProfile", dataname = "ListNumeracydata" }, null)</td>
                 </tr>
                 @*<tr><td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td></tr>
                     <tr><td>@Html.ActionLink("Export Excel", "ExportExcel", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td></tr>*@
             </table>
-            <script type="text/javascript">
-                // Put your javascript code here
-                $('#datatable4').DataTable({
-                    paging: false
-                });
-            </script>
 
-            <div id="divChartContainer"></div>
+            <div id="divChartContainer5"></div>
 
             <br>
         </form>
@@ -560,7 +577,7 @@
             <table id="datatable5" class="display">
                 <thead>
                     <tr><th colspan="18">@Model.selectedschoolname</th></tr>
-                    <tr><th colspan="18">NMM</th></tr>
+                    <tr><th colspan="18">Number, Money & Measure</th></tr>
                     <tr>
                         <th>Stage</th>
                         <th>Gender</th>
@@ -572,61 +589,64 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var itemdata in Model.ListNMMdata)
-                    {
-                        if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
-                        {
-                            foreach (var selection in Model.ListSelectedGender)
-                            {
-                                if (selection.Equals(itemdata.gender))
-                                {
+                    @{  var temp = "";
+                      foreach (var itemdata in Model.ListNMMdata)
+                      {
+                          if (!temp.Equals(itemdata.stage))
+                          {
+                            <tr>
+                                <td colspan="17">@itemdata.stage</td>
+                                <td align="center"><input type='checkbox' name='CheckDataitem6' value="@itemdata.stage" checked="checked" /></td>
+                            </tr>
+                              temp = itemdata.stage;
+                          }
+                          if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
+                          {
+                              foreach (var selection in Model.ListSelectedGender)
+                              {
+                                  if (selection.Equals(itemdata.gender))
+                                  {
                                     <tr>
-                                        <td>@itemdata.stage</td>
-                                        <td>@Model.DicGender[itemdata.gender]</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.early)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.earlydeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.earlyconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.earlysecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.firstdeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.firstconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.firstsecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.seconddeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.secondconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.secondsecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.thirddeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.thirdconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.thirdsecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.blank)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.grandtotal)</td>
-
-                                        <td align="center"><input type='checkbox' name='CheckDataitem6' value="@itemdata.stage" checked="checked" /></td>
+                                        <td></td>
+                                        <td align="center">@Model.DicGender[itemdata.gender]</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.early)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.earlydeveloping)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.earlyconsolidating)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.earlysecure)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.firstdeveloping)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.firstconsolidating)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.firstsecure)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.seconddeveloping)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.secondconsolidating)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.secondsecure)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.thirddeveloping)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.thirdconsolidating)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.thirdsecure)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.blank)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.grandtotal)</td>
+                                        <td></td>
+                                        @*<td align="center"><input type='checkbox' name='CheckDataitem1' value="@itemdata.stage" checked="checked" /></td>*@
                                     </tr>
-                                }
-                            }
-                        }
+                                  }
+                              }
+                          }
+                      }
                     }
                 </tbody>
                 <tr>
                     @*@{var colspan = (@Model.ListSelectedGender.Count * 2) + 1;}*@
                     <td colspan="17"></td>
-                    <td align="center"><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
+                    <td align="center"><input type='checkbox' name='CheckDataitem6All' id='CheckDataitem6All' value="ALL" checked="checked" />CheckALL</td>
                 </tr>
                 <tr>
                     <td><button id="6" onclick='myFunctionBar(this.id, "ListNMMdata")'><label>Bar Chart</label></button></td>
-                    <td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td>
-                    <td>@Html.ActionLink("Export Excel", "ExportExcel", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td>
+                    <td><button id="6" onclick='myFunctionColumn(this.id, "ListNMMdata")'><label>Column Chart</label></button></td>
+                    <td>@Html.ActionLink("Export Excel", "ExportExcel", "Curriculum", new { Area = "SchoolProfile", dataname = "ListNMMdata" }, null)</td>
                 </tr>
                 @*<tr><td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td></tr>
                     <tr><td>@Html.ActionLink("Export Excel", "ExportExcel", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td></tr>*@
             </table>
-            <script type="text/javascript">
-                // Put your javascript code here
-                $('#datatable5').DataTable({
-                    paging: false
-                });
-            </script>
-
-            <div id="divChartContainer"></div>
+            <div id="divChartContainer6"></div>
 
             <br>
         </form>
@@ -639,7 +659,7 @@
             <table id="datatable6" class="display">
                 <thead>
                     <tr><th colspan="18">@Model.selectedschoolname</th></tr>
-                    <tr><th colspan="18">SPM</th></tr>
+                    <tr><th colspan="18">Shape, Position & Movement</th></tr>
                     <tr>
                         <th>Stage</th>
                         <th>Gender</th>
@@ -651,61 +671,64 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var itemdata in Model.ListSPMdata)
-                    {
-                        if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
-                        {
-                            foreach (var selection in Model.ListSelectedGender)
-                            {
-                                if (selection.Equals(itemdata.gender))
-                                {
+                    @{  var temp = "";
+                      foreach (var itemdata in Model.ListSPMdata)
+                      {
+                          if (!temp.Equals(itemdata.stage))
+                          {
+                            <tr>
+                                <td colspan="17">@itemdata.stage</td>
+                                <td align="center"><input type='checkbox' name='CheckDataitem7' value="@itemdata.stage" checked="checked" /></td>
+                            </tr>
+                              temp = itemdata.stage;
+                          }
+                          if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
+                          {
+                              foreach (var selection in Model.ListSelectedGender)
+                              {
+                                  if (selection.Equals(itemdata.gender))
+                                  {
                                     <tr>
-                                        <td>@itemdata.stage</td>
-                                        <td>@Model.DicGender[itemdata.gender]</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.early)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.earlydeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.earlyconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.earlysecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.firstdeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.firstconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.firstsecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.seconddeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.secondconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.secondsecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.thirddeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.thirdconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.thirdsecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.blank)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.grandtotal)</td>
-
-                                        <td align="center"><input type='checkbox' name='CheckDataitem7' value="@itemdata.stage" checked="checked" /></td>
+                                        <td></td>
+                                        <td align="center">@Model.DicGender[itemdata.gender]</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.early)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.earlydeveloping)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.earlyconsolidating)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.earlysecure)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.firstdeveloping)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.firstconsolidating)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.firstsecure)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.seconddeveloping)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.secondconsolidating)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.secondsecure)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.thirddeveloping)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.thirdconsolidating)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.thirdsecure)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.blank)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.grandtotal)</td>
+                                        <td></td>
+                                        @*<td align="center"><input type='checkbox' name='CheckDataitem1' value="@itemdata.stage" checked="checked" /></td>*@
                                     </tr>
-                                }
-                            }
-                        }
+                                  }
+                              }
+                          }
+                      }
                     }
                 </tbody>
                 <tr>
                     @*@{var colspan = (@Model.ListSelectedGender.Count * 2) + 1;}*@
                     <td colspan="17"></td>
-                    <td align="center"><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
+                    <td align="center"><input type='checkbox' name='CheckDataitem7All' id='CheckDataitem7All' value="ALL" checked="checked" />CheckALL</td>
                 </tr>
                 <tr>
                     <td><button id="7" onclick='myFunctionBar(this.id, "ListSPMdata")'><label>Bar Chart</label></button></td>
-                    <td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td>
-                    <td>@Html.ActionLink("Export Excel", "ExportExcel", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td>
+                    <td><button id="7" onclick='myFunctionColumn(this.id, "ListSPMdata")'><label>Column Chart</label></button></td>
+                    <td>@Html.ActionLink("Export Excel", "ExportExcel", "Curriculum", new { Area = "SchoolProfile", dataname = "ListSPMdata" }, null)</td>
                 </tr>
                 @*<tr><td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td></tr>
                     <tr><td>@Html.ActionLink("Export Excel", "ExportExcel", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td></tr>*@
             </table>
-            <script type="text/javascript">
-                // Put your javascript code here
-                $('#datatable6').DataTable({
-                    paging: false
-                });
-            </script>
-
-            <div id="divChartContainer"></div>
+            <div id="divChartContainer7"></div>
 
             <br>
         </form>
@@ -718,7 +741,7 @@
             <table id="datatable7" class="display">
                 <thead>
                     <tr><th colspan="18">@Model.selectedschoolname</th></tr>
-                    <tr><th colspan="18">IH</th></tr>
+                    <tr><th colspan="18">Information Handling</th></tr>
                     <tr>
                         <th>Stage</th>
                         <th>Gender</th>
@@ -730,61 +753,64 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var itemdata in Model.ListIHdata)
-                    {
-                        if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
-                        {
-                            foreach (var selection in Model.ListSelectedGender)
-                            {
-                                if (selection.Equals(itemdata.gender))
-                                {
+                    @{  var temp = "";
+                      foreach (var itemdata in Model.ListIHdata)
+                      {
+                          if (!temp.Equals(itemdata.stage))
+                          {
+                            <tr>
+                                <td colspan="17">@itemdata.stage</td>
+                                <td align="center"><input type='checkbox' name='CheckDataitem8' value="@itemdata.stage" checked="checked" /></td>
+                            </tr>
+                              temp = itemdata.stage;
+                          }
+                          if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
+                          {
+                              foreach (var selection in Model.ListSelectedGender)
+                              {
+                                  if (selection.Equals(itemdata.gender))
+                                  {
                                     <tr>
-                                        <td>@itemdata.stage</td>
-                                        <td>@Model.DicGender[itemdata.gender]</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.early)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.earlydeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.earlyconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.earlysecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.firstdeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.firstconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.firstsecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.seconddeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.secondconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.secondsecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.thirddeveloping)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.thirdconsolidating)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.thirdsecure)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.blank)</td>
-                                        <td>@String.Format("{0:#,0.00}", @itemdata.grandtotal)</td>
-
-                                        <td align="center"><input type='checkbox' name='CheckDataitem8' value="@itemdata.stage" checked="checked" /></td>
+                                        <td></td>
+                                        <td align="center">@Model.DicGender[itemdata.gender]</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.early)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.earlydeveloping)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.earlyconsolidating)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.earlysecure)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.firstdeveloping)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.firstconsolidating)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.firstsecure)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.seconddeveloping)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.secondconsolidating)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.secondsecure)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.thirddeveloping)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.thirdconsolidating)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.thirdsecure)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.blank)</td>
+                                        <td align="center">@String.Format("{0:#,0.00}", @itemdata.grandtotal)</td>
+                                        <td></td>
+                                        @*<td align="center"><input type='checkbox' name='CheckDataitem1' value="@itemdata.stage" checked="checked" /></td>*@
                                     </tr>
-                                }
-                            }
-                        }
+                                  }
+                              }
+                          }
+                      }
                     }
                 </tbody>
                 <tr>
                     @*@{var colspan = (@Model.ListSelectedGender.Count * 2) + 1;}*@
                     <td colspan="17"></td>
-                    <td align="center"><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
+                    <td align="center"><input type='checkbox' name='CheckDataitem8All' id='CheckDataitem8All' value="ALL" checked="checked" />CheckALL</td>
                 </tr>
                 <tr>
                     <td><button id="8" onclick='myFunctionBar(this.id,"ListIHdata")'><label>Bar Chart</label></button></td>
-                    <td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td>
-                    <td>@Html.ActionLink("Export Excel", "ExportExcel", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td>
+                    <td><button id="8" onclick='myFunctionColumn(this.id, "ListIHdata")'><label>Column Chart</label></button></td>
+                    <td>@Html.ActionLink("Export Excel", "ExportExcel", "Curriculum", new { Area = "SchoolProfile", dataname = "ListIHdata" }, null)</td>
                 </tr>
                 @*<tr><td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td></tr>
                     <tr><td>@Html.ActionLink("Export Excel", "ExportExcel", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td></tr>*@
             </table>
-            <script type="text/javascript">
-                // Put your javascript code here
-                $('#datatable7').DataTable({
-                    paging: false
-                });
-            </script>
-
-            <div id="divChartContainer"></div>
+            <div id="divChartContainer8"></div>
 
             <br>
         </form>

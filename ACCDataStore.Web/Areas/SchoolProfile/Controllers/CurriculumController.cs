@@ -25,12 +25,26 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             this.rpGeneric = rpGeneric;
         }
 
+        protected Dictionary<string, string> GetDicSubject()
+        {
+            var dicSubject = new Dictionary<string, string>();
+            dicSubject.Add("Literacy", "Literacy");
+            dicSubject.Add("Reading", "Reading");
+            dicSubject.Add("Writing", "Writing");
+            dicSubject.Add("LandT", "Listening and Talking");
+            dicSubject.Add("Numeracy", "Numeracy");
+            dicSubject.Add("NMM", "Number, Money & Measure");
+            dicSubject.Add("SPM", "Shape, Position & Movement");
+            dicSubject.Add("IH", "Information Handling");
+            return dicSubject;
+        }
+
         // GET: SchoolProfile/Curriculum
         public ActionResult Index(string sSchoolName)
         {
             //page counter
             var eGeneralSettings = TS.Core.Helper.ConvertHelper.XmlFile2Object(HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"), typeof(GeneralCounter)) as GeneralCounter;
-            eGeneralSettings.NationalitypgCounter++;
+            eGeneralSettings.CurriculumpgCounter++;
             TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
 
             var vmCurriculum = new CurriculumViewModel();
@@ -64,15 +78,17 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
             fooList = new List<string>();
 
-            fooList.Add("Literacy Primary");
+            fooList.Add("Literacy");
             fooList.Add("Reading");
             fooList.Add("Writing");
-            fooList.Add("L and T");
-            fooList.Add("Numeracy Primary");
+            fooList.Add("LandT");
+            fooList.Add("Numeracy");
             fooList.Add("NMM");
             fooList.Add("SPM");
             fooList.Add("IH");
             vmCurriculum.ListSubjects = fooList;
+
+            vmCurriculum.DicSubject = GetDicSubject();
 
             fooList = new List<string>();
             fooList.Add("Early");
@@ -173,7 +189,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 else
                 {
                     foreach (var subject in sSubjectCriteria) {
-                        if (subject.Equals("Literacy Primary")) {                            
+                        if (subject.Equals("Literacy")) {                            
                             vmCurriculum.ListLiteracydata = GetCurriculumDatabySchoolname(rpGeneric, sSchoolName, "Literacy_Primary");
                             Session["SessionListLiteracydata"] = vmCurriculum.ListLiteracydata;
                         }
@@ -187,12 +203,12 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                             vmCurriculum.ListWritingdata = GetCurriculumDatabySchoolname(rpGeneric, sSchoolName, "Writing");
                             Session["SessionListWritingdata"] = vmCurriculum.ListWritingdata;
                         }
-                        else if (subject.Equals("L and T"))
+                        else if (subject.Equals("LandT"))
                         {
                             vmCurriculum.ListLandTdata = GetCurriculumDatabySchoolname(rpGeneric, sSchoolName, "L_and_T");
                             Session["SessionListLandTdata"] = vmCurriculum.ListLandTdata;
                         }
-                        else if (subject.Equals("Numeracy Primary"))
+                        else if (subject.Equals("Numeracy"))
                         {
                             vmCurriculum.ListNumeracydata = GetCurriculumDatabySchoolname(rpGeneric, sSchoolName, "Numeracy_Primary");
                             Session["SessionListNumeracydata"] = vmCurriculum.ListNumeracydata;
@@ -227,38 +243,48 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 object oChartData = new object();
                 string[] Categories = new string[indexDataitem.Length];
                 var listCurriculumData = new List<CurriculumObj>();
+                var schoolname = Session["sSchoolName"];
+                string subjectname = "";
 
                 if (dataname.Equals("ListLiteracydata"))
                 {
                     listCurriculumData = Session["SessionListLiteracydata"] as List<CurriculumObj>;
+                    subjectname = "Literacy";
                 }
                 else if (dataname.Equals("ListReadingdata"))
                 {
-                    listCurriculumData = Session["SessionListReadingdata"] as List<CurriculumObj>;                   
+                    listCurriculumData = Session["SessionListReadingdata"] as List<CurriculumObj>;
+                    subjectname = "Reading";
                 }
                 else if (dataname.Equals("ListWritingdata"))
                 {
-                    listCurriculumData = Session["SessionListWritingdata"] as List<CurriculumObj>;   
+                    listCurriculumData = Session["SessionListWritingdata"] as List<CurriculumObj>;
+                    subjectname = "Writing";
                 }
                 else if (dataname.Equals("ListLandTdata"))
                 {
-                    listCurriculumData = Session["SessionListLandTdata"] as List<CurriculumObj>;   
+                    listCurriculumData = Session["SessionListLandTdata"] as List<CurriculumObj>;
+                    subjectname = "Listening and Talking";
                 }
                 else if (dataname.Equals("ListNumeracydata"))
                 {
-                    listCurriculumData = Session["SessionListNumeracydata"] as List<CurriculumObj>;   
+                    listCurriculumData = Session["SessionListNumeracydata"] as List<CurriculumObj>;
+                    subjectname = "Numeracy";
                 }
                 else if (dataname.Equals("ListNMMdata"))
                 {
-                    listCurriculumData = Session["SessionListNMMdata"] as List<CurriculumObj>;   
+                    listCurriculumData = Session["SessionListNMMdata"] as List<CurriculumObj>;
+                    subjectname = "Number, Money & Measure";
                 }
                 else if (dataname.Equals("ListSPMdata"))
                 {
-                    listCurriculumData = Session["SessionListSPMdata"] as List<CurriculumObj>;   
+                    listCurriculumData = Session["SessionListSPMdata"] as List<CurriculumObj>;
+                    subjectname = "Shape, Position & Movement";
                 }
                 else if (dataname.Equals("ListIHdata"))
                 {
-                    listCurriculumData = Session["SessionListIHdata"] as List<CurriculumObj>;   
+                    listCurriculumData = Session["SessionListIHdata"] as List<CurriculumObj>;
+                    subjectname = "Information Handling";
                 }
 
                 //var listNationalData = Session["SessionListNationalityData"] as List<NationalityObj>;
@@ -270,8 +296,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                     // process chart data
                     oChartData = new
                     {
-                        ChartTitle = "test",
-                        ChartCategories = listCurriculumFilter.Select(x => x.stage).ToArray(),
+                        ChartTitle = "Curriculum for Excellence - " + subjectname +" - "+ schoolname + " (% pupils)",
+                        ChartCategories = indexDataitem,
                         ChartSeries = ProcessChartDataCurriculum(listCurriculumFilter)
                     };
                 }
@@ -289,74 +315,133 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         private List<object> ProcessChartDataCurriculum(List<CurriculumObj> listCurriculumdata)
         {
             var listChartData = new List<object>();
-            var ListSelectedGender = Session["ListSelectedGender"] as List<string>;
-            var schoolname = Session["sSchoolName"];
+            var ListSelectedGender = Session["ListSelectedGender"] as List<string>;            
+            var temp = new List<CurriculumObj>();
+                    temp = (from a in listCurriculumdata where a.gender.Equals("T") select a).ToList();
+                    listChartData.Add(new { name = "Early", data = temp.Select(x => x.early).ToArray() });
+                    listChartData.Add(new { name = "Early Developing", data = temp.Select(x => x.earlydeveloping).ToArray() });
+                    listChartData.Add(new { name = "Early Consolidating", data = temp.Select(x => x.earlyconsolidating).ToArray() });
+                    listChartData.Add(new { name = "Early Secure", data = temp.Select(x => x.earlysecure).ToArray() });
+                    listChartData.Add(new { name = "First Developing", data = temp.Select(x => x.firstdeveloping).ToArray() });
+                    listChartData.Add(new { name = "First Consolidating", data = temp.Select(x => x.firstconsolidating).ToArray() });
+                    listChartData.Add(new { name = "First Secure", data = temp.Select(x => x.firstsecure).ToArray() });
 
-            foreach (var itemGender in ListSelectedGender)
-            {
-                //if (itemGender.Equals("F"))
-                //{
-                //    listChartData.Add(new { name = schoolname + " Female", data = listCurriculumdata.Select(x => x.e).ToArray() });
-                //    listChartData.Add(new { name = "Female All School", data = listCurriculumdata.Select(x => x.PercentageFemaleAllSchool).ToArray() });
-                //}
+                    listChartData.Add(new { name = "Second Developing", data = temp.Select(x => x.seconddeveloping).ToArray() });
+                    listChartData.Add(new { name = "Second Consolidating", data = temp.Select(x => x.secondconsolidating).ToArray() });
+                    listChartData.Add(new { name = "Second Secure", data = temp.Select(x => x.secondsecure).ToArray() });
 
-                //if (itemGender.Equals("M"))
-                //{
-                //    listChartData.Add(new { name = schoolname + " Male", data = listCurriculumdata.Select(x => x.PercentageMaleInSchool).ToArray() });
-                //    listChartData.Add(new { name = "Male All School", data = listCurriculumdata.Select(x => x.PercentageMaleAllSchool).ToArray() });
-                //}
-                //if (itemGender.Equals("T"))
-                //{
-                //    listChartData.Add(new { name = schoolname + " Total", data = listCurriculumdata.Select(x => x.PercentageInSchool).ToArray() });
-                //    listChartData.Add(new { name = "Total All School", data = listCurriculumdata.Select(x => x.PercentageAllSchool).ToArray() });
-                //}
-
-            }
+                    listChartData.Add(new { name = "Third Developing", data = temp.Select(x => x.thirddeveloping).ToArray() });
+                    listChartData.Add(new { name = "Third Consolidating", data = temp.Select(x => x.thirdconsolidating).ToArray() });
+                    listChartData.Add(new { name = "Third Secure", data = temp.Select(x => x.thirdsecure).ToArray() });
+                    listChartData.Add(new { name = "Blank", data = temp.Select(x => x.blank).ToArray() });
             return listChartData;
         }
 
-        public ActionResult ExportExcel()
+        public ActionResult ExportExcel(string dataname)
         {
-            var listNationalityData = Session["SessionListNationalityData"] as List<NationalityObj>;
-            //string schoolname = Session["sSchoolName"].ToString();
-            var dataStream = GetWorkbookDataStream(GetData());
-            return File(dataStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "NationalityExport.xlsx");
+            try
+            {
+                var listCurriculumData = new List<CurriculumObj>();
+                string subjectname = "";
+
+                if (dataname.Equals("ListLiteracydata"))
+                {
+                    listCurriculumData = Session["SessionListLiteracydata"] as List<CurriculumObj>;
+                    subjectname = "Literacy";
+
+                }
+                else if (dataname.Equals("ListReadingdata"))
+                {
+                    listCurriculumData = Session["SessionListReadingdata"] as List<CurriculumObj>;
+                    subjectname = "Reading";
+                }
+                else if (dataname.Equals("ListWritingdata"))
+                {
+                    listCurriculumData = Session["SessionListWritingdata"] as List<CurriculumObj>;
+                    subjectname = "Writing";
+                }
+                else if (dataname.Equals("ListLandTdata"))
+                {
+                    listCurriculumData = Session["SessionListLandTdata"] as List<CurriculumObj>;
+                    subjectname = "Listening and Talking";
+                }
+                else if (dataname.Equals("ListNumeracydata"))
+                {
+                    listCurriculumData = Session["SessionListNumeracydata"] as List<CurriculumObj>;
+                    subjectname = "Numeracy";
+                }
+                else if (dataname.Equals("ListNMMdata"))
+                {
+                    listCurriculumData = Session["SessionListNMMdata"] as List<CurriculumObj>;
+                    subjectname = "Number, Money & Measure";
+                }
+                else if (dataname.Equals("ListSPMdata"))
+                {
+                    listCurriculumData = Session["SessionListSPMdata"] as List<CurriculumObj>;
+                    subjectname = "Shape, Position & Movement";
+                }
+                else if (dataname.Equals("ListIHdata"))
+                {
+                    listCurriculumData = Session["SessionListIHdata"] as List<CurriculumObj>;
+                    subjectname = "Information Handling";
+                }
+
+                var dataStream = GetWorkbookDataStream(GetData(listCurriculumData), subjectname);
+
+                return File(dataStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "CurriculumExport.xlsx");
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.Message, ex);
+                throw ex;
+            }
+
+
+            
         }
 
-        private DataTable GetData()
+        private DataTable GetData(List<CurriculumObj> listCurriculumdata)
         {
-            // simulate datatable
-            var listNationalityData = Session["SessionListNationalityData"] as List<NationalityObj>;
-            // var listEthnicData2 = Session["SessionListEthnicData2"] as List<EthnicObj>;
-            string sSchoolName = Session["sSchoolName"] as string;
-            //string sSchoolName2 = Session["sSchoolName2"] as string;
-
-            //var transformObject = new Object();
-
             DataTable dtResult = new DataTable();
 
-            dtResult.Columns.Add("IdentityCode", typeof(string));
-            dtResult.Columns.Add("Nationality", typeof(string));
-            dtResult.Columns.Add("Female in " + sSchoolName, typeof(double));
-            dtResult.Columns.Add("Female in All Primary school", typeof(double));
-            dtResult.Columns.Add("Male in " + sSchoolName, typeof(double));
-            dtResult.Columns.Add("Male in All  Primary school ", typeof(double));
-            dtResult.Columns.Add("Total in " + sSchoolName, typeof(double));
-            dtResult.Columns.Add("Total in All Primary school", typeof(double));
+            dtResult.Columns.Add("Stage", typeof(string));
+            dtResult.Columns.Add("Gender", typeof(string));            
+            dtResult.Columns.Add("Early", typeof(double));
+            dtResult.Columns.Add("Early Developing", typeof(double));
+            dtResult.Columns.Add("Early Consolidating", typeof(double));
+            dtResult.Columns.Add("Early Secure", typeof(double));
+            dtResult.Columns.Add("First Developing", typeof(double));
+            dtResult.Columns.Add("First Consolidating", typeof(double));
+            dtResult.Columns.Add("First Secure", typeof(double));
+            dtResult.Columns.Add("Second Developing", typeof(double));
+            dtResult.Columns.Add("Second Consolidating", typeof(double));
+            dtResult.Columns.Add("Second Secure", typeof(double));
+            dtResult.Columns.Add("Third Developing", typeof(double));
+            dtResult.Columns.Add("Third Consolidating", typeof(double));
+            dtResult.Columns.Add("Third Secure", typeof(double));
+            dtResult.Columns.Add("blank", typeof(double));
 
             var transformObject = new
             {
-                Col1 = listNationalityData.Select(x => x.IdentityCode).ToList(),
-                Col2 = listNationalityData.Select(x => x.IdentityName).ToList(),
-                Col3 = listNationalityData.Select(x => x.PercentageFemaleInSchool).ToList(),
-                Col4 = listNationalityData.Select(x => x.PercentageFemaleAllSchool).ToList(),
-                Col5 = listNationalityData.Select(x => x.PercentageMaleInSchool).ToList(),
-                Col6 = listNationalityData.Select(x => x.PercentageMaleAllSchool).ToList(),
-                Col7 = listNationalityData.Select(x => x.PercentageInSchool).ToList(),
-                Col8 = listNationalityData.Select(x => x.PercentageAllSchool).ToList(),
+                Col1 = listCurriculumdata.Select(x => x.stage).ToList(),
+                Col2 = listCurriculumdata.Select(x => x.gender).ToList(),
+                Col3 = listCurriculumdata.Select(x => x.early).ToList(),
+                Col4 = listCurriculumdata.Select(x => x.earlydeveloping).ToList(),
+                Col5 = listCurriculumdata.Select(x => x.earlyconsolidating).ToList(),
+                Col6 = listCurriculumdata.Select(x => x.earlysecure).ToList(),
+                Col7 = listCurriculumdata.Select(x => x.firstdeveloping).ToList(),
+                Col8 = listCurriculumdata.Select(x => x.firstconsolidating).ToList(),
+                Col9 = listCurriculumdata.Select(x => x.firstsecure).ToList(),
+                Col10 = listCurriculumdata.Select(x => x.seconddeveloping).ToList(),
+                Col11 = listCurriculumdata.Select(x => x.secondconsolidating).ToList(),
+                Col12 = listCurriculumdata.Select(x => x.secondsecure).ToList(),
+                Col13 = listCurriculumdata.Select(x => x.thirddeveloping).ToList(),
+                Col14 = listCurriculumdata.Select(x => x.thirdconsolidating).ToList(),
+                Col15 = listCurriculumdata.Select(x => x.thirdsecure).ToList(),
+                Col16 = listCurriculumdata.Select(x => x.blank).ToList()
             };
 
-            for (var i = 0; i < listNationalityData.Count; i++)
+            for (var i = 0; i < listCurriculumdata.Count; i++)
             {
                 dtResult.Rows.Add(
                     transformObject.Col1[i],
@@ -366,19 +451,29 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                     transformObject.Col5[i],
                     transformObject.Col6[i],
                     transformObject.Col7[i],
-                    transformObject.Col8[i]
+                    transformObject.Col8[i],
+                    transformObject.Col9[i],
+                    transformObject.Col10[i],
+                    transformObject.Col11[i],
+                    transformObject.Col12[i],
+                    transformObject.Col13[i],
+                    transformObject.Col14[i],
+                    transformObject.Col15[i],
+                    transformObject.Col16[i]
                     );
             }
             return dtResult;
         }
 
-        private MemoryStream GetWorkbookDataStream(DataTable dtResult)
+        private MemoryStream GetWorkbookDataStream(DataTable dtResult,string dataname)
         {
+            string sSchoolName = Session["sSchoolName"] as string;
+
             var workbook = new XLWorkbook();
             var worksheet = workbook.Worksheets.Add("Sheet 1");
-            worksheet.Cell("A1").Value = "Nationality"; // use cell address in range
+            worksheet.Cell("A1").Value = "Curriculum for Excellence - "+ sSchoolName; // use cell address in range
             //worksheet.Cell("A2").Value = "Nationality"; // use cell address in range
-            worksheet.Cell("A2").Value = "% of pupils in each ethnic group";
+            worksheet.Cell("A2").Value = dataname;
             worksheet.Cell(3, 1).InsertTable(dtResult); // use row & column index
             worksheet.Rows().AdjustToContents();
             worksheet.Columns().AdjustToContents();

@@ -21,6 +21,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.ViewModels.Curriculum
         public List<CurriculumObj> ListWritingdata { get; set; }
         public List<CurriculumObj> ListLandTdata { get; set; }
         public List<CurriculumObj> ListNumeracydata { get; set; }
+        public Dictionary<string, string> DicSubject { get; set; }
         public bool IsShowData { get; set; }
     }
 }
