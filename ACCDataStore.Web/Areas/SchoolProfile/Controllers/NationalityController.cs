@@ -142,18 +142,19 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             return View("Index", vmNationality);
         }
 
-        //public List<NationalityObj> GetNationalityDatabySchoolname(string mSchoolname)
+        //public List<NationalityObj> GetNationalityDatabyPostcode(string kPostcode)
         //{
-        //    Console.Write("GetNationalityData ==> ");
+        //    Console.Write("GetNationalityDatabyPostcode ==> ");
 
         //    var singlelistChartData = new List<ChartData>();
         //    List<NationalityObj> listDataseries = new List<NationalityObj>();
         //    List<NationalityObj> listtemp = new List<NationalityObj>();
         //    NationalityObj tempNationalObj = new NationalityObj();
-            
+
 
         //    //% for All school
-        //    var listResult = this.rpGeneric.FindByNativeSQL("Select NationalIdentity, (Count(NationalIdentity)* 100 / (Select Count(*) From test_3))  From test_3  Group By NationalIdentity ");
+        //    //var listResult = this.rpGeneric.FindByNativeSQL("Select NationalIdentity, (Count(NationalIdentity)* 100 / (Select Count(*) From test_3))  From test_3  Group By NationalIdentity ");
+        //    var listResult = this.rpGeneric.FindByNativeSQL("Select count(*)  From test_3  where Test_2_Postcode LIKE '" + kPostcode + "*'");
         //    if (listResult != null)
         //    {
         //        foreach (var itemRow in listResult)
@@ -192,7 +193,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         //            tempNationalObj.PercentageInSchool = Convert.ToDouble(itemRow[1]);
 
         //            listDataseries.Add(tempNationalObj);
- 
+
         //        }
         //    }
 
@@ -335,6 +336,35 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             workbook.SaveAs(memoryStream);
             memoryStream.Seek(0, SeekOrigin.Begin);
             return memoryStream;
+        }
+
+        public ActionResult MapData()
+        {
+            var listNationalityData = Session["SessionListNationalityData"] as List<NationalityObj>;
+            return View("MapIndex");
+        }
+
+        protected JsonResult ThrowJSONError(Exception ex)
+        {
+            Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
+            var sErrorMessage = "Error : " + ex.Message + (ex.InnerException != null ? ", More Detail : " + ex.InnerException.Message : "");
+            return Json(new { Message = sErrorMessage }, JsonRequestBehavior.AllowGet);
+        }
+
+
+        [HttpPost]
+        public JsonResult SearchByName(string sName)
+        {
+            try
+            {
+                // query from database
+
+                return Json(sName + " > " + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return ThrowJSONError(ex);
+            }
         }
     }
 }

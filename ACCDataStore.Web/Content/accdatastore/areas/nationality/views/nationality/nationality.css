@@ -1,3 +1,42 @@
-﻿body {
+﻿#popup-information {
+    display: none;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 99;
+    padding: 20px;
+    margin: 10px;
+    width: 300px;
+    height: 400px;
+    resize: both;
+    max-width: 600px;
+    max-height: 500px;
+    overflow: auto;
+    color: #eee;
+    font-family: Arial, Helvetica, sans-serif;
+    border: 1px solid #888;
+    background: #2b2a2a;
 }
 
+    #popup-information::-webkit-scrollbar-corner {
+    }
+
+    #popup-information::-webkit-resizer {
+        background-color: #ccc;
+        cursor: se-resize;
+    }
+
+
+    #popup-information:hover::-webkit-resizer, #content_window:hover::-webkit-scrollbar-corner {
+        background-color: #888;
+        border: 1px dotted #888;
+        border-right-color: #888;
+        cursor: se-resize;
+    }
+
+
+    #popup-information:active::-webkit-resizer, #content_window:active::-webkit-scrollbar-corner {
+        background-color: #555;
+        border-color: #222;
+        border-right-color: #000;
+    }

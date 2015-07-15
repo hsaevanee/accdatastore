@@ -1,12 +1,12 @@
 ﻿<GeneralCounter>
   <SiteCounter>0</SiteCounter>
-  <HomepgCounter>5</HomepgCounter>
+  <HomepgCounter>13</HomepgCounter>
   <TeampgCounter>0</TeampgCounter>
-  <SchProfilepgCounter>7</SchProfilepgCounter>
-  <EthinicBGpgCounter>0</EthinicBGpgCounter>
-  <NationalitypgCounter>6</NationalitypgCounter>
-  <SIMDpgCounter>15</SIMDpgCounter>
-  <StdSatgepgCounter>13</StdSatgepgCounter>
-  <EALpgCounter>4</EALpgCounter>
-  <CurriculumpgCounter>5</CurriculumpgCounter>
+  <SchProfilepgCounter>15</SchProfilepgCounter>
+  <EthinicBGpgCounter>15</EthinicBGpgCounter>
+  <NationalitypgCounter>21</NationalitypgCounter>
+  <SIMDpgCounter>18</SIMDpgCounter>
+  <StdSatgepgCounter>17</StdSatgepgCounter>
+  <EALpgCounter>9</EALpgCounter>
+  <CurriculumpgCounter>10</CurriculumpgCounter>
 </GeneralCounter>
