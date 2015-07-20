@@ -43,20 +43,20 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             List<StdStageObj> temp = new List<StdStageObj>();
 
 
-            var listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW Name FROM test_3 group by Name");
+            var listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW Name from sch_Student_t t1 INNER JOIN sch_PrimarySchool_t t2 on t1.SeedCode = t2.SeedCode ");
 
             List<string> fooList = listResult.OfType<string>().ToList();
 
             vmStudentStage.ListSchoolNameData = fooList;
 
 
-            listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW StudentStage FROM test_3 group by StudentStage");
+            listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW StudentStage FROM sch_Student_t group by StudentStage");
 
             fooList = listResult.OfType<string>().ToList();
             vmStudentStage.ListStageCode = fooList;
 
 
-            listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW Gender FROM test_3 group by Gender");
+            listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW Gender FROM sch_Student_t group by Gender");
 
             fooList = listResult.OfType<string>().ToList();
             fooList.Add("T");

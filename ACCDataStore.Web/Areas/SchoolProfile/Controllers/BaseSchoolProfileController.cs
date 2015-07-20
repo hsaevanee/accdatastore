@@ -36,7 +36,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             EthnicObj tempEthnicObj = new EthnicObj();
 
             //% for All school
-            var listResult = rpGeneric.FindByNativeSQL("Select EthnicBackground,Gender,(Count(EthnicBackground)* 100 / (Select Count(*) From test_3))  From test_3  Group By EthnicBackground, Gender ");
+            var listResult = rpGeneric.FindByNativeSQL("Select EthnicBackground,Gender,(Count(EthnicBackground)* 100 / (Select Count(*) From sch_Student_t))  From sch_Student_t  Group By EthnicBackground, Gender  ");
             if (listResult != null)
             {
                 var DistinctItems = listResult.GroupBy(x => x.ElementAt(0).ToString()).ToList();
@@ -73,8 +73,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
             //% for specific schoolname
             string query = " Select EthnicBackground,Gender, (Count(EthnicBackground)* 100 /";
-            query += " (Select Count(*) From test_3 where Name in (\"" + mSchoolname + "\")))";
-            query += " From test_3 where Name in (\"" + mSchoolname + "\") Group By EthnicBackground, Gender ";
+            query += " (Select Count(*)  from sch_Student_t t1 INNER JOIN sch_PrimarySchool_t  t2 on  t1.SeedCode = t2.SeedCode where t2.Name in (\"" + mSchoolname + "\")))";
+            query += " From sch_Student_t t1 INNER JOIN sch_PrimarySchool_t  t2 on  t1.SeedCode = t2.SeedCode where t2.Name in (\"" + mSchoolname + "\") Group By EthnicBackground, Gender ";
 
             listResult = rpGeneric.FindByNativeSQL(query);
             if (listResult != null)
@@ -232,7 +232,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
 
             //% for All school
-            var listResult = rpGeneric.FindByNativeSQL("Select NationalIdentity,Gender, (Count(NationalIdentity)* 100 / (Select Count(*) From test_3))  From test_3  Group By NationalIdentity, Gender ");
+            var listResult = rpGeneric.FindByNativeSQL("Select NationalIdentity,Gender, (Count(NationalIdentity)* 100 / (Select Count(*) From sch_Student_t))  From sch_Student_t  Group By NationalIdentity, Gender ");
             //if (listResult != null)
             //{
             //    foreach (var itemRow in listResult)
@@ -279,9 +279,10 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
             //% for specific schoolname
             string query = " Select NationalIdentity, Gender, (Count(NationalIdentity)* 100 /";
-            query += " (Select Count(*) From test_3 where Name in (\"" + mSchoolname + "\")))";
-            query += " From test_3 where Name in (\"" + mSchoolname + "\") Group By NationalIdentity, Gender ";
+            query += " (Select Count(*)  from sch_Student_t t1 INNER JOIN sch_PrimarySchool_t  t2 on  t1.SeedCode = t2.SeedCode where t2.Name in (\"" + mSchoolname + "\")))";
+            query += " From sch_Student_t t1 INNER JOIN sch_PrimarySchool_t  t2 on  t1.SeedCode = t2.SeedCode where t2.Name in (\"" + mSchoolname + "\") Group By NationalIdentity, Gender ";
 
+            //Select Count(*)  from sch_Student_t t1 INNER JOIN sch_PrimarySchool_t  t2 on  t1.SeedCode = t2.SeedCode where t2.Name in ('Brimmond Primary School')
             listResult = rpGeneric.FindByNativeSQL(query);
 
             //if (listResult != null)
@@ -457,7 +458,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             StdStageObj tempStdStageObj = new StdStageObj();
 
             //% for All school
-            var listResult = rpGeneric.FindByNativeSQL("Select StudentStage,Gender,(Count(*)* 100 / (Select Count(*) From test_3))  From test_3  Group By StudentStage, Gender ");
+            //var listResult = rpGeneric.FindByNativeSQL("Select StudentStage,Gender,(Count(*)* 100 / (Select Count(*) From test_3))  From test_3  Group By StudentStage, Gender ");
+            var listResult = rpGeneric.FindByNativeSQL("Select StudentStage,Gender,(Count(*)* 100 / (Select Count(*) From sch_Student_t))  From sch_Student_t  Group By StudentStage, Gender ");
             if (listResult != null)
             {
                 var DistinctItems = listResult.GroupBy(x => x.ElementAt(0).ToString()).ToList();
@@ -492,9 +494,14 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
 
             //% for specific schoolname
+            // old query
+            //string query = " Select StudentStage,Gender, (Count(*)* 100 /";
+            //query += " (Select Count(*) From test_3 where Name in (\"" + mSchoolname + "\")))";
+            //query += " From test_3 where Name in (\"" + mSchoolname + "\") Group By StudentStage, Gender ";
+
             string query = " Select StudentStage,Gender, (Count(*)* 100 /";
-            query += " (Select Count(*) From test_3 where Name in (\"" + mSchoolname + "\")))";
-            query += " From test_3 where Name in (\"" + mSchoolname + "\") Group By StudentStage, Gender ";
+            query += " (Select Count(*) from sch_Student_t t1 INNER JOIN sch_PrimarySchool_t  t2 on  t1.SeedCode = t2.SeedCode where t2.Name in (\"" + mSchoolname + "\")))";
+            query += " From sch_Student_t t1 INNER JOIN sch_PrimarySchool_t  t2 on  t1.SeedCode = t2.SeedCode where t2.Name in (\"" + mSchoolname + "\") Group By StudentStage, Gender ";
 
             listResult = rpGeneric.FindByNativeSQL(query);
             if (listResult != null)
@@ -550,7 +557,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
 
             //% for All school
-            var listResult = rpGeneric.FindByNativeSQL("Select LevelOfEnglish,Gender, (Count(*)* 100 / (Select Count(*) From test_3))  From test_3  Group By LevelOfEnglish, Gender ");
+            var listResult = rpGeneric.FindByNativeSQL("Select LevelOfEnglish,Gender, (Count(*)* 100 / (Select Count(*) From sch_Student_t))  From sch_Student_t  Group By LevelOfEnglish, Gender ");
 
             if (listResult != null)
             {
@@ -587,8 +594,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
             //% for specific schoolname
             string query = " Select LevelOfEnglish, Gender, (Count(*)* 100 /";
-            query += " (Select Count(*) From test_3 where Name in (\"" + mSchoolname + "\")))";
-            query += " From test_3 where Name in (\"" + mSchoolname + "\") Group By LevelOfEnglish, Gender ";
+            query += " (Select Count(*) From sch_Student_t t1 INNER JOIN sch_PrimarySchool_t  t2 on  t1.SeedCode = t2.SeedCode where t2.Name in (\"" + mSchoolname + "\")))";
+            query += " From sch_Student_t t1 INNER JOIN sch_PrimarySchool_t  t2 on  t1.SeedCode = t2.SeedCode where t2.Name in (\"" + mSchoolname + "\") Group By LevelOfEnglish, Gender ";
 
             listResult = rpGeneric.FindByNativeSQL(query);
             if (listResult != null)
@@ -630,7 +637,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
 
             //% for All school
-            var listResult = rpGeneric.FindByNativeSQL("Select Name, count (FreeSchoolMealRegistered) From test_3  Group By Name");
+            var listResult = rpGeneric.FindByNativeSQL("Select t2.Name, count (t1.FreeSchoolMealRegistered) From sch_Student_t t1 INNER JOIN sch_PrimarySchool_t  t2 on  t1.SeedCode = t2.SeedCode  Group By Name");
 
             if (listResult != null)
             {
@@ -646,7 +653,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             }
 
             //% for Registered Schoolmeal in each school
-            listResult = rpGeneric.FindByNativeSQL("Select Name, count (FreeSchoolMealRegistered) From test_3  Where FreeSchoolMealRegistered='1'Group By Name");
+            listResult = rpGeneric.FindByNativeSQL("Select t2.Name, count (t1.FreeSchoolMealRegistered) From sch_Student_t t1 INNER JOIN sch_PrimarySchool_t  t2 on t1.SeedCode = t2.SeedCode  Where t1.FreeSchoolMealRegistered='1' Group By Name");
 
             if (listResult != null)
             {
@@ -673,7 +680,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
 
             //% for All school
-            var listResult = rpGeneric.FindByNativeSQL("Select distinct StudentStage,Gender From test_3  Group By StudentStage, Gender ");
+            var listResult = rpGeneric.FindByNativeSQL("Select distinct StudentStage,Gender From sch_Student_t  Group By StudentStage, Gender ");
             if (listResult != null)
             {
                 foreach (var itemRow in listResult)

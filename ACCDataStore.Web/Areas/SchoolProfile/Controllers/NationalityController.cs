@@ -42,20 +42,20 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             List<NationalityObj> temp = new List<NationalityObj>();
 
 
-            var listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW Name FROM test_3 group by Name");
+            var listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW Name from sch_Student_t t1 INNER JOIN sch_PrimarySchool_t t2 on t1.SeedCode = t2.SeedCode ");
 
             List<string> fooList = listResult.OfType<string>().ToList();
 
             vmNationality.ListSchoolNameData = fooList;
 
 
-            listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW NationalIdentity FROM test_3 group by NationalIdentity");
+            listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW NationalIdentity FROM sch_Student_t group by NationalIdentity");
 
             fooList = listResult.OfType<string>().ToList();
             vmNationality.ListNationalityCode = fooList;
             vmNationality.DicNational = GetDicNational();
 
-            listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW Gender FROM test_3 group by Gender");
+            listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW Gender FROM sch_Student_t group by Gender");
 
             fooList = listResult.OfType<string>().ToList();
             fooList.Add("T");
@@ -340,7 +340,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
         public ActionResult MapData()
         {
-            var listNationalityData = Session["SessionListNationalityData"] as List<NationalityObj>;
+            //var listNationalityData = Session["SessionListNationalityData"] as List<NationalityObj>;
             return View("MapIndex");
         }
 
@@ -357,9 +357,11 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         {
             try
             {
-                // query from database
-
-                return Json(sName + " > " + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"), JsonRequestBehavior.AllowGet);
+          
+                var listNationalityData = Session["SessionListNationalityData"] as List<NationalityObj>;
+                // use sName (AB24) to query data from database
+                return Json(listNationalityData, JsonRequestBehavior.AllowGet);
+  
             }
             catch (Exception ex)
             {

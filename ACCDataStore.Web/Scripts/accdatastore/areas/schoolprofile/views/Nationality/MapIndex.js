@@ -42,9 +42,7 @@ function SearchByName(sName) {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
-            var sInformation = "<a href='#' class='a-close-popup-information'>Close</a><h3>" + sName + "</h3>";
-            sInformation += "<table><tr><td>" + data + "</td></tr></table>"; // insert html element as you want
-            ShowPopupInformation(sInformation);
+            ShowPopupInfo(data,sName);
         },
         error: function (xhr, err) {
             SetErrorMessage(xhr);
@@ -57,6 +55,20 @@ function SetErrorMessage(xhr) {
         var sErrorMessage = JSON.parse(xhr.responseText).Message;
         alert(sErrorMessage);
     }
+}
+
+
+function ShowPopupInfo(data, sName) {
+    var sInformation = "<a href='#' class='a-close-popup-information'>Close</a><h3>" + sName + "</h3>";
+    sInformation += "<table class='style2'>";
+
+    for (var i = 0; i < data.length; i++) {
+        sInformation += "<tr><td>" + data[i].IdentityName + "</td><td>" + data[i].PercentageInSchool.toString() + "</td><tr>";
+    }
+
+    sInformation += "</table>";
+    ShowPopupInformation(sInformation);
+
 }
 
 
