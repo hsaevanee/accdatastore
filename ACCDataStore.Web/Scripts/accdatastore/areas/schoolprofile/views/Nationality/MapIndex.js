@@ -16,13 +16,17 @@ function initMap() {
 
     var layerKml = new google.maps.KmlLayer({
         suppressInfoWindows: true,
-        url: 'https://dl.dropboxusercontent.com/u/870146/KML/UK%20postcode%20districts.kml' + "?rand=" + (new Date()).valueOf()
+        //url:'https://dl.dropboxusercontent.com/u/55734762/Postcodes.kml'
+
+        url: 'https://dl.dropboxusercontent.com/u/55734762/Datazone.kml'
+
+        //url: 'https://dl.dropboxusercontent.com/u/870146/KML/UK%20postcode%20districts.kml' + "?rand=" + (new Date()).valueOf()
     });
     layerKml.setMap(map);
 
     google.maps.event.addListener(layerKml, 'click',
 	function (kmlEvent) {
-	    SearchByName(kmlEvent.featureData.name);
+	    SearchByName(kmlEvent.featureData.DATA_ZONE);
 	});
 }
 
@@ -63,7 +67,7 @@ function ShowPopupInfo(data, sName) {
     sInformation += "<table class='style2'>";
 
     for (var i = 0; i < data.length; i++) {
-        sInformation += "<tr><td>" + data[i].IdentityName + "</td><td>" + data[i].PercentageInSchool.toString() + "</td><tr>";
+        sInformation += "<tr><td>" + data[i].IdentityName + "</td><td>" + data[i].PercentageFemaleAllSchool.toString() + "</td><td>" + data[i].PercentageMaleAllSchool.toString() + "</td><tr>";
     }
 
     sInformation += "</table>";

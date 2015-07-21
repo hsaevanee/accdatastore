@@ -357,8 +357,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         {
             try
             {
-          
-                var listNationalityData = Session["SessionListNationalityData"] as List<NationalityObj>;
+
+                var listNationalityData = GetdatabyPostcode(sName);
                 // use sName (AB24) to query data from database
                 return Json(listNationalityData, JsonRequestBehavior.AllowGet);
   
@@ -368,5 +368,55 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 return ThrowJSONError(ex);
             }
         }
+
+        private List<NationalityObj> GetdatabyPostcode(string pPostcode)
+        {
+            Console.Write("GetdatabyPostcode ==> ");
+
+            List<NationalityObj> listtemp = new List<NationalityObj>();
+            NationalityObj tempNationalObj = new NationalityObj();
+
+
+            //% for Specific Area like AB21
+            var listResult = rpGeneric.FindByNativeSQL("Select NationalIdentity,Gender, (Count(NationalIdentity)* 100 / (Select Count(*) From sch_Student_t_v2 where PostOut in (\"" + pPostcode + "\") ))  From sch_Student_t_v2 where PostOut in (\"" + pPostcode + "\")  Group By NationalIdentity, Gender ");
+
+            if (listResult != null)
+            {
+                var DistinctItems = listResult.GroupBy(x => x.ElementAt(0).ToString()).ToList();
+
+                foreach (var Nationalcode in DistinctItems)
+                {
+                    var templist2 = (from a in listResult where a.ElementAt(0).ToString().Equals(Nationalcode.Key) select a).ToList();
+
+                    if (templist2.Count != 0)
+                    {
+                        tempNationalObj = new NationalityObj();
+                        foreach (var itemRow in templist2)
+                        {
+                            tempNationalObj.IdentityCode = Convert.ToString(itemRow[0]);
+                            tempNationalObj.IdentityName = GetDicNational().ContainsKey(tempNationalObj.IdentityCode) ? GetDicNational()[tempNationalObj.IdentityCode] : "NO NAME";
+
+                            //tempEthnicObj.EthnicGender = Convert.ToString(itemRow[1]);
+                            if ("F".Equals(Convert.ToString(itemRow[1])))
+                            {
+                                tempNationalObj.PercentageFemaleAllSchool = Convert.ToDouble(itemRow[2]);
+                            }
+                            else
+                            {
+                                tempNationalObj.PercentageMaleAllSchool = Convert.ToDouble(itemRow[2]);
+                            }
+
+                        }
+
+                        listtemp.Add(tempNationalObj);
+                    }
+                }
+            }
+
+            return listtemp;
+
+           
+        }
+
     }
 }
