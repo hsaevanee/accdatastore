@@ -18,7 +18,7 @@ function initMap() {
         suppressInfoWindows: true,
         //url:'https://dl.dropboxusercontent.com/u/55734762/Postcodes.kml'
 
-        url: 'https://dl.dropboxusercontent.com/u/55734762/Datazone.kml'
+        url: 'https://dl.dropboxusercontent.com/u/55734762/ABpostcodedistricts.kml'
 
         //url: 'https://dl.dropboxusercontent.com/u/870146/KML/UK%20postcode%20districts.kml' + "?rand=" + (new Date()).valueOf()
     });
@@ -26,10 +26,9 @@ function initMap() {
 
     google.maps.event.addListener(layerKml, 'click',
 	function (kmlEvent) {
-	    SearchByName(kmlEvent.featureData.DATA_ZONE);
+	    SearchByName(kmlEvent.featureData.name);
 	});
 }
-
 function ShowPopupInformation(sInformation) {
     var popupInformation = document.getElementById('popup-information');
     popupInformation.innerHTML = sInformation;
@@ -65,12 +64,15 @@ function SetErrorMessage(xhr) {
 function ShowPopupInfo(data, sName) {
     var sInformation = "<a href='#' class='a-close-popup-information'>Close</a><h3>" + sName + "</h3>";
     sInformation += "<table class='style2'>";
+    sInformation += "<thead><tr><th>Nationality</th><th>Female</th><th>Male</th></tr></thead>";
+    sInformation += "<tbody>";
 
-    for (var i = 0; i < data.length; i++) {
-        sInformation += "<tr><td>" + data[i].IdentityName + "</td><td>" + data[i].PercentageFemaleAllSchool.toString() + "</td><td>" + data[i].PercentageMaleAllSchool.toString() + "</td><tr>";
+    for (var i = 0; i < data.length; i++) {        
+        sInformation += "<tr><td>" + data[i].IdentityName + "</td><td  align='center'>" + data[i].PercentageFemaleAllSchool.toFixed(2) + "</td><td  align='center'>" + data[i].PercentageMaleAllSchool.toFixed(2) + "</td><tr>";
+        
     }
 
-    sInformation += "</table>";
+    sInformation += "</tbody></table>";
     ShowPopupInformation(sInformation);
 
 }

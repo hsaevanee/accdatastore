@@ -97,8 +97,8 @@ table.style2 {
 }
 /* Zebra striping */
 table.style2 tr:nth-of-type(odd) {
-       background: #66CCFF;  
-    /*background: #EEE;*/
+       /*background: #66CCFF;*/  
+    background: #EEE;
 }
 
 table.style2 th {
@@ -112,6 +112,7 @@ table.style2 th {
 table.style2 td, th {
     padding: 6px;
     border: 1px solid #ccc;
+    color: black;
     /*text-align: center;*/
 }
 
