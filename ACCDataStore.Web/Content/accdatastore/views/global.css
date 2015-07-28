@@ -197,25 +197,164 @@ table.style2 td, th {
     background: #2b2a2a;
 }
 
+   html, body, #map-canvas {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#popup-information {
+    display: none;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 99;
+    padding: 20px;
+    margin: 10px;
+    width: 300px;
+    height: 400px;
+    resize: both;
+    max-width: 600px;
+    max-height: 500px;
+    overflow: auto;
+    color: #eee;
+    font-family: Arial, Helvetica, sans-serif;
+    border: 1px solid #888;
+    background: #01051f;
+}
+
     #popup-information::-webkit-scrollbar-corner {
     }
 
     #popup-information::-webkit-resizer {
-        background-color: #ccc;
+        background-color: #434598;
         cursor: se-resize;
     }
 
 
     #popup-information:hover::-webkit-resizer, #content_window:hover::-webkit-scrollbar-corner {
-        background-color: #888;
-        border: 1px dotted #888;
-        border-right-color: #888;
+        background-color: #434598;
+        border: 1px dotted #434598;
+        border-right-color: #434598;
         cursor: se-resize;
     }
 
 
     #popup-information:active::-webkit-resizer, #content_window:active::-webkit-scrollbar-corner {
-        background-color: #555;
-        border-color: #222;
-        border-right-color: #000;
+        background-color: #434598;
+        border-color: #434598;
+        border-right-color: #434598;
     }
+
+#mapcontrolbox ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#mapcontrolbox a {
+    color: #000;
+}
+
+    #mapcontrolbox a:hover {
+        background: none;
+    }
+
+#mapcontrolbox ul li {
+    padding: 5px;
+    border: 1px solid #555;
+    width: 160px;
+    float: left;
+    margin: 5px 0 0 0;
+    border-radius: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+    #mapcontrolbox ul li:hover {
+        border-color: #222;
+        cursor: default;
+    }
+
+#mapcontrolbox a:hover {
+    color: #000;
+    font-weight: bold;
+}
+
+#mapcontrolbox ul li:active, #mapcontrolbox ul li:focus {
+    border-color: #555;
+}
+
+#mapcontrolbox ul li.selected {
+    border-color: #444;
+}
+
+#mapcontrolbox input {
+    cursor: pointer;
+}
+
+#maincontrolbox h2 {
+    font-size: 1.5em;
+}
+
+#maincontrolbox {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    width: 180px;
+    height: auto;
+    margin: 0;
+    padding: 10px;
+    overflow: hidden;
+    background: transparent url('../img/grey80.png');
+    border: 1px solid #888;
+    color: #000;
+    z-index: 99;
+    display: block;
+}
+
+#selector0 {
+    background-color: #fbfaf7;
+}
+
+#selector1 {
+    background-color: #fbfaf7;
+}
+
+#selector2 {
+    background-color: #fbfaf7;
+}
+
+#selector3 {
+    background-color: #fbfaf7;
+}
+
+#selector4 {
+    background-color: #fbfaf7;
+}
+
+#selector5 {
+    background-color: #fbfaf7;
+}
+
+#selector6 {
+    background-color: #fbfaf7;
+}
+
+#selector7 {
+    background-color: #fbfaf7;
+}
+
+#selector8 {
+    background-color: #fbfaf7;
+}
+
+#selector9 {
+    background-color: #fbfaf7;
+}
+
+.control {
+    margin-top: 10px;
+    text-align: center;
+    font-family: 'Open Sans';
+    background-color: #fbfaf7;
+}
