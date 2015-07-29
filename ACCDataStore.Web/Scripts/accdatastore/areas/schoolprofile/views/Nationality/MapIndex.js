@@ -149,25 +149,47 @@ function ShowPopupInformation(sInformation) {
     $("#popup-information").show(250);
 }
 
+
+
 // call server side method via ajax
-function SearchData(sCondition) {
-    var param = JSON.stringify({ 'sCondition': sCondition }); // just an example, need to adjust
+function SearchData(sCondition,sKeyname) {
+    //var param = JSON.stringify({ 'sCondition': sCondition }); // just an example, need to adjust
+    var JSONObject = {
+        "keyvalue": sCondition,
+        "keyname": sKeyname
+    }
 
     $.ajax({
         type: "POST",
         url: sContextPath + "SchoolProfile/Nationality/SearchByName",
-        data: param,
+        data: JSON.stringify(JSONObject),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
-            var sInformation = "<a href='#' class='a-close-popup-information'>Close</a><h3>" + sCondition + "</h3>";
-            sInformation += "<table><tr><td>" + data + "</td></tr></table>"; // insert html element as you want
+            ShowPopupInfo(data, sCondition);
             ShowPopupInformation(sInformation);
         },
         error: function (xhr, err) {
             SetErrorMessage(xhr);
         }
     });
+}
+
+
+function ShowPopupInfo(data, sName) {
+    var sInformation = "<a href='#' class='a-close-popup-information'>Close</a><h3>" + sName + "</h3>";
+    sInformation += "<table class='style2'>";
+    sInformation += "<thead><tr><th>Nationality</th><th>Female</th><th>Male</th></tr></thead>";
+    sInformation += "<tbody>";
+
+    for (var i = 0; i < data.length; i++) {        
+        sInformation += "<tr><td>" + data[i].IdentityName + "</td><td  align='center'>" + data[i].PercentageFemaleAllSchool.toFixed(2) + "</td><td  align='center'>" + data[i].PercentageMaleAllSchool.toFixed(2) + "</td><tr>";
+
+    }
+
+    sInformation += "</tbody></table>";
+    ShowPopupInformation(sInformation);
+
 }
 
 function SetErrorMessage(xhr) {
@@ -201,16 +223,11 @@ function ToggleKMLLayer(checked, id) {
 
         google.maps.event.addListener(layer, 'click',
         function (kmlEvent) {
-            SearchData(kmlEvent.featureData.description);
             if (kml[id].dataType == 0) {
-                SearchData(kmlEvent.featureData.description);
+                SearchData(kmlEvent.featureData.description, "ZoneCode");
             } else if (kml[id].dataType == 1) {
-                SearchData(kmlEvent.featureData.name);
+                SearchData(kmlEvent.featureData.name,"Postcode");
             }
-            //if (id==a)
-            //    SearchData(kmlEvent.featureData.description); // just an example, need to get condition from kml tag
-            //if (id==b)
-            //    SearchData(kmlEvent.featureData.name); // just an example, need to get condition from kml tag
         });
     } else {
         kml[id].obj.setMap(null);

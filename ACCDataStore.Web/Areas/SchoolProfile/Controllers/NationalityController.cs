@@ -353,12 +353,22 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
 
         [HttpPost]
-        public JsonResult SearchByName(string sName)
+        public JsonResult SearchByName(string keyvalue, string keyname)
         {
             try
             {
+                var listNationalityData = new List<NationalityObj>();
+               
+                if (keyname.Equals("Postcode"))
+                {
+                     listNationalityData = GetdatabyPostcode(keyvalue);
 
-                var listNationalityData = GetdatabyPostcode(sName);
+                }
+                else if (keyname.Equals("ZoneCode"))
+                {
+                     listNationalityData = GetdatabyPostcode(keyvalue);
+                }
+                
                 // use sName (AB24) to query data from database
                 return Json(listNationalityData, JsonRequestBehavior.AllowGet);
   
