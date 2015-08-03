@@ -213,12 +213,15 @@
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\Curriculum\Curriculum.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\EthnicBackground\EthnicBackground2.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\EthnicBackground\EthnicBackground.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofile\views\EthnicBackground\MapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\IndexSchoolProfile\Index2SchoolProfile.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\IndexSchoolProfile\IndexSchoolProfile.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\Language\LevelOfEnglish.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofile\views\Language\MapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\Nationality\MapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\Nationality\Nationality.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\SIMD\SIMD.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofile\views\StudentStage\MapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\StudentStage\StudentStage.js" />
     <Content Include="Scripts\accdatastore\views\global.js" />
     <Content Include="Scripts\highcharts.js" />
@@ -305,6 +308,9 @@
     <Content Include="Areas\SchoolProfile\Views\Language\Index.cshtml" />
     <Content Include="Areas\SchoolProfile\Views\Curriculum\Index.cshtml" />
     <Content Include="Areas\SchoolProfile\Views\Nationality\MapIndex.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\EthnicBackground\MapIndex.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\Language\MapIndex.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\StudentStage\MapIndex.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\What-is-data-observatory.cshtml" />

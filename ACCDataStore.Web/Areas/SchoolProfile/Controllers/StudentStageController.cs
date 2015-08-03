@@ -276,5 +276,204 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             memoryStream.Seek(0, SeekOrigin.Begin);
             return memoryStream;
         }
+
+        public ActionResult MapData()
+        {
+            //var listNationalityData = Session["SessionListNationalityData"] as List<NationalityObj>;
+            return View("MapIndex");
+        }
+
+        protected JsonResult ThrowJSONError(Exception ex)
+        {
+            Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
+            var sErrorMessage = "Error : " + ex.Message + (ex.InnerException != null ? ", More Detail : " + ex.InnerException.Message : "");
+            return Json(new { Message = sErrorMessage }, JsonRequestBehavior.AllowGet);
+        }
+
+
+        [HttpPost]
+        public JsonResult SearchByName(string keyvalue, string keyname)
+        {
+            try
+            {
+                var listNationalityData = new List<StdStageObj>();
+
+                if (keyname.Equals("Postcode"))
+                {
+                    listNationalityData = GetdatabyPostcode(keyvalue);
+
+                }
+                else if (keyname.Equals("ZoneCode"))
+                {
+                    listNationalityData = GetdatabyZonecode(keyvalue);
+                }
+
+                // use sName (AB24) to query data from database
+                return Json(listNationalityData, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                return ThrowJSONError(ex);
+            }
+        }
+
+        private List<StdStageObj> GetdatabyPostcode(string pPostcode)
+        {
+            Console.Write("GetdatabyPostcode ==> ");
+
+            List<StdStageObj> listtemp = new List<StdStageObj>();
+            StdStageObj tempNationalObj = new StdStageObj();
+
+
+            //% for Specific Area like AB21
+            var listResult = rpGeneric.FindByNativeSQL("Select StudentStage,Gender, (Count(*)* 100 / (Select Count(*) From sch_Student_t_v2 where PostOut in (\"" + pPostcode + "\") ))  From sch_Student_t_v2 where PostOut in (\"" + pPostcode + "\")  Group By StudentStage, Gender ");
+
+            if (listResult != null)
+            {
+                var DistinctItems = listResult.GroupBy(x => x.ElementAt(0).ToString()).ToList();
+
+                foreach (var Nationalcode in DistinctItems)
+                {
+                    var templist2 = (from a in listResult where a.ElementAt(0).ToString().Equals(Nationalcode.Key) select a).ToList();
+
+                    if (templist2.Count != 0)
+                    {
+                        tempNationalObj = new StdStageObj();
+                        foreach (var itemRow in templist2)
+                        {
+                            tempNationalObj.StageCode = Convert.ToString(itemRow[0]);
+                            //tempNationalObj.EthinicName = GetDicEhtnicBG().ContainsKey(tempNationalObj.EthinicCode) ? GetDicEhtnicBG()[tempNationalObj.EthinicCode] : "NO NAME";
+
+                            //tempEthnicObj.EthnicGender = Convert.ToString(itemRow[1]);
+                            if ("F".Equals(Convert.ToString(itemRow[1])))
+                            {
+                                tempNationalObj.PercentageFemaleAllSchool = Convert.ToDouble(itemRow[2]);
+                            }
+                            else
+                            {
+                                tempNationalObj.PercentageMaleAllSchool = Convert.ToDouble(itemRow[2]);
+                            }
+
+                        }
+
+                        listtemp.Add(tempNationalObj);
+                    }
+                }
+            }
+
+            foreach (var itemRow in listtemp)
+            {
+                tempNationalObj = itemRow;
+                tempNationalObj.PercentageAllSchool = tempNationalObj.PercentageFemaleAllSchool + tempNationalObj.PercentageMaleAllSchool;
+            }
+
+            return listtemp;
+
+
+        }
+
+        private List<StdStageObj> GetdatabyZonecode(string pZonecode)
+        {
+            Console.Write("GetdatabyZonecode ==> ");
+
+            List<StdStageObj> listtemp = new List<StdStageObj>();
+            StdStageObj tempNationalObj = new StdStageObj();
+
+            string query = " Select t1.StudentStage, t1.Gender, (Count(*)* 100 /";
+            //query += " (Select Count(*)  from sch_Student_t t1 INNER JOIN sch_PrimarySchool_t  t2 on  t1.SeedCode = t2.SeedCode where t2.Name in (\"" + mSchoolname + "\")))";
+            //query += " From sch_Student_t t1 INNER JOIN sch_PrimarySchool_t  t2 on  t1.SeedCode = t2.SeedCode where t2.Name in (\"" + mSchoolname + "\") Group By NationalIdentity, Gender ";
+            query += " (Select Count(*)  from sch_Student_t t1 INNER JOIN CityShire  t2 on  t1.PostCode = t2.PostCode where DataZone in (\"" + pZonecode + "\") )) ";
+            query += " From sch_Student_t t1 INNER JOIN CityShire  t2 on  t1.PostCode = t2.PostCode where DataZone in (\"" + pZonecode + "\") Group By StudentStage, Gender";
+
+            //Select Count(*)  from sch_Student_t t1 INNER JOIN sch_PrimarySchool_t  t2 on  t1.SeedCode = t2.SeedCode where t2.Name in ('Brimmond Primary School')
+            var listResult = rpGeneric.FindByNativeSQL(query);
+
+            if (listResult != null)
+            {
+                var DistinctItems = listResult.GroupBy(x => x.ElementAt(0).ToString()).ToList();
+
+                foreach (var Nationalcode in DistinctItems)
+                {
+                    var templist2 = (from a in listResult where a.ElementAt(0).ToString().Equals(Nationalcode.Key) select a).ToList();
+
+                    if (templist2.Count != 0)
+                    {
+                        tempNationalObj = new StdStageObj();
+                        foreach (var itemRow in templist2)
+                        {
+                            tempNationalObj.StageCode = Convert.ToString(itemRow[0]);
+                            //tempNationalObj.EthinicName = GetDicNational().ContainsKey(tempNationalObj.EthinicCode) ? GetDicNational()[tempNationalObj.EthinicCode] : "NO NAME";
+
+                            //tempEthnicObj.EthnicGender = Convert.ToString(itemRow[1]);
+                            if ("F".Equals(Convert.ToString(itemRow[1])))
+                            {
+                                tempNationalObj.PercentageFemaleAllSchool = Convert.ToDouble(itemRow[2]);
+                            }
+                            else
+                            {
+                                tempNationalObj.PercentageMaleAllSchool = Convert.ToDouble(itemRow[2]);
+                            }
+
+                        }
+
+                        listtemp.Add(tempNationalObj);
+                    }
+                }
+            }
+
+
+            foreach (var itemRow in listtemp)
+            {
+                tempNationalObj = itemRow;
+                tempNationalObj.PercentageAllSchool = tempNationalObj.PercentageFemaleAllSchool + tempNationalObj.PercentageMaleAllSchool;
+            }
+
+            return listtemp;
+
+
+        }
+
+
+        [HttpPost]
+        public JsonResult GetChartDataStudentStageforMap(List<StdStageObj> data)
+        {
+            try
+            {
+                object oChartData = new object();
+                if (data != null)
+                {
+                    var listChartData = new List<object>();
+                    listChartData.Add(new { name = "Female", data = data.Select(x => x.PercentageFemaleAllSchool).ToArray() });
+                    listChartData.Add(new { name = "Male", data = data.Select(x => x.PercentageMaleAllSchool).ToArray() });
+                    listChartData.Add(new { name = "Total", data = data.Select(x => x.PercentageAllSchool).ToArray() });
+                    // process chart data
+                    oChartData = new
+                    {
+                        ChartTitle = "Student Stages - Primary Schools (%pupils)",
+                        ChartCategories = data.Select(x => x.StageCode).ToArray(),
+                        ChartSeries = listChartData
+                    };
+                }
+                else
+                {
+
+                    oChartData = new
+                    {
+                        ChartTitle = "No data available",
+                        ChartCategories = new List<string>(),
+                        ChartSeries = new List<double>()
+                    };
+
+                }
+
+                return Json(oChartData, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.Message, ex);
+                throw ex;
+            }
+        }
     }
 }

@@ -298,8 +298,8 @@ table.style2 td, th {
 
 #maincontrolbox {
     position: absolute;
-    top: 50px;
-    right: 0;
+    top: 100px;
+    right: 50px;
     width: 180px;
     height: auto;
     margin: 0;

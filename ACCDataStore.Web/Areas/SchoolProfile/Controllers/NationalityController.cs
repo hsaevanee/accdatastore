@@ -235,6 +235,46 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult GetChartDataNationalityforMap(List<NationalityObj> data)
+        {
+            try
+            {
+                    object oChartData = new object();
+                    if (data != null)
+                    {
+                        var listChartData = new List<object>();
+                        listChartData.Add(new { name = "Female", data = data.Select(x => x.PercentageFemaleAllSchool).ToArray() });
+                        listChartData.Add(new { name = "Male", data = data.Select(x => x.PercentageMaleAllSchool).ToArray() });
+                        listChartData.Add(new { name = "Total", data = data.Select(x => x.PercentageAllSchool).ToArray() });
+                        // process chart data
+                        oChartData = new
+                        {
+                            ChartTitle = "Nationality - Primary Schools (%pupils)",
+                            ChartCategories = data.Select(x => x.IdentityName).ToArray(),
+                            ChartSeries = listChartData
+                        };
+                    }
+                    else {
+
+                        oChartData = new
+                        {
+                            ChartTitle = "No data available",
+                            ChartCategories = new List<string>(),
+                            ChartSeries = new List<double>()
+                        };                  
+                    
+                    }
+
+                return Json(oChartData, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.Message, ex);
+                throw ex;
+            }
+        }
+
         private List<object> ProcessChartDataEthnic(List<NationalityObj> listNationalFilter)
         {
             var listChartData = new List<object>();
@@ -366,7 +406,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 }
                 else if (keyname.Equals("ZoneCode"))
                 {
-                     listNationalityData = GetdatabyPostcode(keyvalue);
+                    listNationalityData = GetdatabyZonecode(keyvalue);
                 }
                 
                 // use sName (AB24) to query data from database
@@ -423,9 +463,76 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 }
             }
 
+            foreach (var itemRow in listtemp)
+            {
+                tempNationalObj = itemRow;
+                tempNationalObj.PercentageAllSchool = tempNationalObj.PercentageFemaleAllSchool + tempNationalObj.PercentageMaleAllSchool;
+            }
+
             return listtemp;
 
            
+        }
+
+        private List<NationalityObj> GetdatabyZonecode(string pZonecode)
+        {
+            Console.Write("GetdatabyZonecode ==> ");
+
+            List<NationalityObj> listtemp = new List<NationalityObj>();
+            NationalityObj tempNationalObj = new NationalityObj();
+
+            string query = " Select t1.NationalIdentity, t1.Gender, (Count(NationalIdentity)* 100 /";
+            //query += " (Select Count(*)  from sch_Student_t t1 INNER JOIN sch_PrimarySchool_t  t2 on  t1.SeedCode = t2.SeedCode where t2.Name in (\"" + mSchoolname + "\")))";
+            //query += " From sch_Student_t t1 INNER JOIN sch_PrimarySchool_t  t2 on  t1.SeedCode = t2.SeedCode where t2.Name in (\"" + mSchoolname + "\") Group By NationalIdentity, Gender ";
+            query += " (Select Count(*)  from sch_Student_t t1 INNER JOIN CityShire  t2 on  t1.PostCode = t2.PostCode where DataZone in (\"" + pZonecode + "\") )) ";
+            query += " From sch_Student_t t1 INNER JOIN CityShire  t2 on  t1.PostCode = t2.PostCode where DataZone in (\"" + pZonecode + "\") Group By NationalIdentity, Gender";
+
+            //Select Count(*)  from sch_Student_t t1 INNER JOIN sch_PrimarySchool_t  t2 on  t1.SeedCode = t2.SeedCode where t2.Name in ('Brimmond Primary School')
+            var listResult = rpGeneric.FindByNativeSQL(query);
+
+            if (listResult != null)
+            {
+                var DistinctItems = listResult.GroupBy(x => x.ElementAt(0).ToString()).ToList();
+
+                foreach (var Nationalcode in DistinctItems)
+                {
+                    var templist2 = (from a in listResult where a.ElementAt(0).ToString().Equals(Nationalcode.Key) select a).ToList();
+
+                    if (templist2.Count != 0)
+                    {
+                        tempNationalObj = new NationalityObj();
+                        foreach (var itemRow in templist2)
+                        {
+                            tempNationalObj.IdentityCode = Convert.ToString(itemRow[0]);
+                            tempNationalObj.IdentityName = GetDicNational().ContainsKey(tempNationalObj.IdentityCode) ? GetDicNational()[tempNationalObj.IdentityCode] : "NO NAME";
+
+                            //tempEthnicObj.EthnicGender = Convert.ToString(itemRow[1]);
+                            if ("F".Equals(Convert.ToString(itemRow[1])))
+                            {
+                                tempNationalObj.PercentageFemaleAllSchool = Convert.ToDouble(itemRow[2]);
+                            }
+                            else
+                            {
+                                tempNationalObj.PercentageMaleAllSchool = Convert.ToDouble(itemRow[2]);
+                            }
+
+                        }
+
+                        listtemp.Add(tempNationalObj);
+                    }
+                }
+            }
+
+
+            foreach (var itemRow in listtemp)
+            {
+                tempNationalObj = itemRow;
+                tempNationalObj.PercentageAllSchool = tempNationalObj.PercentageFemaleAllSchool + tempNationalObj.PercentageMaleAllSchool;
+            }
+
+            return listtemp;
+
+
         }
 
     }

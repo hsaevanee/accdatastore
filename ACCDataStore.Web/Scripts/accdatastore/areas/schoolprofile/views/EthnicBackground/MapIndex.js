@@ -1,86 +1,4 @@
-﻿//$(function () {
-//    $(document.body).on('click', '.a-close-popup-information', function () {
-//        $("#popup-information").hide(250);
-//    });
-//    initMap();
-//});
-
-//function initMap() {
-//    var mapCenter = new google.maps.LatLng(57.151810, -2.094451);
-//    var mapOptions = {
-//        zoom: 9,
-//        center: mapCenter
-//    }
-
-//    var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-
-//    var layerKml = new google.maps.KmlLayer({
-//        suppressInfoWindows: true,
-//        //url:'https://dl.dropboxusercontent.com/u/55734762/Postcodes.kml'
-
-//        //url: 'https://dl.dropboxusercontent.com/u/55734762/ABpostcodedistricts.kml'
-
-//        url: 'https://dl.dropboxusercontent.com/u/55734762/Datazone_with_Desc.kml'
-
-//        //url: 'https://dl.dropboxusercontent.com/u/870146/KML/UK%20postcode%20districts.kml' + "?rand=" + (new Date()).valueOf()
-//    });
-//    layerKml.setMap(map);
-
-//    google.maps.event.addListener(layerKml, 'click',
-//	function (kmlEvent) {
-//	    SearchByName(kmlEvent.featureData.description);
-//	});
-//}
-//function ShowPopupInformation(sInformation) {
-//    var popupInformation = document.getElementById('popup-information');
-//    popupInformation.innerHTML = sInformation;
-//    $("#popup-information").show(250);
-//}
-
-//function SearchByName(sName) {
-//    var param = JSON.stringify({ 'sName': sName });
-
-//    $.ajax({
-//        type: "POST",
-//        url: sContextPath + "SchoolProfile/Nationality/SearchByName",
-//        data: param,
-//        contentType: "application/json; charset=utf-8",
-//        dataType: "json",
-//        success: function (data) {
-//            ShowPopupInfo(data,sName);
-//        },
-//        error: function (xhr, err) {
-//            SetErrorMessage(xhr);
-//        }
-//    });
-//}
-
-//function SetErrorMessage(xhr) {
-//    if (xhr.responseText.length > 0) {
-//        var sErrorMessage = JSON.parse(xhr.responseText).Message;
-//        alert(sErrorMessage);
-//    }
-//}
-
-
-//function ShowPopupInfo(data, sName) {
-//    var sInformation = "<a href='#' class='a-close-popup-information'>Close</a><h3>" + sName + "</h3>";
-//    sInformation += "<table class='style2'>";
-//    sInformation += "<thead><tr><th>Nationality</th><th>Female</th><th>Male</th></tr></thead>";
-//    sInformation += "<tbody>";
-
-//    for (var i = 0; i < data.length; i++) {        
-//        sInformation += "<tr><td>" + data[i].IdentityName + "</td><td  align='center'>" + data[i].PercentageFemaleAllSchool.toFixed(2) + "</td><td  align='center'>" + data[i].PercentageMaleAllSchool.toFixed(2) + "</td><tr>";
-        
-//    }
-
-//    sInformation += "</tbody></table>";
-//    ShowPopupInformation(sInformation);
-
-//}
-
-
-var map; // map object
+﻿var map; // map object
 
 // initialize all kml layers
 var kml = {
@@ -162,7 +80,7 @@ function SearchData(sCondition,sKeyname) {
 
     $.ajax({
         type: "POST",
-        url: sContextPath + "SchoolProfile/Nationality/SearchByName",
+        url: sContextPath + "SchoolProfile/EthnicBackground/SearchByName",
         data: JSON.stringify(JSONObject),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -180,7 +98,7 @@ function SearchData(sCondition,sKeyname) {
 function myFunctionColumn(data, sCondition) {
         $.ajax({
             type: 'POST',
-            url: sContextPath + 'SchoolProfile/Nationality/GetChartDataNationalityforMap',
+            url: sContextPath + 'SchoolProfile/EthnicBackground/GetChartDataEthnicforMap',
             data: JSON.stringify(data),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
@@ -216,13 +134,13 @@ function drawChartColumn(data, sCondition) {
                             //categories: [ '0%', '5%', '10%', '15%','20%','25%','30%'],
                             categories: data.ChartCategories,
                             title: {
-                                text: 'Nationality'
+                                text: 'EthnicBackground'
                             }
                         },
                         yAxis: {
                             min: 0,
                             title: {
-                                text: '% Pupils in Each Nationality'
+                                text: '% Pupils in Each EthnicBackground'
                             }
                         },
                         tooltip: {
@@ -248,13 +166,13 @@ function drawChartColumn(data, sCondition) {
 
 function ShowPopupInfo(data, sName) {
     //var sInformation = "<a href='#' class='a-close-popup-information'>Close</a><h3>" + sName + "</h3>";
-    var sInformation = "<h3 align='center'> Nationality " + sName + "</h3>";
+    var sInformation = "<h3 align='center'> Ethnicbackground " + sName + "</h3>";
     sInformation += "<table class='style2'>";
-    sInformation += "<thead><tr><th>Nationality</th><th>Female</th><th>Male</th><th>Total</th></tr></thead>";
+    sInformation += "<thead><tr><th>Ethnicbackground</th><th>Female</th><th>Male</th><th>Total</th></tr></thead>";
     sInformation += "<tbody>";
     if (data.length != 0) {
         for (var i = 0; i < data.length; i++) {
-            sInformation += "<tr><td>" + data[i].IdentityName + "</td><td  align='center'>" + data[i].PercentageFemaleAllSchool.toFixed(2) + "</td><td  align='center'>" + data[i].PercentageMaleAllSchool.toFixed(2) + "</td><td  align='center'>" + data[i].PercentageAllSchool.toFixed(2) + "</td><tr>";
+            sInformation += "<tr><td>" + data[i].EthinicName + "</td><td  align='center'>" + data[i].PercentageFemaleAllSchool.toFixed(2) + "</td><td  align='center'>" + data[i].PercentageMaleAllSchool.toFixed(2) + "</td><td  align='center'>" + data[i].PercentageAllSchool.toFixed(2) + "</td><tr>";
 
         }
 

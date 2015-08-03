@@ -13,6 +13,10 @@
 <h2>@Model.selectedschoolname</h2>
 
 <h2>Stage - Primary School (%pupils)</h2>
+
+<h3>
+    @Html.ActionLink("Interactive Map", "MapData", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)
+</h3>
 @if (Model.IsShowCriteria)
 {
     using (Html.BeginForm("Index", "StudentStage", new { area = "SchoolProfile" }))
@@ -254,6 +258,7 @@
             <tr><td><button onclick='myFunctionBar()'><label>Bar Chart</label></button></td></tr>
             <tr><td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td></tr>
             <tr><td>@Html.ActionLink("Export Excel", "ExportExcel", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td></tr>
+            <tr><td>@Html.ActionLink("Interactive Map", "MapData", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td></tr>
         </table>
         <script type="text/javascript">
             // Put your javascript code here

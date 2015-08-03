@@ -1,8 +1,8 @@
-﻿@model ACCDataStore.Web.Areas.SchoolProfile.ViewModels.Nationality.NationalityViewModel
+﻿@model ACCDataStore.Web.Areas.SchoolProfile.ViewModels.EthnicBackground.EthnicBgViewModel2
 @section Header {
     <link rel="stylesheet" href="~/Content/accdatastore/areas/nationality/views/nationality/nationality.css" type="text/css" />
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
-    <script src="~/Scripts/accdatastore/areas/schoolprofile/views/Nationality/MapIndex.js"></script>
+    <script src="~/Scripts/accdatastore/areas/schoolprofile/views/EthnicBackground/MapIndex.js"></script>
 }
 @{
     ViewBag.Title = "MapIndex";
@@ -11,10 +11,10 @@
 @*<div id="map-canvas" style="width: 1280px; height: 720px;"></div>*@
 <div id="map-canvas" style="width: 1280px; height: 576px;" ></div>
 
-<div id="content-windows" style="position:relative; width: 90%">
+<div id="content-windows" style="position:relative; width: 90%;  height: 100%;">
     @*<h1><span id="area-info"></span></h1>*@
-    <div id="divinformationContainer" style="float:left; width: 40%; height: 400px; "></div>
-    <div id="divChartContainer" style="position:absolute; width: 60%; height: 400px; right:0"></div>
+    <div id="divinformationContainer" style="float:left; width: 40%;  height: 100%; "><table></table></div>
+    <div id="divChartContainer" style="position:absolute; width: 60%;  height: 100%; right:0;"></div>
 </div>
 
 <div id="maincontrolbox">
