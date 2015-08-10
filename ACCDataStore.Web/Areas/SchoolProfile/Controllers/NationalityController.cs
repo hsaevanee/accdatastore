@@ -381,7 +381,9 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         public ActionResult MapData()
         {
             //var listNationalityData = Session["SessionListNationalityData"] as List<NationalityObj>;
-            return View("MapIndex");
+            var vmNationality = new NationalityViewModel();
+
+            return View("MapIndex", vmNationality);
         }
 
         protected JsonResult ThrowJSONError(Exception ex)
@@ -397,20 +399,34 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         {
             try
             {
-                var listNationalityData = new List<NationalityObj>();
-               
-                if (keyname.Equals("Postcode"))
+
+               //var listNationalityData = new List<NationalityObj>();
+
+                object oChartData = new object();
+
+
+                if (keyname.Equals("SchCode"))
                 {
-                     listNationalityData = GetdatabyPostcode(keyvalue);
+                    //listNationalityData = GetdatabySchCode(int.Parse(keyvalue));
+                    oChartData = new
+                    {
+                        dataTitle = keyvalue,
+                        dataSeries = GetdatabySchCode(int.Parse(keyvalue))
+                    };
 
                 }
                 else if (keyname.Equals("ZoneCode"))
                 {
-                    listNationalityData = GetdatabyZonecode(keyvalue);
+                    //listNationalityData = GetdatabyZonecode(keyvalue);
+                    oChartData = new
+                    {
+                        dataTitle = keyvalue,
+                        dataSeries = GetdatabyZonecode(keyvalue)
+                    };
                 }
                 
                 // use sName (AB24) to query data from database
-                return Json(listNationalityData, JsonRequestBehavior.AllowGet);
+                return Json(oChartData, JsonRequestBehavior.AllowGet);
   
             }
             catch (Exception ex)
@@ -419,7 +435,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             }
         }
 
-        private List<NationalityObj> GetdatabyPostcode(string pPostcode)
+        private List<NationalityObj> GetdatabySchCode(int pSchcode)
         {
             Console.Write("GetdatabyPostcode ==> ");
 
@@ -428,7 +444,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
 
             //% for Specific Area like AB21
-            var listResult = rpGeneric.FindByNativeSQL("Select NationalIdentity,Gender, (Count(NationalIdentity)* 100 / (Select Count(*) From sch_Student_t_v2 where PostOut in (\"" + pPostcode + "\") ))  From sch_Student_t_v2 where PostOut in (\"" + pPostcode + "\")  Group By NationalIdentity, Gender ");
+            //var listResult = rpGeneric.FindByNativeSQL("Select NationalIdentity,Gender, (Count(NationalIdentity)* 100 / (Select Count(*) From sch_Student_t_v2 where PostOut in (\"" + pPostcode + "\") ))  From sch_Student_t_v2 where PostOut in (\"" + pPostcode + "\")  Group By NationalIdentity, Gender ");
+            var listResult = rpGeneric.FindByNativeSQL("Select NationalIdentity,Gender, (Count(NationalIdentity)* 100 / (Select Count(*) From sch_Student_t_v2 where Seedcode =" + pSchcode + "))  From sch_Student_t_v2 where Seedcode =" + pSchcode + "  Group By NationalIdentity, Gender ");
 
             if (listResult != null)
             {

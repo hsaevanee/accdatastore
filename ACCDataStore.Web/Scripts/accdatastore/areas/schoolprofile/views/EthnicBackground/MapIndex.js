@@ -19,9 +19,9 @@ var kml = {
         dataType : 0
     },
     b: {
-        name: "Aberdeen Postcode Districts",
+        name: "Primary Schools Locations",
         type: 0,
-        url: 'https://dl.dropboxusercontent.com/u/55734762/ABpostcodedistricts.kml' + "?rand=" + (new Date()).valueOf(),
+        url: 'https://dl.dropboxusercontent.com/u/55734762/PrimarySchoollocations_with_Desc.kml' + "?rand=" + (new Date()).valueOf(),
         dataType: 1
     }
 };
@@ -87,7 +87,6 @@ function SearchData(sCondition,sKeyname) {
         success: function (data) {
             ShowPopupInfo(data, sCondition);
             myFunctionColumn(data, sCondition);
-                
         },
         error: function (xhr, err) {
             SetErrorMessage(xhr);
@@ -95,11 +94,11 @@ function SearchData(sCondition,sKeyname) {
     });
 }
 
-function myFunctionColumn(data, sCondition) {
+function myFunctionColumn(pdata, sCondition) {
         $.ajax({
             type: 'POST',
             url: sContextPath + 'SchoolProfile/EthnicBackground/GetChartDataEthnicforMap',
-            data: JSON.stringify(data),
+            data: JSON.stringify(pdata.dataSeries),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function (data) {
@@ -170,14 +169,13 @@ function ShowPopupInfo(data, sName) {
     sInformation += "<table class='style2'>";
     sInformation += "<thead><tr><th>Ethnicbackground</th><th>Female</th><th>Male</th><th>Total</th></tr></thead>";
     sInformation += "<tbody>";
-    if (data.length != 0) {
-        for (var i = 0; i < data.length; i++) {
-            sInformation += "<tr><td>" + data[i].EthinicName + "</td><td  align='center'>" + data[i].PercentageFemaleAllSchool.toFixed(2) + "</td><td  align='center'>" + data[i].PercentageMaleAllSchool.toFixed(2) + "</td><td  align='center'>" + data[i].PercentageAllSchool.toFixed(2) + "</td><tr>";
+    if (data.dataSeries.length != 0) {
+        for (var i = 0; i < data.dataSeries.length; i++) {
+            sInformation += "<tr><td>" + data.dataSeries[i].EthinicName + "</td><td  align='center'>" + data.dataSeries[i].PercentageFemaleAllSchool.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].PercentageMaleAllSchool.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].PercentageAllSchool.toFixed(2) + "</td><tr>";
 
         }
 
     } else {
-
         sInformation += "<tr><td colspan='4' align='center'> No data available</td><tr>";
     }
 
@@ -221,7 +219,7 @@ function ToggleKMLLayer(checked, id) {
             if (kml[id].dataType == 0) {
                 SearchData(kmlEvent.featureData.description, "ZoneCode");
             } else if (kml[id].dataType == 1) {
-                SearchData(kmlEvent.featureData.name,"Postcode");
+                SearchData(kmlEvent.featureData.description, "SchCode");
             }
         });
     } else {

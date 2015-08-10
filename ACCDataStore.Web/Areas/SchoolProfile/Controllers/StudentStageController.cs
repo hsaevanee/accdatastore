@@ -296,20 +296,28 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         {
             try
             {
-                var listNationalityData = new List<StdStageObj>();
+                object oChartData = new object();
 
-                if (keyname.Equals("Postcode"))
+                if (keyname.Equals("SchCode"))
                 {
-                    listNationalityData = GetdatabyPostcode(keyvalue);
+                    oChartData = new
+                    {
+                        dataTitle = keyvalue,
+                        dataSeries = GetdatabySchCode(int.Parse(keyvalue))
+                    };
 
                 }
                 else if (keyname.Equals("ZoneCode"))
                 {
-                    listNationalityData = GetdatabyZonecode(keyvalue);
+                    oChartData = new
+                    {
+                        dataTitle = keyvalue,
+                        dataSeries = GetdatabyZonecode(keyvalue)
+                    };
                 }
 
                 // use sName (AB24) to query data from database
-                return Json(listNationalityData, JsonRequestBehavior.AllowGet);
+                return Json(oChartData, JsonRequestBehavior.AllowGet);
 
             }
             catch (Exception ex)
@@ -318,7 +326,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             }
         }
 
-        private List<StdStageObj> GetdatabyPostcode(string pPostcode)
+        private List<StdStageObj> GetdatabySchCode(int pSchcode)
         {
             Console.Write("GetdatabyPostcode ==> ");
 
@@ -327,7 +335,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
 
             //% for Specific Area like AB21
-            var listResult = rpGeneric.FindByNativeSQL("Select StudentStage,Gender, (Count(*)* 100 / (Select Count(*) From sch_Student_t_v2 where PostOut in (\"" + pPostcode + "\") ))  From sch_Student_t_v2 where PostOut in (\"" + pPostcode + "\")  Group By StudentStage, Gender ");
+            var listResult = rpGeneric.FindByNativeSQL("Select StudentStage,Gender, (Count(*)* 100 / (Select Count(*) From sch_Student_t_v2 where Seedcode =" + pSchcode + " )) From sch_Student_t_v2 where Seedcode =" + pSchcode + " Group By StudentStage, Gender ");
 
             if (listResult != null)
             {

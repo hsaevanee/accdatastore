@@ -101,9 +101,9 @@ var kml = {
         dataType : 0
     },
     b: {
-        name: "Aberdeen Postcode Districts",
+        name: "Primary Schools Locations",
         type: 0,
-        url: 'https://dl.dropboxusercontent.com/u/55734762/ABpostcodedistricts.kml' + "?rand=" + (new Date()).valueOf(),
+        url: 'https://dl.dropboxusercontent.com/u/55734762/PrimarySchoollocations_with_Desc.kml' + "?rand=" + (new Date()).valueOf(),
         dataType: 1
     }
 };
@@ -155,6 +155,16 @@ function ShowPopupInformation(sInformation) {
 // call server side method via ajax
 function SearchData(sCondition,sKeyname) {
     //var param = JSON.stringify({ 'sCondition': sCondition }); // just an example, need to adjust
+    //sCondition = "5235324,MILLTIMBER PRIMARY SCHOOL";
+    //var res = sCondition.split(",");
+    //var kcode = res[0];
+    //var kname = res[1];
+
+    //var JSONObject = {
+    //    "keyvalue": kcode,
+    //    "keyname": sKeyname
+    //}
+
     var JSONObject = {
         "keyvalue": sCondition,
         "keyname": sKeyname
@@ -167,8 +177,10 @@ function SearchData(sCondition,sKeyname) {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
-            ShowPopupInfo(data, sCondition);
-            myFunctionColumn(data, sCondition);
+            //alert(data.schoolname);
+            //alert(data.data);
+            ShowPopupInfo(data);
+            myFunctionColumn(data);
                 
         },
         error: function (xhr, err) {
@@ -177,15 +189,15 @@ function SearchData(sCondition,sKeyname) {
     });
 }
 
-function myFunctionColumn(data, sCondition) {
+function myFunctionColumn(pdata) {
         $.ajax({
             type: 'POST',
             url: sContextPath + 'SchoolProfile/Nationality/GetChartDataNationalityforMap',
-            data: JSON.stringify(data),
+            data: JSON.stringify(pdata.dataSeries),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function (data) {
-                drawChartColumn(data, sCondition);
+                drawChartColumn(data, pdata.dataTitle);
             },
             error: function (xhr, err) {
                 if (xhr.readyState != 0 && xhr.status != 0) {
@@ -246,15 +258,15 @@ function drawChartColumn(data, sCondition) {
                     });
 }
 
-function ShowPopupInfo(data, sName) {
+function ShowPopupInfo(data) {
     //var sInformation = "<a href='#' class='a-close-popup-information'>Close</a><h3>" + sName + "</h3>";
-    var sInformation = "<h3 align='center'> Nationality " + sName + "</h3>";
+    var sInformation = "<h3 align='center'> Nationality " + data.dataTitle + "</h3>";
     sInformation += "<table class='style2'>";
     sInformation += "<thead><tr><th>Nationality</th><th>Female</th><th>Male</th><th>Total</th></tr></thead>";
     sInformation += "<tbody>";
-    if (data.length != 0) {
-        for (var i = 0; i < data.length; i++) {
-            sInformation += "<tr><td>" + data[i].IdentityName + "</td><td  align='center'>" + data[i].PercentageFemaleAllSchool.toFixed(2) + "</td><td  align='center'>" + data[i].PercentageMaleAllSchool.toFixed(2) + "</td><td  align='center'>" + data[i].PercentageAllSchool.toFixed(2) + "</td><tr>";
+    if (data.dataSeries.length != 0) {
+        for (var i = 0; i < data.dataSeries.length; i++) {
+            sInformation += "<tr><td>" + data.dataSeries[i].IdentityName + "</td><td  align='center'>" + data.dataSeries[i].PercentageFemaleAllSchool.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].PercentageMaleAllSchool.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].PercentageAllSchool.toFixed(2) + "</td><tr>";
 
         }
 
@@ -303,9 +315,10 @@ function ToggleKMLLayer(checked, id) {
             if (kml[id].dataType == 0) {
                 SearchData(kmlEvent.featureData.description, "ZoneCode");
             } else if (kml[id].dataType == 1) {
-                SearchData(kmlEvent.featureData.name,"Postcode");
+                SearchData(kmlEvent.featureData.description, "SchCode");
             }
         });
+
     } else {
         kml[id].obj.setMap(null);
         delete kml[id].obj;
