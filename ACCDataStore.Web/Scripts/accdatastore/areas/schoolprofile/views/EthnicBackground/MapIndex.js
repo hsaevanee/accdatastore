@@ -85,8 +85,8 @@ function SearchData(sCondition,sKeyname) {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
-            ShowPopupInfo(data, sCondition);
-            myFunctionColumn(data, sCondition);
+            ShowPopupInfo(data);
+            myFunctionColumn(data);
         },
         error: function (xhr, err) {
             SetErrorMessage(xhr);
@@ -102,7 +102,7 @@ function myFunctionColumn(pdata, sCondition) {
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function (data) {
-                drawChartColumn(data, sCondition);
+                drawChartColumn(data, pdata.dataTitle);
             },
             error: function (xhr, err) {
                 if (xhr.readyState != 0 && xhr.status != 0) {
@@ -163,9 +163,9 @@ function drawChartColumn(data, sCondition) {
                     });
 }
 
-function ShowPopupInfo(data, sName) {
+function ShowPopupInfo(data) {
     //var sInformation = "<a href='#' class='a-close-popup-information'>Close</a><h3>" + sName + "</h3>";
-    var sInformation = "<h3 align='center'> Ethnicbackground " + sName + "</h3>";
+    var sInformation = "<h3 align='center'> Ethnicbackground - " + data.dataTitle + "</h3>";
     sInformation += "<table class='style2'>";
     sInformation += "<thead><tr><th>Ethnicbackground</th><th>Female</th><th>Male</th><th>Total</th></tr></thead>";
     sInformation += "<tbody>";

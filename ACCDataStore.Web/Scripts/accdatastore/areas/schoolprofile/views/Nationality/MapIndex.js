@@ -260,7 +260,7 @@ function drawChartColumn(data, sCondition) {
 
 function ShowPopupInfo(data) {
     //var sInformation = "<a href='#' class='a-close-popup-information'>Close</a><h3>" + sName + "</h3>";
-    var sInformation = "<h3 align='center'> Nationality " + data.dataTitle + "</h3>";
+    var sInformation = "<h3 align='center'> Nationality - " + data.dataTitle + "</h3>";
     sInformation += "<table class='style2'>";
     sInformation += "<thead><tr><th>Nationality</th><th>Female</th><th>Male</th><th>Total</th></tr></thead>";
     sInformation += "<tbody>";

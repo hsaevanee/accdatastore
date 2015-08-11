@@ -302,7 +302,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 {
                     oChartData = new
                     {
-                        dataTitle = keyvalue,
+                        dataTitle = GetSchNamebySchCode(int.Parse(keyvalue)),
                         dataSeries = GetdatabySchCode(int.Parse(keyvalue))
                     };
 
@@ -324,6 +324,33 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             {
                 return ThrowJSONError(ex);
             }
+        }
+
+
+        private string GetSchNamebySchCode(int pSchcode)
+        {
+            Console.Write("GetSchNamebySchCode ==> ");
+
+            string SchoolName = "";
+            //% for Specific Area like AB21
+            //var listResult = rpGeneric.FindByNativeSQL("Select NationalIdentity,Gender, (Count(NationalIdentity)* 100 / (Select Count(*) From sch_Student_t_v2 where PostOut in (\"" + pPostcode + "\") ))  From sch_Student_t_v2 where PostOut in (\"" + pPostcode + "\")  Group By NationalIdentity, Gender ");
+            var listResult = rpGeneric.FindSingleColumnByNativeSQL("Select Name From sch_PrimarySchool_t  where Seedcode =" + pSchcode);
+
+            if (listResult.Any())
+            {
+                SchoolName = Convert.ToString(listResult[0]);
+
+            }
+            else
+            {
+
+                SchoolName = "No School data";
+
+            }
+
+
+            return SchoolName;
+
         }
 
         private List<StdStageObj> GetdatabySchCode(int pSchcode)
