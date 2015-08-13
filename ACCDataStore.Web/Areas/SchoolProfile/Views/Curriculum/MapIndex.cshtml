@@ -1,0 +1,24 @@
+﻿@model ACCDataStore.Web.Areas.SchoolProfile.ViewModels.Curriculum.CurriculumViewModel
+@section Header {
+    <link rel="stylesheet" href="~/Content/accdatastore/areas/nationality/views/nationality/nationality.css" type="text/css" />
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+    <script src="~/Scripts/accdatastore/areas/schoolprofile/views/Curriculum/MapIndex.js"></script>
+}
+@{
+    ViewBag.Title = "Curriculum MapIndex";
+}
+
+@*<div id="map-canvas" style="width: 1280px; height: 720px;"></div>*@
+<div id="map-canvas" style="width: 1280px; height: 576px;" ></div>
+
+<div id="content-windows" style="position:relative; width: 90%">
+    @*<h1><span id="area-info"></span></h1>*@
+    <div id="divinformationContainer" style="float:left; width: 40%; height: 100%; "></div>
+    <div id="divChartContainer" style="float:right; width: 60%;  height: 100%;"></div>
+</div>
+
+<div id="maincontrolbox">
+    <label style="font-family: 'Open Sans'; font-weight: bold;">Layers</label>
+    <div id="mapcontrolbox"></div>
+</div>
+    <div id="divSpinner" class="modal" style="display: none;"></div>

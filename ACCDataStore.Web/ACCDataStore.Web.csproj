@@ -211,6 +211,7 @@
     <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\accdatastore\areas\nationality\views\nationality\nationality.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\Curriculum\Curriculum.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofile\views\Curriculum\MapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\EthnicBackground\EthnicBackground2.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\EthnicBackground\EthnicBackground.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\EthnicBackground\MapIndex.js" />
@@ -311,6 +312,7 @@
     <Content Include="Areas\SchoolProfile\Views\EthnicBackground\MapIndex.cshtml" />
     <Content Include="Areas\SchoolProfile\Views\Language\MapIndex.cshtml" />
     <Content Include="Areas\SchoolProfile\Views\StudentStage\MapIndex.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\Curriculum\MapIndex.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\What-is-data-observatory.cshtml" />

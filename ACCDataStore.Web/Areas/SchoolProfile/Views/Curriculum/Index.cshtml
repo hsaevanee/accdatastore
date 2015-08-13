@@ -13,6 +13,12 @@
 <h2>@Model.selectedschoolname</h2>
 
 <h2>Curriculum for Excellence - Primary School (%pupils)</h2>
+
+<h3>
+    @Html.ActionLink("Interactive Map", "MapData", "Curriculum", new { Area = "SchoolProfile", sSchoolName = "" }, null)
+</h3>
+
+
 @if (Model.IsShowCriteria)
 {
     using (Html.BeginForm("Index", "Curriculum", new { area = "SchoolProfile" }))
