@@ -10,6 +10,7 @@ namespace ACCDataStore.Entity.SchoolProfile
     {        
         public string stage { get; set; }
         public string gender { get; set; }
+        public double sumpupils { get; set; } // Total number of pupils in this stage
         public double early { get; set; }
         public double earlyconsolidating { get; set; }
         public double earlydeveloping { get; set; }
@@ -30,6 +31,7 @@ namespace ACCDataStore.Entity.SchoolProfile
         {
             this.stage = stage;
             this.gender = gender;
+            this.sumpupils = 0;
             this.earlydeveloping = 0;
             this.earlysecure = 0;
             this.firstconsolidating = 0;
@@ -46,6 +48,7 @@ namespace ACCDataStore.Entity.SchoolProfile
         {
             this.stage = null;
             this.gender = null;
+            this.sumpupils = 0;
             this.earlydeveloping = 0;
             this.earlysecure = 0;
             this.firstconsolidating = 0;

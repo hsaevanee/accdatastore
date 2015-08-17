@@ -506,10 +506,13 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
                 if (keyname.Equals("SchCode"))
                 {
+                    string tempname;
+                    tempname = GetSchNamebySchCode(int.Parse(keyvalue));
+
                     oChartData = new
                     {
-                        dataTitle = GetSchNamebySchCode(int.Parse(keyvalue)),
-                        dataSeries = GetdatabySchCode(int.Parse(keyvalue))
+                        dataTitle = tempname,
+                        dataSeries = GetCurriculumDatabySchoolname(rpGeneric, tempname, "Writing")
                     };
 
                 }
@@ -518,7 +521,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                     oChartData = new
                     {
                         dataTitle = keyvalue,
-                        dataSeries = GetdatabyZonecode(keyvalue)
+                        dataSeries = GetdatabyZonecode(keyvalue, "Writing")
                     };
                 }
 
@@ -557,125 +560,156 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             return SchoolName;
 
         }
-        private List<CurriculumObj> GetdatabySchCode(int pSchcode)
-        {
-            Console.Write("GetdatabySchCode ==> ");
-
-            List<CurriculumObj> listtemp = new List<CurriculumObj>();
-            CurriculumObj tempNationalObj = new CurriculumObj();
-
-
-            //% for Specific Area like AB21
-            var listResult = rpGeneric.FindByNativeSQL("Select EthnicBackground,Gender, (Count(*)* 100 / (Select Count(*) From sch_Student_t_v2 where Seedcode =" + pSchcode + " )) From sch_Student_t_v2 where Seedcode =" + pSchcode + " Group By EthnicBackground, Gender ");
-
-            if (listResult != null)
-            {
-                var DistinctItems = listResult.GroupBy(x => x.ElementAt(0).ToString()).ToList();
-
-                foreach (var Nationalcode in DistinctItems)
-                {
-                    var templist2 = (from a in listResult where a.ElementAt(0).ToString().Equals(Nationalcode.Key) select a).ToList();
-
-                    if (templist2.Count != 0)
-                    {
-                        tempNationalObj = new CurriculumObj();
-                        foreach (var itemRow in templist2)
-                        {
-                            tempNationalObj.EthinicCode = Convert.ToString(itemRow[0]);
-                            tempNationalObj.EthinicName = GetDicEhtnicBG().ContainsKey(tempNationalObj.EthinicCode) ? GetDicEhtnicBG()[tempNationalObj.EthinicCode] : "NO NAME";
-
-                            //tempEthnicObj.EthnicGender = Convert.ToString(itemRow[1]);
-                            if ("F".Equals(Convert.ToString(itemRow[1])))
-                            {
-                                tempNationalObj.PercentageFemaleAllSchool = Convert.ToDouble(itemRow[2]);
-                            }
-                            else
-                            {
-                                tempNationalObj.PercentageMaleAllSchool = Convert.ToDouble(itemRow[2]);
-                            }
-
-                        }
-
-                        listtemp.Add(tempNationalObj);
-                    }
-                }
-            }
-
-            foreach (var itemRow in listtemp)
-            {
-                tempNationalObj = itemRow;
-                tempNationalObj.PercentageAllSchool = tempNationalObj.PercentageFemaleAllSchool + tempNationalObj.PercentageMaleAllSchool;
-            }
-
-            return listtemp;
-
-
-        }
-
-        private List<CurriculumObj> GetdatabyZonecode(string pZonecode)
+ 
+        private List<CurriculumObj> GetdatabyZonecode(string pZonecode, string colname)
         {
             Console.Write("GetdatabyZonecode ==> ");
 
             List<CurriculumObj> listtemp = new List<CurriculumObj>();
-            CurriculumObj tempNationalObj = new CurriculumObj();
+            CurriculumObj tempCurriculumObj = new CurriculumObj();
 
-            string query = " Select t1.EthnicBackground, t1.Gender, (Count(*)* 100 /";
-            //query += " (Select Count(*)  from sch_Student_t t1 INNER JOIN sch_PrimarySchool_t  t2 on  t1.SeedCode = t2.SeedCode where t2.Name in (\"" + mSchoolname + "\")))";
-            //query += " From sch_Student_t t1 INNER JOIN sch_PrimarySchool_t  t2 on  t1.SeedCode = t2.SeedCode where t2.Name in (\"" + mSchoolname + "\") Group By NationalIdentity, Gender ";
-            query += " (Select Count(*)  from sch_Student_t t1 INNER JOIN CityShire  t2 on  t1.PostCode = t2.PostCode where DataZone in (\"" + pZonecode + "\") )) ";
-            query += " From sch_Student_t t1 INNER JOIN CityShire  t2 on  t1.PostCode = t2.PostCode where DataZone in (\"" + pZonecode + "\") Group By EthnicBackground, Gender";
+            
 
-            //Select Count(*)  from sch_Student_t t1 INNER JOIN sch_PrimarySchool_t  t2 on  t1.SeedCode = t2.SeedCode where t2.Name in ('Brimmond Primary School')
-            var listResult = rpGeneric.FindByNativeSQL(query);
+            var listTempStage = new List<string>() { "P1", "P2", "P3", "P4", "P5", "P6", "P7" };
+
+            foreach (var item in listTempStage)
+            {
+                listtemp.Add(new CurriculumObj(item, "T"));
+                
+            }
+           
+            string query = " Select StudentStage, " + colname + ", Count(*)";
+            query += " From test_3 where DataZone in (\"" + pZonecode + "\")  Group By StudentStage," + colname;
+
+                var listResult = rpGeneric.FindByNativeSQL(query);
+
+                if (listResult != null)
+                {
+                    foreach (var itemRow in listResult)
+                    {
+
+                        var x = (from a in listtemp where a.stage.Equals(Convert.ToString(itemRow[0])) select a).ToList();
+                        if (x.Count != 0)
+                        {
+
+                            tempCurriculumObj = x[0];
+
+
+                            if (itemRow[1] == null)
+                            {
+                                tempCurriculumObj.blank = Convert.ToDouble(itemRow[2]);
+                            }
+                            else if (Convert.ToString(itemRow[1]).Equals("Early"))
+                            {
+                                tempCurriculumObj.early = Convert.ToDouble(itemRow[2]);
+                            }
+                            else if (Convert.ToString(itemRow[1]).Equals("Early Consolidating"))
+                            {
+                                tempCurriculumObj.earlyconsolidating = Convert.ToDouble(itemRow[2]);
+                            }
+                            else if (Convert.ToString(itemRow[1]).Equals("Early Developing"))
+                            {
+                                tempCurriculumObj.earlydeveloping = Convert.ToDouble(itemRow[2]);
+                            }
+                            else if (Convert.ToString(itemRow[1]).Equals("Early Secure"))
+                            {
+                                tempCurriculumObj.earlysecure = Convert.ToDouble(itemRow[2]);
+                            }
+                            else if (Convert.ToString(itemRow[1]).Equals("First Consolidating"))
+                            {
+                                tempCurriculumObj.firstconsolidating = Convert.ToDouble(itemRow[2]);
+                            }
+                            else if (Convert.ToString(itemRow[1]).Equals("First Developing"))
+                            {
+                                tempCurriculumObj.firstdeveloping = Convert.ToDouble(itemRow[2]);
+                            }
+                            else if (Convert.ToString(itemRow[1]).Equals("First Secure"))
+                            {
+                                tempCurriculumObj.firstsecure = Convert.ToDouble(itemRow[2]);
+                            }
+                            else if (Convert.ToString(itemRow[1]).Equals("Second Consolidating"))
+                            {
+                                tempCurriculumObj.secondconsolidating = Convert.ToDouble(itemRow[2]);
+                            }
+                            else if (Convert.ToString(itemRow[1]).Equals("Second Developing"))
+                            {
+                                tempCurriculumObj.seconddeveloping = Convert.ToDouble(itemRow[2]);
+                            }
+                            else if (Convert.ToString(itemRow[1]).Equals("Second Secure"))
+                            {
+                                tempCurriculumObj.secondsecure = Convert.ToDouble(itemRow[2]);
+                            }
+                            else if (Convert.ToString(itemRow[1]).Equals("Third Consolidating"))
+                            {
+                                tempCurriculumObj.thirdconsolidating = Convert.ToDouble(itemRow[2]);
+                            }
+                            else if (Convert.ToString(itemRow[1]).Equals("Third Developing"))
+                            {
+                                tempCurriculumObj.thirddeveloping = Convert.ToDouble(itemRow[2]);
+                            }
+                            else if (Convert.ToString(itemRow[1]).Equals("Third Secure"))
+                            {
+                                tempCurriculumObj.thirdsecure = Convert.ToDouble(itemRow[2]);
+                            }
+                        }
+
+                    }
+                   // listtemp.Add(tempCurriculumObj);
+                }
+
+            query = " Select StudentStage, Count(*) From test_3 where DataZone in (\"" + pZonecode + "\") Group by StudentStage";
+
+
+            listResult = rpGeneric.FindByNativeSQL(query);
 
             if (listResult != null)
             {
-                var DistinctItems = listResult.GroupBy(x => x.ElementAt(0).ToString()).ToList();
-
-                foreach (var Nationalcode in DistinctItems)
+                foreach (var itemRow in listResult)
                 {
-                    var templist2 = (from a in listResult where a.ElementAt(0).ToString().Equals(Nationalcode.Key) select a).ToList();
 
-                    if (templist2.Count != 0)
+                    var x = (from a in listtemp where a.stage.Equals(Convert.ToString(itemRow[0])) select a).ToList();
+                    if (x.Count != 0)
                     {
-                        tempNationalObj = new EthnicObj();
-                        foreach (var itemRow in templist2)
-                        {
-                            tempNationalObj.EthinicCode = Convert.ToString(itemRow[0]);
-                            tempNationalObj.EthinicName = GetDicEhtnicBG().ContainsKey(tempNationalObj.EthinicCode) ? GetDicEhtnicBG()[tempNationalObj.EthinicCode] : "NO NAME";
 
-                            //tempEthnicObj.EthnicGender = Convert.ToString(itemRow[1]);
-                            if ("F".Equals(Convert.ToString(itemRow[1])))
-                            {
-                                tempNationalObj.PercentageFemaleAllSchool = Convert.ToDouble(itemRow[2]);
-                            }
-                            else
-                            {
-                                tempNationalObj.PercentageMaleAllSchool = Convert.ToDouble(itemRow[2]);
-                            }
-
-                        }
-
-                        listtemp.Add(tempNationalObj);
+                        tempCurriculumObj = x[0];
+                        tempCurriculumObj.sumpupils = Convert.ToDouble(itemRow[1]);
                     }
+
+
                 }
+
             }
+                List<CurriculumObj> listtemp1 = listtemp.OrderBy(x => x.stage).ToList();
 
+                foreach (var itemRow in listtemp1)
+                {
+                    tempCurriculumObj = itemRow;
+                    tempCurriculumObj.blank = (tempCurriculumObj.blank * 100) / tempCurriculumObj.sumpupils;
+                    tempCurriculumObj.early = (tempCurriculumObj.early * 100) / tempCurriculumObj.sumpupils;
+                    tempCurriculumObj.earlysecure = (tempCurriculumObj.earlysecure * 100) / tempCurriculumObj.sumpupils;
+                    tempCurriculumObj.earlyconsolidating = (tempCurriculumObj.earlyconsolidating * 100) / tempCurriculumObj.sumpupils;
+                    tempCurriculumObj.earlydeveloping = (tempCurriculumObj.earlydeveloping * 100) / tempCurriculumObj.sumpupils;
+                    tempCurriculumObj.firstdeveloping = (tempCurriculumObj.firstdeveloping * 100) / tempCurriculumObj.sumpupils;
+                    tempCurriculumObj.firstconsolidating = (tempCurriculumObj.firstconsolidating * 100) / tempCurriculumObj.sumpupils;
+                    tempCurriculumObj.firstsecure = (tempCurriculumObj.firstsecure * 100) / tempCurriculumObj.sumpupils;
+                    tempCurriculumObj.seconddeveloping = (tempCurriculumObj.seconddeveloping * 100) / tempCurriculumObj.sumpupils;
+                    tempCurriculumObj.secondconsolidating = (tempCurriculumObj.secondconsolidating * 100) / tempCurriculumObj.sumpupils;
+                    tempCurriculumObj.secondsecure = (tempCurriculumObj.secondsecure * 100) / tempCurriculumObj.sumpupils;
+                    tempCurriculumObj.thirddeveloping = (tempCurriculumObj.thirddeveloping * 100) / tempCurriculumObj.sumpupils;
+                    tempCurriculumObj.thirdconsolidating = (tempCurriculumObj.thirdconsolidating * 100) / tempCurriculumObj.sumpupils;
+                    tempCurriculumObj.thirdsecure = (tempCurriculumObj.thirdsecure * 100) / tempCurriculumObj.sumpupils;
+                    tempCurriculumObj.grandtotal = tempCurriculumObj.blank + tempCurriculumObj.early + tempCurriculumObj.earlysecure + tempCurriculumObj.earlydeveloping + tempCurriculumObj.earlyconsolidating + tempCurriculumObj.firstsecure + tempCurriculumObj.firstdeveloping + tempCurriculumObj.firstconsolidating + tempCurriculumObj.secondsecure + tempCurriculumObj.seconddeveloping + tempCurriculumObj.secondconsolidating + tempCurriculumObj.thirddeveloping + tempCurriculumObj.thirdconsolidating + tempCurriculumObj.thirdsecure;
 
-            foreach (var itemRow in listtemp)
-            {
-                tempNationalObj = itemRow;
-                tempNationalObj.PercentageAllSchool = tempNationalObj.PercentageFemaleAllSchool + tempNationalObj.PercentageMaleAllSchool;
-            }
+                }
 
-            return listtemp;
+                return listtemp1;
 
-
+            
         }
 
 
         [HttpPost]
-        public JsonResult GetChartDataEthnicforMap(List<CurriculumObj> data)
+        public JsonResult GetChartDataforMap(List<CurriculumObj> data)
         {
             try
             {
@@ -683,28 +717,30 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 if (data != null)
                 {
                     var listChartData = new List<object>();
-                    listChartData.Add(new { name = "Early", data = data.Select(x => x.early).ToArray() });
-                    listChartData.Add(new { name = "Early Developing", data = data.Select(x => x.earlydeveloping).ToArray() });
-                    listChartData.Add(new { name = "Early Consolidating", data = data.Select(x => x.earlyconsolidating).ToArray() });
-                    listChartData.Add(new { name = "Early Secure", data = data.Select(x => x.earlysecure).ToArray() });
-                    listChartData.Add(new { name = "First Developing", data = data.Select(x => x.firstdeveloping).ToArray() });
-                    listChartData.Add(new { name = "First Consolidating", data = data.Select(x => x.firstconsolidating).ToArray() });
-                    listChartData.Add(new { name = "First Secure", data = data.Select(x => x.firstsecure).ToArray() });
+                    var temp = new List<CurriculumObj>();
+                    temp = (from a in data where a.gender.Equals("T") select a).ToList();
+                        listChartData.Add(new { name = "Early", data = temp.Select(x => x.early).ToArray() });
+                        listChartData.Add(new { name = "Early Developing", data = temp.Select(x => x.earlydeveloping).ToArray() });
+                        listChartData.Add(new { name = "Early Consolidating", data = temp.Select(x => x.earlyconsolidating).ToArray() });
+                        listChartData.Add(new { name = "Early Secure", data = temp.Select(x => x.earlysecure).ToArray() });
+                        listChartData.Add(new { name = "First Developing", data = temp.Select(x => x.firstdeveloping).ToArray() });
+                        listChartData.Add(new { name = "First Consolidating", data = temp.Select(x => x.firstconsolidating).ToArray() });
+                        listChartData.Add(new { name = "First Secure", data = temp.Select(x => x.firstsecure).ToArray() });
 
-                    listChartData.Add(new { name = "Second Developing", data = data.Select(x => x.seconddeveloping).ToArray() });
-                    listChartData.Add(new { name = "Second Consolidating", data = data.Select(x => x.secondconsolidating).ToArray() });
-                    listChartData.Add(new { name = "Second Secure", data = data.Select(x => x.secondsecure).ToArray() });
+                        listChartData.Add(new { name = "Second Developing", data = temp.Select(x => x.seconddeveloping).ToArray() });
+                        listChartData.Add(new { name = "Second Consolidating", data = temp.Select(x => x.secondconsolidating).ToArray() });
+                        listChartData.Add(new { name = "Second Secure", data = temp.Select(x => x.secondsecure).ToArray() });
 
-                    listChartData.Add(new { name = "Third Developing", data = data.Select(x => x.thirddeveloping).ToArray() });
-                    listChartData.Add(new { name = "Third Consolidating", data = data.Select(x => x.thirdconsolidating).ToArray() });
-                    listChartData.Add(new { name = "Third Secure", data = data.Select(x => x.thirdsecure).ToArray() });
-                    listChartData.Add(new { name = "Blank", data = data.Select(x => x.blank).ToArray() });
+                        listChartData.Add(new { name = "Third Developing", data = temp.Select(x => x.thirddeveloping).ToArray() });
+                        listChartData.Add(new { name = "Third Consolidating", data = temp.Select(x => x.thirdconsolidating).ToArray() });
+                        listChartData.Add(new { name = "Third Secure", data = temp.Select(x => x.thirdsecure).ToArray() });
+                        listChartData.Add(new { name = "Blank", data = temp.Select(x => x.blank).ToArray() });
 
                     // process chart data
                     oChartData = new
                     {
                         ChartTitle = "Curriculum for Excellence - Primary Schools (%pupils)",
-                        ChartCategories = data.Select(x => x.stage).ToArray(),
+                        ChartCategories = new List<string>() { "P1", "P2", "P3", "P4", "P5", "P6", "P7" },
                         ChartSeries = listChartData
                     };
                 }

@@ -70,8 +70,17 @@
                         <li>@Html.ActionLink("Student Stage", "Index", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)</li>
                         <li>@Html.ActionLink("Level of English", "Index", "Language", new { Area = "SchoolProfile", sSchoolName = "" }, null)</li>
                         <li>@Html.ActionLink("Curriculum for Excellence", "Index", "Curriculum", new { Area = "SchoolProfile", sSchoolName = "" }, null)</li>
-                        @*<li>@Html.ActionLink("FSM", "FSMIndex", "Language", new { Area = "SchoolProfile", sSchoolName = "" }, null)</li>*@
-                        @*<li>@Html.ActionLink("Occupancy", "Index", "SchoolProfile", new { Area = "SchoolProfile" }, null)</li>*@
+                        <li>
+                            <label for="subfolder1">Curriculum for Excellence</label>
+                            <input type="checkbox" id="subfolder1" />
+                            <ul>
+                                <li>Test1</li>
+                                <li>Test2</li>
+                            </ul>
+                        </li>
+
+                            @*<li>@Html.ActionLink("FSM", "FSMIndex", "Language", new { Area = "SchoolProfile", sSchoolName = "" }, null)</li>*@
+                            @*<li>@Html.ActionLink("Occupancy", "Index", "SchoolProfile", new { Area = "SchoolProfile" }, null)</li>*@
                     </ul>
                 </div>
                 <div id="main" style="margin:10px 10px">

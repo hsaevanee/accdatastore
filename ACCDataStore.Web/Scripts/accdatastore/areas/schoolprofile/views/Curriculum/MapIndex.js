@@ -97,7 +97,7 @@ function SearchData(sCondition,sKeyname) {
 function myFunctionColumn(pdata, sCondition) {
         $.ajax({
             type: 'POST',
-            url: sContextPath + 'SchoolProfile/Curriculum/GetChartDataEthnicforMap',
+            url: sContextPath + 'SchoolProfile/Curriculum/GetChartDataforMap',
             data: JSON.stringify(pdata.dataSeries),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
@@ -167,16 +167,27 @@ function ShowPopupInfo(data) {
     //var sInformation = "<a href='#' class='a-close-popup-information'>Close</a><h3>" + sName + "</h3>";
     var sInformation = "<h3 align='center'> Curriculum for Excellence - " + data.dataTitle + "</h3>";
     sInformation += "<table class='style2'>";
-    sInformation += "<thead><tr><th>Ethnicbackground</th><th>Female</th><th>Male</th><th>Total</th></tr></thead>";
+    sInformation += "<thead><tr><th>Stage</th><th>Early</th><th>Early Developing</th><th>Early Consolidating</th><th>Early Secure</th>";
+    sInformation += "<th>First Developing</th><th>First Consolidating</th><th>First Secure</th>";
+    sInformation += "<th>Second Developing</th><th>Second Consolidating</th><th>Second Secure</th>";
+    sInformation += "<th>Third Developing</th><th>Third Consolidating</th><th>Third Secure</th>";
+    sInformation += "<th>blank</th><th>Grandtotal</th></tr></thead>";
     sInformation += "<tbody>";
     if (data.dataSeries.length != 0) {
         for (var i = 0; i < data.dataSeries.length; i++) {
-            sInformation += "<tr><td>" + data.dataSeries[i].EthinicName + "</td><td  align='center'>" + data.dataSeries[i].PercentageFemaleAllSchool.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].PercentageMaleAllSchool.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].PercentageAllSchool.toFixed(2) + "</td><tr>";
+
+            if (data.dataSeries[i].gender == "T") {
+                sInformation += "<tr><td>" + data.dataSeries[i].stage + "</td><td  align='center'>" + data.dataSeries[i].early.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].earlydeveloping.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].earlyconsolidating.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].earlysecure.toFixed(2) + "</td>";
+                sInformation += "<td  align='center'>" + data.dataSeries[i].firstdeveloping.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].firstconsolidating.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].firstsecure.toFixed(2) + "</td>";
+                sInformation += "<td  align='center'>" + data.dataSeries[i].seconddeveloping.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].secondconsolidating.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].secondsecure.toFixed(2) + "</td>";
+                sInformation += "<td  align='center'>" + data.dataSeries[i].thirddeveloping.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].thirdconsolidating.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].thirdsecure.toFixed(2) + "</td>";
+                sInformation += "<td  align='center'>" + data.dataSeries[i].blank.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].grandtotal.toFixed(2) + "</td><tr>";
+            }
 
         }
 
     } else {
-        sInformation += "<tr><td colspan='4' align='center'> No data available</td><tr>";
+        sInformation += "<tr><td colspan='16' align='center'> No data available</td><tr>";
     }
 
 
