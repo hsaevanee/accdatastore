@@ -8,6 +8,21 @@
     ViewBag.Title = "Curriculum MapIndex";
 }
 
+
+
+<div id="main" style="width: 1280px;margin:10px 0px">
+    <table>
+        <tr>
+            <th colspan=" 2">Please select Criteria</th>
+        </tr>
+        <tr>
+            <td width="10%">Select Subject </td>
+            <td>@Html.DropDownListFor(x => x.selectedschoolname, new SelectList(Model.ListSubjects), "---Please Select Subject---")</td>
+        </tr>
+    </table>
+</div>
+
+<br />
 @*<div id="map-canvas" style="width: 1280px; height: 720px;"></div>*@
 <div id="map-canvas" style="width: 1280px; height: 576px;" ></div>
 
@@ -22,4 +37,7 @@
     <label style="font-family: 'Open Sans'; font-weight: bold;">Layers</label>
     <div id="mapcontrolbox"></div>
 </div>
-    <div id="divSpinner" class="modal" style="display: none;"></div>
+
+<article id="popup-information"></article>
+<div id="content-windows-mouse-over" style="position: absolute; display:none; background-color: lightgray;"></div>
+<div id="divSpinner" class="modal" style="display: none;"></div>

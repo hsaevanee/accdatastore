@@ -13,17 +13,17 @@ var kml = {
     //    }
     //},
     a: {
-        name: "Aberdeen DataZone Districts",
-        type: 0,
-        url: 'https://dl.dropboxusercontent.com/u/55734762/Datazone_with_Desc.kml' + "?rand=" + (new Date()).valueOf(),
-        dataType : 0
+        name: "Primary Schools Locations",
+        type: 2,
+        url: 'https://dl.dropboxusercontent.com/u/55734762/PrimarySchoollocations.json' + "?rand=" + (new Date()).valueOf(),
+        dataType: 1
     },
     b: {
-        name: "Primary Schools Locations",
-        type: 0,
-        url: 'https://dl.dropboxusercontent.com/u/55734762/PrimarySchoollocations_with_Desc.kml' + "?rand=" + (new Date()).valueOf(),
-        dataType: 1
-    }
+        name: "Aberdeen DataZone Districts",
+        type: 2,
+        url: 'https://dl.dropboxusercontent.com/u/870146/KML/V2/Datazone_with_Desc.json' + "?rand=" + (new Date()).valueOf(),
+        dataType: 2
+    },
 };
 
 // on document ready
@@ -71,10 +71,11 @@ function ShowPopupInformation(sInformation) {
 
 
 // call server side method via ajax
-function SearchData(sCondition,sKeyname) {
+function SearchData(sCondition,sSubject, sKeyname) {
     //var param = JSON.stringify({ 'sCondition': sCondition }); // just an example, need to adjust
     var JSONObject = {
         "keyvalue": sCondition,
+        "keysubject": sSubject,
         "keyname": sKeyname
     }
 
@@ -85,8 +86,8 @@ function SearchData(sCondition,sKeyname) {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
-            ShowPopupInfo(data);
-            myFunctionColumn(data);
+            ShowPopupInfo(data, sSubject);
+            myFunctionColumn(data, sSubject);
         },
         error: function (xhr, err) {
             SetErrorMessage(xhr);
@@ -94,7 +95,7 @@ function SearchData(sCondition,sKeyname) {
     });
 }
 
-function myFunctionColumn(pdata, sCondition) {
+function myFunctionColumn(pdata, sSubject) {
         $.ajax({
             type: 'POST',
             url: sContextPath + 'SchoolProfile/Curriculum/GetChartDataforMap',
@@ -102,7 +103,7 @@ function myFunctionColumn(pdata, sCondition) {
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function (data) {
-                drawChartColumn(data, pdata.dataTitle);
+                drawChartColumn(data, sSubject, pdata.dataTitle);
             },
             error: function (xhr, err) {
                 if (xhr.readyState != 0 && xhr.status != 0) {
@@ -115,7 +116,7 @@ function myFunctionColumn(pdata, sCondition) {
 
 }
 
-function drawChartColumn(data, sCondition) {
+function drawChartColumn(data, sSubject, sCondition) {
    
     $('#divChartContainer')
             .highcharts(
@@ -124,10 +125,10 @@ function drawChartColumn(data, sCondition) {
                             type: 'column'
                         },
                         title: {
-                            text: data.ChartTitle
+                            text: data.ChartTitle + sCondition + ' (% pupils)'
                         },
                         subtitle: {
-                            text: sCondition
+                            text: sSubject
                         },
                         xAxis: {
                             //categories: [ '0%', '5%', '10%', '15%','20%','25%','30%'],
@@ -163,11 +164,11 @@ function drawChartColumn(data, sCondition) {
                     });
 }
 
-function ShowPopupInfo(data) {
+function ShowPopupInfo(data, subject) {
     //var sInformation = "<a href='#' class='a-close-popup-information'>Close</a><h3>" + sName + "</h3>";
-    var sInformation = "<h3 align='center'> Curriculum for Excellence - " + data.dataTitle + "</h3>";
+    var sInformation = "<h3 align='center'> Curriculum for Excellence - "+ data.dataTitle + "</h3>";
     sInformation += "<table class='style2'>";
-    sInformation += "<thead><tr><th>Stage</th><th>Early</th><th>Early Developing</th><th>Early Consolidating</th><th>Early Secure</th>";
+    sInformation += "<thead><tr><th colspan='16'>" + subject + "</th></tr><tr><th>Stage</th><th>Early</th><th>Early Developing</th><th>Early Consolidating</th><th>Early Secure</th>";
     sInformation += "<th>First Developing</th><th>First Consolidating</th><th>First Secure</th>";
     sInformation += "<th>Second Developing</th><th>Second Consolidating</th><th>Second Secure</th>";
     sInformation += "<th>Third Developing</th><th>Third Consolidating</th><th>Third Secure</th>";
@@ -220,6 +221,51 @@ function ToggleKMLLayer(checked, id) {
                     suppressInfoWindows: true
                 });
                 break;
+            case 2: // geojson for geometry
+                layer = new google.maps.Data();
+                layer.loadGeoJson(kml[id].url);
+
+                layer.setStyle(function (feature) {
+                    var color = '#2262CC';
+                    if (feature.getProperty('isColorful')) {
+                        color = feature.getProperty('color');
+                    }
+                    return /** @type {google.maps.Data.StyleOptions} */({
+                        fillColor: '#2262CC',
+                        strokeColor: color,
+                        strokeWeight: 2
+                    });
+                });
+
+                layer.addListener('click', function (event) {
+                    event.feature.setProperty('isColorful', true);
+                });
+
+                var infoWindows = new google.maps.InfoWindow();
+                layer.addListener('mouseover', function (event) {
+                    if (event.ub != null) { // case of polygon
+                        layer.revertStyle();
+                        layer.overrideStyle(event.feature, { strokeWeight: 5 });
+                        var divContent = document.getElementById('content-windows-mouse-over');
+                        divContent.style.display = "block";
+                        divContent.style.left = (event.ub.clientX + 20) + "px";
+                        divContent.style.top = (event.ub.clientY + 20) + "px";
+                        divContent.textContent = event.feature.getProperty('description');
+                    } else { // case of point
+                        infoWindows.setContent("<div style='width: 150px;'>" + event.feature.getProperty("Name") + "</div>");
+                        infoWindows.setPosition(event.feature.getGeometry().get());
+                        infoWindows.setOptions({ pixelOffset: new google.maps.Size(0, -30) });
+                        infoWindows.open(map);
+                        setTimeout(function () { infoWindows.close(); }, 4000);
+                    }
+                });
+
+                layer.addListener('mouseout', function (event) {
+                    layer.revertStyle();
+                    var divContent = document.getElementById('content-windows-mouse-over');
+                    divContent.style.display = "none";
+                });
+                break;
         }
 
         kml[id].obj = layer;
@@ -230,7 +276,16 @@ function ToggleKMLLayer(checked, id) {
             if (kml[id].dataType == 0) {
                 SearchData(kmlEvent.featureData.description, "ZoneCode");
             } else if (kml[id].dataType == 1) {
-                SearchData(kmlEvent.featureData.description, "SchCode");
+                if (validateDropdownlist()) {
+                    var value1 = $('#selectedschoolname :selected').text();
+                    SearchData(kmlEvent.feature.G.description, value1, "SchCode");
+                }                
+            } else if (kml[id].dataType == 2) {
+                //SearchData(kmlEvent.feature.G.description, value1, "ZoneCode");
+                if (validateDropdownlist()) {
+                    var value1 = $('#selectedschoolname :selected').text();
+                    SearchData(kmlEvent.feature.G.description, value1, "ZoneCode");
+                }
             }
         });
     } else {
@@ -269,4 +324,17 @@ function RemoveAllLayers() {
     for (var i = 0, m; m = boxes[i]; i++) {
         m.checked = false;
     }
+}
+
+function validateDropdownlist() {
+    var value1 = $('#selectedschoolname :selected').text();
+    //var value2 = $('#selectedschoolname2 :selected').text();
+
+    if (value1 == "---Please Select Subject---") {
+        alert('Please select Subject');
+        return false;
+    } else {
+        return true;
+    }
+
 }

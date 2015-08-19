@@ -28,11 +28,11 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         protected Dictionary<string, string> GetDicSubject()
         {
             var dicSubject = new Dictionary<string, string>();
-            dicSubject.Add("Literacy", "Literacy");
+            dicSubject.Add("Literacy_Primary", "Literacy");
             dicSubject.Add("Reading", "Reading");
             dicSubject.Add("Writing", "Writing");
-            dicSubject.Add("LandT", "Listening and Talking");
-            dicSubject.Add("Numeracy", "Numeracy");
+            dicSubject.Add("L_and_T", "Listening and Talking");
+            dicSubject.Add("Numeracy_Primary", "Numeracy");
             dicSubject.Add("NMM", "Number, Money & Measure");
             dicSubject.Add("SPM", "Shape, Position & Movement");
             dicSubject.Add("IH", "Information Handling");
@@ -78,11 +78,11 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
             fooList = new List<string>();
 
-            fooList.Add("Literacy");
+            fooList.Add("Literacy_Primary");
             fooList.Add("Reading");
             fooList.Add("Writing");
-            fooList.Add("LandT");
-            fooList.Add("Numeracy");
+            fooList.Add("L_and_T");
+            fooList.Add("Numeracy_Primary");
             fooList.Add("NMM");
             fooList.Add("SPM");
             fooList.Add("IH");
@@ -189,7 +189,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 else
                 {
                     foreach (var subject in sSubjectCriteria) {
-                        if (subject.Equals("Literacy")) {                            
+                        if (subject.Equals("Literacy_Primary"))
+                        {                            
                             vmCurriculum.ListLiteracydata = GetCurriculumDatabySchoolname(rpGeneric, sSchoolName, "Literacy_Primary");
                             Session["SessionListLiteracydata"] = vmCurriculum.ListLiteracydata;
                         }
@@ -203,12 +204,12 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                             vmCurriculum.ListWritingdata = GetCurriculumDatabySchoolname(rpGeneric, sSchoolName, "Writing");
                             Session["SessionListWritingdata"] = vmCurriculum.ListWritingdata;
                         }
-                        else if (subject.Equals("LandT"))
+                        else if (subject.Equals("L_and_T"))
                         {
                             vmCurriculum.ListLandTdata = GetCurriculumDatabySchoolname(rpGeneric, sSchoolName, "L_and_T");
                             Session["SessionListLandTdata"] = vmCurriculum.ListLandTdata;
                         }
-                        else if (subject.Equals("Numeracy"))
+                        else if (subject.Equals("Numeracy_Primary"))
                         {
                             vmCurriculum.ListNumeracydata = GetCurriculumDatabySchoolname(rpGeneric, sSchoolName, "Numeracy_Primary");
                             Session["SessionListNumeracydata"] = vmCurriculum.ListNumeracydata;
@@ -487,7 +488,23 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         public ActionResult MapData()
         {
             //var listNationalityData = Session["SessionListNationalityData"] as List<NationalityObj>;
-            return View("MapIndex");
+
+            var vmCurriculum = new CurriculumViewModel();
+
+            List<string> fooList = new List<string>();
+
+            fooList.Add("Literacy_Primary");
+            fooList.Add("Reading");
+            fooList.Add("Writing");
+            fooList.Add("L_and_T");
+            fooList.Add("Numeracy_Primary");
+            fooList.Add("NMM");
+            fooList.Add("SPM");
+            fooList.Add("IH");
+            vmCurriculum.ListSubjects = fooList;
+            vmCurriculum.DicSubject = GetDicSubject();
+
+            return View("MapIndex", vmCurriculum);
         }
 
         protected JsonResult ThrowJSONError(Exception ex)
@@ -498,7 +515,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         }
 
         [HttpPost]
-        public JsonResult SearchByName(string keyvalue, string keyname)
+        public JsonResult SearchByName(string keyvalue, string keysubject, string keyname)
         {
             try
             {
@@ -512,7 +529,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                     oChartData = new
                     {
                         dataTitle = tempname,
-                        dataSeries = GetCurriculumDatabySchoolname(rpGeneric, tempname, "Writing")
+                        dataSeries = GetCurriculumDatabySchoolname(rpGeneric, tempname, keysubject)
                     };
 
                 }
@@ -521,7 +538,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                     oChartData = new
                     {
                         dataTitle = keyvalue,
-                        dataSeries = GetdatabyZonecode(keyvalue, "Writing")
+                        dataSeries = GetdatabyZonecode(keyvalue, keysubject)
                     };
                 }
 
@@ -739,7 +756,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                     // process chart data
                     oChartData = new
                     {
-                        ChartTitle = "Curriculum for Excellence - Primary Schools (%pupils)",
+                        ChartTitle = "Curriculum for Excellence - ",
                         ChartCategories = new List<string>() { "P1", "P2", "P3", "P4", "P5", "P6", "P7" },
                         ChartSeries = listChartData
                     };

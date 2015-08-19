@@ -91,6 +91,10 @@ td, th {
     /*text-align: center;*/
 }
 
+tr th {
+    color: white;
+}
+
 table.style2 {
     width: 100%;
     border-collapse: collapse;
