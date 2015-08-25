@@ -61,6 +61,8 @@
     <Compile Include="ChartData.cs" />
     <Compile Include="CriteriaParameters.cs" />
     <Compile Include="GeneralCounter.cs" />
+    <Compile Include="Mapping\MySQL\LA100SchoolsMap.cs" />
+    <Compile Include="MySQL\LA100Schools.cs" />
     <Compile Include="SchoolProfile\CurriculumObj.cs" />
     <Compile Include="SchoolProfile\EthnicObj.cs" />
     <Compile Include="Mapping\Nationality2012Map.cs" />
@@ -77,6 +79,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

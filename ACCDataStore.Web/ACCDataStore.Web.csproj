@@ -276,11 +276,14 @@
     <Compile Include="Helpers\ConstantHelper.cs" />
     <Compile Include="Helpers\ConvertHelper.cs" />
     <Compile Include="Helpers\ORM\INHibernateHelper.cs" />
+    <Compile Include="Helpers\ORM\IUnitOfWork2nd.cs" />
     <Compile Include="Helpers\ORM\IUnitOfWork.cs" />
     <Compile Include="Helpers\ORM\MVCApplicationModule.cs" />
     <Compile Include="Helpers\ORM\NHibernateHelper.cs" />
     <Compile Include="Helpers\ORM\NHibernateModule.cs" />
+    <Compile Include="Helpers\ORM\NHibernateUnitOfWork2nd.cs" />
     <Compile Include="Helpers\ORM\NHibernateUnitOfWork.cs" />
+    <Compile Include="Helpers\ORM\TransactionalAttribute2nd.cs" />
     <Compile Include="Helpers\ORM\TransactionalAttribute.cs" />
     <Compile Include="Helpers\ORM\TransactionAttribute.cs" />
     <Compile Include="Helpers\ORM\TransactionFilter.cs" />
@@ -332,6 +335,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\InsightProfile\Models\" />
+    <Folder Include="Areas\InsightProfile\ViewModels\" />
     <Folder Include="Areas\Nationality\Models\" />
     <Folder Include="Areas\SchoolProfile\Models\" />
     <Folder Include="Models\" />

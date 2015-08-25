@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using ACCDataStore.Repository;
 using ACCDataStore.Entity;
 using ACCDataStore.Web.ViewModels;
+using ACCDataStore.Entity.MySQL;
 
 namespace ACCDataStore.Web.Controllers
 {
@@ -32,7 +33,7 @@ namespace ACCDataStore.Web.Controllers
                 vmIndex.ApplicationName = HttpContext.Application["APP_NAME"] as string;
                 vmIndex.ApplicationVersion = HttpContext.Application["APP_VERSION"] as string;
                 return View("index", vmIndex);
-               
+
             }
             else
             {
@@ -40,7 +41,7 @@ namespace ACCDataStore.Web.Controllers
                 TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
                 return View("theTeam");
             }
-            
+
         }
     }
 }

@@ -50,8 +50,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IBaseRepository.cs" />
+    <Compile Include="IGenericRepository2nd.cs" />
     <Compile Include="IGenericRepository.cs" />
     <Compile Include="Impl\BaseRepositoryImpl.cs" />
+    <Compile Include="Impl\GenericRepository2ndImpl.cs" />
     <Compile Include="Impl\GenericRepositoryImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
