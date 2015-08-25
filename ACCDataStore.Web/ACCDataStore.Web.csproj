@@ -242,7 +242,7 @@
   <ItemGroup>
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Areas\InsightProfile\Controllers\IndexInsightController.cs" />
+    <Compile Include="Areas\InsightProfile\Controllers\InsightProfileController.cs" />
     <Compile Include="Areas\InsightProfile\InsightProfileAreaRegistration.cs" />
     <Compile Include="Areas\Nationality\Controllers\IndexNationalityController.cs" />
     <Compile Include="Areas\Nationality\Controllers\NationalityController.cs" />
@@ -315,7 +315,10 @@
     <Content Include="Areas\SchoolProfile\Views\Language\MapIndex.cshtml" />
     <Content Include="Areas\SchoolProfile\Views\StudentStage\MapIndex.cshtml" />
     <Content Include="Areas\SchoolProfile\Views\Curriculum\MapIndex.cshtml" />
-    <Content Include="Areas\InsightProfile\Views\IndexInsight\Index.cshtml" />
+    <Content Include="Areas\InsightProfile\Views\web.config" />
+    <Content Include="Areas\InsightProfile\Views\InsightProfile\Index.cshtml" />
+    <Content Include="Areas\InsightProfile\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\InsightProfile\Views\_ViewStart.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\What-is-data-observatory.cshtml" />
@@ -328,7 +331,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\InsightProfile\ViewModels\" />
+    <Folder Include="Areas\InsightProfile\Models\" />
     <Folder Include="Areas\Nationality\Models\" />
     <Folder Include="Areas\SchoolProfile\Models\" />
     <Folder Include="Models\" />

@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@HttpContext.Current.Application["APP_NAME"]</title>
+    <link rel="stylesheet" href="~/Content/accdatastore/views/global.css" type="text/css" />
+    <script src="~/Scripts/accdatastore/views/global.js"></script>
+    <script src="~/Scripts/jquery-2.1.1.min.js"></script>
+    <script src="~/Scripts/highcharts.js"></script>
+    <script>
+        var sContextPath = '@Url.Content("~")';
+    </script>
+    @RenderSection("Header")
+</head>
+@*<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</body>*@
+
+<body>
+    <div id="divBody">
+        <div id="container">
+            <div id="header">
+                <h1> Aberdeen City Council Digital Data Observatory Project</h1>
+            </div>
+            <div id="content">
+                <div id="nav">
+                    <h3>Navigation</h3>
+                    <ul>
+                        <li>@Html.ActionLink("Home", "Index", "Index", new { Area = "" }, null)</li>  
+                        <li>@Html.ActionLink("Insight Profile", "index", "InsightProfile", new { Area = "InsightProfile" }, null)</li>          
+                        <li>@Html.ActionLink("Background and Context", "index", "InsightProfile", new { Area = "InsightProfile" }, null)</li>   
+                        <li>@Html.ActionLink("Leaver Initial Destination", "index", "InsightProfile", new { Area = "InsightProfile" }, null)</li>   
+                        <li>@Html.ActionLink("Improving Attainment for All", "index", "InsightProfile", new { Area = "InsightProfile" }, null)</li> 
+                        <li>@Html.ActionLink("Breadth and Depth: All Candiates", "index", "InsightProfile", new { Area = "InsightProfile" }, null)</li>     
+                    </ul>
+                </div>
+                <div id="main" style="margin:10px 10px">
+                    @RenderBody()
+                </div>
+            </div>
+            <div id="footer">
+                <p>
+                    Aberdeen City Council
+                </p>
+                <p>
+                    Feedback Contact:-  <a href="mailto:HSaevanee@aberdeencity.gov.uk">HSaevanee@aberdeencity.gov.uk</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
