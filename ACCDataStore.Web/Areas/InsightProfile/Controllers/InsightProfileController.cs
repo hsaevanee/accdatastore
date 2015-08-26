@@ -44,6 +44,8 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
 
             var listResultMySQL = this.rpGeneric2nd.FindAll<LA100Schools>();
 
+            var listResultMySQL2 = this.rpGeneric2nd.FindAll<LA100Pupils>();
+
             return View();
         }
     }

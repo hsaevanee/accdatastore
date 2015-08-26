@@ -1,0 +1,35 @@
+﻿@model ACCDataStore.Web.Areas.InsightProfile.ViewModels.BenchmarkMeasure.BenchmarkMeasureViewModel
+@section Header {
+    <link rel="stylesheet" href="~/Content/accdatastore/areas/nationality/views/nationality/nationality.css" type="text/css" />
+    <script src="~/Scripts/accdatastore/areas/insightprofile/views/benchmarkmeasure/IndexLeaver.js"></script>
+    <script type="text/javascript" src="http://code.highcharts.com/modules/exporting.js"></script>
+}
+@{
+    ViewBag.Title = "Index";
+}
+
+<div id="main">
+    <h2>National Benchmarking Measure: Leaver Initial Destination</h2>
+    @*@using (Html.BeginForm("IndexLeaverDestination", "BenchmarkMeasure", new { area = "InsightProfile" }))
+    {
+    }*@
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="2">Please Select School</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td width="200">School Name</td>
+                    <td>@Html.DropDownListFor(m => m.selectedschoolcode, new SelectList(Model.ListSchoolNameData, "seedcode", "name"))</td>
+                </tr>
+                <tr>
+                    <td>
+                    <button onclick='Getdata()'><label>Get Data</label></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</div>
+

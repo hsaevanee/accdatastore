@@ -209,6 +209,7 @@
     <Content Include="Images\Pamela_Bain.jpeg" />
     <Content Include="Images\spinner.gif" />
     <Content Include="Rotativa\wkhtmltopdf.exe" />
+    <Content Include="Scripts\accdatastore\areas\insightprofile\views\benchmarkmeasure\IndexLeaver.js" />
     <Content Include="Scripts\accdatastore\areas\nationality\views\nationality\nationality.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\Curriculum\Curriculum.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\Curriculum\MapIndex.js" />
@@ -242,8 +243,11 @@
   <ItemGroup>
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\InsightProfile\Controllers\BenchmarkMeasureController.cs" />
     <Compile Include="Areas\InsightProfile\Controllers\InsightProfileController.cs" />
     <Compile Include="Areas\InsightProfile\InsightProfileAreaRegistration.cs" />
+    <Compile Include="Areas\InsightProfile\ViewModels\BenchmarkMeasure\BenchmarkMeasureViewModel.cs" />
+    <Compile Include="Areas\InsightProfile\ViewModels\CriteriaObjViewModel.cs" />
     <Compile Include="Areas\Nationality\Controllers\IndexNationalityController.cs" />
     <Compile Include="Areas\Nationality\Controllers\NationalityController.cs" />
     <Compile Include="Areas\Nationality\NationalityAreaRegistration.cs" />
@@ -322,6 +326,8 @@
     <Content Include="Areas\InsightProfile\Views\InsightProfile\Index.cshtml" />
     <Content Include="Areas\InsightProfile\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\InsightProfile\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\InsightProfile\Views\BenchmarkMeasure\IndexLeaver.cshtml" />
+    <Content Include="Areas\InsightProfile\Views\BenchmarkMeasure\IndexAttainment.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\What-is-data-observatory.cshtml" />
@@ -335,7 +341,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\InsightProfile\Models\" />
-    <Folder Include="Areas\InsightProfile\ViewModels\" />
     <Folder Include="Areas\Nationality\Models\" />
     <Folder Include="Areas\SchoolProfile\Models\" />
     <Folder Include="Models\" />
