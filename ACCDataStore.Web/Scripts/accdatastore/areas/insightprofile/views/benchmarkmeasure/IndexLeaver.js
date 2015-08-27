@@ -1,10 +1,19 @@
 ﻿function Getdata() {
     var schcode = $('#selectedschoolcode :selected').val();
     var schname = $('#selectedschoolcode :selected').text();
+    //var syear = $('#selectedyear :selected').val();
+    
+    var arrCheckboxCheckedgender = [];
+
+    $('input[name="gender"]:checked').each(function () {
+        arrCheckboxCheckedgender.push($(this).val());
+    });
 
     var JSONObject = {
         "schcode": schcode,
-        "schname": schname
+        "selectedschname": schname,
+        "checkedgender": arrCheckboxCheckedgender
+        //"year": syear
     }
 
         $.ajax({

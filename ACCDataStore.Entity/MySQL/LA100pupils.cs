@@ -33,6 +33,7 @@ namespace ACCDataStore.Entity.MySQL
         public virtual string highest_lit_scqf_level_to_date { get; set; }
         public virtual string highest_num_scqf_level_to_date { get; set; }
         public virtual string annual_total_tariff_points { get; set; }
-        public virtual string cumulative_total_tariff_points { get; set; }        
+        public virtual string cumulative_total_tariff_points { get; set; }
+        public virtual LA100Schools Schools { get; set; }
     }
 }

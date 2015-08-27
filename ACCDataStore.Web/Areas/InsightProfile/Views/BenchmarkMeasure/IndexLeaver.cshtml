@@ -10,13 +10,12 @@
 
 <div id="main">
     <h2>National Benchmarking Measure: Leaver Initial Destination</h2>
-    @*@using (Html.BeginForm("IndexLeaverDestination", "BenchmarkMeasure", new { area = "InsightProfile" }))
+    @using (Html.BeginForm("GetIndexLeaverDestination", "BenchmarkMeasure", new { area = "InsightProfile" }))
     {
-    }*@
         <table>
             <thead>
                 <tr>
-                    <th colspan="2">Please Select School</th>
+                    <th colspan="2">Please Select Criteria</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,12 +23,39 @@
                     <td width="200">School Name</td>
                     <td>@Html.DropDownListFor(m => m.selectedschoolcode, new SelectList(Model.ListSchoolNameData, "seedcode", "name"))</td>
                 </tr>
+
                 <tr>
-                    <td>
-                    <button onclick='Getdata()'><label>Get Data</label></button>
-                    </td>
+                    <td colspan="2">Gender</td>
                 </tr>
-            </tbody>
+
+    @* Display Gender *@
+    @for (int i = 0; i < Model.ListGenderData.Count(); i++)
+    {
+        <tr>
+            <td></td>
+            <td>
+                @Html.CheckBoxFor(m => m.ListGenderData[i].isSelected, new { id = "gender_" + i })
+                @Html.HiddenFor(m => m.ListGenderData[i].name)
+                @Html.DisplayFor(m => m.ListGenderData[i].name)
+            </td>
+        </tr>
+    }
+
+                @* Display year *@
+                <tr>
+                        <td width="200">Year</td>
+                        <td>@Html.DropDownListFor(x => x.selectedyear, new SelectList(Model.ListYearData, "year", "academicyear"))</td>
+                    </tr>
+        <tr>
+            <td>
+                <button id="buttonGetData" type="submit">
+                    Get Data
+                </button>
+            </td>
+        </tr>
+    </tbody>
         </table>
+    }
+
 </div>
 

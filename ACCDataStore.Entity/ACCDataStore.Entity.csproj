@@ -60,6 +60,7 @@
     <Compile Include="BaseEntity.cs" />
     <Compile Include="ChartData.cs" />
     <Compile Include="CriteriaParameters.cs" />
+    <Compile Include="Gender.cs" />
     <Compile Include="GeneralCounter.cs" />
     <Compile Include="School.cs" />
     <Compile Include="Mapping\MySQL\LA100PupilsMap.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="SchoolProfile\SIMDObj.cs" />
     <Compile Include="SchoolProfile\StdStageObj.cs" />
     <Compile Include="SchoolProfile\StudentSIMD.cs" />
+    <Compile Include="Year.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
