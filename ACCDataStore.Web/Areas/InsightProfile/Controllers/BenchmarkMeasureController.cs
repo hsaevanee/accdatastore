@@ -153,6 +153,11 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
                     listLeaverDestination = listLeaverDestination.OrderBy(x => x.year).ThenBy(x => x.gender.gendercode).ToList();
                 }
 
+                //var temp1 = model.ListGenderData.Select(x => x.isSelected == true).ToList();
+
+                //var temp1 = (from a in model.ListGenderData where a.isSelected == true select a).ToList();
+
+                //var temp22 = listLeaverDestination.Where(a => temp1.Any(b => b.gendercode == a.gender.gendercode)).ToList(); 
                 return listLeaverDestination;
             }
             catch (Exception ex)

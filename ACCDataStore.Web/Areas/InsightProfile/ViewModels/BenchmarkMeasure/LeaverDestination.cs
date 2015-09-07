@@ -20,7 +20,7 @@ namespace ACCDataStore.Web.Areas.InsightProfile.ViewModels.BenchmarkMeasure
         {
             get 
             {
-                return (sum1 * 100) / (sum0 + sum1 + sum2);                
+                return (sum1 * 100) / (sum1 + sum2);                
             }
         }
     }

@@ -38,13 +38,13 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
         public ActionResult Index()
         {
             // just test
-            var listResultMSAccess = this.rpGeneric.FindAll<ACCDataStore.Entity.StudentSIMD>();
+            //var listResultMSAccess = this.rpGeneric.FindAll<ACCDataStore.Entity.StudentSIMD>();
 
-            var listResultByConditionMSAccess = this.rpGeneric.Find<StudentSIMD>(" from StudentSIMD where SchName = :SchName ", new string[] { "SchName" }, new object[] { "Brimmond Primary School" });
+            //var listResultByConditionMSAccess = this.rpGeneric.Find<StudentSIMD>(" from StudentSIMD where SchName = :SchName ", new string[] { "SchName" }, new object[] { "Brimmond Primary School" });
 
-            var listResultMySQL = this.rpGeneric2nd.FindAll<LA100Schools>();
+            //var listResultMySQL = this.rpGeneric2nd.FindAll<LA100Schools>();
 
-            var listResultMySQL2 = this.rpGeneric2nd.FindAll<LA100Pupils>();
+            //var listResultMySQL2 = this.rpGeneric2nd.FindAll<LA100Pupils>();
 
             return View();
         }
