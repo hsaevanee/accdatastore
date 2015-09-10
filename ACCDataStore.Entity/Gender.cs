@@ -18,7 +18,7 @@ namespace ACCDataStore.Entity
             set
             {
                 this._gendercode = value;
-                this.name = value == 0 ? "Total" : value == 1 ? "Male" : "Female";
+                this.name = value == 0 ? "ALL" : value == 1 ? "Male" : "Female";
             }
         }
         public string name { get; set; }

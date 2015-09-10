@@ -15,6 +15,6 @@ namespace ACCDataStore.Web.Areas.InsightProfile.ViewModels
         public IList<Gender> ListGenderData { get; set; }        
         public IList<Year> ListYearData { get; set; }
         public string selectedyear { get; set; }
-        public IList<LeaverDestination> ListLeaverDestinationData { get; set; }
+       
     }
 }

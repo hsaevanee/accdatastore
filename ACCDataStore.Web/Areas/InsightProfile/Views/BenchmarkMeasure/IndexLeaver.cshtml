@@ -41,26 +41,77 @@
         </tr>
     }
                 <tr>
-                    <td>
+                    <td colspan="2">
                         <button id="buttonGetData" type="submit">
                             Get Data
                         </button>
                     </td>
                 </tr>
-                <tr>
+                @*<tr>
                     <td colspan="2">Breakdown by destination</td>
                 </tr>
                 @* Display year *@
-                <tr>
+                @*<tr>
                         <td width="200">Year</td>
                         <td>@Html.DropDownListFor(x => x.selectedyear, new SelectList(Model.ListYearData, "year", "academicyear"))</td>
-                    </tr>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button onclick='myFunctionColumn()'><label>Column Chart</label></button>
+                    </td>
+                </tr>*@
 
     </tbody>
         </table>
     }
 
-@if (Model.ListLeaverDestinationData.Count!=0)
+<br />
+
+<h2>National Benchmarking Measure: Breakdown by Destination</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th colspan="2">Please Select Criteria</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td width="200">School Name</td>
+                <td>@Html.DropDownListFor(m => m.selectedschoolcode, new SelectList(Model.ListSchoolNameData, "seedcode", "name"))</td>
+            </tr>
+
+            <tr>
+                <td colspan="2">Gender</td>
+            </tr>
+
+            @* Display Gender *@
+            @for (int i = 0; i < Model.ListGenderData.Count(); i++)
+            {
+                <tr>
+                    <td></td>
+                    <td>
+                        @Html.CheckBoxFor(m => m.ListGenderData[i].isSelected, new { id = "gender_" + i })
+                        @Html.HiddenFor(m => m.ListGenderData[i].name)
+                        @Html.DisplayFor(m => m.ListGenderData[i].name)
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td width="200">Year</td>
+                <td>@Html.DropDownListFor(x => x.selectedyear, new SelectList(Model.ListYearData, "year", "academicyear"))</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button onclick='myFunctionColumn()'><label>Get Chart</label></button>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+
+@if (Model.ListLeaverDestinationData!= null && Model.ListLeaverDestinationData.Count!=0)
 {
     <br />
     <h2 style="text-align: center">@Model.selectedschoolcode</h2>
@@ -71,68 +122,21 @@
             <thead>
                 <tr>
                     <th rowspan="2">Level of English</th>
-                        @foreach (var selection in Model.)
-                        {
-                            if (selection.Equals("F"))
-                            {
-                                <th colspan="2">Female</th>
-                            }
-                            if (selection.Equals("M"))
-                            {
-                                <th colspan="2">Male</th>
-                            }
-                            if (selection.Equals("T"))
-                            {
-                                <th colspan="2">Total</th>
-                            }
-                        }
-                    
-                    <th rowspan="2">Select data </th>
+                  
+                    <th  >Select data </th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model.ListLeaverDestinationData)
                 {
-
                     <tr>
-                        <td>@item.selectedschoolcode</td>
-
-                        @if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
-                        {
-                            foreach (var selection in Model.ListSelectedGender)
-                            {
-                                if (selection.Equals("F"))
-                                {
-                                    <td align="center">@String.Format("{0:#,0.00}", @itemEAL.PercentageFemaleInSchool)</td>
-                                    <td align="center">@String.Format("{0:#,0.00}", @itemEAL.PercentageFemaleAllSchool)</td>
-                                }
-                                if (selection.Equals("M"))
-                                {
-                                    <td align="center">@String.Format("{0:#,0.00}", @itemEAL.PercentageMaleInSchool)</td>
-                                    <td align="center">@String.Format("{0:#,0.00}", @itemEAL.PercentageMaleAllSchool)</td>
-                                }
-                                if (selection.Equals("T"))
-                                {
-                                    <td align="center">@String.Format("{0:#,0.00}", @itemEAL.PercentageInSchool)</td>
-                                    <td align="center">@String.Format("{0:#,0.00}", @itemEAL.PercentageAllSchool)</td>
-                                }
-                            }
-                        }
-
-                        <td align="center"><input type='checkbox' name='CheckDataitem' value="@itemEAL.IdentityCode" checked="checked" /></td>
+                        <td>@item.academicyear.academicyear</td>
+                        <td>@item.gender.name</td>
+                        <td>@item.Percentage</td>
                     </tr>
-                }
+                }  
             </tbody>
-            <tr>
-                @{var colspan = (@Model.ListSelectedGender.Count * 2) + 1;}
-                <td colspan=@colspan></td>
-                <td align="center"><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
-            </tr>
-            <tr><td><button onclick='myFunctionBar()'><label>Bar Chart</label></button></td></tr>
-            <tr><td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td></tr>
-            <tr><td>@Html.ActionLink("Export Excel", "ExportExcel", "Language", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td></tr>
-            <tr><td>@Html.ActionLink("Interactive Map", "MapData", "Language", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td></tr>
-        </table>
+      </table>
         <script type="text/javascript">
             // Put your javascript code here
             $('#datatable').DataTable({

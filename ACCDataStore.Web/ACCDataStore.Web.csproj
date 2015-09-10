@@ -247,6 +247,7 @@
     <Compile Include="Areas\InsightProfile\Controllers\InsightProfileController.cs" />
     <Compile Include="Areas\InsightProfile\InsightProfileAreaRegistration.cs" />
     <Compile Include="Areas\InsightProfile\ViewModels\BenchmarkMeasure\BenchmarkMeasureViewModel.cs" />
+    <Compile Include="Areas\InsightProfile\ViewModels\BenchmarkMeasure\LeaverDestinationBreakdown.cs" />
     <Compile Include="Areas\InsightProfile\ViewModels\BenchmarkMeasure\LeaverDestination.cs" />
     <Compile Include="Areas\InsightProfile\ViewModels\CriteriaObjViewModel.cs" />
     <Compile Include="Areas\Nationality\Controllers\IndexNationalityController.cs" />

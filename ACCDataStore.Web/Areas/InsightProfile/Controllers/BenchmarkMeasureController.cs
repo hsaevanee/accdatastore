@@ -48,10 +48,10 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
         protected IList<Gender> GetListGender()
         {
             List<Gender> temp = new List<Gender>();
-
-            temp.Add(new Gender(0));
-            temp.Add(new Gender(1));
-            temp.Add(new Gender(2));
+            temp.Add(new Gender(1)); //Male
+            temp.Add(new Gender(2)); //Female
+            temp.Add(new Gender(0)); //ALL
+ 
             return temp;
 
         }
@@ -60,13 +60,13 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
         {
             List<Year> temp = new List<Year>();
 
-            temp.Add(new Year("2008", "2007/2008"));
-            temp.Add(new Year("2009", "2008/2009"));
-            temp.Add(new Year("2010", "2009/2010"));
-            temp.Add(new Year("2011", "2010/2011"));
-            temp.Add(new Year("2012", "2011/2012"));
-            temp.Add(new Year("2013", "2012/2013"));
-            temp.Add(new Year("2014", "2013/2014"));
+            temp.Add(new Year("2008"));
+            temp.Add(new Year("2009"));
+            temp.Add(new Year("2010"));
+            temp.Add(new Year("2011"));
+            temp.Add(new Year("2012"));
+            temp.Add(new Year("2013"));
+            temp.Add(new Year("2014"));
 
             return temp;
 
@@ -91,11 +91,13 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
             vmBenchmarkMeasure.ListSchoolNameData = GetListSchoolname(rpGeneric2nd);
             vmBenchmarkMeasure.ListGenderData = GetListGender();
             vmBenchmarkMeasure.ListYearData = GetListYear();
-            vmBenchmarkMeasure.ListLeaverDestinationData = GetLeaverDestinationData(model);
+            vmBenchmarkMeasure.ListLeaverDestinationData = GetLeaverDestinationDatabySchool(model);
+            vmBenchmarkMeasure.ListLeaverDestinationDataAbdCity = GetLeaverDestinationDatabyAbdCity(model);
+
             return View("IndexLeaver", vmBenchmarkMeasure);
         }
 
-        protected List<LeaverDestination> GetLeaverDestinationData(BenchmarkMeasureViewModel model)
+        protected List<LeaverDestination> GetLeaverDestinationDatabySchool(BenchmarkMeasureViewModel model)
         {
             try
             {
@@ -126,6 +128,7 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
                             vmLeaverDestination = new LeaverDestination();
                             vmLeaverDestination.centrecode = Convert.ToInt32(itemRow[0]);
                             vmLeaverDestination.year = Convert.ToInt32(itemRow[1]);
+                            vmLeaverDestination.academicyear = new Year(itemRow[1].ToString());
                             vmLeaverDestination.gender = new Gender(Convert.ToInt32(itemRow[2]));
                             dicLeaver.Add(sKey, vmLeaverDestination);
                         }
@@ -143,6 +146,252 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
                                 break;
                             case "2":
                                 vmLeaverDestination.sum2 = Convert.ToInt32(itemRow[4]);
+                                break;
+                        }
+                    }
+
+                    listLeaverDestination = dicLeaver.Values.ToList();
+
+                    var n = listLeaverDestination[0].Percentage;
+                    listLeaverDestination = listLeaverDestination.OrderBy(x => x.year).ThenBy(x => x.gender.gendercode).ToList();
+                }
+
+                //var temp1 = model.ListGenderData.Select(x => x.isSelected == true).ToList();
+
+                //var temp1 = (from a in model.ListGenderData where a.isSelected == true select a).ToList();
+
+                //var temp22 = listLeaverDestination.Where(a => temp1.Any(b => b.gendercode == a.gender.gendercode)).ToList(); 
+                return listLeaverDestination;
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.Message, ex);
+                throw ex;
+            }
+        }
+
+        protected List<LeaverDestination> GetLeaverDestinationDatabyAbdCity(BenchmarkMeasureViewModel model)
+        {
+            try
+            {
+                List<object> listdata = new List<object>();
+
+                List<LeaverDestination> listLeaverDestination = null;
+
+                //var listResultMySQL = this.rpGeneric2nd.FindAll<LA100Pupils>();
+
+                string query = "SELECT la100pupils.year,la100pupils.gender, la100pupils.leaver_destination_group, count(*) FROM accdatastore.la100pupils where la100pupils.leaver_centre !='NULL' group by year, gender, leaver_destination_group";
+
+                query += " union ";
+
+                query += "SELECT la100pupils.year,0 , la100pupils.leaver_destination_group, count(*) FROM accdatastore.la100pupils where la100pupils.leaver_centre !='NULL' group by  year, leaver_destination_group ";
+
+                var listResultMySQL = this.rpGeneric2nd.FindByNativeSQL(query);
+
+                if (listResultMySQL != null)
+                {
+                    var dicLeaver = new Dictionary<string, LeaverDestination>();
+                    foreach (var itemRow in listResultMySQL)
+                    {
+                        LeaverDestination vmLeaverDestination = null;
+                        var sKey = itemRow[0].ToString() + itemRow[1].ToString();
+                        var sLeaverDestinationGroup = itemRow[2] != null ? itemRow[2].ToString().ToLower().Equals("null") ? "0" : itemRow[2].ToString() : "0";
+                        if (!dicLeaver.ContainsKey(sKey))
+                        {
+                            vmLeaverDestination = new LeaverDestination();
+                            //vmLeaverDestination.centrecode = Convert.ToInt32(itemRow[0]);
+                            vmLeaverDestination.year = Convert.ToInt32(itemRow[0]);
+                            vmLeaverDestination.academicyear = new Year(itemRow[0].ToString());
+                            vmLeaverDestination.gender = new Gender(Convert.ToInt32(itemRow[1]));
+                            dicLeaver.Add(sKey, vmLeaverDestination);
+                        }
+                        else
+                        {
+                            vmLeaverDestination = dicLeaver[sKey];
+                        }
+                        switch (sLeaverDestinationGroup)
+                        {
+                            case "0":
+                                vmLeaverDestination.sum0 = Convert.ToInt32(itemRow[3]);
+                                break;
+                            case "1":
+                                vmLeaverDestination.sum1 = Convert.ToInt32(itemRow[3]);
+                                break;
+                            case "2":
+                                vmLeaverDestination.sum2 = Convert.ToInt32(itemRow[3]);
+                                break;
+                        }
+                    }
+
+                    listLeaverDestination = dicLeaver.Values.ToList();
+
+                    var n = listLeaverDestination[0].Percentage;
+                    listLeaverDestination = listLeaverDestination.OrderBy(x => x.year).ThenBy(x => x.gender.gendercode).ToList();
+                }
+
+                //var temp1 = model.ListGenderData.Select(x => x.isSelected == true).ToList();
+
+                //var temp1 = (from a in model.ListGenderData where a.isSelected == true select a).ToList();
+
+                //var temp22 = listLeaverDestination.Where(a => temp1.Any(b => b.gendercode == a.gender.gendercode)).ToList(); 
+                return listLeaverDestination;
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.Message, ex);
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        public JsonResult GetChartLeaverDestination(string schcode, string selectedschname, string year)
+        {
+            try
+            {
+                object oChartData = new object();
+
+                List<LeaverDestinationBreakdown> listLeaverDestinationBreakdown = null;
+
+                //var listResultMySQL = this.rpGeneric2nd.FindAll<LA100Pupils>();
+
+                string query = "SELECT leaver_centre, year, gender, destination, count(*) FROM la100pupils where leaver_centre = '" + schcode + "' and year='" + year + "' group by leaver_centre, year, gender, destination ";
+
+                query += " union ";
+
+                query += "SELECT leaver_centre, year, 0, destination, count(*) FROM la100pupils where leaver_centre = '" + schcode + "' and year='" + year + "' group by leaver_centre, year, destination ";
+
+                var listResultMySQL = this.rpGeneric2nd.FindByNativeSQL(query);
+
+                if (listResultMySQL != null)
+                {
+                    var dicLeaver = new Dictionary<string, LeaverDestinationBreakdown>();
+                    foreach (var itemRow in listResultMySQL)
+                    {
+                        LeaverDestinationBreakdown vmLeaverDestination = null;
+                        var sKey = itemRow[0].ToString() + itemRow[1].ToString() + itemRow[2].ToString();
+                        var sLeaverDestinationGroup = itemRow[3] != null ? itemRow[3].ToString().ToLower().Equals("null") ? "0" : itemRow[3].ToString() : "0";
+                        if (!dicLeaver.ContainsKey(sKey))
+                        {
+                            vmLeaverDestination = new LeaverDestinationBreakdown();
+                            vmLeaverDestination.centrecode = Convert.ToInt32(itemRow[0]);
+                            vmLeaverDestination.year = Convert.ToInt32(itemRow[1]);
+                            //vmLeaverDestination.academicyear = new Year(itemRow[0].ToString());
+                            vmLeaverDestination.gender = new Gender(Convert.ToInt32(itemRow[2]));
+                            dicLeaver.Add(sKey, vmLeaverDestination);
+                        }
+                        else
+                        {
+                            vmLeaverDestination = dicLeaver[sKey];
+                        }
+                        switch (sLeaverDestinationGroup)
+                        {
+                            case "1":
+                                vmLeaverDestination.sum1 = Convert.ToInt32(itemRow[4]);
+                                break;
+                            case "2":
+                                vmLeaverDestination.sum2 = Convert.ToInt32(itemRow[4]);
+                                break;
+                            case "3":
+                                vmLeaverDestination.sum3 = Convert.ToInt32(itemRow[4]);
+                                break;
+                            case "4":
+                                vmLeaverDestination.sum4 = Convert.ToInt32(itemRow[4]);
+                                break;
+                            case "5":
+                                vmLeaverDestination.sum5 = Convert.ToInt32(itemRow[4]);
+                                break;
+                            case "6":
+                                vmLeaverDestination.sum6 = Convert.ToInt32(itemRow[4]);
+                                break;
+                            case "7":
+                                vmLeaverDestination.sum7 = Convert.ToInt32(itemRow[4]);
+                                break;
+                            case "8":
+                                vmLeaverDestination.sum8 = Convert.ToInt32(itemRow[4]);
+                                break;
+                            case "9":
+                                vmLeaverDestination.sum9 = Convert.ToInt32(itemRow[4]);
+                                break;
+                        }
+                    }
+
+                    listLeaverDestinationBreakdown = dicLeaver.Values.ToList();
+
+                    ////var n = listLeaverDestinationBreakdown[0].Percentage;
+                    //listLeaverDestinationBreakdown = listLeaverDestinationBreakdown.OrderBy(x => x.year).ThenBy(x => x.gender.gendercode).ToList();
+                    var listChartData = new List<object>();
+                    listChartData.Add(new { name = selectedschname, data = data.Select(x => x.PercentageFemaleAllSchool).ToArray() });
+                    listChartData.Add(new { name = "Aberdeen City", data = data.Select(x => x.PercentageMaleAllSchool).ToArray() });
+                    //listChartData.Add(new { name = "Total", data = data.Select(x => x.PercentageAllSchool).ToArray() });
+
+                    oChartData = new
+                    {
+                        ChartTitle = selectedschname,
+                        ChartCategories = listEthnicData.Select(x => x.EthinicName).ToArray(),
+                        //ChartSeries = ProcessChartDataEthnic(listEthnicFilter)
+                    };
+
+                }
+
+                return Json(oChartData, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.Message, ex);
+                throw ex;
+            }
+        }
+
+
+        protected List<LeaverDestination> GetLeaverDestinationBreakdownbySchoolcode(string gender)
+        {
+            try
+            {
+                List<object> listdata = new List<object>();
+
+                List<LeaverDestination> listLeaverDestination = null;
+
+                //var listResultMySQL = this.rpGeneric2nd.FindAll<LA100Pupils>();
+
+                string query = "SELECT la100pupils.year,la100pupils.gender, la100pupils.leaver_destination_group, count(*) FROM accdatastore.la100pupils where la100pupils.leaver_centre !='NULL' group by year, gender, leaver_destination_group";
+
+                query += " union ";
+
+                query += "SELECT la100pupils.year,0 , la100pupils.leaver_destination_group, count(*) FROM accdatastore.la100pupils where la100pupils.leaver_centre !='NULL' group by  year, leaver_destination_group ";
+
+                var listResultMySQL = this.rpGeneric2nd.FindByNativeSQL(query);
+
+                if (listResultMySQL != null)
+                {
+                    var dicLeaver = new Dictionary<string, LeaverDestination>();
+                    foreach (var itemRow in listResultMySQL)
+                    {
+                        LeaverDestination vmLeaverDestination = null;
+                        var sKey = itemRow[0].ToString() + itemRow[1].ToString();
+                        var sLeaverDestinationGroup = itemRow[2] != null ? itemRow[2].ToString().ToLower().Equals("null") ? "0" : itemRow[2].ToString() : "0";
+                        if (!dicLeaver.ContainsKey(sKey))
+                        {
+                            vmLeaverDestination = new LeaverDestination();
+                            //vmLeaverDestination.centrecode = Convert.ToInt32(itemRow[0]);
+                            vmLeaverDestination.year = Convert.ToInt32(itemRow[0]);
+                            vmLeaverDestination.academicyear = new Year(itemRow[0].ToString());
+                            vmLeaverDestination.gender = new Gender(Convert.ToInt32(itemRow[1]));
+                            dicLeaver.Add(sKey, vmLeaverDestination);
+                        }
+                        else
+                        {
+                            vmLeaverDestination = dicLeaver[sKey];
+                        }
+                        switch (sLeaverDestinationGroup)
+                        {
+                            case "0":
+                                vmLeaverDestination.sum0 = Convert.ToInt32(itemRow[3]);
+                                break;
+                            case "1":
+                                vmLeaverDestination.sum1 = Convert.ToInt32(itemRow[3]);
+                                break;
+                            case "2":
+                                vmLeaverDestination.sum2 = Convert.ToInt32(itemRow[3]);
                                 break;
                         }
                     }
