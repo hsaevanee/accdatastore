@@ -62,6 +62,7 @@
     <Compile Include="CriteriaParameters.cs" />
     <Compile Include="Gender.cs" />
     <Compile Include="GeneralCounter.cs" />
+    <Compile Include="InsightProfile\DestinationObj.cs" />
     <Compile Include="School.cs" />
     <Compile Include="Mapping\MySQL\LA100PupilsMap.cs" />
     <Compile Include="Mapping\MySQL\LA100SchoolsMap.cs" />
@@ -84,9 +85,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="InsightProfile\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

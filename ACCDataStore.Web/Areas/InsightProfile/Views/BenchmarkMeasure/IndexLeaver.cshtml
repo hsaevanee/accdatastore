@@ -85,7 +85,7 @@
                 <td colspan="2">Gender</td>
             </tr>
 
-            @* Display Gender *@
+             @*Display Gender*@ 
             @for (int i = 0; i < Model.ListGenderData.Count(); i++)
             {
                 <tr>
@@ -111,8 +111,7 @@
     </table>
 
 
-@if (Model.ListLeaverDestinationData!= null && Model.ListLeaverDestinationData.Count!=0)
-{
+
     <br />
     <h2 style="text-align: center">@Model.selectedschoolcode</h2>
     <h2 style="text-align: center">% of Schools Leavers in a Positive Destination</h2>
@@ -127,14 +126,14 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.ListLeaverDestinationData)
+                @*@foreach (var item in Model.ListLeaverDestinationData)
                 {
                     <tr>
                         <td>@item.academicyear.academicyear</td>
                         <td>@item.gender.name</td>
                         <td>@item.Percentage</td>
                     </tr>
-                }  
+                }*@  
             </tbody>
       </table>
         <script type="text/javascript">
@@ -147,8 +146,8 @@
         <div id="divChartContainer"></div>
 
     </form>
-}
+
  
 
-@*</div>*@
+
 
