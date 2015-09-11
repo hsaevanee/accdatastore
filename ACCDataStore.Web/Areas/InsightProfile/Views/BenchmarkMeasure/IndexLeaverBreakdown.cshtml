@@ -9,9 +9,9 @@
 }
 
 @*<div id="main">*@
-    <h2>National Benchmarking Measure: Leaver Initial Destination</h2>
-    @using (Html.BeginForm("GetIndexLeaverDestination", "BenchmarkMeasure",FormMethod.Post, new { area = "InsightProfile" , model = @Model}))
-    {
+    <h2>National Benchmarking Measure: Breakdown by Destination</h2>
+    @*@using (Html.BeginForm("GetIndexLeaverDestination", "BenchmarkMeasure",FormMethod.Post, new { area = "InsightProfile" , model = @Model}))
+    {*@
         <table>
             <thead>
                 <tr>
@@ -47,54 +47,27 @@
                         </button>
                     </td>
                 </tr>
+                <tr>
+                    <td width="200">Year</td>
+                    <td>@Html.DropDownListFor(x => x.selectedyear, new SelectList(Model.ListYearData, "year", "academicyear"))</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button onclick='myFunctionColumn()'><label>Get Chart</label></button>
+                    </td>
+                </tr>
+
     </tbody>
         </table>
-    }
-
-<br />
-
-    <h2 style="text-align: center">@Model.selectedschoolcode</h2>
-    <h2 style="text-align: center">% of Schools Leavers in a Positive Destination</h2>
-    <br />
-    <form id="LeaverDestinationData">
-        <table id="datatable" class="display">
-            <thead>
-                <tr>
-                    <th>Level of English</th>                  
-                    <th>Academic Year</th>
-                    @foreach (var gender in Model.ListGenderData)
-                        {
-                            if (gender.isSelected) { 
-                                <th>@gender.name</th>
-                            }
-                        }
-                    
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.ListLeaverDestinationData)
-                {
-                    if (item)
-                    {
-                    <th>@gender.name</th>
-                    }
-                }
 
 
-            </tbody>
-      </table>
-        <script type="text/javascript">
-            // Put your javascript code here
-            $('#datatable').DataTable({
-                paging: false
-            });
-        </script>
 
-        <div id="divChartContainer"></div>
 
-    </form>
 
- 
+
+
+
+  
 
 
 

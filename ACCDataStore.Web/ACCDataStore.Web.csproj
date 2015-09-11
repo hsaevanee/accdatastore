@@ -330,6 +330,7 @@
     <Content Include="Areas\InsightProfile\Views\_ViewStart.cshtml" />
     <Content Include="Areas\InsightProfile\Views\BenchmarkMeasure\IndexLeaver.cshtml" />
     <Content Include="Areas\InsightProfile\Views\BenchmarkMeasure\IndexAttainment.cshtml" />
+    <Content Include="Areas\InsightProfile\Views\BenchmarkMeasure\IndexLeaverBreakdown.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\What-is-data-observatory.cshtml" />

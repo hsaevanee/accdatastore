@@ -85,12 +85,13 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
         }
 
         // GET: InsightProfile/BenchmarkMeasure
+        [HttpPost]
         public ActionResult GetIndexLeaverDestination(BenchmarkMeasureViewModel model)
         {
             var vmBenchmarkMeasure = new BenchmarkMeasureViewModel();
 
             vmBenchmarkMeasure.ListSchoolNameData = GetListSchoolname(rpGeneric2nd);
-            vmBenchmarkMeasure.ListGenderData = GetListGender();
+            vmBenchmarkMeasure.ListGenderData = model.ListGenderData;
             vmBenchmarkMeasure.ListYearData = GetListYear();
             vmBenchmarkMeasure.ListLeaverDestinationData = GetLeaverDestinationDatabySchool(model);
             vmBenchmarkMeasure.ListLeaverDestinationDataAbdCity = GetLeaverDestinationDatabyAbdCity(model);
@@ -98,11 +99,11 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
             return View("IndexLeaver", vmBenchmarkMeasure);
         }
 
-        protected List<object> GetLeaverDestinationDatabySchool(BenchmarkMeasureViewModel model)
+        protected Object GetLeaverDestinationDatabySchool(BenchmarkMeasureViewModel model)
         {
             try
             {
-                List<object> listdata = new List<object>();
+                List<LeaverDestination> listdata = new List<LeaverDestination>();
 
                 List<LeaverDestination> listLeaverDestination = null;
 
@@ -157,31 +158,37 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
                     listLeaverDestination = listLeaverDestination.OrderBy(x => x.year).ThenBy(x => x.gender.gendercode).ToList();                   
                 }
 
-                //    oChartData = new
-                //    {
-                //        ChartTitle = selectedschname,
-                //        ChartCategories = listEthnicData.Select(x => x.EthinicName).ToArray(),
-                //        //ChartSeries = ProcessChartDataEthnic(listEthnicFilter)
-                //    };
+                foreach(var gender in model.ListGenderData){
+                    if (gender.isSelected) {
+                        List<LeaverDestination> temp  = (from a in listLeaverDestination where a.gender.gendercode.Equals(gender.gendercode) select a).ToList();
+                        listdata.AddRange(temp);                    
+                    }
 
-                // Select distinct academic year from list
-                //var distinctyear = (from m in listLeaverDestination.Select(x => x.academicyear.academicyear).ToList() select m).Distinct().ToList();
+                }
 
-                //var lx = listLeaverDestination.Intersect(distinctyear);
+                listdata = listdata.OrderBy(x => x.year).ThenBy(x => x.gender.gendercode).ToList();
 
-                //foreach (var year in distinctyear)
+
+                var listDataTestPivot = listdata.GroupBy(x => new { x.academicyear.academicyear }).Select(x => new
+                {
+                    Year = x.Key.academicyear,
+                    TotalMale = x.FirstOrDefault(y => y.gender.gendercode==1) == null ? 0 : x.FirstOrDefault(y => y.gender.gendercode==1).Percentage,
+                    TotalFemale = x.FirstOrDefault(y => y.gender.gendercode==2) == null ? 0 : x.FirstOrDefault(y => y.gender.gendercode==2).Percentage,
+                    TotalAll = x.FirstOrDefault(y => y.gender.gendercode==0) == null ? 0 : x.FirstOrDefault(y => y.gender.gendercode==0).Percentage,
+                }).ToList();
+
+                return listDataTestPivot;
+
+
+                //var listDataTestPivot = listDataTest.GroupBy(x => new { x.Year }).Select(x => new
                 //{
-
-                //    if (year) { 
-                    
-                    
-                    
-                //    }
-                
-                //}
+                //    Year = x.Key.Year,
+                //    TotalMale = x.FirstOrDefault(y => y.Gender.Equals("M")) == null ? 0 : x.FirstOrDefault(y => y.Gender.Equals("M")).Total,
+                //    TotalFemale = x.FirstOrDefault(y => y.Gender.Equals("F")) == null ? 0 : x.FirstOrDefault(y => y.Gender.Equals("F")).Total,
+                //    TotalAll = x.FirstOrDefault(y => y.Gender.Equals("All")) == null ? 0 : x.FirstOrDefault(y => y.Gender.Equals("All")).Total,
+                //}).ToList();
 
 
-                return listdata;
             }
             catch (Exception ex)
             {
@@ -245,8 +252,8 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
 
                     listLeaverDestination = dicLeaver.Values.ToList();
 
-                    var n = listLeaverDestination[0].Percentage;
-                    listLeaverDestination = listLeaverDestination.OrderBy(x => x.year).ThenBy(x => x.gender.gendercode).ToList();
+                    //var n = listLeaverDestination[0].Percentage;
+                    //listLeaverDestination = listLeaverDestination.OrderBy(x => x.year).ThenBy(x => x.gender.gendercode).ToList();
                 }
 
                 //var temp1 = model.ListGenderData.Select(x => x.isSelected == true).ToList();
@@ -323,8 +330,8 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
 
 
                 var listChartData = new List<object>();
-                listChartData.Add(new { name = selectedschname+"_Female", data = listLeaverDestinationBreakdown.Select(x=>x.PercentageFemaleinSchool).ToArray()});
-                listChartData.Add(new { name = selectedschname + "Male", data = listLeaverDestinationBreakdown.Select(x => x.PercentageMaleinSchool).ToArray() });
+                listChartData.Add(new { name = selectedschname+" Female", data = listLeaverDestinationBreakdown.Select(x=>x.PercentageFemaleinSchool).ToArray()});
+                listChartData.Add(new { name = selectedschname + " Male", data = listLeaverDestinationBreakdown.Select(x => x.PercentageMaleinSchool).ToArray() });
                 listChartData.Add(new { name = selectedschname, data = listLeaverDestinationBreakdown.Select(x => x.PercentageAllinSchool).ToArray() });
 
                 listChartData.Add(new { name = "Aberdeen City Female", data = listLeaverDestinationBreakdown.Select(x => x.PercentageFemaleinAbdcity).ToArray() });

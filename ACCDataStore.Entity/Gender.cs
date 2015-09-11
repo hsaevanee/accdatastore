@@ -30,6 +30,7 @@ namespace ACCDataStore.Entity
             this.isSelected = true;
         }
 
+
         public Gender()
         {
         }
