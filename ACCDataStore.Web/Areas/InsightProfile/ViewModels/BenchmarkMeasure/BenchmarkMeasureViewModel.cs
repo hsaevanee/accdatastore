@@ -7,7 +7,7 @@ namespace ACCDataStore.Web.Areas.InsightProfile.ViewModels.BenchmarkMeasure
 {
     public class BenchmarkMeasureViewModel : CriteriaObjViewModel
     {
-        public Object ListLeaverDestinationData { get; set; }
+        public List<LeaverdestinationData> ListLeaverDestinationData { get; set; }
         public IList<LeaverDestination> ListLeaverDestinationDataAbdCity { get; set; }
     }
 }

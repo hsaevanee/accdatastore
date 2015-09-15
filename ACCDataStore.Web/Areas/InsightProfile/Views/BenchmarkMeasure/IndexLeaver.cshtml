@@ -47,12 +47,13 @@
                         </button>
                     </td>
                 </tr>
+                @*<tr><td colspan="2"><button onclick='Getdestinationbreakdown()'><label>Get Destination Breakdown</label></button></td></tr>*@
     </tbody>
         </table>
     }
 
 <br />
-
+@if (Model.ListLeaverDestinationData!=null) {
     <h2 style="text-align: center">@Model.selectedschoolcode</h2>
     <h2 style="text-align: center">% of Schools Leavers in a Positive Destination</h2>
     <br />
@@ -60,7 +61,7 @@
         <table id="datatable" class="display">
             <thead>
                 <tr>
-                    <th>Level of English</th>                  
+                    <th></th>                  
                     <th>Academic Year</th>
                     @foreach (var gender in Model.ListGenderData)
                         {
@@ -72,14 +73,37 @@
                 </tr>
             </thead>
             <tbody>
+
                 @foreach (var item in Model.ListLeaverDestinationData)
                 {
-                    if (item)
-                    {
-                    <th>@gender.name</th>
-                    }
-                }
+                    <tr>
+                        <td align="left">@item.centrename</td>  
+                        <td align="center">@item.academicyear</td>    
 
+                        @foreach (var selection in Model.ListGenderData)
+                        {
+                            if (selection.gendercode == 2 && selection.isSelected)
+                            {
+                                <td align="center">@String.Format("{0:#,0.00}", @item.PercentageFeMale)</td>
+                            }
+                            if (selection.gendercode == 1 && selection.isSelected)
+                            {
+                                <td align="center">@String.Format("{0:#,0.00}", @item.PercentageMale)</td>
+
+                            }
+                            if (selection.gendercode == 0 && selection.isSelected)
+                            {
+                                <td align="center">@String.Format("{0:#,0.00}", @item.PercentageAll)</td>
+
+                            }
+                        }
+
+                    </tr>
+                }
+                <tr><td><button id="1" onclick='myChartFunction(this.id, "BarChart")'><label>Bar Chart</label></button></td></tr>
+                <tr><td><button id="2" onclick='myChartFunction(this.id, "ColumnChart")'><label>Column Chart</label></button></td></tr>
+                <tr><td>@Html.ActionLink("Export Excel", "ExportExcel", "BenchmarkMeasure", new { Area = "InsightProfile", sSchoolName = "" }, null)</td></tr>
+                <tr><td>@Html.ActionLink("Interactive Map", "MapData", "BenchmarkMeasure", new { Area = "InsightProfile", sSchoolName = "" }, null)</td></tr>
 
             </tbody>
       </table>
@@ -89,12 +113,8 @@
                 paging: false
             });
         </script>
-
+        <br />
         <div id="divChartContainer"></div>
-
     </form>
 
- 
-
-
-
+}

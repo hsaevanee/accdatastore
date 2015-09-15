@@ -52,7 +52,7 @@ namespace ACCDataStore.Helpers.ORM
                             .ConnectionString(c => c.DatabaseFile(sConnectionString))
                             .ShowSql
                         )
-                    .Mappings(m => m.FluentMappings.AddFromAssemblyOf<ACCDataStore.Entity.Mapping.MSAccess.StudentSIMDMap>())
+                    .Mappings(m => m.FluentMappings.AddFromAssemblyOf<ACCDataStore.Entity.Mapping.MSAccess.DatahubDataMap>())
                     .BuildConfiguration();
                     break;
                 default:

@@ -113,7 +113,6 @@ function validateCheckBoxs() {
 
 function myFunctionBar() {
     var arrCheckboxCheckedCheckDataitem = [];
-    var arrCheckboxCheckedCheckgender = [];
 
     $('input[name="CheckDataitem"]:checked').each(function () {
         arrCheckboxCheckedCheckDataitem.push($(this).val());

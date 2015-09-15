@@ -60,9 +60,11 @@
     <Compile Include="BaseEntity.cs" />
     <Compile Include="ChartData.cs" />
     <Compile Include="CriteriaParameters.cs" />
+    <Compile Include="DatahubProfile\DatahubDataObj.cs" />
     <Compile Include="Gender.cs" />
     <Compile Include="GeneralCounter.cs" />
     <Compile Include="InsightProfile\DestinationObj.cs" />
+    <Compile Include="Mapping\MSAccess\DatahubDataMap.cs" />
     <Compile Include="School.cs" />
     <Compile Include="Mapping\MySQL\LA100PupilsMap.cs" />
     <Compile Include="Mapping\MySQL\LA100SchoolsMap.cs" />

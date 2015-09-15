@@ -41,25 +41,15 @@
         </tr>
     }
                 <tr>
-                    <td colspan="2">
-                        <button id="buttonGetData" type="submit">
-                            Get Data
-                        </button>
-                    </td>
-                </tr>
-                <tr>
                     <td width="200">Year</td>
                     <td>@Html.DropDownListFor(x => x.selectedyear, new SelectList(Model.ListYearData, "year", "academicyear"))</td>
                 </tr>
-                <tr>
-                    <td colspan="2">
-                        <button onclick='myFunctionColumn()'><label>Get Chart</label></button>
-                    </td>
-                </tr>
+                <tr><td colspan="2"><button onclick='Getdestinationbreakdown()'><label>Get Destination Breakdown</label></button></td></tr>
 
     </tbody>
         </table>
-
+<br />
+<div id="divChartContainer"></div>
 
 
 
