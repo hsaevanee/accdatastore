@@ -25,7 +25,7 @@
                         <tbody>
                             <tr>
                                 <td width="200">School Name</td>
-                                <td>@Html.DropDownListFor(m => m.selectedschoolcode, new SelectList(Model.ListSchoolNameData, "seedcode", "name"))</td>
+                                <td>@Html.DropDownListFor(m => m.selectedschoolcode, new SelectList(Model.ListSchoolNameData, "seedcode", "name"), "---Please Select School---")</td>
                             </tr>
                         </tbody>
                     </table>
@@ -43,50 +43,52 @@
             <td align="center" >
                 <table>
                     <tr>
-                        <th colspan="3">Opportunities for XXXXX </th>
+                        <th colspan="3">Opportunities for All Clients </th>
                     </tr>
                     <tr>
                         <th></th>
-                        <th>Puils</th>
-                        <th>Percentage (%)</th>
+                        <th>Percentage(%) for School</th>
+                        <th>Percentage(%) for All Clients</th>
                     </tr>
                     <tr>
                         <td>All Clients</td>
-                        <td colspan="2" align="center">@Model.SelectedSchool.allpupils</td>
+                        <td align="center">@Model.SelectedSchool.allpupils</td>
+                        <td align="center">@Model.Aberdeencity.allpupils</td>
                     </tr>
                     <tr>
-                        <td>Males</td>
-                        <td align="center">@Model.SelectedSchool.allMalepupils</td>
-                        <td align="center">@String.Format("{0:#,0.00}", (double)@Model.SelectedSchool.allMalepupils * 100 / @Model.SelectedSchool.allpupils)</td>
-                    </tr>
+                        <td>Males</td>                     
+                        <td align="center">@String.Format("{0:#,0.00}", @Model.SelectedSchool.Percentage(@Model.SelectedSchool.allMalepupils))</td>
+                        <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.allMalepupils))</td>
+                     </tr>
                     <tr>
                         <td>Females</td>
-                        <td align="center">@Model.SelectedSchool.allFemalepupils</td>
-                        <td align="center">@String.Format("{0:#,0.00}", (double)@Model.SelectedSchool.allFemalepupils * 100 / @Model.SelectedSchool.allpupils)</td>
+                        <td align="center">@String.Format("{0:#,0.00}", @Model.SelectedSchool.Percentage(@Model.SelectedSchool.allFemalepupils))</td>
+                        <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.allFemalepupils))</td>
                     </tr>
                     <tr>
                         <td>Pupils 16</td>
-                        <td align="center">@Model.SelectedSchool.all16pupils</td>
-                        <td align="center">@String.Format("{0:#,0.00}", (double)@Model.SelectedSchool.all16pupils * 100 / @Model.SelectedSchool.allpupils)</td>
+                        <td align="center">@String.Format("{0:#,0.00}", @Model.SelectedSchool.Percentage(@Model.SelectedSchool.all16pupils))</td>
+                        <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.all16pupils))</td>
                     </tr>
                     <tr>
                         <td>Pupils 17</td>
-                        <td align="center">@Model.SelectedSchool.all17pupils</td>
-                        <td align="center">@String.Format("{0:#,0.00}", (double)@Model.SelectedSchool.all17pupils * 100 / @Model.SelectedSchool.allpupils)</td>
+                        <td align="center">@String.Format("{0:#,0.00}", @Model.SelectedSchool.Percentage(@Model.SelectedSchool.all17pupils))</td>
+                        <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.all17pupils))</td>
                     </tr>
                     <tr>
                         <td>Pupils 18</td>
-                        <td align="center">@Model.SelectedSchool.all18pupils</td>
-                        <td align="center">@String.Format("{0:#,0.00}", (double)@Model.SelectedSchool.all18pupils * 100 / @Model.SelectedSchool.allpupils)</td>
+                        <td align="center">@String.Format("{0:#,0.00}", @Model.SelectedSchool.Percentage(@Model.SelectedSchool.all18pupils))</td>
+                        <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.all18pupils))</td>
                     </tr>
                     <tr>
                         <td>Pupils 19</td>
-                        <td align="center">@Model.SelectedSchool.all19pupils</td>
-                        <td align="center">@String.Format("{0:#,0.00}", (double)@Model.SelectedSchool.all19pupils * 100 / @Model.SelectedSchool.allpupils)</td>
+                        <td align="center">@String.Format("{0:#,0.00}", @Model.SelectedSchool.Percentage(@Model.SelectedSchool.all19pupils))</td>
+                        <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.all19pupils))</td>
                     </tr>
                 </table>
            </td>
             }
+            else { 
             <td align="center" >
                 <table>
                     <tr>
@@ -94,179 +96,343 @@
                     </tr>
                     <tr>
                         <th></th>
-                        <th>Puils</th>
-                        <th>Percentage (%)</th>
+                        <th>Pupils</th>
+                        <th>Percentage(%) for All Clients</th>
                     </tr>
-                    <tr>
+                  <tr>
                         <td>All Clients</td>
                         <td colspan="2" align="center">@Model.Aberdeencity.allpupils</td>
                     </tr>
                     <tr>
                         <td>Males</td>
                         <td align="center">@Model.Aberdeencity.allMalepupils</td>
-                        <td align="center">@String.Format("{0:#,0.00}", (double)@Model.Aberdeencity.allMalepupils * 100 / @Model.Aberdeencity.allpupils)</td>
+                        <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.allMalepupils))</td>
                     </tr>
                     <tr>
                         <td>Females</td>
                         <td align="center">@Model.Aberdeencity.allFemalepupils</td>
-                        <td align="center">@String.Format("{0:#,0.00}", (double)@Model.Aberdeencity.allFemalepupils * 100 / @Model.Aberdeencity.allpupils)</td>
+                        <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.allFemalepupils))</td>
                     </tr>
                     <tr>
                         <td>Pupils 16</td>
                         <td align="center">@Model.Aberdeencity.all16pupils</td>
-                        <td align="center">@String.Format("{0:#,0.00}", (double)@Model.Aberdeencity.all16pupils * 100 / @Model.Aberdeencity.allpupils)</td>
+                        <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.all16pupils))</td>
                     </tr>
                     <tr>
                         <td>Pupils 17</td>
                         <td align="center">@Model.Aberdeencity.all17pupils</td>
-                        <td align="center">@String.Format("{0:#,0.00}", (double)@Model.Aberdeencity.all17pupils * 100 / @Model.Aberdeencity.allpupils)</td>
+                        <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.all17pupils))</td>
                     </tr>
                     <tr>
                         <td>Pupils 18</td>
                         <td align="center">@Model.Aberdeencity.all18pupils</td>
-                        <td align="center">@String.Format("{0:#,0.00}", (double)@Model.Aberdeencity.all18pupils * 100 / @Model.Aberdeencity.allpupils)</td>
+                        <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.all18pupils))</td>
                     </tr>
                     <tr>
                         <td>Pupils 19</td>
                         <td align="center">@Model.Aberdeencity.all19pupils</td>
-                        <td align="center">@String.Format("{0:#,0.00}", (double)@Model.Aberdeencity.all19pupils * 100 / @Model.Aberdeencity.allpupils)</td>
+                        <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.all19pupils))</td>
                     </tr>
                 </table>
+                
             </td>
+            }
         </tr>
     </table>
-
-
 
     <br />
     <table>
         <tr>
-            <th colspan="3">Current Positive Destinations</th>
-        </tr>
-        <tr>
-            <th></th>
-            <th>Puils</th>
-            <th>Percentage (%)</th>
-        </tr>
-        <tr>
-            <td>School Pupils</td>
-            <td align="center">@Model.Aberdeencity.schoolpupils</td>
-            <td align="center">0.00</td>
-        </tr>
-        <tr>
-            <td>School Pupils In Trainsition</td>
-            <td align="center">@Model.Aberdeencity.schoolpupilsintransition</td>
-            <td align ="center">Percentage</td>
-        </tr>
-        <tr>
-            <td>Moved Outwith Scotland</td>
-            <td align="center">@Model.Aberdeencity.schoolpupilsmovedoutinscotland</td>
-            <td align="center">Percentage</td>
-        </tr>
-        <tr>
-            <td>Activity Agreement</td>
-            <td align="center">@Model.Aberdeencity.pupilsinAtivityAgreement</td>
-            <td align="center">Percentage</td>
-        </tr>
-        <tr>
-            <td>Employability Fund Stage 2</td>
-            <td align="center">@Model.Aberdeencity.pupilsinEmployFundSt2</td>
-            <td align="center">Percentage</td>
-        </tr>
-        <tr>
-            <td>Employability Fund Stage 3</td>
-            <td align="center">@Model.Aberdeencity.pupilsinEmployFundSt3</td>
-            <td align="center">Percentage</td>
-        </tr>
-        <tr>
-            <td>Employability Fund Stage 4</td>
-            <td align="center">@Model.Aberdeencity.pupilsinEmployFundSt4</td>
-            <td align="center">Percentage</td>
-        </tr>
-        <tr>
-            <td>Full Time Employment</td>
-            <td align="center">@Model.Aberdeencity.pupilsinFullTimeEmployed</td>
-            <td align="center">Percentage</td>
-        </tr>
-        <tr>
-            <td>Further Education</td>
-            <td align="center">@Model.Aberdeencity.pupilsinFurtherEdu</td>
-            <td align="center">Percentage</td>
-        </tr>
-        <tr>
-            <td>Higher Education</td>
-            <td align="center">@Model.Aberdeencity.pupilsinHigherEdu</td>
-            <td align="center">Percentage</td>
-        </tr>
-        <tr>
-            <td>Modern Apprenticeship</td>
-            <td align="center">@Model.Aberdeencity.pupilsinModernApprenship</td>
-            <td align="center">Percentage</td>
-        </tr>
-        <tr>
-            <td>Part Time Employment</td>
-            <td align="center">@Model.Aberdeencity.pupilsinPartTimeEmployed</td>
-            <td align="center">Percentage</td>
-        </tr>
-        <tr>
-            <td>Personal/ Skills Development</td>
-            <td align="center">@Model.Aberdeencity.pupilsinPersonalSkillDevelopment</td>
-            <td align="center">Percentage</td>
-        </tr>
-        <tr>
-            <td>Self-Employed</td>
-            <td align="center">@Model.Aberdeencity.pupilsinSelfEmployed</td>
-            <td align="center">Percentage</td>
-        </tr>
-        <tr>
-            <td>Training (Non NTP)</td>
-            <td align="center">@Model.Aberdeencity.pupilsinTraining</td>
-            <td align="center">Percentage</td>
-        </tr>
-        <tr>
-            <td>Voluntary Work</td>
-            <td align="center">@Model.Aberdeencity.pupilsinVolunteerWork</td>
-            <td align="center">Percentage</td>
+            @if (Model.SelectedSchool != null)
+            {
+                <td align="center">
+                    <table>
+                        <tr>
+                            <th colspan="3">Current Positive Destinations</th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th>Percentage(%) for School</th>
+                            <th>Percentage(%) for All Clients</th>
+                        </tr>
+                        <tr>
+                            <td>School Pupils</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.SelectedSchool.Percentage(@Model.SelectedSchool.schoolpupils))</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.schoolpupils))</td>
+                        </tr>
+                        <tr>
+                            <td>School Pupils In Trainsition</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.SelectedSchool.Percentage(@Model.SelectedSchool.schoolpupilsintransition))</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.schoolpupilsintransition))</td>
+                        </tr>
+                        <tr>
+                            <td>Moved Outwith Scotland</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.SelectedSchool.Percentage(@Model.SelectedSchool.schoolpupilsmovedoutinscotland))</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.schoolpupilsmovedoutinscotland))</td>
+                        </tr>
+                        <tr>
+                            <td>Activity Agreement</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.SelectedSchool.Percentage(@Model.SelectedSchool.pupilsinAtivityAgreement))</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinAtivityAgreement))</td>
+                        </tr>
+                        <tr>
+                            <td>Employability Fund Stage 2</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.SelectedSchool.Percentage(@Model.SelectedSchool.pupilsinEmployFundSt2))</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinEmployFundSt2))</td>
+                        </tr>
+                        <tr>
+                            <td>Employability Fund Stage 3</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.SelectedSchool.Percentage(@Model.SelectedSchool.pupilsinEmployFundSt3))</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinEmployFundSt3))</td>
+                        </tr>
+                        <tr>
+                            <td>Employability Fund Stage 4</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.SelectedSchool.Percentage(@Model.SelectedSchool.pupilsinEmployFundSt4))</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinEmployFundSt4))</td>
+                        </tr>
+                        <tr>
+                            <td>Full Time Employment</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.SelectedSchool.Percentage(@Model.SelectedSchool.pupilsinFullTimeEmployed))</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinFullTimeEmployed))</td>
+                        </tr>
+                        <tr>
+                            <td>Further Education</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.SelectedSchool.Percentage(@Model.SelectedSchool.pupilsinFurtherEdu))</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinFurtherEdu))</td>
+                        </tr>
+                        <tr>
+                            <td>Higher Education</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.SelectedSchool.Percentage(@Model.SelectedSchool.pupilsinHigherEdu))</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinHigherEdu))</td>
+                        </tr>
+                        <tr>
+                            <td>Modern Apprenticeship</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.SelectedSchool.Percentage(@Model.SelectedSchool.pupilsinModernApprenship))</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinModernApprenship))</td>
+                        </tr>
+                        <tr>
+                            <td>Part Time Employment</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.SelectedSchool.Percentage(@Model.SelectedSchool.pupilsinPartTimeEmployed))</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinPartTimeEmployed))</td>
+                        </tr>
+                        <tr>
+                            <td>Personal/ Skills Development</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.SelectedSchool.Percentage(@Model.SelectedSchool.pupilsinPersonalSkillDevelopment))</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinPersonalSkillDevelopment))</td>
+                        </tr>
+                        <tr>
+                            <td>Self-Employed</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.SelectedSchool.Percentage(@Model.SelectedSchool.pupilsinSelfEmployed))</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinSelfEmployed))</td>
+                        </tr>
+                        <tr>
+                            <td>Training (Non NTP)</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.SelectedSchool.Percentage(@Model.SelectedSchool.pupilsinTraining))</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinTraining))</td>
+                        </tr>
+                        <tr>
+                            <td>Voluntary Work</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.SelectedSchool.Percentage(@Model.SelectedSchool.pupilsinVolunteerWork))</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinVolunteerWork))</td>
+                        </tr>
+                    </table>
+                </td>
+            }
+            else
+            {
+                <td align="center">
+                    <table>
+                        <tr>
+                            <th colspan="3">Current Positive Destinations</th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th>Pupils</th>
+                            <th>Percentage(%) for All Clients</th>
+                        </tr>
+                        <tr>
+                            <td>School Pupils</td>
+                            <td align="center">@Model.Aberdeencity.schoolpupils</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.schoolpupils))</td>
+                        </tr>
+                        <tr>
+                            <td>School Pupils In Trainsition</td>
+                            <td align="center">@Model.Aberdeencity.schoolpupilsintransition</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.schoolpupilsintransition))</td>
+                        </tr>
+                        <tr>
+                            <td>Moved Outwith Scotland</td>
+                            <td align="center">@Model.Aberdeencity.schoolpupilsmovedoutinscotland</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.schoolpupilsmovedoutinscotland))</td>
+                        </tr>
+                        <tr>
+                            <td>Activity Agreement</td>
+                            <td align="center">@Model.Aberdeencity.pupilsinAtivityAgreement</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinAtivityAgreement))</td>
+                        </tr>
+                        <tr>
+                            <td>Employability Fund Stage 2</td>
+                            <td align="center">@Model.Aberdeencity.pupilsinEmployFundSt2</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinEmployFundSt2))</td>
+                        </tr>
+                        <tr>
+                            <td>Employability Fund Stage 3</td>
+                            <td align="center">@Model.Aberdeencity.pupilsinEmployFundSt3</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinEmployFundSt3))</td>
+                        </tr>
+                        <tr>
+                            <td>Employability Fund Stage 4</td>
+                            <td align="center">@Model.Aberdeencity.pupilsinEmployFundSt4</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinEmployFundSt4))</td>
+                        </tr>
+                        <tr>
+                            <td>Full Time Employment</td>
+                            <td align="center">@Model.Aberdeencity.pupilsinFullTimeEmployed</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinFullTimeEmployed))</td>
+                        </tr>
+                        <tr>
+                            <td>Further Education</td>
+                            <td align="center">@Model.Aberdeencity.pupilsinFurtherEdu</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinFurtherEdu))</td>
+                        </tr>
+                        <tr>
+                            <td>Higher Education</td>
+                            <td align="center">@Model.Aberdeencity.pupilsinHigherEdu</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinHigherEdu))</td>
+                        </tr>
+                        <tr>
+                            <td>Modern Apprenticeship</td>
+                            <td align="center">@Model.Aberdeencity.pupilsinModernApprenship</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinModernApprenship))</td>
+                        </tr>
+                        <tr>
+                            <td>Part Time Employment</td>
+                            <td align="center">@Model.Aberdeencity.pupilsinPartTimeEmployed</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinPartTimeEmployed))</td>
+                        </tr>
+                        <tr>
+                            <td>Personal/ Skills Development</td>
+                            <td align="center">@Model.Aberdeencity.pupilsinPersonalSkillDevelopment</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinPersonalSkillDevelopment))</td>
+                        </tr>
+                        <tr>
+                            <td>Self-Employed</td>
+                            <td align="center">@Model.Aberdeencity.pupilsinSelfEmployed</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinSelfEmployed))</td>
+                        </tr>
+                        <tr>
+                            <td>Training (Non NTP)</td>
+                            <td align="center">@Model.Aberdeencity.pupilsinTraining</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinTraining))</td>
+                        </tr>
+                        <tr>
+                            <td>Voluntary Work</td>
+                            <td align="center">@Model.Aberdeencity.pupilsinVolunteerWork</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinVolunteerWork))</td>
+                        </tr>
+                    </table>
+                </td>
+            }
+
         </tr>
     </table>
+
+
     <br />
-    @*<table>
+
+    <table>
         <tr>
-            <th colspan="3">Non Positive Destinations</th>
+            @if (Model.SelectedSchool != null)
+            {
+                <td>
+                    <table>
+                        <tr>
+                            <th colspan="3">Non Positive Destinations</th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th>Percentage(%) for School</th>
+                            <th>Percentage(%) for All Clients</th>
+                        </tr>
+                        <tr>
+                            <td>Average Weeks Since Last Positive Destination</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.SelectedSchool.AvgWeekssinceLastPositiveDestination)</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.AvgWeekssinceLastPositiveDestination)</td>
+                        </tr>
+                        <tr>
+                            <td>Custody</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.SelectedSchool.Percentage(@Model.SelectedSchool.pupilsinCustody))</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinCustody))</td>
+                        </tr>
+                        <tr>
+                            <td>Economically Inactive</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.SelectedSchool.Percentage(@Model.SelectedSchool.pupilsinEconomically))</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinEconomically))</td>
+                        </tr>
+                        <tr>
+                            <td>Unavailable-ill Health</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.SelectedSchool.Percentage(@Model.SelectedSchool.pupilsinUnavailableillHealth))</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinUnavailableillHealth))</td>
+                        </tr>
+                        <tr>
+                            <td>Unemployed</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.SelectedSchool.Percentage(@Model.SelectedSchool.pupilsinUnemployed))</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinUnemployed))</td>
+                        </tr>
+                        <tr>
+                            <td>Unknown</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.SelectedSchool.Percentage(@Model.SelectedSchool.pupilsinUnknown))</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinUnknown))</td>
+                        </tr>
+                    </table>
+                </td>
+            }
+            else
+            {
+                <td>
+                    <table>
+                        <tr>
+                            <th colspan="3">Non Positive Destinations</th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th>Puils</th>
+                            <th>Percentage (%)</th>
+                        </tr>
+                        <tr>
+                            <td>Average Weeks Since Last Positive Destination</td>
+                            <td colspan="2" align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.AvgWeekssinceLastPositiveDestination)</td>
+                        </tr>
+                        <tr>
+                            <td>Custody</td>
+                            <td align="center">@Model.Aberdeencity.pupilsinCustody</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinCustody))</td>
+                        </tr>
+                        <tr>
+                            <td>Economically Inactive</td>
+                            <td align="center">@Model.Aberdeencity.pupilsinEconomically</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinEconomically))</td>
+                        </tr>
+                        <tr>
+                            <td>Unavailable-ill Health</td>
+                            <td align="center">@Model.Aberdeencity.pupilsinUnavailableillHealth</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinUnavailableillHealth))</td>
+                        </tr>
+                        <tr>
+                            <td>Unemployed</td>
+                            <td align="center">@Model.Aberdeencity.pupilsinUnemployed</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinUnemployed))</td>
+                        </tr>
+                        <tr>
+                            <td>Unknown</td>
+                            <td align="center">@Model.Aberdeencity.pupilsinUnknown</td>
+                            <td align="center">@String.Format("{0:#,0.00}", @Model.Aberdeencity.Percentage(@Model.Aberdeencity.pupilsinUnknown))</td>
+                        </tr>
+                    </table>
+                </td>
+            }
+
         </tr>
-        <tr>
-            <th></th>
-            <th>Puils</th>
-            <th>Percentage (%)</th>
-        </tr>
-        <tr>
-            <td>Average Weeks Since Last Positive Destination</td>
-            <td colspan="2" align="center">@String.Format("{0:#,0.00}", @Model.AvgWeekssinceLastPositiveDestination)</td>
-        </tr>
-        <tr>
-            <td>Custody</td>
-            <td align="center">@Model.pupilsinCustody</td>
-            <td align="center">@String.Format("{0:#,0.00}", (double)@Model.allMalepupils * 100 / @Model.allpupils)</td>
-        </tr>
-        <tr>
-            <td>Economically Inactive</td>
-            <td align="center">@Model.pupilsinEconomically</td>
-            <td align="center">@String.Format("{0:#,0.00}", (double)@Model.allMalepupils * 100 / @Model.allpupils)</td>
-        </tr>
-        <tr>
-            <td>Unavailable-ill Health</td>
-            <td align="center">@Model.pupilsinUnavailableillHealth</td>
-            <td align="center">@String.Format("{0:#,0.00}", (double)@Model.allMalepupils * 100 / @Model.allpupils)</td>
-        </tr>
-        <tr>
-            <td>Unemployed</td>
-            <td align="center">@Model.pupilsinUnemployed</td>
-            <td align="center">@String.Format("{0:#,0.00}", (double)@Model.allMalepupils * 100 / @Model.allpupils)</td>
-        </tr>
-        <tr>
-            <td>Unknown</td>
-            <td align="center">@Model.pupilsinUnknown</td>
-            <td align="center">@String.Format("{0:#,0.00}", (double)@Model.allMalepupils * 100 / @Model.allpupils)</td>
-        </tr>
-    </table>*@
+    </table>
+ 
 </div>

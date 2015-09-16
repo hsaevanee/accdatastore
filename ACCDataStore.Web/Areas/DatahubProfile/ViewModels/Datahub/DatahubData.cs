@@ -37,14 +37,11 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub
         public int pupilsinUnemployed{ get; set; }
         public int pupilsinUnknown { get; set; }
 
-        //public double allFemalepupilsPercentage
-        //{
-        //    get
-        //    {
-        //        return (double)(allFemalepupils * 100) / (allpupils);
-        //    }
-        //}
+        public double Percentage(int number)
+        {
+            return (double)(number * 100) / allpupils;
+        }
 
-        //public IList<LeaverDestination> ListLeaverDestinationDataAbdCity { get; set; }
+
     }
 }
