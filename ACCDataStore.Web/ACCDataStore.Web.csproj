@@ -210,6 +210,7 @@
     <Content Include="Images\spinner.gif" />
     <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\IndexdatahubProfile.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\MapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\insightprofile\views\benchmarkmeasure\IndexLeaver.js" />
     <Content Include="Scripts\accdatastore\areas\insightprofile\views\benchmarkmeasure\MapLeaverDestinationIndex.js" />
     <Content Include="Scripts\accdatastore\areas\nationality\views\nationality\nationality.js" />
@@ -343,6 +344,7 @@
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Index.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\MapIndex.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\What-is-data-observatory.cshtml" />

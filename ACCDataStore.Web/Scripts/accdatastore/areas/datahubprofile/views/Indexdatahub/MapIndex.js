@@ -1,85 +1,4 @@
-﻿//$(function () {
-//    $(document.body).on('click', '.a-close-popup-information', function () {
-//        $("#popup-information").hide(250);
-//    });
-//    initMap();
-//});
-
-//function initMap() {
-//    var mapCenter = new google.maps.LatLng(57.151810, -2.094451);
-//    var mapOptions = {
-//        zoom: 9,
-//        center: mapCenter
-//    }
-
-//    var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-
-//    var layerKml = new google.maps.KmlLayer({
-//        suppressInfoWindows: true,
-//        //url:'https://dl.dropboxusercontent.com/u/55734762/Postcodes.kml'
-
-//        //url: 'https://dl.dropboxusercontent.com/u/55734762/ABpostcodedistricts.kml'
-
-//        url: 'https://dl.dropboxusercontent.com/u/55734762/Datazone_with_Desc.kml'
-
-//        //url: 'https://dl.dropboxusercontent.com/u/870146/KML/UK%20postcode%20districts.kml' + "?rand=" + (new Date()).valueOf()
-//    });
-//    layerKml.setMap(map);
-
-//    google.maps.event.addListener(layerKml, 'click',
-//	function (kmlEvent) {
-//	    SearchByName(kmlEvent.featureData.description);
-//	});
-//}
-//function ShowPopupInformation(sInformation) {
-//    var popupInformation = document.getElementById('popup-information');
-//    popupInformation.innerHTML = sInformation;
-//    $("#popup-information").show(250);
-//}
-
-//function SearchByName(sName) {
-//    var param = JSON.stringify({ 'sName': sName });
-
-//    $.ajax({
-//        type: "POST",
-//        url: sContextPath + "SchoolProfile/Nationality/SearchByName",
-//        data: param,
-//        contentType: "application/json; charset=utf-8",
-//        dataType: "json",
-//        success: function (data) {
-//            ShowPopupInfo(data,sName);
-//        },
-//        error: function (xhr, err) {
-//            SetErrorMessage(xhr);
-//        }
-//    });
-//}
-
-//function SetErrorMessage(xhr) {
-//    if (xhr.responseText.length > 0) {
-//        var sErrorMessage = JSON.parse(xhr.responseText).Message;
-//        alert(sErrorMessage);
-//    }
-//}
-
-
-//function ShowPopupInfo(data, sName) {
-//    var sInformation = "<a href='#' class='a-close-popup-information'>Close</a><h3>" + sName + "</h3>";
-//    sInformation += "<table class='style2'>";
-//    sInformation += "<thead><tr><th>Nationality</th><th>Female</th><th>Male</th></tr></thead>";
-//    sInformation += "<tbody>";
-
-//    for (var i = 0; i < data.length; i++) {        
-//        sInformation += "<tr><td>" + data[i].IdentityName + "</td><td  align='center'>" + data[i].PercentageFemaleAllSchool.toFixed(2) + "</td><td  align='center'>" + data[i].PercentageMaleAllSchool.toFixed(2) + "</td><tr>";
-        
-//    }
-
-//    sInformation += "</tbody></table>";
-//    ShowPopupInformation(sInformation);
-
-//}
-
-
+﻿
 var map; // map object
 
 // initialize all kml layers
@@ -97,15 +16,15 @@ var kml = {
     a: {
         name: "Primary Schools Locations",
         type: 2,
-        url: 'https://dl.dropboxusercontent.com/u/55734762/PrimarySchoollocations1.json' + "?rand=" + (new Date()).valueOf(),
+        url: 'https://dl.dropboxusercontent.com/u/55734762/PrimarySchoollocations.json' + "?rand=" + (new Date()).valueOf(),
         dataType : 1
     },
-    b: {
-        name: "Aberdeen DataZone Districts",
-        type: 2,
-        url: 'https://dl.dropboxusercontent.com/u/870146/KML/V2/Datazone_with_Desc.json' + "?rand=" + (new Date()).valueOf(),
-        dataType: 2
-    },
+    //b: {
+    //    name: "Aberdeen DataZone Districts",
+    //    type: 2,
+    //    url: 'https://dl.dropboxusercontent.com/u/870146/KML/V2/Datazone_with_Desc.json' + "?rand=" + (new Date()).valueOf(),
+    //    dataType: 2
+    //},
 };
 
 // on document ready
@@ -172,7 +91,7 @@ function SearchData(sCondition,sKeyname) {
 
     $.ajax({
         type: "POST",
-        url: sContextPath + "SchoolProfile/Nationality/SearchByName",
+        url: sContextPath + "DatahubProfile/IndexDatahub/SearchByName",
         data: JSON.stringify(JSONObject),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -192,7 +111,7 @@ function SearchData(sCondition,sKeyname) {
 function myFunctionColumn(pdata) {
         $.ajax({
             type: 'POST',
-            url: sContextPath + 'SchoolProfile/Nationality/GetChartDataNationalityforMap',
+            url: sContextPath + 'DatahubProfile/IndexDatahub/GetChartDataNationalityforMap',
             data: JSON.stringify(pdata.dataSeries),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
@@ -260,20 +179,20 @@ function drawChartColumn(data, sCondition) {
 
 function ShowPopupInfo(data) {
     //var sInformation = "<a href='#' class='a-close-popup-information'>Close</a><h3>" + sName + "</h3>";
-    var sInformation = "<h3 align='center'> Nationality - " + data.dataTitle + "</h3>";
+    var sInformation = "<h3 align='center'> Destination - " + data.dataTitle + "</h3>";
     sInformation += "<table class='style2'>";
     sInformation += "<thead><tr><th>Nationality</th><th>Female</th><th>Male</th><th>Total</th></tr></thead>";
     sInformation += "<tbody>";
-    if (data.dataSeries.length != 0) {
-        for (var i = 0; i < data.dataSeries.length; i++) {
-            sInformation += "<tr><td>" + data.dataSeries[i].IdentityName + "</td><td  align='center'>" + data.dataSeries[i].PercentageFemaleAllSchool.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].PercentageMaleAllSchool.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].PercentageAllSchool.toFixed(2) + "</td><tr>";
+    //if (data.dataSeries.length != 0) {
+    //    for (var i = 0; i < data.dataSeries.length; i++) {
+    //        sInformation += "<tr><td>" + data.dataSeries[i].IdentityName + "</td><td  align='center'>" + data.dataSeries[i].PercentageFemaleAllSchool.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].PercentageMaleAllSchool.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].PercentageAllSchool.toFixed(2) + "</td><tr>";
 
-        }
+    //    }
 
-    } else {
+    //} else {
 
-        sInformation += "<tr><td colspan='4' align='center'> No data available</td><tr>";
-    }
+    //    sInformation += "<tr><td colspan='4' align='center'> No data available</td><tr>";
+    //}
 
 
     sInformation += "</tbody></table>";
@@ -360,9 +279,9 @@ function ToggleKMLLayer(checked, id) {
             if (kml[id].dataType == 0) {
                 SearchData(kmlEvent.featureData.description, "ZoneCode");
             } else if (kml[id].dataType == 1) {
-                SearchData(kmlEvent.feature.G.description, "SchCode");
+                SearchData("100", "SchCode");
             } else if (kml[id].dataType == 2) {
-                SearchData(kmlEvent.feature.G.description, "ZoneCode");
+                SearchData("100", "ZoneCode");
             }
         });
 

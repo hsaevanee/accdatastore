@@ -10,9 +10,9 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub
     {
 
         public IList<School> ListSchoolNameData { get; set; }
+        public School selectedschool { get; set; }
         public string selectedschoolcode { get; set; }
-        public string selectedschoolname { get; set; }
-        public DatahubData Aberdeencity { get; set; }
-        public DatahubData SelectedSchool { get; set; }
+        public DatahubData AberdeencityData { get; set; }
+        public DatahubData SchoolData { get; set; }
     }
 }

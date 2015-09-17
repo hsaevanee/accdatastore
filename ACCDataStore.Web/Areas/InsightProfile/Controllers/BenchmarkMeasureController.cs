@@ -93,8 +93,15 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
             var vmBenchmarkMeasure = new BenchmarkMeasureViewModel();
 
             vmBenchmarkMeasure.ListSchoolNameData = GetListSchoolname(rpGeneric2nd);
-            vmBenchmarkMeasure.ListGenderData = model.ListGenderData;
             vmBenchmarkMeasure.ListYearData = GetListYear();
+            vmBenchmarkMeasure.ListGenderData = model.ListGenderData;
+            if (vmBenchmarkMeasure.ListGenderData.Where(x => x.isSelected == true).Count() == 0)
+            {
+                var temp = (from a in vmBenchmarkMeasure.ListGenderData where a.gendercode==0 select a).First();
+                temp.isSelected = true;
+               
+            }
+
             vmBenchmarkMeasure.ListLeaverDestinationData = GetLeaverDestinationData(model.selectedschoolcode, model.ListGenderData);
             Session["ListLeaverDestinationData"] = vmBenchmarkMeasure.ListLeaverDestinationData;
             Session["ListGenderData"] = vmBenchmarkMeasure.ListGenderData;

@@ -29,21 +29,32 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             var vmDatahubViewModel = new DatahubViewModel();
             var datahubAbdcitydata = new DatahubData();
 
-            vmDatahubViewModel.Aberdeencity = GetDatahubdatabySchoolcode(rpGeneric, null);
-            vmDatahubViewModel.ListSchoolNameData = GetListSchoolname(rpGeneric);
+            vmDatahubViewModel.AberdeencityData = GetDatahubdatabySchoolcode(rpGeneric, null);
+            vmDatahubViewModel.ListSchoolNameData = GetListSchoolname();
             
             var sSchoolcode = Request["selectedschoolcode"];
 
             if (sSchoolcode != null) {
                 //vmDatahubViewModel.selectedschoolname = vmDatahubViewModel.ListSchoolNameData.FirstOrDefault(x => x.seedcode.Equals(sSchoolcode)).Select(x => x.name).ToString();
-                vmDatahubViewModel.SelectedSchool = GetDatahubdatabySchoolcode(rpGeneric, sSchoolcode);
+                if (sSchoolcode.Equals("100"))
+                {
+                    vmDatahubViewModel.SchoolData = GetDatahubdatabySchoolcode(rpGeneric, null);
+                    vmDatahubViewModel.selectedschoolcode = "100";
+                }
+                else {
+                    vmDatahubViewModel.SchoolData = GetDatahubdatabySchoolcode(rpGeneric, sSchoolcode);
+                    vmDatahubViewModel.selectedschoolcode = sSchoolcode;
+                }
+                
+                vmDatahubViewModel.selectedschool = vmDatahubViewModel.ListSchoolNameData.Where(x => x.seedcode.Equals(sSchoolcode)).FirstOrDefault();
             }
             return View("index", vmDatahubViewModel);
         }
 
-        protected IList<School> GetListSchoolname(IGenericRepository rpGeneric)
+        protected IList<School> GetListSchoolname()
         {
            List<School> temp = new List<School>();
+           temp.Add(new School("100", "Aberdeen City"));
            temp.Add(new School("5244439", "Aberdeen Grammar School"));
            temp.Add(new School("5235634", "Bridge Of Don Academy"));
            temp.Add(new School("5234034", "Bucksburn Academy"));
@@ -113,5 +124,106 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             datahubdata.pupilsinUnknown = listdata.Count(x => x.Current_Status.ToLower().Equals("unknown"));
             return datahubdata;
         }
+
+        public ActionResult MapData()
+        {
+            //var listNationalityData = Session["SessionListNationalityData"] as List<NationalityObj>;
+            var vmDatahubViewModel = new DatahubViewModel();
+            vmDatahubViewModel.ListSchoolNameData = GetListSchoolname();
+            return View("MapIndex", vmDatahubViewModel);
+        }
+
+
+        protected JsonResult ThrowJSONError(Exception ex)
+        {
+            Response.StatusCode = (int)System.Net.HttpStatusCode.BadRequest;
+            var sErrorMessage = "Error : " + ex.Message + (ex.InnerException != null ? ", More Detail : " + ex.InnerException.Message : "");
+            return Json(new { Message = sErrorMessage }, JsonRequestBehavior.AllowGet);
+        }
+
+
+        [HttpPost]
+        public JsonResult GetChartDataforMap(List<NationalityObj> data)
+        {
+            try
+            {
+                object oChartData = new object();
+                if (data != null)
+                {
+                    var listChartData = new List<object>();
+                    listChartData.Add(new { name = "Female", data = data.Select(x => x.PercentageFemaleAllSchool).ToArray() });
+                    listChartData.Add(new { name = "Male", data = data.Select(x => x.PercentageMaleAllSchool).ToArray() });
+                    listChartData.Add(new { name = "Total", data = data.Select(x => x.PercentageAllSchool).ToArray() });
+                    // process chart data
+                    oChartData = new
+                    {
+                        ChartTitle = "Nationality - Primary Schools (%pupils)",
+                        ChartCategories = data.Select(x => x.IdentityName).ToArray(),
+                        ChartSeries = listChartData
+                    };
+                }
+                else
+                {
+
+                    oChartData = new
+                    {
+                        ChartTitle = "No data available",
+                        ChartCategories = new List<string>(),
+                        ChartSeries = new List<double>()
+                    };
+
+                }
+
+                return Json(oChartData, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.Message, ex);
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        public JsonResult SearchByName(string keyvalue, string keyname)
+        {
+            try
+            {
+
+                //var listNationalityData = new List<NationalityObj>();
+
+                object oChartData = new object();
+
+
+                if (keyname.Equals("SchCode"))
+                {
+                    //listNationalityData = GetdatabySchCode(int.Parse(keyvalue));
+                    oChartData = new
+                    {
+                        dataTitle = "",
+                        dataSeries = new List<Double>()
+                    };
+
+                }
+                else if (keyname.Equals("ZoneCode"))
+                {
+                    //listNationalityData = GetdatabyZonecode(keyvalue);
+                    oChartData = new
+                    {
+                        dataTitle = "",
+                        dataSeries = new List<Double>()
+                    };
+                }
+
+                // use sName (AB24) to query data from database
+                return Json(oChartData, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                return ThrowJSONError(ex);
+            }
+        }
+
+
     }
 }
