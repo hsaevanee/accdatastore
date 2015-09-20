@@ -141,81 +141,32 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             return Json(new { Message = sErrorMessage }, JsonRequestBehavior.AllowGet);
         }
 
-
-        [HttpPost]
-        public JsonResult GetChartDataforMap(List<NationalityObj> data)
-        {
-            try
-            {
-                object oChartData = new object();
-                if (data != null)
-                {
-                    var listChartData = new List<object>();
-                    listChartData.Add(new { name = "Female", data = data.Select(x => x.PercentageFemaleAllSchool).ToArray() });
-                    listChartData.Add(new { name = "Male", data = data.Select(x => x.PercentageMaleAllSchool).ToArray() });
-                    listChartData.Add(new { name = "Total", data = data.Select(x => x.PercentageAllSchool).ToArray() });
-                    // process chart data
-                    oChartData = new
-                    {
-                        ChartTitle = "Nationality - Primary Schools (%pupils)",
-                        ChartCategories = data.Select(x => x.IdentityName).ToArray(),
-                        ChartSeries = listChartData
-                    };
-                }
-                else
-                {
-
-                    oChartData = new
-                    {
-                        ChartTitle = "No data available",
-                        ChartCategories = new List<string>(),
-                        ChartSeries = new List<double>()
-                    };
-
-                }
-
-                return Json(oChartData, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex.Message, ex);
-                throw ex;
-            }
-        }
-
         [HttpPost]
         public JsonResult SearchByName(string keyvalue, string keyname)
         {
             try
             {
+                IList<School> temp = GetListSchoolname();
+                School selectedschool = temp.Where(x => x.seedcode.Equals(keyvalue)).FirstOrDefault();
+                var Schooldata = GetDatahubdatabySchoolcode(rpGeneric, keyvalue);
+                var Abddata = GetDatahubdatabySchoolcode(rpGeneric, null);
 
-                //var listNationalityData = new List<NationalityObj>();
+                string schname = selectedschool == null ? "" : selectedschool.name; 
+                
+                object data = new object();
 
-                object oChartData = new object();
 
-
-                if (keyname.Equals("SchCode"))
+                data = new
                 {
-                    //listNationalityData = GetdatabySchCode(int.Parse(keyvalue));
-                    oChartData = new
-                    {
-                        dataTitle = "",
-                        dataSeries = new List<Double>()
-                    };
+                    dataTitle = "Destination -" + schname,
+                    schoolname = schname,
+                    dataCategories = new string[] {"Participating","Not-Participating", "Unconfirmed"},
+                    Schdata = new double[] { Schooldata.Participating(), Schooldata.NotParticipating(), Schooldata.Percentage(Schooldata.pupilsinUnknown) },
+                    Abdcitydata = new double[] { Abddata.Participating(), Abddata.NotParticipating(), Abddata.Percentage(Abddata.pupilsinUnknown) }
 
-                }
-                else if (keyname.Equals("ZoneCode"))
-                {
-                    //listNationalityData = GetdatabyZonecode(keyvalue);
-                    oChartData = new
-                    {
-                        dataTitle = "",
-                        dataSeries = new List<Double>()
-                    };
-                }
+                };
 
-                // use sName (AB24) to query data from database
-                return Json(oChartData, JsonRequestBehavior.AllowGet);
+                return Json(data, JsonRequestBehavior.AllowGet);
 
             }
             catch (Exception ex)

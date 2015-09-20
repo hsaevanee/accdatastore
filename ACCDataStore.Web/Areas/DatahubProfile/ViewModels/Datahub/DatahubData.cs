@@ -42,6 +42,29 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub
             return (double)(number * 100) / allpupils;
         }
 
+        public double Participating()
+        {
+            return (double)(Percentage(this.schoolpupils) + 
+                Percentage(this.schoolpupilsintransition) +
+                Percentage(this.pupilsinAtivityAgreement) +
+                Percentage(this.pupilsinEmployFundSt2) +
+                Percentage(this.pupilsinEmployFundSt3)+
+                Percentage(this.pupilsinEmployFundSt4)+
+                Percentage(this.pupilsinFullTimeEmployed)+
+                Percentage(this.pupilsinFurtherEdu)+
+                Percentage(this.pupilsinHigherEdu) +
+                Percentage(this.pupilsinModernApprenship) +
+                Percentage(this.pupilsinPartTimeEmployed) +
+                Percentage(this.pupilsinPersonalSkillDevelopment)+
+                Percentage(this.pupilsinSelfEmployed)+
+                Percentage(this.pupilsinTraining)+
+                Percentage(this.pupilsinVolunteerWork));
+        }
+
+        public double NotParticipating()
+        {
+            return (double)(Percentage(this.pupilsinCustody) + Percentage(this.pupilsinEconomically) + Percentage(this.pupilsinUnavailableillHealth) + Percentage(this.pupilsinUnemployed));
+        }
 
     }
 }

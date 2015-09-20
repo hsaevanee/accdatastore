@@ -14,9 +14,9 @@ var kml = {
     //    }
     //},
     a: {
-        name: "Primary Schools Locations",
+        name: "Schools Locations",
         type: 2,
-        url: 'https://dl.dropboxusercontent.com/u/55734762/PrimarySchoollocations.json' + "?rand=" + (new Date()).valueOf(),
+        url: 'https://dl.dropboxusercontent.com/u/55734762/InsightSchoollocations.json' + "?rand=" + (new Date()).valueOf(),
         dataType : 1
     },
     //b: {
@@ -58,6 +58,11 @@ function InitMap() {
 
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
+    // create dummy overlay
+    mapOverlay = new google.maps.OverlayView();
+    mapOverlay.draw = function () { };
+    mapOverlay.setMap(map);
+
     CreateLayerControl();
 }
 
@@ -72,20 +77,11 @@ function ShowPopupInformation(sInformation) {
 
 
 // call server side method via ajax
-function SearchData(sCondition,sKeyname) {
-    //var param = JSON.stringify({ 'sCondition': sCondition }); // just an example, need to adjust
-    //sCondition = "5235324,MILLTIMBER PRIMARY SCHOOL";
-    //var res = sCondition.split(",");
-    //var kcode = res[0];
-    //var kname = res[1];
-
-    //var JSONObject = {
-    //    "keyvalue": kcode,
-    //    "keyname": sKeyname
-    //}
+function SearchData(schcode,schname, sKeyname) {
 
     var JSONObject = {
-        "keyvalue": sCondition,
+        "keyschcode": schcode,
+        "keyschname": schname,
         "keyname": sKeyname
     }
 
@@ -96,10 +92,8 @@ function SearchData(sCondition,sKeyname) {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
-            //alert(data.schoolname);
-            //alert(data.data);
             ShowPopupInfo(data);
-            myFunctionColumn(data);
+            drawChartColumn(data);
                 
         },
         error: function (xhr, err) {
@@ -108,29 +102,7 @@ function SearchData(sCondition,sKeyname) {
     });
 }
 
-function myFunctionColumn(pdata) {
-        $.ajax({
-            type: 'POST',
-            url: sContextPath + 'SchoolProfile/Nationality/GetChartDataNationalityforMap',
-            data: JSON.stringify(pdata.dataSeries),
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            success: function (data) {
-                drawChartColumn(data, pdata.dataTitle);
-            },
-            error: function (xhr, err) {
-                if (xhr.readyState != 0 && xhr.status != 0) {
-                    alert('readyState: ' + xhr.readyState + '\nstatus: ' + xhr.status);
-                    alert('responseText: ' + xhr.responseText);
-                }
-            }
-        });
-    
-
-}
-
-function drawChartColumn(data, sCondition) {
-   
+function drawChartColumn(data) {
     $('#divChartContainer')
             .highcharts(
                     {
@@ -138,16 +110,16 @@ function drawChartColumn(data, sCondition) {
                             type: 'column'
                         },
                         title: {
-                            text: data.ChartTitle
+                            text: data.dataTitle +  '<br> Leaver Initial Destination'
                         },
                         subtitle: {
-                            text: sCondition
+                            text: 'Increasing post-school participation <br> Percentage od School Leavers in a Positive Destination'
                         },
                         xAxis: {
                             //categories: [ '0%', '5%', '10%', '15%','20%','25%','30%'],
-                            categories: data.ChartCategories,
+                            categories: data.dataCategories,
                             title: {
-                                text: 'Leaver Destination Breakdown'
+                                text: ''
                             }
                         },
                         yAxis: {
@@ -170,7 +142,7 @@ function drawChartColumn(data, sCondition) {
                                 borderWidth: 0
                             }
                         },
-                        series: data.ChartSeries,
+                        series: [{ name: data.dataTitle, data: data.Schooldata }, { name: 'Aberdeen City', data: data.Abddata }],
                         credits: {
                             enabled: false
                         }
@@ -179,13 +151,13 @@ function drawChartColumn(data, sCondition) {
 
 function ShowPopupInfo(data) {
     //var sInformation = "<a href='#' class='a-close-popup-information'>Close</a><h3>" + sName + "</h3>";
-    var sInformation = "<h3 align='center'> Nationality - " + data.dataTitle + "</h3>";
+    var sInformation = "<h3 align='center'> Leaver in a Positive Destination <br>" + data.dataTitle + "</h3>";
     sInformation += "<table class='style2'>";
-    sInformation += "<thead><tr><th>Nationality</th><th>Female</th><th>Male</th><th>Total</th></tr></thead>";
+    sInformation += "<thead><tr><th>Year</th><th>" + data.dataTitle + "</th><th>Aberdeen City</th></tr></thead>";
     sInformation += "<tbody>";
-    if (data.dataSeries.length != 0) {
-        for (var i = 0; i < data.dataSeries.length; i++) {
-            sInformation += "<tr><td>" + data.dataSeries[i].IdentityName + "</td><td  align='center'>" + data.dataSeries[i].PercentageFemaleAllSchool.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].PercentageMaleAllSchool.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].PercentageAllSchool.toFixed(2) + "</td><tr>";
+    if (data.dataCategories.length != 0) {
+        for (var i = 0; i < data.dataCategories.length; i++) {
+            sInformation += "<tr><td>" + data.dataCategories[i] + "</td><td  align='center'>" + data.Schooldata[i].toFixed(2) + "</td><td  align='center'>" + data.Abddata[i].toFixed(2) + "</td><tr>";
 
         }
 
@@ -246,20 +218,25 @@ function ToggleKMLLayer(checked, id) {
 
                 var infoWindows = new google.maps.InfoWindow();
                 layer.addListener('mouseover', function (event) {
-                    if (event.ub != null) { // case of polygon
-                        layer.revertStyle();
-                        layer.overrideStyle(event.feature, { strokeWeight: 5 });
-                        var divContent = document.getElementById('content-windows-mouse-over');
-                        divContent.style.display = "block";
-                        divContent.style.left = (event.ub.clientX + 20) + "px";
-                        divContent.style.top = (event.ub.clientY + 20) + "px";
-                        divContent.textContent = event.feature.getProperty('description');
-                    } else { // case of point
-                        infoWindows.setContent("<div style='width: 150px;'>" + event.feature.getProperty("Name") + "</div>");
-                        infoWindows.setPosition(event.feature.getGeometry().get());
-                        infoWindows.setOptions({ pixelOffset: new google.maps.Size(0, -30) });
-                        infoWindows.open(map);
-                        setTimeout(function () { infoWindows.close(); }, 4000);
+                    var sGeometryType = event.feature.getGeometry().getType();
+                    switch (sGeometryType) {
+                        case "Polygon":
+                            var point = mapOverlay.getProjection().fromLatLngToContainerPixel(event.latLng);
+                            layer.revertStyle();
+                            layer.overrideStyle(event.feature, { strokeWeight: 5 });
+                            var divContent = document.getElementById('content-windows-mouse-over');
+                            divContent.style.display = "block";
+                            divContent.style.left = (point.x + 20) + "px";
+                            divContent.style.top = (point.y + 20) + "px";
+                            divContent.textContent = event.feature.getProperty('description');
+                            break;
+                        case "Point":
+                            infoWindows.setContent("<div style='width: 150px;'>" + event.feature.getProperty("Name") + "</div>");
+                            infoWindows.setPosition(event.feature.getGeometry().get());
+                            infoWindows.setOptions({ pixelOffset: new google.maps.Size(0, -30) });
+                            infoWindows.open(map);
+                            setTimeout(function () { infoWindows.close(); }, 4000);
+                            break;
                     }
                 });
 
@@ -279,9 +256,9 @@ function ToggleKMLLayer(checked, id) {
             if (kml[id].dataType == 0) {
                 SearchData(kmlEvent.featureData.description, "ZoneCode");
             } else if (kml[id].dataType == 1) {
-                SearchData(kmlEvent.feature.G.description, "SchCode");
+                SearchData(kmlEvent.feature.getProperty('SCHOCODE'), kmlEvent.feature.getProperty('Name'), "SchCode");
             } else if (kml[id].dataType == 2) {
-                SearchData(kmlEvent.feature.G.description, "ZoneCode");
+                SearchData(kmlEvent.feature.getProperty('ZONECODE'), "ZoneCode");
             }
         });
 

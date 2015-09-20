@@ -4,21 +4,27 @@ $(document).ready(function () {
 
     $("#selectedschoolcode").change(function () {    
         document.forms[0].submit();
-        myFunctionColumn()
+        //var schcode = $('#selectedschoolcode :selected').val();
+
+        //var JSONObject = {
+        //    "keyvalue": schcode,
+        //    "keyname": 'SchCode'
+        //}
+        //myFunctionColumn(JSONObject)
 
     });
 
 });
 
-function myFunctionColumn() {
+function myFunctionColumn(JSONObject) {
     $.ajax({
         type: 'POST',
-        url: sContextPath + 'DatahubProfile/IndexDatahub/GetChartDataforMap',
-        data: JSON.stringify(),
+        url: sContextPath + 'DatahubProfile/IndexDatahub/SearchByName',
+        data: JSON.stringify(JSONObject),
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: function (data) {
-            drawChartColumn(data, pdata.dataTitle);
+            drawChartColumn(data);
         },
         error: function (xhr, err) {
             if (xhr.readyState != 0 && xhr.status != 0) {
@@ -31,7 +37,7 @@ function myFunctionColumn() {
 
 }
 
-function drawChartColumn(data, sCondition) {
+function drawChartColumn(data) {
 
     $('#divChartContainer')
             .highcharts(
@@ -40,22 +46,22 @@ function drawChartColumn(data, sCondition) {
                             type: 'column'
                         },
                         title: {
-                            text: data.ChartTitle
+                            text: data.dataTitle
                         },
                         subtitle: {
-                            text: sCondition
+                            text: ''
                         },
                         xAxis: {
                             //categories: [ '0%', '5%', '10%', '15%','20%','25%','30%'],
-                            categories: data.ChartCategories,
+                            categories: data.dataCategories,
                             title: {
-                                text: 'Nationality'
+                                text: 'Destination'
                             }
                         },
                         yAxis: {
                             min: 0,
                             title: {
-                                text: '% Pupils in Each Nationality'
+                                text: 'Percentages'
                             }
                         },
                         tooltip: {
@@ -72,7 +78,7 @@ function drawChartColumn(data, sCondition) {
                                 borderWidth: 0
                             }
                         },
-                        series: data.ChartSeries,
+                        series: [{ name: data.schoolname, data: data.Schdata }, { name: 'All Clients', data: data.Abdcitydata }],
                         credits: {
                             enabled: false
                         }

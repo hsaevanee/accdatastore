@@ -1,4 +1,5 @@
 ﻿var map; // map object
+var mapOverlay; // overlay map object
 
 // initialize all kml layers
 var kml = {
@@ -57,6 +58,11 @@ function InitMap() {
 
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
+    // create dummy overlay
+    mapOverlay = new google.maps.OverlayView();
+    mapOverlay.draw = function () { };
+    mapOverlay.setMap(map);
+
     CreateLayerControl();
 }
 
@@ -71,7 +77,7 @@ function ShowPopupInformation(sInformation) {
 
 
 // call server side method via ajax
-function SearchData(sCondition,sKeyname) {
+function SearchData(sCondition, sKeyname) {
     //var param = JSON.stringify({ 'sCondition': sCondition }); // just an example, need to adjust
     var JSONObject = {
         "keyvalue": sCondition,
@@ -95,28 +101,28 @@ function SearchData(sCondition,sKeyname) {
 }
 
 function myFunctionColumn(pdata, sCondition) {
-        $.ajax({
-            type: 'POST',
-            url: sContextPath + 'SchoolProfile/EthnicBackground/GetChartDataEthnicforMap',
-            data: JSON.stringify(pdata.dataSeries),
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            success: function (data) {
-                drawChartColumn(data, pdata.dataTitle);
-            },
-            error: function (xhr, err) {
-                if (xhr.readyState != 0 && xhr.status != 0) {
-                    alert('readyState: ' + xhr.readyState + '\nstatus: ' + xhr.status);
-                    alert('responseText: ' + xhr.responseText);
-                }
+    $.ajax({
+        type: 'POST',
+        url: sContextPath + 'SchoolProfile/EthnicBackground/GetChartDataEthnicforMap',
+        data: JSON.stringify(pdata.dataSeries),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (data) {
+            drawChartColumn(data, pdata.dataTitle);
+        },
+        error: function (xhr, err) {
+            if (xhr.readyState != 0 && xhr.status != 0) {
+                alert('readyState: ' + xhr.readyState + '\nstatus: ' + xhr.status);
+                alert('responseText: ' + xhr.responseText);
             }
-        });
-    
+        }
+    });
+
 
 }
 
 function drawChartColumn(data, sCondition) {
-   
+
     $('#divChartContainer')
             .highcharts(
                     {
@@ -231,20 +237,25 @@ function ToggleKMLLayer(checked, id) {
 
                 var infoWindows = new google.maps.InfoWindow();
                 layer.addListener('mouseover', function (event) {
-                    if (event.ub != null) { // case of polygon
-                        layer.revertStyle();
-                        layer.overrideStyle(event.feature, { strokeWeight: 5 });
-                        var divContent = document.getElementById('content-windows-mouse-over');
-                        divContent.style.display = "block";
-                        divContent.style.left = (event.ub.clientX + 20) + "px";
-                        divContent.style.top = (event.ub.clientY + 20) + "px";
-                        divContent.textContent = event.feature.getProperty('description');
-                    } else { // case of point
-                        infoWindows.setContent("<div style='width: 150px;'>" + event.feature.getProperty("Name") + "</div>");
-                        infoWindows.setPosition(event.feature.getGeometry().get());
-                        infoWindows.setOptions({ pixelOffset: new google.maps.Size(0, -30) });
-                        infoWindows.open(map);
-                        setTimeout(function () { infoWindows.close(); }, 4000);
+                    var sGeometryType = event.feature.getGeometry().getType();
+                    switch (sGeometryType) {
+                        case "Polygon":
+                            var point = mapOverlay.getProjection().fromLatLngToContainerPixel(event.latLng);
+                            layer.revertStyle();
+                            layer.overrideStyle(event.feature, { strokeWeight: 5 });
+                            var divContent = document.getElementById('content-windows-mouse-over');
+                            divContent.style.display = "block";
+                            divContent.style.left = (point.x + 20) + "px";
+                            divContent.style.top = (point.y + 20) + "px";
+                            divContent.textContent = event.feature.getProperty('description');
+                            break;
+                        case "Point":
+                            infoWindows.setContent("<div style='width: 150px;'>" + event.feature.getProperty("Name") + "</div>");
+                            infoWindows.setPosition(event.feature.getGeometry().get());
+                            infoWindows.setOptions({ pixelOffset: new google.maps.Size(0, -30) });
+                            infoWindows.open(map);
+                            setTimeout(function () { infoWindows.close(); }, 4000);
+                            break;
                     }
                 });
 
@@ -264,9 +275,9 @@ function ToggleKMLLayer(checked, id) {
             if (kml[id].dataType == 0) {
                 SearchData(kmlEvent.featureData.description, "ZoneCode");
             } else if (kml[id].dataType == 1) {
-                SearchData(kmlEvent.feature.G.description, "SchCode");
+                SearchData(kmlEvent.feature.getProperty('SCHOCODE'), "SchCode");
             } else if (kml[id].dataType == 2) {
-                SearchData(kmlEvent.feature.G.description, "ZoneCode");
+                SearchData(kmlEvent.feature.getProperty('ZONECODE'), "ZoneCode");
             }
         });
     } else {

@@ -10,6 +10,8 @@
 
 @*<div id="main">*@
     <h2>National Benchmarking Measure: Leaver Initial Destination</h2>
+
+    <h3>@Html.ActionLink("Interactive Map", "MapData", "BenchmarkMeasure", new { Area = "InsightProfile", sSchoolName = "" }, null)</h3>
     @using (Html.BeginForm("GetIndexLeaverDestination", "BenchmarkMeasure",FormMethod.Post, new { area = "InsightProfile" , model = @Model}))
     {
         <table>

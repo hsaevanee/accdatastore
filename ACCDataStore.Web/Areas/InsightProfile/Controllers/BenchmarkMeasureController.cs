@@ -469,25 +469,26 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
         }
 
         [HttpPost]
-        public JsonResult SearchByName(string keyvalue, string keyname)
+        public JsonResult SearchByName(string keyschcode, string keyschname, string keyname)
         {
             try
             {
                 object oChartData = new object();
 
                 List<Gender> gender = new List<Gender>();
-                gender.Add(new Gender(0)); //Male
+                gender.Add(new Gender(0)); //ALL
 
 
                 if (keyname.Equals("SchCode"))
                 {
-                    string tempname;
-                    //tempname = GetSchNamebySchCode(int.Parse(keyvalue));
+                    List<LeaverdestinationData> listdata = GetLeaverDestinationData(keyschcode, gender);
 
                     oChartData = new
                     {
-                        dataTitle = "",
-                        dataSeries = GetLeaverDestinationData(keyvalue,gender)
+                        dataTitle = keyschname,
+                        dataCategories = listdata.Where(x => x.centrecode.Equals("100")).Select(x => x.academicyear).ToArray(),
+                        Schooldata = listdata.Where(x => x.centrecode.Equals(keyschcode)).Select(x => x.PercentageAll).ToArray(),
+                        Abddata = listdata.Where(x => x.centrecode.Equals("100")).Select(x => x.PercentageAll).ToArray()
                     };
 
                 }
@@ -495,7 +496,7 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
                 {
                     oChartData = new
                     {
-                        dataTitle = keyvalue,
+                        dataTitle = keyschcode,
                         dataSeries = new List<Int16>()
                     };
                 }
