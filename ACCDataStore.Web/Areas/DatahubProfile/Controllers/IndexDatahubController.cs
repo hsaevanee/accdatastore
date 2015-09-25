@@ -1,4 +1,5 @@
 ﻿using ACCDataStore.Entity;
+using ACCDataStore.Entity.DatahubProfile;
 using ACCDataStore.Repository;
 using ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub;
 using Common.Logging;
@@ -195,6 +196,34 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 return ThrowJSONError(ex);
             }
         }
+
+        public ActionResult GetListpupils(string schcode, string dataname)
+        {
+            var listdata = this.rpGeneric.FindAll<ACCDataStore.Entity.DatahubProfile.DatahubDataObj>();
+
+            if (schcode != null)
+            {
+                listdata = (from a in listdata where a.SEED_Code != null && a.SEED_Code.Equals(schcode) select a).ToList();
+            }
+
+            var vmListpupilsViewModel = new ListpupilsViewModel();
+            vmListpupilsViewModel.Listpupils = listdata;
+
+
+            return View("Listpupils", vmListpupilsViewModel);
+        }
+
+
+        public ActionResult Getpupilsdetails(string pupil)
+        {
+
+            DatahubDataObj item = new DatahubDataObj();
+
+
+
+            return View("PersonalDetails", item);
+        }
+
 
     }
 }

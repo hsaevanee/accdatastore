@@ -53,7 +53,7 @@
                         <td>All Clients</td>
                         <td align="center">@Model.SchoolData.allpupils</td>
                         <td align="center">@Model.AberdeencityData.allpupils</td>
-                        <td align="center"><button id="1" onclick='FunctiongetDetail(this.id, "ListNumeracydata")'><label>Details</label></button></td>
+                        <td align="center"><a href='@Url.Action("GetListpupils", "IndexDatahub", new { schcode = @Model.selectedschoolcode, dataname = "All Clients" })'><button>Button Text</button></a></td>
                     </tr>
                     <tr>
                         <td>Males</td>                     

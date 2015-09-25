@@ -1,4 +1,4 @@
-﻿@model ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub.DatahubViewModel
+﻿@model ACCDataStore.Entity.DatahubProfile.DatahubDataObj
 @section Header {
     <link rel="stylesheet" href="~/Content/accdatastore/areas/nationality/views/nationality/nationality.css" type="text/css" />
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.css" type="text/css" />
@@ -12,7 +12,7 @@
 }
 <div id="main">
 
-    <h2>PersonalDetails</h2>
+    <h2>Personal Details</h2>
     <table border="0">
         <tr>
             <td align="center">
@@ -46,11 +46,6 @@
                     </tbody>
                 </table>
             </td>
-        </tr>
-    </table>
-
-    <table border="0">
-        <tr>
             <td align="center">
                 <table border="4">
                     <thead>
@@ -82,6 +77,223 @@
                     </tbody>
                 </table>
             </td>
-        </tr>
+    </tr>
+    </table>
+
+    <br />
+
+    <table border="4">
+        <thead>
+            <tr>
+                <th colspan="2">Current Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td width="200">Current Status:</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td width="200">Source:</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td width="200">Status Start Date:</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td width="200">Last Engagement With SDS:</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td width="200">Last Positive Status:</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td width="200">Weeks Since Last Positive Status:</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br />
+
+    <table border="4">
+        <thead>
+            <tr>
+                <th colspan="4">School Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td width="200">SEED:</td>
+                <td></td>
+                <td width="200">School MIS Reference:</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td width="200">School:</td>
+                <td></td>
+                <td width="200">Stage:</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td width="200">Start Date:</td>
+                <td></td>
+                <td width="200">Anticipated Leave Date:</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td width="200">Statutory Leave Date:</td>
+                <td></td>
+                <td width="200">Actual Leave Date:</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td width="200">Prefered Occupation:</td>
+                <td colspan="3"></td>
+            </tr>
+            <tr>
+                <td width="200">Source:</td>
+                <td colspan="3"></td>
+            </tr>
+            <tr>
+                <td width="200">Prefered Route:</td>
+                <td colspan="3"></td>
+            </tr>
+            <tr>
+                <td width="200">Source:</td>
+                <td colspan="3"></td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+    <table border="4">
+        <thead>
+            <tr>
+                <th colspan="4">Employment Details</th>
+            </tr>
+        </thead>
+        <tbody>
+             <tr>
+                <td width="200">Employer Name:</td>
+                <td colspan="3"></td>
+            </tr>
+            <tr>
+                <td width="200">Job Title:</td>
+                <td colspan="3"></td>
+            </tr>
+            <tr>
+                <td width="200">End Date:</td>
+                <td colspan="3"></td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+    <table border="4">
+        <thead>
+            <tr>
+                <th colspan="2">Cources Details </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td width="200">Organisation:</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td width="200">Course Title:</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td width="200">Course Level:</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+    <table border="4">
+        <thead>
+            <tr>
+                <th colspan="2">Benefit Details </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td width="200">Benefit Types:</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td width="200">Benefit Source:</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br />
+    <table border="4">
+        <thead>
+            <tr>
+                <th colspan="2">Additional Needs</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td width="200">Looked After Status:</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td width="200">Look After Source:</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td width="200">Young Carer:</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td width="200">Young Carer Source:</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td width="200">CSP:</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td width="200">CSP Source:</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td width="200">Child's Plan:</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td width="200">Childs Plan Source:</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td width="200">ASN:</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td width="200">ASN Source:</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td width="200">IEP:</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td width="200">IEP Source:</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td width="200">Transition Plan:</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td width="200">Transition Plan Source:</td>
+                <td></td>
+            </tr>
+        </tbody>
     </table>
 </div>
