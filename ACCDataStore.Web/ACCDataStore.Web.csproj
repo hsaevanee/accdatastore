@@ -345,6 +345,7 @@
     <Content Include="Areas\DatahubProfile\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\_ViewStart.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\MapIndex.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\PersonalDetails.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\What-is-data-observatory.cshtml" />

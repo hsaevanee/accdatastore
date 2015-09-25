@@ -1,0 +1,87 @@
+﻿@model ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub.DatahubViewModel
+@section Header {
+    <link rel="stylesheet" href="~/Content/accdatastore/areas/nationality/views/nationality/nationality.css" type="text/css" />
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.css" type="text/css" />
+    <script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/IndexdatahubProfile.js"></script>
+    <script type="text/javascript" src="http://code.highcharts.com/modules/exporting.js"></script>
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+}
+
+@{
+    ViewBag.Title = "PersonalDetails";
+}
+<div id="main">
+
+    <h2>PersonalDetails</h2>
+    <table border="0">
+        <tr>
+            <td align="center">
+                <table border="4">
+                    <thead>
+                        <tr>
+                            <th colspan="2">Personal Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td width="200">SDS Ref:</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td width="200">SCN:</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td width="200">D.O.B:</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td width="200">Age:</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td width="200">Gender:</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <table border="0">
+        <tr>
+            <td align="center">
+                <table border="4">
+                    <thead>
+                        <tr>
+                            <th colspan="2">Contact Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td width="200">CCS Address:</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td width="200">Postcode:</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td width="200">LA Address:</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td width="200">Postcode:</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td width="200">Tel:</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>

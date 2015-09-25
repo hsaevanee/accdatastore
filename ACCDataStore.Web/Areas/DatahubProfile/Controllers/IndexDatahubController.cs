@@ -175,6 +175,26 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult GetDatadetails(string schcode, string dataname)
+        {
+            try
+            {
+                var listdata = this.rpGeneric.FindAll<ACCDataStore.Entity.DatahubProfile.DatahubDataObj>();
+
+                if (schcode != null)
+                {
+                    listdata = (from a in listdata where a.SEED_Code != null && a.SEED_Code.Equals(schcode) select a).ToList();
+                }
+
+                return Json(listdata, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                return ThrowJSONError(ex);
+            }
+        }
 
     }
 }

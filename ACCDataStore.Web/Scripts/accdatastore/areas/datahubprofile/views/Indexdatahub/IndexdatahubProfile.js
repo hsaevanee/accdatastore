@@ -16,6 +16,35 @@ $(document).ready(function () {
 
 });
 
+
+function FunctiongetDetail(buttonID, dataname) {
+    var schcode = $('#selectedschoolcode :selected').val();
+
+    var JSONObject = {
+        "schcode": schcode,
+        "dataname": dataname,
+
+    }
+
+        $.ajax({
+            type: 'POST',
+            url: sContextPath + 'DatahubProfile/IndexDatahub/GetDatadetails',
+            data: JSON.stringify(JSONObject),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (data) {
+                alert("getdatadetails"+data.length);
+            },
+            error: function (xhr, err) {
+                if (xhr.readyState != 0 && xhr.status != 0) {
+                    alert('readyState: ' + xhr.readyState + '\nstatus: ' + xhr.status);
+                    alert('responseText: ' + xhr.responseText);
+                }
+            }
+        });
+    
+}
+
 function myFunctionColumn(JSONObject) {
     $.ajax({
         type: 'POST',

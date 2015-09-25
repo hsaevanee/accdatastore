@@ -41,47 +41,55 @@
             {
                 <table>
                     <tr>
-                        <th colspan="3">Opportunities for All Clients </th>
+                        <th colspan="4">Opportunities for All Clients </th>
                     </tr>
                     <tr>
                         <th></th>
                         <th>Percentage(%) for @Model.selectedschool.name</th>
                         <th>Percentage(%) for All Clients</th>
+                        <th>Details</th>
                     </tr>
                     <tr>
                         <td>All Clients</td>
                         <td align="center">@Model.SchoolData.allpupils</td>
                         <td align="center">@Model.AberdeencityData.allpupils</td>
+                        <td align="center"><button id="1" onclick='FunctiongetDetail(this.id, "ListNumeracydata")'><label>Details</label></button></td>
                     </tr>
                     <tr>
                         <td>Males</td>                     
                         <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.allMalepupils))</td>
                         <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.allMalepupils))</td>
+                        <td align="center"><button id="2" onclick='FunctiongetDetail(this.id, "ListNumeracydata")'><label>Details</label></button></td>
                      </tr>
                     <tr>
                         <td>Females</td>
                         <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.allFemalepupils))</td>
                         <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.allFemalepupils))</td>
-                    </tr>
+                        <td align="center"><button id="3" onclick='FunctiongetDetail(this.id, "ListNumeracydata")'><label>Details</label></button></td>
+                     </tr>
                     <tr>
                         <td>Pupils 16</td>
                         <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.all16pupils))</td>
                         <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.all16pupils))</td>
-                    </tr>
+                        <td align="center"><button id="4" onclick='FunctiongetDetail(this.id, "ListNumeracydata")'><label>Details</label></button></td>
+                     </tr>
                     <tr>
                         <td>Pupils 17</td>
                         <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.all17pupils))</td>
                         <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.all17pupils))</td>
+                        <td align="center"><button id="5" onclick='FunctiongetDetail(this.id, "ListNumeracydata")'><label>Details</label></button></td>
                     </tr>
                     <tr>
                         <td>Pupils 18</td>
                         <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.all18pupils))</td>
                         <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.all18pupils))</td>
+                        <td align="center"><button id="6" onclick='FunctiongetDetail(this.id, "ListNumeracydata")'><label>Details</label></button></td>
                     </tr>
                     <tr>
                         <td>Pupils 19</td>
                         <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.all19pupils))</td>
                         <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.all19pupils))</td>
+                        <td align="center"><button id="7" onclick='FunctiongetDetail(this.id, "ListNumeracydata")'><label>Details</label></button></td>
                     </tr>
                 </table>
 
@@ -384,7 +392,7 @@
                         </tr>
                         <tr>
                             <th></th>
-                            <th>Puils</th>
+                            <th>Pupils</th>
                             <th>Percentage (%)</th>
                         </tr>
                         <tr>
