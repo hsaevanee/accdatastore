@@ -154,6 +154,10 @@
     <Content Include="Config\GeneralSettings.xml" />
     <Content Include="Content\accdatastore\areas\nationality\views\nationality\nationality.css" />
     <Content Include="Content\accdatastore\views\global.css" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
@@ -192,9 +196,6 @@
     <Content Include="Content\accdatastore\views\index\index.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="app.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -229,6 +230,8 @@
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\StudentStage\MapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\StudentStage\StudentStage.js" />
     <Content Include="Scripts\accdatastore\views\global.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\highcharts.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\jquery-2.1.1.min.map" />
@@ -248,7 +251,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\DatahubProfile\Controllers\IndexDatahubController.cs" />
     <Compile Include="Areas\DatahubProfile\DatahubProfileAreaRegistration.cs" />
-    <Compile Include="Areas\DatahubProfile\ViewModels\Datahub\ListpupilsViewModel.cs" />
+    <Compile Include="Areas\DatahubProfile\ViewModels\Datahub\PupilObject.cs" />
     <Compile Include="Areas\DatahubProfile\ViewModels\Datahub\DatahubViewModel.cs" />
     <Compile Include="Areas\DatahubProfile\ViewModels\Datahub\DatahubData.cs" />
     <Compile Include="Areas\InsightProfile\Controllers\BenchmarkMeasureController.cs" />
@@ -347,7 +350,14 @@
     <Content Include="Areas\DatahubProfile\Views\_ViewStart.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\MapIndex.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\PersonalDetails.cshtml" />
-    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Listpupils.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Pupilslist.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Index - Copy.cshtml" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\What-is-data-observatory.cshtml" />

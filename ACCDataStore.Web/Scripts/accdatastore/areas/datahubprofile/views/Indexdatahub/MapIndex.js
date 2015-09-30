@@ -19,12 +19,18 @@ var kml = {
         url: 'https://dl.dropboxusercontent.com/u/55734762/InsightSchoollocations.json' + "?rand=" + (new Date()).valueOf(),
         dataType : 1
     },
-    //b: {
-    //    name: "Aberdeen DataZone Districts",
-    //    type: 2,
-    //    url: 'https://dl.dropboxusercontent.com/u/870146/KML/V2/Datazone_with_Desc.json' + "?rand=" + (new Date()).valueOf(),
-    //    dataType: 2
-    //},
+    b: {
+        name: "Aberdeen DataZone Districts",
+        type: 2,
+        url: 'https://dl.dropboxusercontent.com/u/870146/KML/V2/Datazone_with_Desc.json' + "?rand=" + (new Date()).valueOf(),
+        dataType: 2
+    },
+    c: {
+        name: "Aberdeen DataZone Heatmap",
+        type: 2,
+        url: 'https://dl.dropboxusercontent.com/u/870146/KML/V2/Datazone_with_Desc.json' + "?rand=" + (new Date()).valueOf(),
+        dataType: 3
+    },
 };
 
 // on document ready
@@ -112,6 +118,113 @@ function SearchData(sCondition,sKeyname) {
         }
     });
 }
+
+function GetHeatmapData(sCondition, sKeyname) {
+    var data = [
+         {
+             "code": "DE.SH",
+             "value": 72
+         },
+         {
+             "code": "DE.BE",
+             "value": 710
+         },
+         {
+             "code": "DE.MV",
+             "value": 963
+         },
+         {
+             "code": "DE.HB",
+             "value": 541
+         },
+         {
+             "code": "DE.HH",
+             "value": 622
+         },
+         {
+             "code": "DE.RP",
+             "value": 866
+         },
+         {
+             "code": "DE.SL",
+             "value": 398
+         },
+         {
+             "code": "DE.BY",
+             "value": 785
+         },
+         {
+             "code": "DE.SN",
+             "value": 223
+         },
+         {
+             "code": "DE.ST",
+             "value": 605
+         },
+         {
+             "code": "DE.",
+             "value": 361
+         },
+         {
+             "code": "DE.NW",
+             "value": 237
+         },
+         {
+             "code": "DE.BW",
+             "value": 157
+         },
+         {
+             "code": "DE.HE",
+             "value": 134
+         },
+         {
+             "code": "DE.NI",
+             "value": 136
+         },
+         {
+             "code": "DE.TH",
+             "value": 704
+         }
+    ];
+
+    $.getJSON('http://www.highcharts.com/samples/data/jsonp.php?filename=germany.geo.json&callback=?', function (geojson) {
+
+        // Initiate the chart
+        $('#container').highcharts('Map', {
+
+            title: {
+                text: 'GeoJSON in Highmaps ujj'
+            },
+
+            mapNavigation: {
+                enabled: true,
+                buttonOptions: {
+                    verticalAlign: 'bottom'
+                }
+            },
+
+            colorAxis: {
+            },
+
+            series: [{
+                data: data,
+                mapData: geojson,
+                joinBy: ['code_hasc', 'code'],
+                name: 'Random data',
+                states: {
+                    hover: {
+                        color: '#BADA55'
+                    }
+                },
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.properties.postal}'
+                }
+            }]
+        });
+    });
+}
+
 
 function myFunctionColumn(pdata) {
         $.ajax({
@@ -292,6 +405,8 @@ function ToggleKMLLayer(checked, id) {
                 SearchData(kmlEvent.feature.getProperty('SCHOCODE'), "SchCode");
             } else if (kml[id].dataType == 2) {
                 SearchData(kmlEvent.feature.getProperty('ZONECODE'), "ZoneCode");
+            } else if (kml[id].dataType == 3) {
+                GetHeatmapData(kmlEvent.feature.getProperty('ZONECODE'), "ZoneCode");
             }
         });
 

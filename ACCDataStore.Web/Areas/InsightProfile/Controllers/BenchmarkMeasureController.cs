@@ -383,11 +383,6 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
         {
             // simulate datatable
             var ListLeaverDestinationData = Session["ListLeaverDestinationData"] as List<LeaverdestinationData>;
-            // var listEthnicData2 = Session["SessionListEthnicData2"] as List<EthnicObj>;
-            //string sSchoolName = Session["sSchoolName"] as string;
-            //string sSchoolName2 = Session["sSchoolName2"] as string;
-
-            //var transformObject = new Object();
 
             DataTable dtResult = new DataTable();
 

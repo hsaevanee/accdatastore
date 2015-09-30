@@ -37,7 +37,7 @@ namespace ACCDataStore.Entity.Mapping.MySQL
             Map(x => x.highest_num_scqf_level_to_date);
             Map(x => x.annual_total_tariff_points);
             Map(x => x.cumulative_total_tariff_points);
-            References(x => x.Schools, "centre");
+            //References(x => x.Schools, "centre");
         }
     }
 }

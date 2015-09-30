@@ -468,7 +468,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                     dtResult.Columns.Add("Male in All  Primary school ", typeof(double));
                     dtResult.Columns.Add("Total in " + sSchoolName, typeof(double));
                     dtResult.Columns.Add("Total in All Primary school", typeof(double));
-                   // dtResult = listEthnicData.AsDataTable();
+                    //dtResult = listEthnicData.AsDataTable();
                     var transformObject = new
                     {
                         Col1 = listEthnicData.Select(x => x.EthinicCode),

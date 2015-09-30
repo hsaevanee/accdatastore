@@ -1,4 +1,5 @@
 ﻿using ACCDataStore.Entity;
+using ACCDataStore.Entity.DatahubProfile;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub
         public string selectedschoolcode { get; set; }
         public DatahubData AberdeencityData { get; set; }
         public DatahubData SchoolData { get; set; }
+        public IList<DatahubDataObj> Listpupils { get; set; }
+        public string levercategory { get; set; }
     }
 }

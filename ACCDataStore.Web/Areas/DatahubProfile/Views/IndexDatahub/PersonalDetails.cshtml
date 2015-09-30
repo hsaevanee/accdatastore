@@ -1,4 +1,6 @@
-﻿@model ACCDataStore.Entity.DatahubProfile.DatahubDataObj
+﻿@*@model ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub.PupilObject*@
+@model ACCDataStore.Entity.DatahubProfile.DatahubDataObj
+
 @section Header {
     <link rel="stylesheet" href="~/Content/accdatastore/areas/nationality/views/nationality/nationality.css" type="text/css" />
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.css" type="text/css" />
@@ -11,8 +13,12 @@
     ViewBag.Title = "PersonalDetails";
 }
 <div id="main">
+    
+    <h2>Personal Details: @{var name = Model.Forename + " " + Model.Surname;} @name</h2>
 
-    <h2>Personal Details</h2>
+    <a href='@Url.Action("ExportExcel", "IndexDatahub", new {  dataname = "All Clients" })'><button>Export to PDF</button></a>
+    <br />
+    <br />
     <table border="0">
         <tr>
             <td align="center">
@@ -25,23 +31,23 @@
                     <tbody>
                         <tr>
                             <td width="200">SDS Ref:</td>
-                            <td></td>
+                            <td>@Model.SDS_Client_Ref</td>
                         </tr>
                         <tr>
                             <td width="200">SCN:</td>
-                            <td></td>
+                            <td>@Model.Scottish_Candidate_Number</td>
                         </tr>
                         <tr>
                             <td width="200">D.O.B:</td>
-                            <td></td>
+                            <td>@Model.Date_of_Birth</td>
                         </tr>
                         <tr>
                             <td width="200">Age:</td>
-                            <td></td>
+                            <td>@Model.Age</td>
                         </tr>
                         <tr>
                             <td width="200">Gender:</td>
-                            <td></td>
+                            <td>@Model.Gender</td>
                         </tr>
                     </tbody>
                 </table>
@@ -56,23 +62,23 @@
                     <tbody>
                         <tr>
                             <td width="200">CCS Address:</td>
-                            <td></td>
+                            <td>@Model.CSS_Address</td>
                         </tr>
                         <tr>
                             <td width="200">Postcode:</td>
-                            <td></td>
+                            <td>@Model.CSS_Postcode</td>
                         </tr>
                         <tr>
                             <td width="200">LA Address:</td>
-                            <td></td>
+                            <td>@Model.LA_Address</td>
                         </tr>
                         <tr>
                             <td width="200">Postcode:</td>
-                            <td></td>
+                            <td>@Model.LA_Postcode</td>
                         </tr>
                         <tr>
                             <td width="200">Tel:</td>
-                            <td></td>
+                            <td>@Model.Telephone_Number</td>
                         </tr>
                     </tbody>
                 </table>
@@ -91,27 +97,27 @@
         <tbody>
             <tr>
                 <td width="200">Current Status:</td>
-                <td></td>
+                <td>@Model.Current_Status</td>
             </tr>
             <tr>
                 <td width="200">Source:</td>
-                <td></td>
+                <td>@Model.Status_Source</td>
             </tr>
             <tr>
                 <td width="200">Status Start Date:</td>
-                <td></td>
+                <td>@Model.Status_Start_Date</td>
             </tr>
             <tr>
                 <td width="200">Last Engagement With SDS:</td>
-                <td></td>
+                <td>@Model.Last_Engagement_with_SDS</td>
             </tr>
             <tr>
                 <td width="200">Last Positive Status:</td>
-                <td></td>
+                <td>@Model.Last_Positive_Status</td>
             </tr>
             <tr>
                 <td width="200">Weeks Since Last Positive Status:</td>
-                <td></td>
+                <td>@Model.Weeks_since_last_Pos_Status</td>
             </tr>
         </tbody>
     </table>
@@ -127,43 +133,43 @@
         <tbody>
             <tr>
                 <td width="200">SEED:</td>
-                <td></td>
+                <td>@Model.SEED_Code</td>
                 <td width="200">School MIS Reference:</td>
-                <td></td>
+                <td>@Model.School_MIS_Reference</td>
             </tr>
             <tr>
                 <td width="200">School:</td>
-                <td></td>
+                <td>@Model.School_Name</td>
                 <td width="200">Stage:</td>
-                <td></td>
+                <td>@Model.School_Year_Group</td>
             </tr>
             <tr>
                 <td width="200">Start Date:</td>
-                <td></td>
+                <td>@Model.Start_Date</td>
                 <td width="200">Anticipated Leave Date:</td>
-                <td></td>
+                <td>@Model.Anticipated_School_Leaving_Date</td>
             </tr>
             <tr>
                 <td width="200">Statutory Leave Date:</td>
-                <td></td>
+                <td>@Model.Statutory_Leave_Date</td>
                 <td width="200">Actual Leave Date:</td>
-                <td></td>
+                <td>@Model.Actual_Date_Left_School</td>
             </tr>
             <tr>
                 <td width="200">Prefered Occupation:</td>
-                <td colspan="3"></td>
+                <td colspan="3">@Model.Preferred_Occupation</td>
             </tr>
             <tr>
                 <td width="200">Source:</td>
-                <td colspan="3"></td>
+                <td colspan="3">@Model.Preferred_Occupation_Source</td>
             </tr>
             <tr>
                 <td width="200">Prefered Route:</td>
-                <td colspan="3"></td>
+                <td colspan="3">@Model.Preferred_Route</td>
             </tr>
             <tr>
                 <td width="200">Source:</td>
-                <td colspan="3"></td>
+                <td colspan="3">@Model.Preferred_Route_Source</td>
             </tr>
         </tbody>
     </table>
@@ -177,15 +183,15 @@
         <tbody>
              <tr>
                 <td width="200">Employer Name:</td>
-                <td colspan="3"></td>
+                <td colspan="3">@Model.Employer_Name</td>
             </tr>
             <tr>
                 <td width="200">Job Title:</td>
-                <td colspan="3"></td>
+                <td colspan="3">@Model.Job_Title</td>
             </tr>
             <tr>
                 <td width="200">End Date:</td>
-                <td colspan="3"></td>
+                <td colspan="3">@Model.End_Date</td>
             </tr>
         </tbody>
     </table>
@@ -199,15 +205,15 @@
         <tbody>
             <tr>
                 <td width="200">Organisation:</td>
-                <td></td>
+                <td>@Model.Organisation_Name</td>
             </tr>
             <tr>
                 <td width="200">Course Title:</td>
-                <td></td>
+                <td>.@Model.Course_Title</td>
             </tr>
             <tr>
                 <td width="200">Course Level:</td>
-                <td></td>
+                <td>@Model.Course_Level</td>
             </tr>
         </tbody>
     </table>
@@ -221,11 +227,11 @@
         <tbody>
             <tr>
                 <td width="200">Benefit Types:</td>
-                <td></td>
+                <td>@Model.Benefit_Types</td>
             </tr>
             <tr>
                 <td width="200">Benefit Source:</td>
-                <td></td>
+                <td>@Model.Benefit_Source</td>
             </tr>
         </tbody>
     </table>
@@ -240,59 +246,59 @@
         <tbody>
             <tr>
                 <td width="200">Looked After Status:</td>
-                <td></td>
+                <td>@Model.Looked_After_Status</td>
             </tr>
             <tr>
                 <td width="200">Look After Source:</td>
-                <td></td>
+                <td>@Model.Looked_After_Source</td>
             </tr>
             <tr>
                 <td width="200">Young Carer:</td>
-                <td></td>
+                <td>@Model.Young_Carer</td>
             </tr>
             <tr>
                 <td width="200">Young Carer Source:</td>
-                <td></td>
+                <td>@Model.Young_Carer_Source</td>
             </tr>
             <tr>
                 <td width="200">CSP:</td>
-                <td></td>
+                <td>@Model.CSP</td>
             </tr>
             <tr>
                 <td width="200">CSP Source:</td>
-                <td></td>
+                <td>@Model.CSP_Source</td>
             </tr>
             <tr>
                 <td width="200">Child's Plan:</td>
-                <td></td>
+                <td>@Model.Childs_Plan</td>
             </tr>
             <tr>
                 <td width="200">Childs Plan Source:</td>
-                <td></td>
+                <td>@Model.Childs_Plan_Source</td>
             </tr>
             <tr>
                 <td width="200">ASN:</td>
-                <td></td>
+                <td>@Model.ASN</td>
             </tr>
             <tr>
                 <td width="200">ASN Source:</td>
-                <td></td>
+                <td>@Model.ASN_Source</td>
             </tr>
             <tr>
                 <td width="200">IEP:</td>
-                <td></td>
+                <td>@Model.IEP</td>
             </tr>
             <tr>
                 <td width="200">IEP Source:</td>
-                <td></td>
+                <td>@Model.IEP_Source</td>
             </tr>
             <tr>
                 <td width="200">Transition Plan:</td>
-                <td></td>
+                <td>@Model.Transition_Plan</td>
             </tr>
             <tr>
                 <td width="200">Transition Plan Source:</td>
-                <td></td>
+                <td>@Model.Transition_Plan_Source</td>
             </tr>
         </tbody>
     </table>
