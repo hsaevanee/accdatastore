@@ -17,5 +17,9 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub
         public DatahubData SchoolData { get; set; }
         public IList<DatahubDataObj> Listpupils { get; set; }
         public string levercategory { get; set; }
+        // dataview for Heatmap
+        public string selecteddataset { get; set; }
+        public IList<string> ListDatasets { get; set; }
+
     }
 }

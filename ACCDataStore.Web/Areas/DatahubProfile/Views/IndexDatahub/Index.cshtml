@@ -12,6 +12,7 @@
 <div id="main">
     <h2>Datahub Summary Statistics</h2>
     <h3>@Html.ActionLink("Interactive Map", "MapData", "IndexDatahub", new { Area = "DatahubProfile", sSchoolName = "" }, null)</h3>
+    <h3>@Html.ActionLink("Interactive HeatMap", "HeatMapData", "IndexDatahub", new { Area = "DatahubProfile", sSchoolName = "" }, null)</h3>
 
     @using (Html.BeginForm("index", "IndexDatahub", new { area = "DatahubProfile" }))
     {

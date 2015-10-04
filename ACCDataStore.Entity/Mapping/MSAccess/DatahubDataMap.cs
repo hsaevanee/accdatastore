@@ -71,7 +71,6 @@ namespace ACCDataStore.Entity.Mapping.MSAccess
             Map(x => x.Transition_Plan_Source);
             Map(x => x.Childs_Plan);
             Map(x => x.Childs_Plan_Source);
-
         }
     }
 }

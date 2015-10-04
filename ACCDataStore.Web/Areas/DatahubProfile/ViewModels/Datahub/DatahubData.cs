@@ -7,6 +7,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub
 {
     public class DatahubData  
     {
+        public string datacode { get; set; } // store school code / datazone code
         public int allpupils { get; set; }
         public int allFemalepupils { get; set; }
         public int allMalepupils { get; set; }

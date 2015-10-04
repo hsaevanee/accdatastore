@@ -82,51 +82,14 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
         protected DatahubData GetDatahubdatabySchoolcode(IGenericRepository rpGeneric,string seedcode)
         {
             var datahubdata = new DatahubData();
-            var listdata = this.rpGeneric.FindAll<ACCDataStore.Entity.DatahubProfile.DatahubDataObj>();
+            
+            List<DatahubDataObj> listdata = this.rpGeneric.FindAll<ACCDataStore.Entity.DatahubProfile.DatahubDataObj>().ToList() ;
 
             if (seedcode != null)
             {
                 listdata = (from a in listdata where a.SEED_Code != null && a.SEED_Code.Equals(seedcode) select a).ToList();
             }
-            //var number = listResultMSAccess.Where(x => x.SDS_Client_Ref.Equals("")).Count();
-            //Opportunities for all
-            datahubdata.allpupils = listdata.Count(x => !x.SDS_Client_Ref.Equals(""));
-            datahubdata.allFemalepupils = listdata.Count(x => x.Gender.ToLower().Equals("female"));
-            datahubdata.allMalepupils = listdata.Count(x => x.Gender.ToLower().Equals("male"));
-            datahubdata.all16pupils = listdata.Count(x => x.Age == 16);
-            datahubdata.all17pupils = listdata.Count(x => x.Age == 17);
-            datahubdata.all18pupils = listdata.Count(x => x.Age == 18);
-            datahubdata.all19pupils = listdata.Count(x => x.Age == 19);
-
-            // Current positive
-            datahubdata.schoolpupils = listdata.Count(x => x.Current_Status.ToLower().Equals("school pupil"));
-            datahubdata.schoolpupilsintransition = listdata.Count(x => x.Current_Status.ToLower().Equals("school pupil - in transition"));
-            datahubdata.schoolpupilsmovedoutinscotland = listdata.Count(x => x.Current_Status.ToLower().Equals("moved outwith scotland"));
-            datahubdata.pupilsinAtivityAgreement = listdata.Count(x => x.Current_Status.ToLower().Equals("activity agreement"));
-            datahubdata.pupilsinEmployFundSt2 = listdata.Count(x => x.Current_Status.ToLower().Equals("employability fund stage 2"));
-            datahubdata.pupilsinEmployFundSt3 = listdata.Count(x => x.Current_Status.ToLower().Equals("employability fund stage 3"));
-            datahubdata.pupilsinEmployFundSt4 = listdata.Count(x => x.Current_Status.ToLower().Equals("employability fund stage 4"));
-            datahubdata.pupilsinFullTimeEmployed = listdata.Count(x => x.Current_Status.ToLower().Equals("full-time employment"));
-            datahubdata.pupilsinFurtherEdu = listdata.Count(x => x.Current_Status.ToLower().Equals("further education"));
-            datahubdata.pupilsinHigherEdu = listdata.Count(x => x.Current_Status.ToLower().Equals("higher education"));
-            datahubdata.pupilsinModernApprenship = listdata.Count(x => x.Current_Status.ToLower().Equals("modern apprenticeship"));
-            datahubdata.pupilsinPartTimeEmployed = listdata.Count(x => x.Current_Status.ToLower().Equals("part-time employment"));
-            datahubdata.pupilsinPersonalSkillDevelopment = listdata.Count(x => x.Current_Status.ToLower().Equals("personal/ skills development"));
-            datahubdata.pupilsinSelfEmployed = listdata.Count(x => x.Current_Status.ToLower().Equals("self-employed"));
-            datahubdata.pupilsinTraining = listdata.Count(x => x.Current_Status.ToLower().Equals("training (non ntp)"));
-            datahubdata.pupilsinVolunteerWork = listdata.Count(x => x.Current_Status.ToLower().Equals("voluntary work"));
-
-            // Non positive 
-            //datahubdata.AvgWeekssinceLastPositiveDestination = listdata.Where(x => x.Weeks_since_last_Pos_Status != null).DefaultIfEmpty().Average(x => Convert.ToInt16(x.Weeks_since_last_Pos_Status??"0"));
-            var temp = listdata.Where(x => x.Weeks_since_last_Pos_Status != null).DefaultIfEmpty().ToList();
-
-            datahubdata.AvgWeekssinceLastPositiveDestination = temp.First() == null ? 0.0 : temp.Average(x => Convert.ToInt16(x.Weeks_since_last_Pos_Status ?? "0"));
-
-            datahubdata.pupilsinCustody = listdata.Count(x => x.Current_Status.ToLower().Equals("custody"));
-            datahubdata.pupilsinEconomically = listdata.Count(x => x.Current_Status.ToLower().Equals("economically inactive"));
-            datahubdata.pupilsinUnavailableillHealth = listdata.Count(x => x.Current_Status.ToLower().Equals("unavailable - ill health"));
-            datahubdata.pupilsinUnemployed = listdata.Count(x => x.Current_Status.ToLower().Equals("unemployed"));
-            datahubdata.pupilsinUnknown = listdata.Count(x => x.Current_Status.ToLower().Equals("unknown"));
+            datahubdata = CreatDatahubdata(listdata,seedcode);
             return datahubdata;
         }
 
@@ -141,8 +104,15 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             {
                 listdata = (from a in listpupilsdata join b in listneighbourhooddata on a.CSS_Postcode equals b.CSS_Postcode where b.DataZone.Contains(zonecode) select a).ToList();
             }
-            //var number = listResultMSAccess.Where(x => x.SDS_Client_Ref.Equals("")).Count();
-            //Opportunities for all
+
+            datahubdata = CreatDatahubdata(listdata,zonecode);
+            return datahubdata;
+        }
+
+        protected DatahubData CreatDatahubdata(List<DatahubDataObj> listdata,string datahubcode)
+        {
+            var datahubdata = new DatahubData();
+            datahubdata.datacode = datahubcode;
             datahubdata.allpupils = listdata.Count(x => !x.SDS_Client_Ref.Equals(""));
             datahubdata.allFemalepupils = listdata.Count(x => x.Gender.ToLower().Equals("female"));
             datahubdata.allMalepupils = listdata.Count(x => x.Gender.ToLower().Equals("male"));
@@ -180,7 +150,79 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             datahubdata.pupilsinUnavailableillHealth = listdata.Count(x => x.Current_Status.ToLower().Equals("unavailable - ill health"));
             datahubdata.pupilsinUnemployed = listdata.Count(x => x.Current_Status.ToLower().Equals("unemployed"));
             datahubdata.pupilsinUnknown = listdata.Count(x => x.Current_Status.ToLower().Equals("unknown"));
+
             return datahubdata;
+        }
+
+        [HttpPost]
+        public JsonResult GetdataforHeatmap(string datasetname)
+        {
+            try
+            {
+  
+                object data = new object();
+
+                var Listdatahubdata = Session["Listdatahubdataforheatmap"] as List<DatahubData>;
+
+                Listdatahubdata = Listdatahubdata.OrderBy(x => x.datacode).ToList();
+
+                List<double> tempdata = new List<double>();
+
+                if(datasetname.Equals("Participating")){
+
+                    tempdata = Listdatahubdata.Select(x=>x.Participating()).ToList();
+                }
+                else if (datasetname.Equals("Not-Participating"))
+                {
+                    tempdata = Listdatahubdata.Select(x=>x.NotParticipating()).ToList();
+                }
+                else { 
+                
+                    tempdata = Listdatahubdata.Select(x=>x.Percentage(x.pupilsinUnknown)).ToList();
+                }
+
+                data = new
+                {
+                    datacode = Listdatahubdata.Select(x=>x.datacode).ToList(),
+                    data = tempdata,
+                    minimum = tempdata.Min(),
+                    maximum = tempdata.Max(),
+                };
+
+                return Json(data, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                return ThrowJSONError(ex);
+            }
+        }
+
+        protected IList<DatahubData> GetDatahubdataAllZonecode(IGenericRepository rpGeneric)
+        {
+            List<DatahubData> listdatahubdata = new List<DatahubData>();
+            
+            var datahubdata = new DatahubData();
+
+            var listzonecode = rpGeneric.FindSingleColumnByNativeSQL("Select distinct Datazone from Neighbourhood_Postcodes1 t1 INNER JOIN Datahubdata t2 on  t1.CSS_Postcode = t2.CSS_Postcode ");
+
+            var listpupilsdata = this.rpGeneric.FindAll<ACCDataStore.Entity.DatahubProfile.DatahubDataObj>();
+            var listneighbourhooddata = this.rpGeneric.FindAll<ACCDataStore.Entity.DatahubProfile.NeighbourhoodObj>();
+            var listdata = new List<DatahubDataObj>();
+
+            if (listzonecode != null)
+            {
+                foreach (var item in listzonecode)
+                {
+                    if (item != null)
+                    {
+                        listdata = (from a in listpupilsdata join b in listneighbourhooddata on a.CSS_Postcode equals b.CSS_Postcode where b.DataZone.Contains(item.ToString()) select a).ToList();
+                        listdatahubdata.Add(CreatDatahubdata(listdata, item.ToString()));
+                    }
+
+                }
+            }
+            return listdatahubdata;
         }
 
         public ActionResult MapData()
@@ -189,6 +231,17 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             var vmDatahubViewModel = new DatahubViewModel();
             vmDatahubViewModel.ListSchoolNameData = GetListSchoolname();
             return View("MapIndex", vmDatahubViewModel);
+        }
+
+        public ActionResult HeatMapData()
+        {
+            //var listNationalityData = Session["SessionListNationalityData"] as List<NationalityObj>;
+            var vmDatahubViewModel = new DatahubViewModel();
+            vmDatahubViewModel.ListDatasets = new List<string>() { "Participating","Not-Participating", "Unconfirmed" };
+
+            Session["Listdatahubdataforheatmap"] = GetDatahubdataAllZonecode(this.rpGeneric);
+
+            return View("HeatMapIndex", vmDatahubViewModel);
         }
 
 

@@ -231,19 +231,21 @@ function ToggleKMLLayer(checked, id) {
                 layer.loadGeoJson(kml[id].url);
 
                 layer.setStyle(function (feature) {
-                    var color = '#2262CC';
+                    var fillop = 0.4;
                     if (feature.getProperty('isColorful')) {
-                        color = feature.getProperty('color');
+                        fillop = feature.getProperty('fillOpacity');
                     }
                     return /** @type {google.maps.Data.StyleOptions} */({
-                        fillColor: '#2262CC',
-                        strokeColor: color,
-                        strokeWeight: 2
+                        fillColor: '#2262cc',
+                        fillOpacity: fillop,
+                        strokeColor: '#2262cc',
+                        strokeWeight: 3
                     });
                 });
 
                 layer.addListener('click', function (event) {
                     event.feature.setProperty('isColorful', true);
+                    event.feature.setProperty('fillOpacity', '0.75');
                 });
 
                 var infoWindows = new google.maps.InfoWindow();

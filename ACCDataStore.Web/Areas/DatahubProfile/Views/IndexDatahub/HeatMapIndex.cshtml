@@ -1,0 +1,51 @@
+﻿@model ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub.DatahubViewModel
+@section Header {
+    <link rel="stylesheet" href="~/Content/accdatastore/areas/nationality/views/nationality/nationality.css" type="text/css" />
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+    <script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/HeatMapIndex.js"></script>
+    <script src="http://code.highcharts.com/maps/modules/data.js"></script>
+    <script src="http://code.highcharts.com/maps/modules/exporting.js"></script>
+}
+@{
+    ViewBag.Title = "HeatMapIndex";
+}
+
+<div id="main">
+    <div id="controls" class="nicebox">
+        <div>
+            <select id="selecteddataset" style="width:310px">
+                <option value="Participating">Participating</option>
+                <option value="Not-Participating">Not-Participating</option>
+                <option value="Unconfirmed">Unconfirmed</option>
+            </select>
+        </div>
+        <div id="legend">
+            <div id="census-min">min</div>
+            <div class="color-key"><span id="data-caret">&#x25c6;</span></div>
+            <div id="census-max">max</div>
+        </div>
+    </div>
+</div>
+
+ 
+<div id="data-box" class="nicebox">
+    <label id="data-label" for="data-value"></label>
+    <span id="data-value"></span>
+</div>
+    <div id="map-canvas" style="width: 1280px; height: 576px;"></div>
+
+    <div id="content-windows" style="position:relative; width: 90%">
+        @*<h1><span id="area-info"></span></h1>*@
+        <div id="divinformationContainer" style="float:left; width: 40%; height: 100%; "></div>
+        <div id="divChartContainer" style="float:right; width: 60%;  height: 100%;"></div>
+    </div>
+
+    @*<div id="maincontrolbox">
+        <label style="font-family: 'Open Sans'; font-weight: bold;">Layers</label>
+        <div id="mapcontrolbox"></div>
+    </div>*@
+
+
+    <article id="popup-information"></article>
+    <div id="content-windows-mouse-over" style="position: absolute; display:none; background-color: lightgray;"></div>
+    <div id="divSpinner" class="modal" style="display: none;"></div>

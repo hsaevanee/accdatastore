@@ -20,7 +20,7 @@
             <tbody>
                 <tr>
                     <td width="200">School Name</td>
-                    <td>@Html.DropDownListFor(x => x.selectedschoolname, new SelectList(Model.ListSchoolNameData))</td>
+                    <td>@Html.DropDownListFor(x => x.selectedschoolname, new SelectList(Model.ListSchoolNameData, "seedcode", "name"), "---Please Select School---"))</td>
                 </tr>
             </tbody>
         </table>
