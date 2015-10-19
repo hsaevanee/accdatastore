@@ -346,13 +346,13 @@
     <Content Include="Areas\InsightProfile\Views\BenchmarkMeasure\IndexLeaverBreakdown.cshtml" />
     <Content Include="Areas\InsightProfile\Views\BenchmarkMeasure\MapLeaverDestinationIndex.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\web.config" />
-    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Index1.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Index.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\_ViewStart.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\MapIndex.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\PersonalDetails.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Pupilslist.cshtml" />
-    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Index.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Index2.cshtml" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />

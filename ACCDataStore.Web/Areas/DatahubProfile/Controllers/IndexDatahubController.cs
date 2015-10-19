@@ -26,7 +26,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             this.rpGeneric = rpGeneric;
         }
         // GET: DatahubProfile/IndexDatahub
-        public ActionResult Index()
+        public ActionResult Index(string schoolsubmitButton, string neighbourhoodssubmitButton)
         {
             //var eGeneralSettings = TS.Core.Helper.ConvertHelper.XmlFile2Object(HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"), typeof(GeneralCounter)) as GeneralCounter;
             //eGeneralSettings.CurriculumpgCounter++;
@@ -36,23 +36,28 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
             vmDatahubViewModel.AberdeencityData = GetDatahubdatabySchoolcode(rpGeneric, null);
             vmDatahubViewModel.ListSchoolNameData = GetListSchoolname();
-            
-            var sSchoolcode = Request["selectedschoolcode"];
+            vmDatahubViewModel.ListNeighbourhoodsName = GetListNeighbourhoodsname(rpGeneric);
 
-            if (sSchoolcode != null) {
-                //vmDatahubViewModel.selectedschoolname = vmDatahubViewModel.ListSchoolNameData.FirstOrDefault(x => x.seedcode.Equals(sSchoolcode)).Select(x => x.name).ToString();
-                if (sSchoolcode.Equals("100"))
-                {
-                    vmDatahubViewModel.SchoolData = GetDatahubdatabySchoolcode(rpGeneric, null);
-                    vmDatahubViewModel.selectedschoolcode = "100";
-                }
-                else {
+            if (schoolsubmitButton != null) { 
+            var sSchoolcode = Request["selectedschoolcode"];
+                if (sSchoolcode != null) {
                     vmDatahubViewModel.SchoolData = GetDatahubdatabySchoolcode(rpGeneric, sSchoolcode);
-                    vmDatahubViewModel.selectedschoolcode = sSchoolcode;
+                    vmDatahubViewModel.selectedschoolcode = sSchoolcode;                
+                    vmDatahubViewModel.selectedschool = vmDatahubViewModel.ListSchoolNameData.Where(x => x.seedcode.Equals(sSchoolcode)).FirstOrDefault();
                 }
-                
-                vmDatahubViewModel.selectedschool = vmDatahubViewModel.ListSchoolNameData.Where(x => x.seedcode.Equals(sSchoolcode)).FirstOrDefault();
             }
+            if (neighbourhoodssubmitButton != null)
+            {
+                var sSchoolcode = Request["selectedneighbourhoods"];
+                if (sSchoolcode != null)
+                {
+                    vmDatahubViewModel.SchoolData = GetDatahubdatabyNeighbourhoods(rpGeneric, sSchoolcode);
+                    vmDatahubViewModel.selectedneighbourhoods = sSchoolcode;
+                    vmDatahubViewModel.selectedschool = vmDatahubViewModel.ListNeighbourhoodsName.Where(x => x.seedcode.Equals(sSchoolcode)).FirstOrDefault();
+                }
+            }
+
+
             return View("index", vmDatahubViewModel);
         }
 
@@ -78,14 +83,31 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
         }
 
+        protected IList<School> GetListNeighbourhoodsname(IGenericRepository rpGeneric)
+        {
+            List<School> temp = new List<School>();
+            var listneighbourhoods = rpGeneric.FindSingleColumnByNativeSQL("Select distinct Neighbourhood from Neighbourhood_Postcodes1");
+            if (listneighbourhoods != null)
+            {
+                foreach (var item in listneighbourhoods)
+                {
+                    if (item != null)
+                    {
+                        temp.Add(new School(item.ToString(), item.ToString()));
+                    }
 
+                }
+            }
+            return temp;
+
+        }
         protected DatahubData GetDatahubdatabySchoolcode(IGenericRepository rpGeneric,string seedcode)
         {
             var datahubdata = new DatahubData();
             
             List<DatahubDataObj> listdata = this.rpGeneric.FindAll<ACCDataStore.Entity.DatahubProfile.DatahubDataObj>().ToList() ;
 
-            if (seedcode != null)
+            if (seedcode!= null && !seedcode.Equals("100"))
             {
                 listdata = (from a in listdata where a.SEED_Code != null && a.SEED_Code.Equals(seedcode) select a).ToList();
             }
@@ -106,6 +128,22 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             }
 
             datahubdata = CreatDatahubdata(listdata,zonecode);
+            return datahubdata;
+        }
+
+        protected DatahubData GetDatahubdatabyNeighbourhoods(IGenericRepository rpGeneric, string neighbourhood)
+        {
+            var datahubdata = new DatahubData();
+
+            var listpupilsdata = this.rpGeneric.FindAll<ACCDataStore.Entity.DatahubProfile.DatahubDataObj>();
+            var listneighbourhooddata = this.rpGeneric.FindAll<ACCDataStore.Entity.DatahubProfile.NeighbourhoodObj>();
+            var listdata = new List<DatahubDataObj>();
+            if (neighbourhood != null)
+            {
+                listdata = (from a in listpupilsdata join b in listneighbourhooddata on a.CSS_Postcode equals b.CSS_Postcode where b.Neighbourhood.Contains(neighbourhood) select a).ToList();
+            }
+
+            datahubdata = CreatDatahubdata(listdata, neighbourhood);
             return datahubdata;
         }
 
@@ -274,7 +312,12 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                      schname = keyvalue;
                 
                 }
+                else if (keyname.ToLower().Equals("neighbourhoods"))
+                {
+                    Schooldata = GetDatahubdatabyNeighbourhoods(rpGeneric, keyvalue);
+                    schname = keyvalue;
 
+                }
                 var Abddata = GetDatahubdatabySchoolcode(rpGeneric, null);
                 
                 object data = new object();
@@ -300,22 +343,22 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
         }
 
  
-        public ActionResult GetListpupils(string schcode, string dataname)
+        public ActionResult GetListpupils(string searchby, string code, string dataname)
         {
             var vmListpupilsViewModel = new DatahubViewModel();
 
             IList<School> temp = GetListSchoolname();
-            School selectedschool = temp.Where(x => x.seedcode.Equals(schcode)).FirstOrDefault();
+            School selectedschool = temp.Where(x => x.seedcode.Equals(code)).FirstOrDefault();
 
             vmListpupilsViewModel.selectedschool = selectedschool;
 
             var listdata = this.rpGeneric.FindAll<ACCDataStore.Entity.DatahubProfile.DatahubDataObj>();
 
-            if (schcode != null)
-            {                
-                if (!schcode.Equals("100"))
+            if (code != null)
+            {
+                if (!code.Equals("100"))
                 {
-                    listdata = (from a in listdata where a.SEED_Code != null && a.SEED_Code.Equals(schcode) select a).ToList();
+                    listdata = (from a in listdata where a.SEED_Code != null && a.SEED_Code.Equals(code) select a).ToList();
                 }
             }
             switch (dataname.ToLower()) {

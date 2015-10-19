@@ -25,6 +25,12 @@ var kml = {
         url: 'https://dl.dropboxusercontent.com/u/870146/KML/V2/Datazone_with_Desc.json' + "?rand=" + (new Date()).valueOf(),
         dataType: 2
     },
+    c: {
+        name: "Neighbourhoods Districts",
+        type: 2,
+        url: 'https://dl.dropboxusercontent.com/u/55734762/Neighbourhoods.json' + "?rand=" + (new Date()).valueOf(),
+        dataType: 3
+    },
 };
 
 // on document ready
@@ -295,7 +301,7 @@ function ToggleKMLLayer(checked, id) {
             } else if (kml[id].dataType == 2) {
                 SearchData(kmlEvent.feature.getProperty('ZONECODE'), "ZoneCode");
             } else if (kml[id].dataType == 3) {
-                GetHeatmapData(kmlEvent.feature.getProperty('ZONECODE'), "ZoneCode");
+                SearchData(kmlEvent.feature.getProperty('name'), "Neighbourhoods");
             }
         });
 

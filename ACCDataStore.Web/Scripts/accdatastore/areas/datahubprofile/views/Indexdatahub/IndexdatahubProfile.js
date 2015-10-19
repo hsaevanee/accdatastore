@@ -2,19 +2,20 @@
 $(document).ready(function () {
 
 
-    $("#selectedschoolcode").change(function () {    
-        document.forms[0].submit();
-        //var schcode = $('#selectedschoolcode :selected').val();
-
-        //var JSONObject = {
-        //    "keyvalue": schcode,
-        //    "keyname": 'SchCode'
-        //}
-        //myFunctionColumn(JSONObject)
-
-    });
+    //$("#selectedschoolcode").change(function () {
+    //    var code = $("#selectedschoolcode").text();
+    //    var url = '@Url.Action("index", "IndexDatahub", new { area = "DatahubProfile", searchby = "school", code = "test" })';
+    //    // do something with the url client side variable, for example redirect
+    //    window.location.href = url;
+    //    //document.forms[0].submit();
+    //});
 
 });
+
+function goToCreateURL(object) {
+    var code = $('#selectedschoolcode :selected').text();
+    return object.href += code;
+}
 
 
 function FunctiongetDetail(buttonID, dataname) {

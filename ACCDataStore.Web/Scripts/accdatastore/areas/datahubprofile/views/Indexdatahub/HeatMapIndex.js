@@ -260,8 +260,8 @@ function ShowPopupInfo(data) {
     sInformation += "<tbody>";
     if (data.dataCategories.length != 0) {
         for (var i = 0; i < data.dataCategories.length; i++) {
-            sInformation += "<tr><td>" + data.dataCategories[i] + "</td><td  align='center'>" + data.Schdata[i].toFixed(2) + "</td><td  align='center'>" + data.Abdcitydata[i].toFixed(2) + "</td><tr>";
-
+            sInformation += "<tr><td>" + data.dataCategories[i] + "</td><td  align='center'>" + "<input type='button' style='width: 50px; height:25px' value='" + data.Schdata[i].toFixed(2) + "'id='" + data.dataCategories[i] + "'" + "onclick='GotoAction(this.id)' /></td><td  align='center'>" + data.Abdcitydata[i].toFixed(2) + "</td><tr>";
+            //sInformation += "<tr><td>" + data.dataCategories[i] + "</td><td  align='center'>" + "<a href='@Url.Action('GetListpupils', 'IndexDatahub', new { searchby = 'school', code = '100', dataname = 'Pupils18' })'><button>" + data.Schdata[i].toFixed(2) + "</button></a>" + "</td><td  align='center'>" + data.Abdcitydata[i].toFixed(2) + "</td><tr>";           
         }
 
     } else {
@@ -273,6 +273,13 @@ function ShowPopupInfo(data) {
     sInformation += "</tbody></table>";
     ShowPopupInformation(sInformation);
 
+}
+
+function GotoAction(dataname) {
+    alert(dataname);
+    url = '@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = "100", dataname = "Pupils19" })'
+    location.href = url;
+    //'Html.ActionLink("GetListpupils", "IndexDatahub", new { searchby = "school", code = "100", dataname = "Pupils18" }, null)'
 }
 
 function SetErrorMessage(xhr) {
