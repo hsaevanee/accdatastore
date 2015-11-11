@@ -1,0 +1,20 @@
+﻿@*@model ACCDataStore.Web.Areas.SchoolProfile.ViewModels.IndexSchoolProfile.IndexSchoolProfileViewModel*@
+@section Header {
+    <link rel="stylesheet" href="~/Content/accdatastore/areas/nationality/views/nationality/nationality.css" type="text/css" />
+    @*/<script src="~/Scripts/accdatastore/areas/schoolprofile/views/IndexSchoolProfile/IndexSchoolProfile.js"></script>*@
+    <script type="text/javascript" src="http://code.highcharts.com/modules/exporting.js"></script>
+}
+@{
+    ViewBag.Title = "Index";
+}
+
+<div id="main">
+    <h2>Pupils Population</h2>
+    @*<br />
+    <h2>Background and Context</h2>*@
+    <br />
+    @*<h2 style="text-align: left"> <a onclick="goToCreateURL(this)" href="@Url.Content("~")InsightProfile/BenchmarkMeasure/IndexLeaverDestination">Pupils 0-5s Population</a></h2>*@
+    <h3>@Html.ActionLink("Pupils 0-5s Population Interactive HeatMap", "HeatMapData", "IndexPupilsPopulation", new { Area = "PupilsPopulation", sSchoolName = "" }, null)</h3>
+
+</div>
+

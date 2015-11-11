@@ -216,6 +216,7 @@
     <Content Include="Scripts\accdatastore\areas\insightprofile\views\benchmarkmeasure\IndexLeaver.js" />
     <Content Include="Scripts\accdatastore\areas\insightprofile\views\benchmarkmeasure\MapLeaverDestinationIndex.js" />
     <Content Include="Scripts\accdatastore\areas\nationality\views\nationality\nationality.js" />
+    <Content Include="Scripts\accdatastore\areas\pupilspopulation\views\population\HeatMapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\Curriculum\Curriculum.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\Curriculum\MapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\EthnicBackground\EthnicBackground2.js" />
@@ -268,6 +269,9 @@
     <Compile Include="Areas\Nationality\NationalityAreaRegistration.cs" />
     <Compile Include="Areas\Nationality\ViewModels\IndexNationality\IndexViewModel.cs" />
     <Compile Include="Areas\Nationality\ViewModels\Nationality\NationalityViewModel.cs" />
+    <Compile Include="Areas\PupilsPopulation\Controllers\IndexPupilsPopulationController.cs" />
+    <Compile Include="Areas\PupilsPopulation\PupilsPopulationAreaRegistration.cs" />
+    <Compile Include="Areas\PupilsPopulation\ViewModels\Pupils05\Pupils05Data.cs" />
     <Compile Include="Areas\SchoolProfile\Controllers\BaseSchoolProfileController.cs" />
     <Compile Include="Areas\SchoolProfile\Controllers\CurriculumController.cs" />
     <Compile Include="Areas\SchoolProfile\Controllers\LanguageController.cs" />
@@ -360,6 +364,11 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\HeatMapIndex.cshtml" />
+    <Content Include="Areas\PupilsPopulation\Views\web.config" />
+    <Content Include="Areas\PupilsPopulation\Views\IndexPupilsPopulation\Index.cshtml" />
+    <Content Include="Areas\PupilsPopulation\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\PupilsPopulation\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\PupilsPopulation\Views\IndexPupilsPopulation\HeatMapIndex.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\What-is-data-observatory.cshtml" />
@@ -375,6 +384,7 @@
     <Folder Include="Areas\DatahubProfile\Models\" />
     <Folder Include="Areas\InsightProfile\Models\" />
     <Folder Include="Areas\Nationality\Models\" />
+    <Folder Include="Areas\PupilsPopulation\Models\" />
     <Folder Include="Areas\SchoolProfile\Models\" />
     <Folder Include="Models\" />
     <Folder Include="Resources\Upload\" />

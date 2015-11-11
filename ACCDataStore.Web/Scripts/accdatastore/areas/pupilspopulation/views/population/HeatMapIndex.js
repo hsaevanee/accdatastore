@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    loadData("Participating");
+    loadData("Age between 0-5");
     $(document.body).on('click', '.a-close-popup-information', function () {
         $("#popup-information").hide(250);
     });
@@ -24,7 +24,7 @@ function InitSpinner() {
 }
 
 // initialize map object
-function InitMap(data, lowcodecolour, highcodecolour, convertcolor) {
+function InitMap(data) {
     var mapCenter = new google.maps.LatLng(57.151810, -2.094451);
     var mapOptions = {
         zoom: 11,
@@ -36,8 +36,8 @@ function InitMap(data, lowcodecolour, highcodecolour, convertcolor) {
     map.data.loadGeoJson('https://dl.dropboxusercontent.com/u/870146/KML/V2/Datazone_with_Desc.json' + "?rand=" + (new Date()).valueOf());
 
     map.data.setStyle(function (feature) {
-        var low = lowcodecolour; //[5, 69, 54];  // color of smallest datum
-        var high = highcodecolour;//[151, 83, 34];   // color of largest datum
+        var low =  [5, 69, 54];  // color of smallest datum
+        var high =  [151, 83, 34];   // color of largest datum
 
         var statisticdata = -1;
 
@@ -51,25 +51,16 @@ function InitMap(data, lowcodecolour, highcodecolour, convertcolor) {
 
         }
 
-        if (statisticdata <= 60) {
-            color = lowcodecolour ;
-        }else {
             // delta represents where the value sits between the min and max
             var delta = (statisticdata - data.minimum) / (data.maximum - data.minimum);
 
             var color = [];
-            if (convertcolor == 1) {
+
                 for (var i = 0; i < 3; i++) {
                     // calculate an integer color based on the delta
                     color[i] = (high[i] - low[i]) * delta + low[i];
                 }
-            } else {
-                for (var i = 0; i < 3; i++) {
-                    // calculate an integer color based on the delta
-                    color[i] = (low[i] - high[i]) * delta + high[i];
-                }
-            }
-        }
+
 
         // determine whether to show this shape or not
         var showRow = true;
@@ -143,28 +134,14 @@ function loadData(datasetname) {
         "datasetname": datasetname,
     }
 
-    if (datasetname == "Participating") {
-        var low = [5, 69, 54];  // color of smallest datum
-        var high = [151, 83, 34];
-        var convertcolor =1;
-    } else if (datasetname == "Not-Participating") {
-        var high = [5, 69, 54];  // color of smallest datum
-        var low = [151, 83, 34];
-        var convertcolor = -1;  // convert color
-    }else{
-        var low = [5, 69, 54];  // color of smallest datum
-        var high = [151, 83, 34];
-        var convertcolor =1;
-    }
-
     $.ajax({
         type: "POST",
-        url: sContextPath + "DatahubProfile/IndexDatahub/GetdataforHeatmap",
+        url: sContextPath + "PupilsPopulation/IndexPupilsPopulation/GetdataforHeatmap",
         data: JSON.stringify(JSONObject),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
-            InitMap(data, low, high, convertcolor)
+            InitMap(data)
         },
         error: function (xhr, err) {
             SetErrorMessage(xhr);
@@ -191,7 +168,7 @@ function SearchData(sCondition, sKeyname) {
 
     $.ajax({
         type: "POST",
-        url: sContextPath + "DatahubProfile/IndexDatahub/SearchByName",
+        url: sContextPath + "PupilsPopulation/IndexPupilsPopulation/SearchByName",
         data: JSON.stringify(JSONObject),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -245,13 +222,13 @@ function drawChartColumn(data) {
                             //categories: [ '0%', '5%', '10%', '15%','20%','25%','30%'],
                             categories: data.dataCategories,
                             title: {
-                                text: 'Destination'
+                                text: 'Ages'
                             }
                         },
                         yAxis: {
                             min: 0,
                             title: {
-                                text: 'Percentages'
+                                text: 'Pupils'
                             }
                         },
                         tooltip: {
@@ -268,7 +245,7 @@ function drawChartColumn(data) {
                                 borderWidth: 0
                             }
                         },
-                        series: [{ name: data.schoolname, data: data.Schdata }, { name: 'All Clients', data: data.Abdcitydata }],
+                        series: [{ name: data.dataname, data: data.Schdata }],
                         credits: {
                             enabled: false
                         }
@@ -279,11 +256,11 @@ function ShowPopupInfo(data) {
     //var sInformation = "<a href='#' class='a-close-popup-information'>Close</a><h3>" + sName + "</h3>";
     var sInformation = "<h3 align='center'>" + data.dataTitle + "</h3>";
     sInformation += "<table class='style2'>";
-    sInformation += "<thead><tr><th> </th><th>" + data.schoolname + "</th><th> Aberdeen City </th></tr></thead>";
+    sInformation += "<thead><tr><th> </th><th>" + data.dataname + "</th></tr></thead>";
     sInformation += "<tbody>";
     if (data.dataCategories.length != 0) {
         for (var i = 0; i < data.dataCategories.length; i++) {
-            sInformation += "<tr><td>" + data.dataCategories[i] + "</td><td  align='center'>" + "<input type='button' style='width: 50px; height:25px' value='" + data.Schdata[i].toFixed(2) + "'id='" + data.dataCategories[i] + "'" + "onclick='GotoAction(this.id)' /></td><td  align='center'>" + data.Abdcitydata[i].toFixed(2) + "</td><tr>";
+            sInformation += "<tr><td>" + data.dataCategories[i] + "</td><td  align='center'>" + "<input type='button' style='width: 50px; height:25px' value='" + data.Schdata[i].toFixed(2) + "'id='" + data.dataCategories[i] + "'" + "onclick='GotoAction(this.id)' /></td><tr>";
             //sInformation += "<tr><td>" + data.dataCategories[i] + "</td><td  align='center'>" + "<a href='@Url.Action('GetListpupils', 'IndexDatahub', new { searchby = 'school', code = '100', dataname = 'Pupils18' })'><button>" + data.Schdata[i].toFixed(2) + "</button></a>" + "</td><td  align='center'>" + data.Abdcitydata[i].toFixed(2) + "</td><tr>";           
         }
 
@@ -300,11 +277,21 @@ function ShowPopupInfo(data) {
 
 function GotoAction(dataname) {
     alert(dataname);
+
+    // need to call public ActionResult GetListpupils(string searchby, string code, string dataname)
+
+    //url = '@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = "100", dataname = "Pupils19" })'
+    //location.href = url;
+    ////'Html.ActionLink("GetListpupils", "IndexDatahub", new { searchby = "school", code = "100", dataname = "Pupils18" }, null)'
     $.ajax({
-        url: '@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = "100", dataname = "Males" })',
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function() { alert('Success'); },
+        type: 'POST',
+        url: sContextPath + 'DatahubProfile/IndexDatahub/GetChartDataforMap',
+        data: JSON.stringify(dataname),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (data) {
+            drawChartColumn(data);
+        },
         error: function (xhr, err) {
             if (xhr.readyState != 0 && xhr.status != 0) {
                 alert('readyState: ' + xhr.readyState + '\nstatus: ' + xhr.status);
@@ -312,7 +299,6 @@ function GotoAction(dataname) {
             }
         }
     });
-    //<input type="button" style="width: 50px; height:25px" value="@Model.AberdeencityData.allMalepupils" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = "100", dataname = "Males" })'" />
 }
 
 function SetErrorMessage(xhr) {

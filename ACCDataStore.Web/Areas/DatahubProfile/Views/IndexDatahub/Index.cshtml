@@ -60,7 +60,7 @@
                     <tr>
                         <td align="left">All Clients</td>    
                         <td align="center">
-                            <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.allpupils" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = @Model.selectedschoolcode, dataname = "AllClients" })'" />
+                            <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.allpupils" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby , code = @Model.searchcode, dataname = "AllClients" })'" />
                         </td>
                         <td align="center">@Model.SchoolData.allpupils</td>    
                         <td align="center">@Model.AberdeencityData.allpupils</td>
@@ -71,7 +71,7 @@
                     <tr>
                         <td align="left">Males</td>                                             
                         <td align="center">
-                            <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.allMalepupils" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = @Model.selectedschoolcode, dataname = "Males" })'" />
+                            <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.allMalepupils" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby , code = @Model.searchcode, dataname = "Males" })'" />
                         </td>
                         <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.allMalepupils))</td>
                         <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.allMalepupils))</td>                        
@@ -82,7 +82,7 @@
                     <tr>
                         <td align="left">Females</td>
                         <td align="center">
-                            <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.allFemalepupils" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = @Model.selectedschoolcode, dataname = "Females" })'" />
+                            <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.allFemalepupils" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby , code = @Model.searchcode, dataname = "Females" })'" />
                         </td>
                         <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.allFemalepupils))</td>
                         <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.allFemalepupils))</td>                       
@@ -93,7 +93,7 @@
                     <tr>
                         <td align="left">Pupils 16</td>
                         <td align="center">
-                            <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.all16pupils" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = @Model.selectedschoolcode, dataname = "Pupils16" })'" />
+                            <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.all16pupils" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby, code = @Model.searchcode, dataname = "Pupils16" })'" />
                         </td>
                         <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.all16pupils))</td>
                         <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.all16pupils))</td>
@@ -104,7 +104,7 @@
                     <tr>
                         <td align="left">Pupils 17</td>
                         <td align="center">
-                            <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.all17pupils" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = @Model.selectedschoolcode, dataname = "Pupils17" })'" />
+                            <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.all17pupils" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby, code = @Model.searchcode, dataname = "Pupils17" })'" />
                         </td>
                         <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.all17pupils))</td>
                         <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.all17pupils))</td>
@@ -115,7 +115,7 @@
                     <tr>
                         <td align="left">Pupils 18</td>
                         <td align="center">
-                            <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.all18pupils" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = @Model.selectedschoolcode, dataname = "Pupils18" })'" />
+                            <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.all18pupils" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby, code = @Model.searchcode, dataname = "Pupils18" })'" />
                         </td>
                         <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.all18pupils))</td>
                         <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.all18pupils))</td>
@@ -126,7 +126,7 @@
                     <tr>
                         <td align="left">Pupils 19</td>
                         <td align="center">
-                            <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.all19pupils" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = @Model.selectedschoolcode, dataname = "Pupils19" })'" />
+                            <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.all19pupils" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby, code = @Model.searchcode, dataname = "Pupils19" })'" />
                         </td>
                         <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.all19pupils))</td>
                         <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.all19pupils))</td>
@@ -219,7 +219,7 @@
                         <tr>
                             <td>School Pupils</td>
                             <td align="center">
-                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.schoolpupils" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = @Model.selectedschoolcode, dataname = "schoolpupils" })'" />
+                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.schoolpupils" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby, code = @Model.searchcode, dataname = "schoolpupils" })'" />
                             </td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.schoolpupils))</td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.schoolpupils))</td>
@@ -230,7 +230,7 @@
                         <tr>
                             <td>School Pupils In Trainsition</td>
                             <td align="center">
-                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.schoolpupilsintransition" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = @Model.selectedschoolcode, dataname = "schoolpupilsintransition" })'" />
+                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.schoolpupilsintransition" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby, code = @Model.searchcode, dataname = "schoolpupilsintransition" })'" />
                             </td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.schoolpupilsintransition))</td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.schoolpupilsintransition))</td>
@@ -241,7 +241,7 @@
                         <tr>
                             <td>Moved Outwith Scotland</td>
                             <td align="center">
-                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.schoolpupilsmovedoutinscotland" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = @Model.selectedschoolcode, dataname = "schoolpupilsmovedoutinscotland" })'" />
+                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.schoolpupilsmovedoutinscotland" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby, code = @Model.searchcode, dataname = "schoolpupilsmovedoutinscotland" })'" />
                             </td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.schoolpupilsmovedoutinscotland))</td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.schoolpupilsmovedoutinscotland))</td>
@@ -252,7 +252,7 @@
                         <tr>
                             <td>Activity Agreement</td>
                             <td align="center">
-                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinAtivityAgreement" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = @Model.selectedschoolcode, dataname = "pupilsinAtivityAgreement" })'" />
+                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinAtivityAgreement" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby, code = @Model.searchcode, dataname = "pupilsinAtivityAgreement" })'" />
                             </td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.pupilsinAtivityAgreement))</td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.pupilsinAtivityAgreement))</td>
@@ -263,7 +263,7 @@
                         <tr>
                             <td>Employability Fund Stage 2</td>
                             <td align="center">
-                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinEmployFundSt2" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = @Model.selectedschoolcode, dataname = "pupilsinEmployFundSt2" })'" />
+                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinEmployFundSt2" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby, code = @Model.searchcode, dataname = "pupilsinEmployFundSt2" })'" />
                             </td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.pupilsinEmployFundSt2))</td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.pupilsinEmployFundSt2))</td>
@@ -274,7 +274,7 @@
                         <tr>
                             <td>Employability Fund Stage 3</td>
                             <td align="center">
-                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinEmployFundSt3" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = @Model.selectedschoolcode, dataname = "pupilsinEmployFundSt3" })'" />
+                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinEmployFundSt3" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby, code = @Model.searchcode, dataname = "pupilsinEmployFundSt3" })'" />
                             </td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.pupilsinEmployFundSt3))</td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.pupilsinEmployFundSt3))</td>
@@ -285,7 +285,7 @@
                         <tr>
                             <td>Employability Fund Stage 4</td>
                             <td align="center">
-                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinEmployFundSt4" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = @Model.selectedschoolcode, dataname = "pupilsinEmployFundSt4" })'" />
+                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinEmployFundSt4" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby, code = @Model.searchcode, dataname = "pupilsinEmployFundSt4" })'" />
                             </td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.pupilsinEmployFundSt4))</td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.pupilsinEmployFundSt4))</td>
@@ -296,7 +296,7 @@
                         <tr>
                             <td>Full Time Employment</td>
                             <td align="center">
-                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinFullTimeEmployed" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = @Model.selectedschoolcode, dataname = "pupilsinFullTimeEmployed" })'" />
+                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinFullTimeEmployed" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby, code = @Model.searchcode, dataname = "pupilsinFullTimeEmployed" })'" />
                             </td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.pupilsinFullTimeEmployed))</td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.pupilsinFullTimeEmployed))</td>
@@ -307,7 +307,7 @@
                         <tr>
                             <td>Further Education</td>
                             <td align="center">
-                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinFurtherEdu" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = @Model.selectedschoolcode, dataname = "pupilsinFurtherEdu" })'" />
+                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinFurtherEdu" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby, code = @Model.searchcode, dataname = "pupilsinFurtherEdu" })'" />
                             </td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.pupilsinFurtherEdu))</td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.pupilsinFurtherEdu))</td>
@@ -318,7 +318,7 @@
                         <tr>
                             <td>Higher Education</td>
                             <td align="center">
-                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinHigherEdu" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = @Model.selectedschoolcode, dataname = "pupilsinHigherEdu" })'" />
+                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinHigherEdu" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby, code = @Model.searchcode, dataname = "pupilsinHigherEdu" })'" />
                             </td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.pupilsinHigherEdu))</td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.pupilsinHigherEdu))</td>
@@ -329,7 +329,7 @@
                         <tr>
                             <td>Modern Apprenticeship</td>
                             <td align="center">
-                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinModernApprenship" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = @Model.selectedschoolcode, dataname = "pupilsinModernApprenship" })'" />
+                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinModernApprenship" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby, code = @Model.searchcode, dataname = "pupilsinModernApprenship" })'" />
                             </td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.pupilsinModernApprenship))</td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.pupilsinModernApprenship))</td>
@@ -340,7 +340,7 @@
                         <tr>
                             <td>Part Time Employment</td>
                             <td align="center">
-                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinPartTimeEmployed" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = @Model.selectedschoolcode, dataname = "pupilsinPartTimeEmployed" })'" />
+                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinPartTimeEmployed" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby, code = @Model.searchcode, dataname = "pupilsinPartTimeEmployed" })'" />
                             </td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.pupilsinPartTimeEmployed))</td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.pupilsinPartTimeEmployed))</td>
@@ -351,7 +351,7 @@
                         <tr>
                             <td>Personal/ Skills Development</td>
                             <td align="center">
-                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinPersonalSkillDevelopment" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = @Model.selectedschoolcode, dataname = "pupilsinPersonalSkillDevelopment" })'" />
+                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinPersonalSkillDevelopment" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby, code = @Model.searchcode, dataname = "pupilsinPersonalSkillDevelopment" })'" />
                             </td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.pupilsinPersonalSkillDevelopment))</td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.pupilsinPersonalSkillDevelopment))</td>
@@ -362,7 +362,7 @@
                         <tr>
                             <td>Self-Employed</td>
                             <td align="center">
-                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinSelfEmployed" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = @Model.selectedschoolcode, dataname = "pupilsinSelfEmployed" })'" />
+                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinSelfEmployed" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby, code = @Model.searchcode, dataname = "pupilsinSelfEmployed" })'" />
                             </td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.pupilsinSelfEmployed))</td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.pupilsinSelfEmployed))</td>
@@ -373,7 +373,7 @@
                         <tr>
                             <td>Training (Non NTP)</td>
                             <td align="center">
-                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinTraining" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = @Model.selectedschoolcode, dataname = "pupilsinTraining" })'" />
+                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinTraining" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby, code = @Model.searchcode, dataname = "pupilsinTraining" })'" />
                             </td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.pupilsinTraining))</td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.pupilsinTraining))</td>
@@ -384,7 +384,7 @@
                         <tr>
                             <td>Voluntary Work</td>
                             <td align="center">
-                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinVolunteerWork" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = @Model.selectedschoolcode, dataname = "pupilsinVolunteerWork" })'" />
+                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinVolunteerWork" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby, code = @Model.searchcode, dataname = "pupilsinVolunteerWork" })'" />
                             </td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.pupilsinVolunteerWork))</td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.pupilsinVolunteerWork))</td>
@@ -551,7 +551,7 @@
                         <tr>
                             <td>Custody</td>
                             <td align="center">
-                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinCustody" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = @Model.selectedschoolcode, dataname = "pupilsinCustody" })'" />
+                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinCustody" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby, code = @Model.searchcode, dataname = "pupilsinCustody" })'" />
                             </td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.pupilsinCustody))</td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.pupilsinCustody))</td>
@@ -562,7 +562,7 @@
                         <tr>
                             <td>Economically Inactive</td>
                             <td align="center">
-                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinEconomically" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = @Model.selectedschoolcode, dataname = "pupilsinEconomically" })'" />
+                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinEconomically" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby, code = @Model.searchcode, dataname = "pupilsinEconomically" })'" />
                             </td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.pupilsinEconomically))</td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.pupilsinEconomically))</td>
@@ -573,7 +573,7 @@
                         <tr>
                             <td>Unavailable-ill Health</td>
                             <td align="center">
-                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinUnavailableillHealth" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = @Model.selectedschoolcode, dataname = "pupilsinUnavailableillHealth" })'" />
+                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinUnavailableillHealth" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby, code = @Model.searchcode, dataname = "pupilsinUnavailableillHealth" })'" />
                             </td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.pupilsinUnavailableillHealth))</td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.pupilsinUnavailableillHealth))</td>
@@ -584,7 +584,7 @@
                         <tr>
                             <td>Unemployed</td>
                             <td align="center">
-                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinUnemployed" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = @Model.selectedschoolcode, dataname = "pupilsinUnemployed" })'" />
+                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinUnemployed" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby, code = @Model.searchcode, dataname = "pupilsinUnemployed" })'" />
                             </td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.pupilsinUnemployed))</td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.pupilsinUnemployed))</td>
@@ -595,7 +595,7 @@
                         <tr>
                             <td>Unknown</td>
                             <td align="center">
-                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinUnknown" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = @Model.selectedschoolcode, dataname = "pupilsinUnknown" })'" />
+                                <input type="button" style="width: 50px; height:25px" value="@Model.SchoolData.pupilsinUnknown" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby, code = @Model.searchcode, dataname = "pupilsinUnknown" })'" />
                             </td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(@Model.SchoolData.pupilsinUnknown))</td>
                             <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(@Model.AberdeencityData.pupilsinUnknown))</td>

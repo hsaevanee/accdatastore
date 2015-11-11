@@ -65,8 +65,10 @@
     <Compile Include="Gender.cs" />
     <Compile Include="GeneralCounter.cs" />
     <Compile Include="InsightProfile\DestinationObj.cs" />
+    <Compile Include="Mapping\MSAccess\Age05sInfoMap.cs" />
     <Compile Include="Mapping\MSAccess\NeighbourhoodMap.cs" />
     <Compile Include="Mapping\MSAccess\DatahubDataMap.cs" />
+    <Compile Include="PupilsPopulation\PupilsInfoObj.cs" />
     <Compile Include="School.cs" />
     <Compile Include="Mapping\MySQL\LA100PupilsMap.cs" />
     <Compile Include="Mapping\MySQL\LA100SchoolsMap.cs" />
