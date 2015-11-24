@@ -16,7 +16,8 @@ var kml = {
     a: {
         name: "Primary Schools Locations",
         type: 2,
-        url: 'https://dl.dropboxusercontent.com/u/55734762/PrimarySchoollocations.json' + "?rand=" + (new Date()).valueOf(),
+        //url: 'https://dl.dropboxusercontent.com/u/55734762/PrimarySchoollocations.json' + "?rand=" + (new Date()).valueOf(),
+        url: 'https://www.dropbox.com/s/ngd0yrko6xn8ojm/PrimarySchoollocations.json?dl=0' + "?rand=" + (new Date()).valueOf(),
         dataType: 1
     },
     b: {

@@ -29,6 +29,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.ViewModels
         public List<string> ListLevelENCode { get; set; }
         public List<NationalityObj> ListLevelENData { get; set; }
         public List<FSMObj> ListFSMData { get; set; }
+        public List<WiderAchievementObj> ListWiderAchievementData { get; set; }
 
     }
 }

@@ -8,8 +8,6 @@
         var datasetname = $('#selecteddataset :selected').text();
         loadData(datasetname);
     });
-
-
 });
 
 // initialize spinner on ajax loading
@@ -94,9 +92,9 @@ function InitMap(data, lowcodecolour, highcodecolour, convertcolor) {
 
     // update and display the legend
     document.getElementById('census-min').textContent =
-    data.minimum.toLocaleString();
+    data.minimum.toFixed(2) +"%";
     document.getElementById('census-max').textContent =
-        data.maximum.toLocaleString();
+        data.maximum.toFixed(2) + "%";
 
 
     // set up the style rules and events for google.maps.Data
@@ -120,7 +118,7 @@ function InitMap(data, lowcodecolour, highcodecolour, convertcolor) {
         document.getElementById('data-label').textContent =
             event.feature.getProperty('ZONECODE');
         document.getElementById('data-value').textContent =
-            statisticdata.toLocaleString();
+            statisticdata.toFixed(2) + '%';
         document.getElementById('data-box').style.display = 'block';
         document.getElementById('data-caret').style.display = 'block';
         document.getElementById('data-caret').style.paddingLeft = percent + '%';
@@ -283,8 +281,8 @@ function ShowPopupInfo(data) {
     sInformation += "<tbody>";
     if (data.dataCategories.length != 0) {
         for (var i = 0; i < data.dataCategories.length; i++) {
-            sInformation += "<tr><td>" + data.dataCategories[i] + "</td><td  align='center'>" + "<input type='button' style='width: 50px; height:25px' value='" + data.Schdata[i].toFixed(2) + "'id='" + data.dataCategories[i] + "'" + "onclick='GotoAction(this.id)' /></td><td  align='center'>" + data.Abdcitydata[i].toFixed(2) + "</td><tr>";
-            //sInformation += "<tr><td>" + data.dataCategories[i] + "</td><td  align='center'>" + "<a href='@Url.Action('GetListpupils', 'IndexDatahub', new { searchby = 'school', code = '100', dataname = 'Pupils18' })'><button>" + data.Schdata[i].toFixed(2) + "</button></a>" + "</td><td  align='center'>" + data.Abdcitydata[i].toFixed(2) + "</td><tr>";           
+            //sInformation += "<tr><td>" + data.dataCategories[i] + "</td><td  align='center'>" + "<input type='button' style='width: 50px; height:25px' value='" + data.Schdata[i].toFixed(2) + "'id='" + data.dataCategories[i] + "'" + "onclick='goToCreateURL(id)'/></td><td  align='center'>" + data.Abdcitydata[i].toFixed(2) + "</td><tr>";
+            sInformation += "<tr><td>" + data.dataCategories[i] + "</td><td  align='center'> <a href='/DatahubProfile/IndexDatahub/GetListpupils?searchby=" + data.searchby + "&code=" + data.searchcode + "&dataname=" + data.dataCategories[i] + "'><button>" + data.Schdata[i].toFixed(2) + "</button></a></td><td  align='center'> <a href='/DatahubProfile/IndexDatahub/GetListpupils?searchby=school&code=100&dataname=" + data.dataCategories[i] + "'><button>" + data.Abdcitydata[i].toFixed(2) + "</button></a></td><tr>";
         }
 
     } else {
@@ -298,22 +296,11 @@ function ShowPopupInfo(data) {
 
 }
 
-function GotoAction(dataname) {
-    alert(dataname);
-    $.ajax({
-        url: '@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = "100", dataname = "Males" })',
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function() { alert('Success'); },
-        error: function (xhr, err) {
-            if (xhr.readyState != 0 && xhr.status != 0) {
-                alert('readyState: ' + xhr.readyState + '\nstatus: ' + xhr.status);
-                alert('responseText: ' + xhr.responseText);
-            }
-        }
-    });
-    //<input type="button" style="width: 50px; height:25px" value="@Model.AberdeencityData.allMalepupils" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = "100", dataname = "Males" })'" />
-}
+//function goToCreateURL(object) {
+//    alert("goToCreateURL");
+//    return object.href = '/DatahubProfile/IndexDatahub/GetListpupils?searchby=school&code=100&dataname=' + datasetname;
+//    //?searchby=school&code=100&dataname=Pupils16
+//}
 
 function SetErrorMessage(xhr) {
     if (xhr.responseText.length > 0) {

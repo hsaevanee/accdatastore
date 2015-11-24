@@ -933,6 +933,32 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             return listtemp1;
         }
 
+
+        protected List<WiderAchievementObj> GetWiderAchievementdata(IGenericRepository rpGeneric)
+        {
+            Console.Write("GetWiderAchievementdata in BaseSchoolProfileController==> ");
+
+            List<WiderAchievementObj> listdata = rpGeneric.FindAll<WiderAchievementObj>().ToList();
+            List<WiderAchievementObj> temp = new List<WiderAchievementObj>();
+
+            if (listdata != null)
+            {
+                //temp = (from a in listdata where a.schoolname.Equals(sSchoolname) select a).ToList();
+                temp = listdata.GroupBy(a => new { a.age_range, a.awardname }).Select(x => new WiderAchievementObj
+                { 
+                    age_range = x.Key.age_range,
+                    awardname = x.Key.awardname,
+                    award2013 = x.Sum(y =>y.award2013),
+                    award2014 = x.Sum(y => y.award2014),
+                    award2015 = x.Sum(y => y.award2015),
+                }).ToList();
+
+            }
+
+            temp = temp.OrderByDescending(x => x.age_range).ThenBy(x => x.awardname).ToList();
+ 
+            return temp;
+        }
  
     }
 }

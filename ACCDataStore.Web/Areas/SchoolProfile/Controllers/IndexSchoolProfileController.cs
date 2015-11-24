@@ -199,7 +199,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             vmIndex2SchoolProfile.ListLevelENCode = fooList;
             vmIndex2SchoolProfile.DicLevelEN = GetDicLevelEnglish();
 
-
+            vmIndex2SchoolProfile.ListWiderAchievementData = GetWiderAchievementdata(this.rpGeneric);
             return View("index2", vmIndex2SchoolProfile);           
         }
     }

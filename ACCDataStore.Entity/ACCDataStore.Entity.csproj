@@ -68,6 +68,7 @@
     <Compile Include="Mapping\MSAccess\Age05sInfoMap.cs" />
     <Compile Include="Mapping\MSAccess\NeighbourhoodMap.cs" />
     <Compile Include="Mapping\MSAccess\DatahubDataMap.cs" />
+    <Compile Include="Mapping\MSAccess\WiderAchievementMap.cs" />
     <Compile Include="PupilsPopulation\PupilsInfoObj.cs" />
     <Compile Include="School.cs" />
     <Compile Include="Mapping\MySQL\LA100PupilsMap.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="SchoolProfile\SIMDObj.cs" />
     <Compile Include="SchoolProfile\StdStageObj.cs" />
     <Compile Include="SchoolProfile\StudentSIMD.cs" />
+    <Compile Include="SchoolProfile\WiderAchievementObj.cs" />
     <Compile Include="Year.cs" />
   </ItemGroup>
   <ItemGroup>

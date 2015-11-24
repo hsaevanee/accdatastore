@@ -324,6 +324,8 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 {
                     dataTitle = "Destination -" + schname,
                     schoolname = schname,
+                    searchcode = keyvalue,
+                    searchby = keyname.ToLower(),
                     dataCategories = new string[] {"Participating","Not-Participating", "Unconfirmed"},
                     Schdata = new double[] { Schooldata.Participating(), Schooldata.NotParticipating(), Schooldata.Percentage(Schooldata.pupilsinUnknown) },
                     Abdcitydata = new double[] { Abddata.Participating(), Abddata.NotParticipating(), Abddata.Percentage(Abddata.pupilsinUnknown) }
@@ -337,6 +339,35 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             {
                 return ThrowJSONError(ex);
             }
+        }
+
+        protected List<DatahubDataObj> GetListpupilsbydataname(List<DatahubDataObj> listdata, string dataname)
+        {
+            var tempPupilslist= new List<DatahubDataObj>();
+            // 
+            if (dataname.ToLower().Equals("not-participating")) {
+                tempPupilslist.AddRange((from a in listdata where a.Current_Status.ToLower().Equals("custody") select a).ToList());
+                tempPupilslist.AddRange((from a in listdata where a.Current_Status.ToLower().Equals("economically inactive") select a).ToList());
+                tempPupilslist.AddRange((from a in listdata where a.Current_Status.ToLower().Equals("unavailable - ill health") select a).ToList());
+                tempPupilslist.AddRange((from a in listdata where a.Current_Status.ToLower().Equals("unemployed") select a).ToList());               
+            }else if (dataname.ToLower().Equals("participating")) {
+                tempPupilslist.AddRange((from a in listdata where a.Current_Status.ToLower().Equals("school pupil") select a).ToList());
+                tempPupilslist.AddRange((from a in listdata where a.Current_Status.ToLower().Equals("school pupil - in transition") select a).ToList());
+                tempPupilslist.AddRange((from a in listdata where a.Current_Status.ToLower().Equals("activity agreement") select a).ToList());
+                tempPupilslist.AddRange((from a in listdata where a.Current_Status.ToLower().Equals("employability fund stage 2") select a).ToList());
+                tempPupilslist.AddRange((from a in listdata where a.Current_Status.ToLower().Equals("employability fund stage 3") select a).ToList());
+                tempPupilslist.AddRange((from a in listdata where a.Current_Status.ToLower().Equals("employability fund stage 4") select a).ToList());
+                tempPupilslist.AddRange((from a in listdata where a.Current_Status.ToLower().Equals("full-time employment") select a).ToList());
+                tempPupilslist.AddRange((from a in listdata where a.Current_Status.ToLower().Equals("further education") select a).ToList());
+                tempPupilslist.AddRange((from a in listdata where a.Current_Status.ToLower().Equals("higher education") select a).ToList());
+                tempPupilslist.AddRange((from a in listdata where a.Current_Status.ToLower().Equals("modern apprenticeship") select a).ToList());
+                tempPupilslist.AddRange((from a in listdata where a.Current_Status.ToLower().Equals("part-time employment") select a).ToList());
+                tempPupilslist.AddRange((from a in listdata where a.Current_Status.ToLower().Equals("personal/ skills development") select a).ToList());
+                tempPupilslist.AddRange((from a in listdata where a.Current_Status.ToLower().Equals("self-employed") select a).ToList());
+                tempPupilslist.AddRange((from a in listdata where a.Current_Status.ToLower().Equals("training (non ntp)") select a).ToList());
+                tempPupilslist.AddRange((from a in listdata where a.Current_Status.ToLower().Equals("voluntary work") select a).ToList());
+            }
+            return tempPupilslist;
         }
 
         public ActionResult GetListpupils(string searchby, string code, string dataname)
@@ -365,13 +396,14 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
                 vmListpupilsViewModel.selectedschool = selectedschool;
             }
-            //if (code != null)
-            //{
-            //    if (!code.Equals("100"))
-            //    {
-            //        listdata = (from a in listdata where a.SEED_Code != null && a.SEED_Code.Equals(code) select a).ToList();
-            //    }
-            //}
+            else if (searchby.Equals("zonecode"))
+            {
+
+                listdata = GetDatahubdatabyZonecode(rpGeneric, code);
+                School selectedschool = new School(code,code);
+
+                vmListpupilsViewModel.selectedschool = selectedschool;
+            }
             switch (dataname.ToLower()) {
                 case "allclients":
                     listdata = (from a in listdata where a.SDS_Client_Ref!=null select a).ToList();
@@ -484,6 +516,18 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 case "pupilsinunknown":
                     listdata = (from a in listdata where a.Current_Status.ToLower().Equals("unknown") select a).ToList();
                     vmListpupilsViewModel.levercategory = "Pupils in Unknown ";
+                    break;
+                case "not-participating":
+                    listdata = GetListpupilsbydataname(listdata, dataname.ToLower());
+                    vmListpupilsViewModel.levercategory = "Not-Participating ";
+                    break;
+                case "participating":
+                    listdata = GetListpupilsbydataname(listdata, dataname.ToLower());
+                    vmListpupilsViewModel.levercategory = "Participating ";
+                    break;
+                case "unconfirmed":
+                    listdata = (from a in listdata where a.Current_Status.ToLower().Equals("unknown") select a).ToList();
+                    vmListpupilsViewModel.levercategory = "Unconfirmed ";
                     break;
             }
 

@@ -49,5 +49,10 @@ namespace ACCDataStore.Web.Areas.PupilsPopulation.ViewModels.Pupils05
             return allpupils00;
         }
 
+        public double Percentage(double number, double total)
+        {
+            return (double)(number * 100) / total;
+        }
+
     }
 }
