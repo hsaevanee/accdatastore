@@ -44,7 +44,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                     vmDatahubViewModel.SchoolData = CreatDatahubdata(GetDatahubdatabySchoolcode(rpGeneric, sSchoolcode), sSchoolcode); 
                     vmDatahubViewModel.selectedschoolcode = sSchoolcode;                
                     vmDatahubViewModel.selectedschool = vmDatahubViewModel.ListSchoolNameData.Where(x => x.seedcode.Equals(sSchoolcode)).FirstOrDefault();
-                    vmDatahubViewModel.seachby= "school";
+                    vmDatahubViewModel.seachby= "School";
                     vmDatahubViewModel.searchcode = sSchoolcode;   
                 }
             }
@@ -56,7 +56,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                     vmDatahubViewModel.SchoolData = CreatDatahubdata(GetDatahubdatabyNeighbourhoods(rpGeneric, sNeighbourhoods), sNeighbourhoods);
                     vmDatahubViewModel.selectedneighbourhoods = sNeighbourhoods;
                     vmDatahubViewModel.selectedschool = vmDatahubViewModel.ListNeighbourhoodsName.Where(x => x.seedcode.Equals(sNeighbourhoods)).FirstOrDefault();
-                    vmDatahubViewModel.seachby = "neighbourhood";
+                    vmDatahubViewModel.seachby = "Neighbourhood";
                     vmDatahubViewModel.searchcode = sNeighbourhoods;   
                 }
             }
@@ -377,7 +377,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             //var listdata = this.rpGeneric.FindAll<ACCDataStore.Entity.DatahubProfile.DatahubDataObj>();
             List<DatahubDataObj> listdata = new List<DatahubDataObj>();
 
-            if (searchby.Equals("school")) {
+            if (searchby.ToLower().Equals("school")) {
 
                 listdata = GetDatahubdatabySchoolcode(rpGeneric, code);
 
@@ -387,7 +387,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 vmListpupilsViewModel.selectedschool = selectedschool;
 
             }
-            else if (searchby.Equals("neighbourhood"))
+            else if (searchby.ToLower().Equals("neighbourhood"))
             {
 
                 listdata = GetDatahubdatabyNeighbourhoods(rpGeneric, code);
@@ -396,7 +396,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
                 vmListpupilsViewModel.selectedschool = selectedschool;
             }
-            else if (searchby.Equals("zonecode"))
+            else if (searchby.ToLower().Equals("zonecode"))
             {
 
                 listdata = GetDatahubdatabyZonecode(rpGeneric, code);
@@ -531,9 +531,9 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                     break;
             }
 
-            vmListpupilsViewModel.Listpupils = listdata;
+            vmListpupilsViewModel.Listpupils = listdata.OrderBy(x => x.Forename).ToList();
 
-            Session["ListPupilsData"] = listdata;
+            Session["ListPupilsData"] = vmListpupilsViewModel.Listpupils;
 
             return View("Pupilslist", vmListpupilsViewModel);
         }
@@ -548,6 +548,43 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
             return View("PersonalDetails", tempobj);
         }
+
+
+        public ActionResult SearchpupilbyName(string searchsubmitButton)
+        {
+            var vmListpupilsViewModel = new DatahubViewModel();
+
+            var sForname = "";
+            var sSurename = "";
+
+            if (searchsubmitButton.ToLower().Equals("search"))
+            {
+                 sForname = Request["forename"];
+                 sSurename = Request["surname"];
+
+                var listdata = this.rpGeneric.FindAll<ACCDataStore.Entity.DatahubProfile.DatahubDataObj>();
+                List<DatahubDataObj> tempobj = listdata.Where(x => x.Forename.ToLower().Contains(sForname) && x.Surname.ToLower().Contains(sSurename)).ToList();
+
+               
+                vmListpupilsViewModel.Listpupils = tempobj;
+
+
+
+            }
+            else {
+                vmListpupilsViewModel.Listpupils = null;
+            }
+            Session["ListPupilsData"] = vmListpupilsViewModel.Listpupils;
+
+            School selectedschool = new School("Search Results", "Search Results");
+            vmListpupilsViewModel.levercategory = "Search Results for " + sForname + " " + sSurename;
+            vmListpupilsViewModel.selectedschool = selectedschool;
+
+            return View("Pupilslist", vmListpupilsViewModel);
+
+
+        }
+
 
         public ActionResult ExportExcel()
         {

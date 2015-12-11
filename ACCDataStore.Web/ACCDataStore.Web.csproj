@@ -152,6 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Config\GeneralSettings.xml" />
+    <Content Include="Content\accdatastore\areas\DatahubProfile\views\datahub\datahub.css" />
     <Content Include="Content\accdatastore\areas\nationality\views\nationality\nationality.css" />
     <Content Include="Content\accdatastore\views\global.css" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -201,6 +202,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Areas\Nationality\Views\web.config" />
+    <Content Include="Images\Aberdeen  Gaurtees logo.png" />
     <Content Include="Images\acc-logo.gif" />
     <Content Include="Images\bruce_scharlau.JPG" />
     <Content Include="Images\Do_Coyle.jpg" />
@@ -208,6 +210,7 @@
     <Content Include="Images\Jan2.png" />
     <Content Include="Images\Kevin.jpeg" />
     <Content Include="Images\Pamela_Bain.jpeg" />
+    <Content Include="Images\Skilldevelopmentlogo.png" />
     <Content Include="Images\spinner.gif" />
     <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\HeatMapIndex.js" />

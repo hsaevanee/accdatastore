@@ -22,7 +22,7 @@ function InitSpinner() {
 }
 
 // initialize map object
-function InitMap(data, lowcodecolour, highcodecolour, convertcolor) {
+function InitMap(data) {
     var mapCenter = new google.maps.LatLng(57.151810, -2.094451);
     var mapOptions = {
         zoom: 11,
@@ -34,8 +34,8 @@ function InitMap(data, lowcodecolour, highcodecolour, convertcolor) {
     map.data.loadGeoJson('https://dl.dropboxusercontent.com/u/870146/KML/V2/Datazone_with_Desc.json' + "?rand=" + (new Date()).valueOf());
 
     map.data.setStyle(function (feature) {
-        var low = lowcodecolour; //[5, 69, 54];  // color of smallest datum
-        var high = highcodecolour;//[151, 83, 34];   // color of largest datum
+        var low = [5, 69, 54];  // color of smallest datum
+        var high = [151, 83, 34];   // color of largest datum
 
         var statisticdata = -1;
 
@@ -49,25 +49,15 @@ function InitMap(data, lowcodecolour, highcodecolour, convertcolor) {
 
         }
 
-        if (statisticdata <= 60) {
-            color = lowcodecolour ;
-        }else {
-            // delta represents where the value sits between the min and max
-            var delta = (statisticdata - data.minimum) / (data.maximum - data.minimum);
+        var delta = (statisticdata - data.minimum) / (data.maximum - data.minimum);
 
-            var color = [];
-            if (convertcolor == 1) {
-                for (var i = 0; i < 3; i++) {
-                    // calculate an integer color based on the delta
-                    color[i] = (high[i] - low[i]) * delta + low[i];
-                }
-            } else {
-                for (var i = 0; i < 3; i++) {
-                    // calculate an integer color based on the delta
-                    color[i] = (low[i] - high[i]) * delta + high[i];
-                }
-            }
+        var color = [];
+
+        for (var i = 0; i < 3; i++) {
+            // calculate an integer color based on the delta
+            color[i] = (high[i] - low[i]) * delta + low[i];
         }
+
 
         // determine whether to show this shape or not
         var showRow = true;
@@ -141,20 +131,6 @@ function loadData(datasetname) {
         "datasetname": datasetname,
     }
 
-    if (datasetname == "Participating") {
-        var low = [5, 69, 54];  // color of smallest datum
-        var high = [151, 83, 34];
-        var convertcolor =1;
-    } else if (datasetname == "Not-Participating") {
-        var high = [5, 69, 54];  // color of smallest datum
-        var low = [151, 83, 34];
-        var convertcolor = -1;  // convert color
-    }else{
-        var low = [5, 69, 54];  // color of smallest datum
-        var high = [151, 83, 34];
-        var convertcolor =1;
-    }
-
     $.ajax({
         type: "POST",
         url: sContextPath + "DatahubProfile/IndexDatahub/GetdataforHeatmap",
@@ -162,7 +138,7 @@ function loadData(datasetname) {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
-            InitMap(data, low, high, convertcolor)
+            InitMap(data)
         },
         error: function (xhr, err) {
             SetErrorMessage(xhr);

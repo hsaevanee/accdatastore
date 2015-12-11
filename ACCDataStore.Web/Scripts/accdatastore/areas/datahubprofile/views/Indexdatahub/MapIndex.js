@@ -16,13 +16,13 @@ var kml = {
     a: {
         name: "Schools Locations",
         type: 2,
-        url: 'https://dl.dropboxusercontent.com/u/55734762/InsightSchoollocations.json' + "?rand=" + (new Date()).valueOf(),
+        url: 'https://storage.googleapis.com/maps-devrel/google.json' + "?rand=" + (new Date()).valueOf(),
         dataType : 1
     },
     b: {
         name: "Aberdeen DataZone Districts",
         type: 2,
-        url: 'https://dl.dropboxusercontent.com/u/870146/KML/V2/Datazone_with_Desc.json' + "?rand=" + (new Date()).valueOf(),
+        url: '~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/Datazone_with_Desc.json' + "?rand=" + (new Date()).valueOf(),
         dataType: 2
     },
     c: {

@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@HttpContext.Current.Application["APP_NAME"]</title>
-    <link rel="stylesheet" href="~/Content/accdatastore/views/global.css" type="text/css" />
+    <link rel="stylesheet" href="~/Content/accdatastore/areas/DatahubProfile/views/datahub/datahub.css" type="text/css" />
     <script src="~/Scripts/accdatastore/views/global.js"></script>
     <script src="~/Scripts/jquery-2.1.1.min.js"></script>
     <script src="~/Scripts/highcharts.js"></script>
@@ -44,20 +44,38 @@
 </body>*@
 
 <body>
-    <div id="divBody">
-        <div id="container">
+    @*<div id="divBody">*@
+        @*<div id="container">*@
             <div id="header">
                 <h1> Aberdeen City Council Digital Data Observatory Project</h1>
             </div>
-            <div id="content">
+            <div id="container">
                 <div id="nav">
                     <h3>Navigation</h3>
                     <ul>
-                        <li>@Html.ActionLink("Home", "Index", "Index", new { Area = "" }, null)</li>  
-                        <li>@Html.ActionLink("Datahub", "index", "IndexDatahub", new { Area = "DatahubProfile" }, null)</li>          
+                        @*<li>@Html.ActionLink("Home", "Index", "Index", new { Area = "" }, null)</li>*@
+                        <li><input type="button" style="width: 140px; height:25px" value="Home" onclick="location.href='@Url.Action("Index", "Index", new { area = "" }, null)' " /></li>
+                        @*<li>@Html.ActionLink("Datahub", "index", "IndexDatahub", new { Area = "DatahubProfile" }, null)</li>*@
+                        <li><input type="button" style="width: 140px; height:25px" value="DataHub" onclick="location.href='@Url.Action("index" , "IndexDatahub" , new { area="DatahubProfile" }, null)' " /></li>
+                        @*<h3>@Html.ActionLink("Interactive Map", "MapData", "IndexDatahub", new { Area = "DatahubProfile", sSchoolName = "" }, null)</h3>
+                    <h3>@Html.ActionLink("Interactive HeatMap", "HeatMapData", "IndexDatahub", new { Area = "DatahubProfile", sSchoolName = "" }, null)</h3>*@
+                        <li><input type="button" style="width: 140px; height:25px" value="Interactive Map" onclick="location.href='@Url.Action("MapData", "IndexDatahub", new { Area = "DatahubProfile", sSchoolName = "" }, null)' " /></li>
+                        <li><input type="button" style="width: 140px; height:25px" value="Interactive HeatMap" onclick="location.href='@Url.Action("HeatMapData", "IndexDatahub", new { Area = "DatahubProfile", sSchoolName = "" }, null)' " /></li>
+
                     </ul>
                 </div>
-                <div id="main" style="margin:10px 10px">
+
+                <div id="main">
+                    <div id="banners">
+                        <div id="Topic" style="text-align: left">
+                            <h1 style="float: left;" > Data Hub Statistics: City Wide Participation</h1>
+                        </div>
+                        <div id="logoes" style="text-align: right">
+                            <img src="@Url.Content("~/Images/acc-logo.gif")" alt="Aberdeen City Council" width="130" height="108" />
+                            <img src="@Url.Content("~/Images/Aberdeen  Gaurtees logo.png")" alt="Aberdeen Gaurtees logo" width="250" height="108" />
+                            <img src="@Url.Content("~/Images/Skilldevelopmentlogo.png")" alt="Skills Development Scotland logo" width="200" height="108" />
+                        </div>
+                    </div>
                     @RenderBody()
                 </div>
             </div>
@@ -69,7 +87,7 @@
                     Feedback Contact:-  <a href="mailto:HSaevanee@aberdeencity.gov.uk">HSaevanee@aberdeencity.gov.uk</a>
                 </p>
             </div>
-        </div>
-    </div>
+        @*</div>*@
+    @*</div>*@
 </body>
 </html>
