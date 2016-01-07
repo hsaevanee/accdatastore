@@ -7,6 +7,23 @@ $(function () {
 
 $(document).ready(function () {
 
+    //$('#example-getting-started').multiselect({
+    //    includeSelectAllOption: true,
+    //    selectAllValue: 'multiselect-all',
+    //    enableCaseInsensitiveFiltering: true,
+    //    enableFiltering: true,
+    //    maxHeight: '300',
+    //    buttonWidth: '235',
+    //    onChange: function (element, checked) {
+    //        var brands = $('#example-getting-started option:selected');
+    //        var selected = [];
+    //        $(brands).each(function (index, brand) {
+    //            selected.push([$(this).val()]);
+    //        });
+    //        console.log(selected);
+    //    }
+    //});
+
     $('#buttonGetData').click(function () {
         if (validateCheckBoxs() == true && validateDropdownlist() == true) {
             document.forms[0].submit();

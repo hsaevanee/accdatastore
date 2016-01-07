@@ -33,6 +33,81 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         //    TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralCounter, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
         //}
 
+        //public ActionResult Index()
+        //{
+        //    //SetDefaultCounter();
+        //    var eGeneralSettings = TS.Core.Helper.ConvertHelper.XmlFile2Object(HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"), typeof(GeneralCounter)) as GeneralCounter;
+        //    eGeneralSettings.SiteCounter++;
+        //    TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
+
+        //    //var vmIndex = new IndexViewModel();
+        //    //var result = this.rpGeneric.FindAll<StudentSIMD>();
+        //    var vmIndexSchoolProfile = new IndexSchoolProfileViewModel();
+
+        //    var sSchoolName = Request["selectedschoolname"];
+
+        //    var listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW Name FROM test_3 group by Name");
+
+        //    List<string> fooList = listResult.OfType<string>().ToList();
+
+        //    vmIndexSchoolProfile.ListSchoolNameData = fooList;
+
+        //    if (sSchoolName == null)
+        //    {
+        //        sSchoolName = fooList[0];
+        //    }
+
+        //    vmIndexSchoolProfile.selectedschoolname = sSchoolName;
+        //    vmIndexSchoolProfile.ListEthnicData = GetEthnicityDatabySchoolname(this.rpGeneric, sSchoolName);
+        //    vmIndexSchoolProfile.ListNationalityData = GetNationalityDatabySchoolname(this.rpGeneric, sSchoolName);
+        //    vmIndexSchoolProfile.ListSIMDData = GetSIMDDatabySchoolname(this.rpGeneric, sSchoolName, new List<string>(new string[] { "2012" }));
+        //    vmIndexSchoolProfile.ListStdStageData = GetStudentStageDatabySchoolname(this.rpGeneric, sSchoolName);
+        //    vmIndexSchoolProfile.ListLevelENData = GetLevelENDatabySchoolname(this.rpGeneric, sSchoolName);            
+        //    List<string> TempCode = new List<string>();
+
+        //    listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW SIMD_2012_decile FROM test_3 group by SIMD_2012_decile");
+
+        //    if (listResult != null)
+        //    {
+        //        foreach (var itemRow in listResult)
+        //        {
+        //            if (itemRow != null)
+        //            {
+        //                TempCode.Add(itemRow.ToString());
+        //            }
+        //        }
+        //    }
+
+
+        //    vmIndexSchoolProfile.ListSIMDCode = TempCode;
+
+
+        //    listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW EthnicBackground FROM test_3 group by EthnicBackground");
+
+        //    fooList = listResult.OfType<string>().ToList();
+
+        //    vmIndexSchoolProfile.ListEthnicCode = fooList;
+
+        //    vmIndexSchoolProfile.DicEthnicBG = GetDicEhtnicBG();
+
+
+        //    listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW NationalIdentity FROM test_3 group by NationalIdentity");
+
+        //    fooList = listResult.OfType<string>().ToList();
+        //    vmIndexSchoolProfile.ListNationalityCode = fooList;
+        //    vmIndexSchoolProfile.DicNational = GetDicNational();
+
+        //    listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW StudentStage FROM test_3 group by StudentStage");
+
+        //    fooList = listResult.OfType<string>().ToList();
+        //    vmIndexSchoolProfile.ListStageCode = fooList;
+
+        //    return View("index", vmIndexSchoolProfile);
+
+
+
+        //}
+
         public ActionResult Index()
         {
             //SetDefaultCounter();
@@ -62,7 +137,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             vmIndexSchoolProfile.ListNationalityData = GetNationalityDatabySchoolname(this.rpGeneric, sSchoolName);
             vmIndexSchoolProfile.ListSIMDData = GetSIMDDatabySchoolname(this.rpGeneric, sSchoolName, new List<string>(new string[] { "2012" }));
             vmIndexSchoolProfile.ListStdStageData = GetStudentStageDatabySchoolname(this.rpGeneric, sSchoolName);
-            vmIndexSchoolProfile.ListLevelENData = GetLevelENDatabySchoolname(this.rpGeneric, sSchoolName);            
+            vmIndexSchoolProfile.ListLevelENData = GetLevelENDatabySchoolname(this.rpGeneric, sSchoolName);
             List<string> TempCode = new List<string>();
 
             listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW SIMD_2012_decile FROM test_3 group by SIMD_2012_decile");
@@ -117,9 +192,15 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
             var vmIndex2SchoolProfile = new Index2SchoolProfileViewModel();
 
+            List<SchStudent> listdata = this.rpGeneric.FindAll<ACCDataStore.Entity.SchStudent>().ToList();
+
+            List<SchPrimarySchool> PrimarySchoollistdata = this.rpGeneric.FindAll<ACCDataStore.Entity.SchPrimarySchool>().ToList();
+
+            List<string> fooList = PrimarySchoollistdata.Select(x => x.Name).Distinct().ToList();
+
             var listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW Name FROM test_3 group by Name");
 
-            List<string> fooList = listResult.OfType<string>().ToList();
+            //List<string> fooList = listResult.OfType<string>().ToList();
 
             vmIndex2SchoolProfile.ListSchoolNameData = fooList;
             vmIndex2SchoolProfile.ListSchoolNameData2 = fooList;

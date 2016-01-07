@@ -273,12 +273,12 @@ function ToggleKMLLayer(checked, id) {
 // create layer control box on top right of screen
 function CreateLayerControl() {
     var i = -1;
-    var html = "<form action='' name='formLayer'><ul>";
+    var html = "<form action='' name='formLayer'><ul class='list-unstyled'>";
     for (var prop in kml) {
         i++;
-        html += "<li id=\"selector" + i + "\"><input name='box' type='checkbox' id='" + prop + "'" +
+        html += "<li class='text-left' id=\"selector" + i + "\"><input name='box' type='checkbox' id='" + prop + "'" +
         " onclick='ToggleKMLLayer(this.checked, this.id)' \/>&nbsp;" +
-        kml[prop].name + "<\/li>";
+        kml[prop].name + "<\/li> <hr>";
     }
     html += "<li class='control'><a href='#' onclick='RemoveAllLayers();return false;'>" +
     "Remove all layers<\/a><\/li>" +

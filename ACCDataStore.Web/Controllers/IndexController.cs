@@ -37,9 +37,33 @@ namespace ACCDataStore.Web.Controllers
             }
             else
             {
-                eGeneralSettings.TeampgCounter++;
-                TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
-                return View("theTeam");
+                if (id.ToLower().Equals("theteam"))
+                {
+                    eGeneralSettings.TeampgCounter++;
+                    TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
+                    return View("theTeam");
+                }
+                else if (id.ToLower().Equals("about"))
+                {
+                    eGeneralSettings.TeampgCounter++;
+                    TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
+                    return View("About");
+                }
+                else if (id.ToLower().Equals("contact"))
+                {
+                    eGeneralSettings.TeampgCounter++;
+                    TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
+                    return View("Contact");
+                }
+                else {
+                    eGeneralSettings.HomepgCounter++;
+                    TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
+
+                    var vmIndex = new IndexViewModel();
+                    vmIndex.ApplicationName = HttpContext.Application["APP_NAME"] as string;
+                    vmIndex.ApplicationVersion = HttpContext.Application["APP_VERSION"] as string;
+                    return View("index", vmIndex);
+                }
             }
 
         }

@@ -3,6 +3,7 @@ using System;
 using System.Configuration;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Web.Optimization;
 
 namespace ACCDataStore.Web
 {
@@ -12,6 +13,7 @@ namespace ACCDataStore.Web
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            BundleConfig.RegisterBundles(BundleTable.Bundles);
             ProcessApplicationStart();
         }
 

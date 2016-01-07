@@ -133,7 +133,7 @@ function InitSpinner() {
 function InitMap() {
     var mapCenter = new google.maps.LatLng(57.151810, -2.094451);
     var mapOptions = {
-        zoom: 9,
+        zoom: 11,
         center: mapCenter
     }
 
@@ -264,24 +264,25 @@ function drawChartColumn(data, sCondition) {
 }
 
 function ShowPopupInfo(data) {
-    //var sInformation = "<a href='#' class='a-close-popup-information'>Close</a><h3>" + sName + "</h3>";
-    var sInformation = "<h3 align='center'> Nationality - " + data.dataTitle + "</h3>";
-    sInformation += "<table class='style2'>";
-    sInformation += "<thead><tr><th>Nationality</th><th>Female</th><th>Male</th><th>Total</th></tr></thead>";
+    var sInformation = "<hr><div class='panel panel-primary text-center'> <div class='panel-heading'>";
+    sInformation += "<h4 class='text-center'> Nationality - " + data.dataTitle + "</h4>";
+    sInformation += "</div><div class='panel-body'>";
+    sInformation += "<table class='table table-bordered table-hover'>";
+    sInformation += "<thead><tr><th class='text-center'>Nationality</th><th class='text-center'>Female</th><th class='text-center'>Male</th><th class='text-center'>Total</th></tr></thead>";
     sInformation += "<tbody>";
     if (data.dataSeries.length != 0) {
         for (var i = 0; i < data.dataSeries.length; i++) {
-            sInformation += "<tr><td>" + data.dataSeries[i].IdentityName + "</td><td  align='center'>" + data.dataSeries[i].PercentageFemaleAllSchool.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].PercentageMaleAllSchool.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].PercentageAllSchool.toFixed(2) + "</td><tr>";
+            sInformation += "<tr><td class='text-left'>" + data.dataSeries[i].IdentityName + "</td><td  class='text-center'>" + data.dataSeries[i].PercentageFemaleAllSchool.toFixed(2) + "</td><td  class='text-center'>" + data.dataSeries[i].PercentageMaleAllSchool.toFixed(2) + "</td><td  class='text-center'>" + data.dataSeries[i].PercentageAllSchool.toFixed(2) + "</td><tr>";
 
         }
 
     } else {
 
-        sInformation += "<tr><td colspan='4' align='center'> No data available</td><tr>";
+        sInformation += "<tr><td colspan='4' class='text-center'> No data available</td><tr>";
     }
 
 
-    sInformation += "</tbody></table>";
+    sInformation += "</tbody></table></div></div>";
     ShowPopupInformation(sInformation);
 
 }
@@ -387,12 +388,12 @@ function ToggleKMLLayer(checked, id) {
 // create layer control box on top right of screen
 function CreateLayerControl() {
     var i = -1;
-    var html = "<form action='' name='formLayer'><ul>";
+    var html = "<form action='' name='formLayer'><ul class='list-unstyled'>";
     for (var prop in kml) {
         i++;
-        html += "<li id=\"selector" + i + "\"><input name='box' type='checkbox' id='" + prop + "'" +
+        html += "<li class='text-left' id=\"selector" + i + "\"><input name='box' type='checkbox' id='" + prop + "'" +
         " onclick='ToggleKMLLayer(this.checked, this.id)' \/>&nbsp;" +
-        kml[prop].name + "<\/li>";
+        kml[prop].name + "<\/li> <hr>";
     }
     html += "<li class='control'><a href='#' onclick='RemoveAllLayers();return false;'>" +
     "Remove all layers<\/a><\/li>" +

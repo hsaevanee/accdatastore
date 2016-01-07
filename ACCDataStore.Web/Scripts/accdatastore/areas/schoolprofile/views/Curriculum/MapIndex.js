@@ -51,7 +51,7 @@ function InitSpinner() {
 function InitMap() {
     var mapCenter = new google.maps.LatLng(57.151810, -2.094451);
     var mapOptions = {
-        zoom: 9,
+        zoom: 11,
         center: mapCenter
     }
 
@@ -171,33 +171,35 @@ function drawChartColumn(data, sSubject, sCondition) {
 
 function ShowPopupInfo(data, subject) {
     //var sInformation = "<a href='#' class='a-close-popup-information'>Close</a><h3>" + sName + "</h3>";
-    var sInformation = "<h3 align='center'> Curriculum for Excellence - "+ data.dataTitle + "</h3>";
-    sInformation += "<table class='style2'>";
-    sInformation += "<thead><tr><th colspan='16'>" + subject + "</th></tr><tr><th>Stage</th><th>Early</th><th>Early Developing</th><th>Early Consolidating</th><th>Early Secure</th>";
-    sInformation += "<th>First Developing</th><th>First Consolidating</th><th>First Secure</th>";
-    sInformation += "<th>Second Developing</th><th>Second Consolidating</th><th>Second Secure</th>";
-    sInformation += "<th>Third Developing</th><th>Third Consolidating</th><th>Third Secure</th>";
-    sInformation += "<th>blank</th><th>Grandtotal</th></tr></thead>";
+    var sInformation = "<hr><div class='panel panel-primary text-center'> <div class='panel-heading'>";
+    sInformation += "<h4 class='text-center'> Curriculum for Excellence - " + data.dataTitle + "</h4>";
+    sInformation += "</div><div class='panel-body'>";
+    sInformation += "<table class='table table-bordered table-hover'>";
+    sInformation += "<thead><tr><th class='text-center' colspan='16'>" + subject + "</th></tr><tr><th><small>Stage</small></th><th><small>Early</small></th><th><small>Early Developing</small></th><th><small>Early Consolidating</small></th><th><small>Early Secure</small></th>";
+    sInformation += "<th><small>First Developing</small></th><th><small>First Consolidating</small></th><th><small>First Secure</small></th>";
+    sInformation += "<th><small>Second Developing</small></th><th><small>Second Consolidating</small></th><th><small>Second Secure</small></th>";
+    sInformation += "<th><small>Third Developing</small></th><th><small>Third Consolidating</small></th><th><small>Third Secure</small></th>";
+    sInformation += "<th><small>blank</small></th><th><small>Total</small></th></tr></thead>";
     sInformation += "<tbody>";
     if (data.dataSeries.length != 0) {
         for (var i = 0; i < data.dataSeries.length; i++) {
 
             if (data.dataSeries[i].gender == "T") {
                 sInformation += "<tr><td>" + data.dataSeries[i].stage + "</td><td  align='center'>" + data.dataSeries[i].early.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].earlydeveloping.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].earlyconsolidating.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].earlysecure.toFixed(2) + "</td>";
-                sInformation += "<td  align='center'>" + data.dataSeries[i].firstdeveloping.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].firstconsolidating.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].firstsecure.toFixed(2) + "</td>";
-                sInformation += "<td  align='center'>" + data.dataSeries[i].seconddeveloping.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].secondconsolidating.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].secondsecure.toFixed(2) + "</td>";
-                sInformation += "<td  align='center'>" + data.dataSeries[i].thirddeveloping.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].thirdconsolidating.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].thirdsecure.toFixed(2) + "</td>";
-                sInformation += "<td  align='center'>" + data.dataSeries[i].blank.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].grandtotal.toFixed(2) + "</td><tr>";
+                sInformation += "<td  class='text-center'>" + data.dataSeries[i].firstdeveloping.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].firstconsolidating.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].firstsecure.toFixed(2) + "</td>";
+                sInformation += "<td  class='text-center'>" + data.dataSeries[i].seconddeveloping.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].secondconsolidating.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].secondsecure.toFixed(2) + "</td>";
+                sInformation += "<td  class='text-center'>" + data.dataSeries[i].thirddeveloping.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].thirdconsolidating.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].thirdsecure.toFixed(2) + "</td>";
+                sInformation += "<td  class='text-center'>" + data.dataSeries[i].blank.toFixed(2) + "</td><td  align='center'>" + data.dataSeries[i].grandtotal.toFixed(2) + "</td><tr>";
             }
 
         }
 
     } else {
-        sInformation += "<tr><td colspan='16' align='center'> No data available</td><tr>";
+        sInformation += "<tr><td colspan='16' class='text-center'> No data available</td><tr>";
     }
 
 
-    sInformation += "</tbody></table>";
+    sInformation += "</tbody></table></div></div>";
     ShowPopupInformation(sInformation);
 
 }
@@ -309,12 +311,12 @@ function ToggleKMLLayer(checked, id) {
 // create layer control box on top right of screen
 function CreateLayerControl() {
     var i = -1;
-    var html = "<form action='' name='formLayer'><ul>";
+    var html = "<form action='' name='formLayer'><ul class='list-unstyled'>";
     for (var prop in kml) {
         i++;
-        html += "<li id=\"selector" + i + "\"><input name='box' type='checkbox' id='" + prop + "'" +
+        html += "<li class='text-left' id=\"selector" + i + "\"><input name='box' type='checkbox' id='" + prop + "'" +
         " onclick='ToggleKMLLayer(this.checked, this.id)' \/>&nbsp;" +
-        kml[prop].name + "<\/li>";
+        kml[prop].name + "<\/li> <hr>";
     }
     html += "<li class='control'><a href='#' onclick='RemoveAllLayers();return false;'>" +
     "Remove all layers<\/a><\/li>" +
@@ -342,7 +344,7 @@ function validateDropdownlist() {
     var value1 = $('#selectedschoolname :selected').text();
     //var value2 = $('#selectedschoolname2 :selected').text();
 
-    if (value1 == "---Please Select Subject---") {
+    if (value1 == "--Subject--") {
         alert('Please select Subject');
         return false;
     } else {

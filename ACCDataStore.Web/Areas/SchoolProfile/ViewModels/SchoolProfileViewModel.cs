@@ -30,6 +30,9 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.ViewModels
         public List<NationalityObj> ListLevelENData { get; set; }
         public List<FSMObj> ListFSMData { get; set; }
         public List<WiderAchievementObj> ListWiderAchievementData { get; set; }
+        //Test Boostrapmultiselect
+        public List<CheckModel> Listcheckmodel{ get; set; }
+        public int[] Selectedcheckmodel { get; set; }
 
     }
 }

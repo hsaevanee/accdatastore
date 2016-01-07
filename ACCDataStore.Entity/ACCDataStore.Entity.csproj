@@ -62,12 +62,17 @@
     <Compile Include="CriteriaParameters.cs" />
     <Compile Include="DatahubProfile\NeighbourhoodObj.cs" />
     <Compile Include="DatahubProfile\DatahubDataObj.cs" />
+    <Compile Include="CheckModel.cs" />
     <Compile Include="Gender.cs" />
     <Compile Include="GeneralCounter.cs" />
     <Compile Include="InsightProfile\DestinationObj.cs" />
     <Compile Include="Mapping\MSAccess\Age05sInfoMap.cs" />
     <Compile Include="Mapping\MSAccess\NeighbourhoodMap.cs" />
     <Compile Include="Mapping\MSAccess\DatahubDataMap.cs" />
+    <Compile Include="Mapping\MSAccess\SchPrimarySchoolMap.cs" />
+    <Compile Include="Mapping\MSAccess\SchStudentMap.cs" />
+    <Compile Include="SchoolProfile\SchPrimarySchool.cs" />
+    <Compile Include="SchoolProfile\SchStudent.cs" />
     <Compile Include="Mapping\MSAccess\WiderAchievementMap.cs" />
     <Compile Include="PupilsPopulation\PupilsInfoObj.cs" />
     <Compile Include="School.cs" />

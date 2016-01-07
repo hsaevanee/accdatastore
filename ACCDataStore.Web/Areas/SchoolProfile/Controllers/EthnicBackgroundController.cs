@@ -653,6 +653,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             vmEthnicbackground2.ListGenderCode = fooList;
             vmEthnicbackground2.DicGender = GetDicGender();
 
+            var tempAA = Request["example-getting-started"];
 
             var sSchoolName1 = Request["selectedschoolname"];
 

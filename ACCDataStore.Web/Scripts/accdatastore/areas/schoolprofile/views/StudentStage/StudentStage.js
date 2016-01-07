@@ -7,12 +7,31 @@ $(function () {
 
 $(document).ready(function () {
 
+    //var selected = $("#Selectedcheckmodel option:selected");
+    //var message = "";
+    //selected.each(function () {
+    //    message += $(this).text() + " " + $(this).val() + "\n";
+    //});
+    //alert(message);
+
+    $("#Selectedcheckmodel").multiselect({
+        buttonWidth: '150px',
+        includeSelectAllOption: true,
+        electAllText: true,
+        selectAllValue: 'multiselect-all',
+        nonSelectedText: 'Select Gender'
+       
+    });
+
+
     $('#buttonGetData').click(function () {
         if (validateCheckBoxs() == true && validateDropdownlist() == true) {
+            //$("#Selectedcheckmodel").val(["1", "2"]);
             document.forms[0].submit();
         }
 
     });
+
 
 
     $("input[name='stages']").click(function () {

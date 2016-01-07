@@ -1,388 +1,472 @@
 ﻿@model ACCDataStore.Web.Areas.SchoolProfile.ViewModels.EthnicBackground.EthnicBgViewModel2
 
 @section Header {
-    <link rel="stylesheet" href="~/Content/accdatastore/areas/nationality/views/nationality/nationality.css" type="text/css" />
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.css" type="text/css" />
+    <script src="~/Scripts/jquery.js"></script>
+     <!-- Bootstrap Multiselect Plugin -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/css/bootstrap.min.css"
+          rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <link href="http://cdn.rawgit.com/davidstutz/bootstrap-multiselect/master/dist/css/bootstrap-multiselect.css"
+          rel="stylesheet" type="text/css" />
+    <script src="http://cdn.rawgit.com/davidstutz/bootstrap-multiselect/master/dist/js/bootstrap-multiselect.js"
+        type="text/javascript"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/highcharts.js"></script>
+    @*<script type="text/javascript" src="http://code.highcharts.com/modules/exporting.js"></script>*@
     <script src="~/Scripts/accdatastore/areas/schoolprofile/views/EthnicBackground/EthnicBackground2.js"></script>
-    <script type="text/javascript" src="http://code.highcharts.com/modules/exporting.js"></script>
     <script type="text/javascript" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+
 }
 @{
     ViewBag.Title = "Comparable EthnicBackground";
 }
 
-@*<h2>@Model.selectedschoolname</h2>*@
-
-<h2>EthnicBackground - Primary School (%pupils)</h2>
-
-<h3>
-    @Html.ActionLink("Interactive Map", "MapData", "EthnicBackground", new { Area = "SchoolProfile", sSchoolName = "" }, null)
-</h3>
-
-@*@if (Model.IsShowCriteria)
-{*@
-    @using (Html.BeginForm("Compareable", "EthnicBackground", new { area = "SchoolProfile" }))
-    {
-        <table>
-            <tr>
-                <th colspan="2">Please select Criteria</th>
-            </tr>
-            <tr>
-                <td colspan="2">Select school name One </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>@Html.DropDownListFor(x => x.selectedschoolname, new SelectList(Model.ListSchoolNameData), "---Please Select School---")</td>
-            </tr>
-            <tr>
-                <td colspan="2">Select school name Two</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>@Html.DropDownListFor(x => x.selectedschoolname2, new SelectList(Model.ListSchoolNameData2), "---Please Select School---")</td>
-            </tr>
-
-            <tr>
-                <td colspan="2">Select Gender </td>
-            </tr>
-            @foreach (var itemGender in Model.ListGenderCode)
-            {
-                if (Model.DicGenderWithSelected.ContainsKey(itemGender))
-                {
-                    <tr>
-                        <td></td>
-                        <td>
-                            <input type="checkbox" name="gender" value="@itemGender"
-                                   @Model.DicGenderWithSelected[itemGender][1] /> @Model.DicGenderWithSelected[itemGender][0]
-                            </td>
-                        </tr>
-                }
-            }
-            @{
-                var check = "";
-                if (Model.ListSelectedGender != null)
-                {
-                    if (Model.ListSelectedGender.Count == 3)
-                    {
-                        check = "checked";
-                    }
-
-                }
-                else
-                {
-                    check = "checked";
-                }
-            }
-            <tr>
-                <td></td>
-                <td>
-
-                    <input type="checkbox" name="CheckGenderAll"
-                           value="ALL" id="CheckGenderAll" @check />CheckALL
-                </td>
-
-            </tr>
-            <tr>
-                <td colspan="2">Select EthnicBackground </td>
-            </tr>
-            @{
-
-                foreach (var itemEthnic in Model.ListEthnicCode)
-                {
-                    check = "";
-                    if (Model.ListSelectedEthnicBg != null)
-                    {
-                        if (Model.ListSelectedEthnicBg.Contains(itemEthnic))
-                        {
-                            check = "checked";
-                        }
-
-                    }
-                    else
-                    {
-                        check = "checked";
-                    }
-
-                    if (Model.DicEthnicBG.ContainsKey(itemEthnic))
-                    {
-                        <tr>
-                            <td></td>
-                            <td>
-                                <input type="checkbox" name="ethnicity" value="@itemEthnic"
-                                       @check /> @Model.DicEthnicBG[itemEthnic]
-                                </td>
-                            </tr>
-                    }
-                }
-            }
-            @*@foreach (var itemEthnic in Model.ListEthnicCode)
-                {
-                    if (Model.DicEthnicBG.ContainsKey(itemEthnic))
-                    {
-                        <tr>
-                            <td></td>
-                            <td>
-                                <input type="checkbox" name="ethnicity" value="@itemEthnic"
-                                       checked="checked" /> @Model.DicEthnicBG[itemEthnic]
-                                </td>
-                            </tr>
-                    }
-                }*@
-            <tr>
-                <td></td>
-                <td>
-                    @{
-                        check = "";
-                        if (Model.ListSelectedEthnicBg != null)
-                        {
-                            if (Model.ListSelectedEthnicBg.Count == 20)
-                            {
-                                check = "checked";
-                            }
-
-                        }
-                        else
-                        {
-                            check = "checked";
-                        }
-                    }
-
-                    <input type="checkbox" name="CheckEthnicityAll"
-                           value="ALL" id="CheckEthnicityAll" @check />CheckALL
-                </td>
-
-            </tr>
-            <tr>
-                <td>
-                    <button id="buttonGetData" type="submit">
-                        Get Data
-                    </button>
-                </td>
-            </tr>
-
-
-        </table>
-    }
-@if (Model.IsShowData)
-{   
-    <br>
-    <form id="Ethnicdata">
-        <table id="datatable" class="display">
-            <thead>
-                <tr>
-                    <th rowspan="2">EthnicBackground</th>
-                    @if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
-                    {
-                        var colspanSize = Model.NoSelectedSchool + 1;
-                        foreach (var selection in Model.ListSelectedGender)
-                        {
-                            if (selection.Equals("F"))
-                            {
-                                <th colspan=@colspanSize>Female</th>
-                            }
-                            if (selection.Equals("M"))
-                            {
-                                <th colspan=@colspanSize>Male</th>
-                            }
-                            if (selection.Equals("T"))
-                            {
-                                <th colspan=@colspanSize>Total</th>
-                            }
-                        }
-                    }
-                    <th rowspan="2">Select data </th>
-                </tr>
-                <tr>
-
-                    @if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
-                    {
-                        var schoolname1 = Model.selectedschoolname;
-                        var schoolname2 = Model.selectedschoolname2;
-                        //foreach (var selection in Model.ListSelectedGender)
-                        for (var i = 0; i < Model.ListSelectedGender.Count; i++)
-                        {
-
-                            if (Model.selectedschoolname.Equals(Model.selectedschoolname2))
-                            {
-                                <th>@Model.selectedschoolname</th>
-                            }
-                            else
-                            {
-                                if (!Model.selectedschoolname.Equals(""))
-                                {
-                                    <th>@Model.selectedschoolname</th>
-                                }
-                                if (!Model.selectedschoolname2.Equals(""))
-                                {
-                                    <th>@Model.selectedschoolname2</th>
-                                }
-                            }
-                            <th>All Primary Schools</th>
-                        }
-                    }
-
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var itemEthnic in Model.ListSelectedEthnicBg)
-                {
-                    var temp1 = Model.ListEthnicData.Find(x => x.EthinicCode.Equals(Convert.ToString(itemEthnic)));
-                    var temp2 = Model.ListEthnicData2.Find(x => x.EthinicCode.Equals(Convert.ToString(itemEthnic)));
-                    var FemaleInSchool1 = 0.0;
-                    var FemaleInSchool2 = 0.0;
-                    var FemaleALLSchool = 0.0;
-                    var MaleInSchool1 = 0.0;
-                    var MaleInSchool2 = 0.0;
-                    var MaleALLSchool1 = 0.0;
-                    var MaleALLSchool2 = 0.0;
-                    var TotalInSchool1 = 0.0;
-                    var TotalInSchool2 = 0.0;
-                    var TotalAllSchool = 0.0;
-                   // var TotalAllSchool2 = 0.0;
-
-                    if (temp1 != null)
-                    {
-                        FemaleInSchool1 = temp1.PercentageFemaleInSchool;
-                        MaleInSchool1 = temp1.PercentageMaleInSchool;
-                        TotalInSchool1 = temp1.PercentageInSchool;
-                        TotalAllSchool = temp1.PercentageAllSchool;
-                        FemaleALLSchool = temp1.PercentageFemaleAllSchool;
-                        MaleALLSchool1 = temp1.PercentageMaleAllSchool;
-                    }
-                    if (temp2 != null)
-                    {
-                        FemaleInSchool2 = temp2.PercentageFemaleInSchool;
-                        MaleInSchool2 = temp2.PercentageMaleInSchool;
-                        TotalInSchool2 = temp2.PercentageInSchool;
-                        TotalAllSchool = temp2.PercentageAllSchool;
-                        FemaleALLSchool = temp2.PercentageFemaleAllSchool;
-                        MaleALLSchool2 = temp2.PercentageMaleAllSchool;
-                    }
-                   
-                    <tr>
-                        <td>@Model.DicEthnicBG[itemEthnic]</td>
-
-                        @if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
-                        {
-                            foreach (var selection in Model.ListSelectedGender)
-                            {
-                                if (selection.Equals("F"))
-                                {
-                                    if (Model.selectedschoolname.Equals(Model.selectedschoolname2))
-                                    {
-                                        <td align="center">@String.Format("{0:#,0.00}", FemaleInSchool1)</td>
-                                    }
-                                    else
-                                    {
-                                        if (!Model.selectedschoolname.Equals(""))
-                                        {
-                                            <td align="center">@String.Format("{0:#,0.00}", FemaleInSchool1)</td>
-                                        }
-                                        if (!Model.selectedschoolname2.Equals(""))
-                                        {
-                                           <td align="center">@String.Format("{0:#,0.00}", FemaleInSchool2)</td>
-                                        }
-                                    }
-                                    <td align="center">@String.Format("{0:#,0.00}", FemaleALLSchool)</td>
-                                    @*<td align="center">@String.Format("{0:#,0.00}", @itemEthnic.PercentageFemaleInSchool)</td>
-                                    <td align="center">@String.Format("{0:#,0.00}", @itemEthnic.PercentageFemaleAllSchool)</td>*@
-                                }
-                                if (selection.Equals("M"))
-                                {
-                                    @*if (!Model.selectedschoolname.Equals(""))
-                                    {
-                                        <td align="center">@String.Format("{0:#,0.00}", MaleInSchool1)</td>
-                                    }
-                                    if (!Model.selectedschoolname2.Equals(""))
-                                    {
-                                        <td align="center">@String.Format("{0:#,0.00}", MaleInSchool2)</td>
-                                    }*@
-                                    if (Model.selectedschoolname.Equals(Model.selectedschoolname2))
-                                    {
-                                        <td align="center">@String.Format("{0:#,0.00}", MaleInSchool1)</td>
-                                    }
-                                    else
-                                    {
-                                        if (!Model.selectedschoolname.Equals(""))
-                                        {
-                                            <td align="center">@String.Format("{0:#,0.00}", MaleInSchool1)</td>
-                                        }
-                                        if (!Model.selectedschoolname2.Equals(""))
-                                        {
-                                           <td align="center">@String.Format("{0:#,0.00}", MaleInSchool2)</td>
-                                        }
-                                    }
-                                    <td align="center">@String.Format("{0:#,0.00}", MaleALLSchool1)</td>                                    
-                                    @*<td align="center">@String.Format("{0:#,0.00}", @itemEthnic.PercentageMaleInSchool)</td>
-                                        <td align="center">@String.Format("{0:#,0.00}", @itemEthnic.PercentageMaleAllSchool)</td>*@
-                                }
-                                if (selection.Equals("T"))
-                                {
-                                    @*if (!Model.selectedschoolname.Equals(""))
-                                    {
-                                        <td align="center">@String.Format("{0:#,0.00}", TotalInSchool1)</td>
-                                    }
-                                    if (!Model.selectedschoolname2.Equals(""))
-                                    {
-                                        <td align="center">@String.Format("{0:#,0.00}", TotalInSchool2)</td>
-                                    }*@
-                                    if (Model.selectedschoolname.Equals(Model.selectedschoolname2))
-                                    {
-                                        <td align="center">@String.Format("{0:#,0.00}", TotalInSchool1)</td>
-                                    }
-                                    else
-                                    {
-                                        if (!Model.selectedschoolname.Equals(""))
-                                        {
-                                            <td align="center">@String.Format("{0:#,0.00}", TotalInSchool1)</td>
-                                        }
-                                        if (!Model.selectedschoolname2.Equals(""))
-                                        {
-                                           <td align="center">@String.Format("{0:#,0.00}", TotalInSchool2)</td>
-                                        }
-                                    }
-  
-                                    <td align="center">@String.Format("{0:#,0.00}", TotalAllSchool)</td>
-                                    //<td align="center">@String.Format("{0:#,0.00}", TotalAllSchool)</td>
-                                    @*<td align="center">@String.Format("{0:#,0.00}", @itemEthnic.PercentageInSchool)</td>
-                                    <td align="center">@String.Format("{0:#,0.00}", @itemEthnic.PercentageAllSchool)</td>*@
-                                }
-                            }
-                        }
-
-                        <td align="center"><input type='checkbox' name='CheckDataitem' value="@itemEthnic" checked="checked" /></td>
-                    </tr>
-                }
-            </tbody>
-            <tr>
-                @{var colspan = (@Model.ListSelectedGender.Count * @Model.NoSelectedSchool) + @Model.ListSelectedGender.Count+1;}
-                <td colspan=@colspan></td>
-                <td align="center"><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
-            </tr>
-            <tr><td><button onclick='myFunctionBar()'><label>Bar Chart</label></button></td></tr>
-            <tr><td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td></tr>
-            <tr><td><button onclick='myFunctionLine()'><label>Line Chart</label></button></td></tr>            
-            <tr><td>@Html.ActionLink("Export Excel", "ExportExcel", "EthnicBackground", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td></tr>
-            <tr><td>@Html.ActionLink("Interactive Map", "MapData", "EthnicBackground", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td></tr>
-        </table>
-        <script type="text/javascript">
-            $('#datatable').DataTable({
-                paging: false
+<body>
+    @*<script type="text/javascript">
+        $(function () {
+            $('#example-getting-started').multiselect({
+                includeSelectAllOption: true
             });
 
-        </script>
+        });
+    </script>*@
+    <div class="container">
+        <!-- Content Row -->
+        <div class="row">
+            <!-- Sidebar Column -->
+            <div class="col-md-2">
+                <div class="list-group">
+                    <a href="@Url.Action("Compareable", "EthnicBackground", new { Area = "SchoolProfile", sSchoolName = "" }, null)" class="list-group-item">Data</a>
+                    <a href="@Url.Action("mapdata", "EthnicBackground", new { area="SchoolProfile" , sschoolname="" }, null)" class="list-group-item">Interactive Map</a>
+                </div>
+            </div>
 
-        <div  id="divBarChartContainer"></div>
-        <br>
-        <div id="divColumnChartContainer"></div>
-        <br>
-        <div id="divLineChartContainer"></div>
-        <br>
-        <p>
-            Source: Pupil Census <br> *In 2011 the Scottish Government
-            introduced a new code list for Ethnicity, hence the historic data is
-            not comparable
-        </p>
-    </form>
-}
+            <!-- Content Column -->
+            <div class="col-md-10">
+                <h2>EthnicBackground</h2>
+                <div class="panel panel-primary text-center">
+                    <div class="panel-heading">
+                        <h4 class="panel-title" style="text-align: center"> Please Select Criteria</h4>
+                    </div>
+                    <div class="panel-body">
+                            @using (Html.BeginForm("Compareable", "EthnicBackground", new { area = "SchoolProfile" }))
+                            {
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td colspan="2">Select school name One </td>
+                                    </tr>
+                                    @*<tr>
+                                        <td>
+                                            <select id="example-getting-started" multiple="multiple">
+                                                <option value="cheese">Cheese</option>
+                                                <option value="tomatoes">Tomatoes</option>
+                                                <option value="mozarella">Mozzarella</option>
+                                                <option value="mushrooms">Mushrooms</option>
+                                                <option value="pepperoni">Pepperoni</option>
+                                                <option value="onions">Onions</option>
+                                            </select>
+                                        </td>
 
+                                    </tr>*@
+                                    <tr>
+                                        <td></td>
+                                        <td>@Html.DropDownListFor(x => x.selectedschoolname, new SelectList(Model.ListSchoolNameData), "---Please Select School---", new { multiple = "multiple" })</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Select school name Two</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>@Html.DropDownListFor(x => x.selectedschoolname2, new SelectList(Model.ListSchoolNameData2), "---Please Select School---")</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">Select Gender </td>
+                                    </tr>
+                                    @foreach (var itemGender in Model.ListGenderCode)
+                                    {
+                                        if (Model.DicGenderWithSelected.ContainsKey(itemGender))
+                                        {
+                                            <tr>
+                                                <td></td>
+                                                <td>
+                                                    <input type="checkbox" name="gender" value="@itemGender"
+                                                           @Model.DicGenderWithSelected[itemGender][1] /> @Model.DicGenderWithSelected[itemGender][0]
+                                                    </td>
+                                                </tr>
+                                        }
+                                    }
+                                    @{
+                                    var check = "";
+                                    if (Model.ListSelectedGender != null)
+                                    {
+                                        if (Model.ListSelectedGender.Count == 3)
+                                        {
+                                            check = "checked";
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        check = "checked";
+                                    }
+                                    }
+                                    <tr>
+                                        <td></td>
+                                        <td>
+
+                                            <input type="checkbox" name="CheckGenderAll"
+                                                   value="ALL" id="CheckGenderAll" @check />CheckALL
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">Select EthnicBackground </td>
+                                    </tr>
+                                    @{
+                                        foreach (var itemEthnic in Model.ListEthnicCode)
+                                        {
+                                            check = "";
+                                            if (Model.ListSelectedEthnicBg != null)
+                                            {
+                                                if (Model.ListSelectedEthnicBg.Contains(itemEthnic))
+                                                {
+                                                    check = "checked";
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                check = "checked";
+                                            }
+
+                                            if (Model.DicEthnicBG.ContainsKey(itemEthnic))
+                                            {
+                                                <tr>
+                                                    <td></td>
+                                                    <td>
+                                                        <input type="checkbox" name="ethnicity" value="@itemEthnic"
+                                                               @check /> @Model.DicEthnicBG[itemEthnic]
+                                                        </td>
+                                                    </tr>
+
+                                            }
+                                        }
+                                     }
+                                        <tr>
+                                        <td></td>
+                                        <td>
+                                            @{
+                                                check = "";
+                                                if (Model.ListSelectedEthnicBg != null)
+                                                {
+                                                    if (Model.ListSelectedEthnicBg.Count == 20)
+                                                    {
+                                                        check = "checked";
+                                                    }
+
+                                                }
+                                                else
+                                                {
+                                                    check = "checked";
+                                                }
+                                            }
+
+                                            <input type="checkbox" name="CheckEthnicityAll"
+                                                   value="ALL" id="CheckEthnicityAll" @check />CheckALL
+                                        </td>
+
+                                    </tr>
+                                </table>
+
+                                <p><button id="buttonGetData" type="submit" class="btn btn-primary">Get Data!</button></p>
+                            }
+                            <!-- Initialize the plugin: -->
+                            <script type="text/javascript">
+                                $(document).ready(function () {
+                                    //$('#example-getting-started').multiselect();
+                                    $('#selectedschoolname').multiselect();
+                                    //selectedschoolname
+                                });
+                            </script>
+                    </div>
+                </div>
+            </div>
+       </div>
+            @if (Model.IsShowData)
+            {
+                <hr>
+    <!-- Content Row -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <div class="panel-heading">
+                                <h4 class="panel-title" style="text-align: center">EthnicBackground</h4>
+                            </div>
+                            <div class="panel-body">
+                                    <form id="Ethnicdata">
+                                        <table id="datatable" class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center" rowspan="2">EthnicBackground</th>
+                                                    @if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
+                                                    {
+                                                        var colspanSize = Model.NoSelectedSchool + 1;
+                                                        foreach (var selection in Model.ListSelectedGender)
+                                                        {
+                                                            if (selection.Equals("F"))
+                                                            {
+                                                                <th class="text-center" colspan=@colspanSize>Female</th>
+                                                            }
+                                                            if (selection.Equals("M"))
+                                                            {
+                                                                <th class="text-center" colspan=@colspanSize>Male</th>
+                                                            }
+                                                            if (selection.Equals("T"))
+                                                            {
+                                                                <th class="text-center" colspan=@colspanSize> <small>Total</small></th>
+                                                            }
+                                                        }
+                                                    }
+                                                    <th class="text-center" rowspan="2">Select data </th>
+                                                </tr>
+                                                <tr>
+
+                                                    @if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
+                                                    {
+                                                        var schoolname1 = Model.selectedschoolname;
+                                                        var schoolname2 = Model.selectedschoolname2;
+                                                        //foreach (var selection in Model.ListSelectedGender)
+                                                        for (var i = 0; i < Model.ListSelectedGender.Count; i++)
+                                                        {
+
+                                                            if (Model.selectedschoolname.Equals(Model.selectedschoolname2))
+                                                            {
+                                                                <th>@Model.selectedschoolname</th>
+                                                            }
+                                                            else
+                                                            {
+                                                                if (!Model.selectedschoolname.Equals(""))
+                                                                {
+                                                                    <th>@Model.selectedschoolname</th>
+                                                                }
+                                                                if (!Model.selectedschoolname2.Equals(""))
+                                                                {
+                                                                    <th>@Model.selectedschoolname2</th>
+                                                                }
+                                                            }
+                                                            <th>All Primary Schools</th>
+                                                        }
+                                                    }
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var itemEthnic in Model.ListSelectedEthnicBg)
+                                                {
+                                                    var temp1 = Model.ListEthnicData.Find(x => x.EthinicCode.Equals(Convert.ToString(itemEthnic)));
+                                                    var temp2 = Model.ListEthnicData2.Find(x => x.EthinicCode.Equals(Convert.ToString(itemEthnic)));
+                                                    var FemaleInSchool1 = 0.0;
+                                                    var FemaleInSchool2 = 0.0;
+                                                    var FemaleALLSchool = 0.0;
+                                                    var MaleInSchool1 = 0.0;
+                                                    var MaleInSchool2 = 0.0;
+                                                    var MaleALLSchool1 = 0.0;
+                                                    var MaleALLSchool2 = 0.0;
+                                                    var TotalInSchool1 = 0.0;
+                                                    var TotalInSchool2 = 0.0;
+                                                    var TotalAllSchool = 0.0;
+                                                    // var TotalAllSchool2 = 0.0;
+
+                                                    if (temp1 != null)
+                                                    {
+                                                        FemaleInSchool1 = temp1.PercentageFemaleInSchool;
+                                                        MaleInSchool1 = temp1.PercentageMaleInSchool;
+                                                        TotalInSchool1 = temp1.PercentageInSchool;
+                                                        TotalAllSchool = temp1.PercentageAllSchool;
+                                                        FemaleALLSchool = temp1.PercentageFemaleAllSchool;
+                                                        MaleALLSchool1 = temp1.PercentageMaleAllSchool;
+                                                    }
+                                                    if (temp2 != null)
+                                                    {
+                                                        FemaleInSchool2 = temp2.PercentageFemaleInSchool;
+                                                        MaleInSchool2 = temp2.PercentageMaleInSchool;
+                                                        TotalInSchool2 = temp2.PercentageInSchool;
+                                                        TotalAllSchool = temp2.PercentageAllSchool;
+                                                        FemaleALLSchool = temp2.PercentageFemaleAllSchool;
+                                                        MaleALLSchool2 = temp2.PercentageMaleAllSchool;
+                                                    }
+
+                                                    <tr>
+                                                        <td class="text-left">@Model.DicEthnicBG[itemEthnic]</td>
+
+                                                        @if (Model.ListSelectedGender != null && Model.ListSelectedGender.Count != 0)
+                                                        {
+                                                            foreach (var selection in Model.ListSelectedGender)
+                                                            {
+                                                                if (selection.Equals("F"))
+                                                                {
+                                                                    if (Model.selectedschoolname.Equals(Model.selectedschoolname2))
+                                                                    {
+                                                                        <td class="text-center">@String.Format("{0:#,0.00}", FemaleInSchool1)</td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        if (!Model.selectedschoolname.Equals(""))
+                                                                        {
+                                                                            <td class="text-center">@String.Format("{0:#,0.00}", FemaleInSchool1)</td>
+                                                                        }
+                                                                        if (!Model.selectedschoolname2.Equals(""))
+                                                                        {
+                                                                            <td class="text-center">@String.Format("{0:#,0.00}", FemaleInSchool2)</td>
+                                                                        }
+                                                                    }
+                                                                    <td class="text-center">@String.Format("{0:#,0.00}", FemaleALLSchool)</td>
+                                                                    @*<td align="center">@String.Format("{0:#,0.00}", @itemEthnic.PercentageFemaleInSchool)</td>
+                                                                <td align="center">@String.Format("{0:#,0.00}", @itemEthnic.PercentageFemaleAllSchool)</td>*@
+                                                                }
+                                                                if (selection.Equals("M"))
+                                                                {
+                                                                    @*if (!Model.selectedschoolname.Equals(""))
+                                                                {
+                                                                    <td align="center">@String.Format("{0:#,0.00}", MaleInSchool1)</td>
+                                                                }
+                                                                if (!Model.selectedschoolname2.Equals(""))
+                                                                {
+                                                                    <td align="center">@String.Format("{0:#,0.00}", MaleInSchool2)</td>
+                                                                }*@
+                                                                    if (Model.selectedschoolname.Equals(Model.selectedschoolname2))
+                                                                    {
+                                                                        <td class="text-center">@String.Format("{0:#,0.00}", MaleInSchool1)</td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        if (!Model.selectedschoolname.Equals(""))
+                                                                        {
+                                                                            <td class="text-center">@String.Format("{0:#,0.00}", MaleInSchool1)</td>
+                                                                        }
+                                                                        if (!Model.selectedschoolname2.Equals(""))
+                                                                        {
+                                                                            <td class="text-center">@String.Format("{0:#,0.00}", MaleInSchool2)</td>
+                                                                        }
+                                                                    }
+                                                                    <td class="text-center">@String.Format("{0:#,0.00}", MaleALLSchool1)</td>
+                                                                    @*<td align="center">@String.Format("{0:#,0.00}", @itemEthnic.PercentageMaleInSchool)</td>
+                                                                <td align="center">@String.Format("{0:#,0.00}", @itemEthnic.PercentageMaleAllSchool)</td>*@
+                                                                }
+                                                                if (selection.Equals("T"))
+                                                                {
+                                                                    @*if (!Model.selectedschoolname.Equals(""))
+                                                                {
+                                                                    <td align="center">@String.Format("{0:#,0.00}", TotalInSchool1)</td>
+                                                                }
+                                                                if (!Model.selectedschoolname2.Equals(""))
+                                                                {
+                                                                    <td align="center">@String.Format("{0:#,0.00}", TotalInSchool2)</td>
+                                                                }*@
+                                                                    if (Model.selectedschoolname.Equals(Model.selectedschoolname2))
+                                                                    {
+                                                                        <td class="text-center">@String.Format("{0:#,0.00}", TotalInSchool1)</td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        if (!Model.selectedschoolname.Equals(""))
+                                                                        {
+                                                                            <td class="text-center">@String.Format("{0:#,0.00}", TotalInSchool1)</td>
+                                                                        }
+                                                                        if (!Model.selectedschoolname2.Equals(""))
+                                                                        {
+                                                                            <td class="text-center">@String.Format("{0:#,0.00}", TotalInSchool2)</td>
+                                                                        }
+                                                                    }
+
+                                                                    <td class="text-center">@String.Format("{0:#,0.00}", TotalAllSchool)</td>
+                                                                    //<td align="center">@String.Format("{0:#,0.00}", TotalAllSchool)</td>
+                                                                    @*<td align="center">@String.Format("{0:#,0.00}", @itemEthnic.PercentageInSchool)</td>
+                                                                <td align="center">@String.Format("{0:#,0.00}", @itemEthnic.PercentageAllSchool)</td>*@
+                                                                }
+                                                            }
+                                                        }
+
+                                                        <td class="text-center"><input type='checkbox' name='CheckDataitem' value="@itemEthnic" checked="checked" /></td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                            <tr>
+                                                @{var colspan = (@Model.ListSelectedGender.Count * @Model.NoSelectedSchool) + @Model.ListSelectedGender.Count + 1;}
+                                                <td colspan=@colspan></td>
+                                                <td align="center"><input type='checkbox' name='CheckDataitemAll' id='CheckDataitemAll' value="ALL" checked="checked" />CheckALL</td>
+                                            </tr>
+                                            @*<tr><td><button onclick='myFunctionBar()'><label>Bar Chart</label></button></td></tr>
+                                        <tr><td><button onclick='myFunctionColumn()'><label>Column Chart</label></button></td></tr>
+                                        <tr><td><button onclick='myFunctionLine()'><label>Line Chart</label></button></td></tr>*@
+                                        @*<tr><td>@Html.ActionLink("Export Excel", "ExportExcel", "EthnicBackground", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td></tr>
+                                        <tr><td>@Html.ActionLink("Interactive Map", "MapData", "EthnicBackground", new { Area = "SchoolProfile", sSchoolName = "" }, null)</td></tr>*@
+                                        </table>
+                                        <ul class="list-inline">
+                                            <li>
+                                                <button class="btn btn-primary" onclick='myFunctionBar()'><label>Bar Chart</label></button>
+                                            </li>
+                                            <li>
+                                                <button class="btn btn-primary" onclick='myFunctionColumn()'><label>Column Chart</label></button>
+                                            </li>
+                                            <li>
+                                                <button class="btn btn-primary" onclick='myFunctionLine()'><label>Line Chart</label></button>
+                                            </li>
+                                            <li>
+                                                @Html.ActionLink("Export Excel", "ExportExcel", "EthnicBackground", new { Area = "SchoolProfile", sSchoolName = "" }, null)
+                                            </li>
+                                        </ul>
+                                        <script type="text/javascript">
+                                            $('#datatable').DataTable({
+                                                paging: false
+                                            });
+                                       </script>
+                                        <p>
+                                            Source: Pupil Census <br> *In 2011 the Scottish Government
+                                            introduced a new code list for Ethnicity, hence the historic data is
+                                            not comparable
+                                        </p>
+                                    </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Content Row -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <div class="panel-heading">
+                                <h4 class="panel-title" style="text-align: center"> Bar Chart</h4>
+                            </div>
+                             <div class="panel-body" id="divBarChartContainer"></div>
+                        </div>
+                    </div>
+                </div>
+                                <!-- Content Row -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary text-center">
+                <div class="panel-heading">
+                    <h4 class="panel-title" style="text-align: center">Column Chart</h4>
+                </div>
+                        <div class="panel-body" id="divColumnChartContainer"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary text-center">
+                <div class="panel-heading">
+                    <h4 class="panel-title" style="text-align: center"> Line Chart</h4>
+                </div>
+                        <div class="panel-body" id="divLineChartContainer"></div>
+            </div>
+        </div>
+    </div>
+            }
+    </div>
+</body>

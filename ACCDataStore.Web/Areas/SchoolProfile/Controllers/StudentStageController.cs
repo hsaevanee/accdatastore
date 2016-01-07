@@ -49,7 +49,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
 
             vmStudentStage.ListSchoolNameData = fooList;
 
-
+            vmStudentStage.Listcheckmodel = new List<CheckModel> { new CheckModel(1, "Female"), new CheckModel(2, "Male"), new CheckModel(3, "Total") };
+            
             listResult = this.rpGeneric.FindSingleColumnByNativeSQL("SELECT DISTINCTROW StudentStage FROM sch_Student_t group by StudentStage");
 
             fooList = listResult.OfType<string>().ToList();
@@ -85,6 +86,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             {
                 vmStudentStage.IsShowCriteria = true;
                 sSchoolName = Request["selectedschoolname"];
+
+                var tmpaa = Request["Selectedcheckmodel"];
                 vmStudentStage.selectedschoolname = sSchoolName;
                 Session["sSchoolName"] = sSchoolName;
 
