@@ -58,7 +58,7 @@ function InitSpinner() {
 function InitMap() {
     var mapCenter = new google.maps.LatLng(57.151810, -2.094451);
     var mapOptions = {
-        zoom: 9,
+        zoom: 11,
         center: mapCenter
     }
 
@@ -193,12 +193,12 @@ function ShowPopupInfo(data) {
     sInformation += "<h4 class='text-center'>" + data.dataTitle + "</h4>";
     sInformation += "</div><div class='panel-body'>";
     sInformation += "<table class='table table-bordered table-hover'>";
-    sInformation += "<thead><tr><th> </th><th>" + data.schoolname + "</th><th> Aberdeen City </th></tr></thead>";
+    sInformation += "<thead><tr><th> </th><th class='text-center'>" + data.schoolname + "</th><th class='text-center'> Aberdeen City </th></tr></thead>";
     sInformation += "<tbody>";
     if (data.dataCategories.length != 0) {
         for (var i = 0; i < data.dataCategories.length; i++) {
             //sInformation += "<tr><td>" + data.dataCategories[i] + "</td><td  align='center'>" + data.Schdata[i].toFixed(2) + "</td><td  align='center'>" + data.Abdcitydata[i].toFixed(2) + "</td><tr>";
-            sInformation += "<tr><td>" + data.dataCategories[i] + "</td><td  align='center'> <a href='/DatahubProfile/IndexDatahub/GetListpupils?searchby=" + data.searchby + "&code=" + data.searchcode + "&dataname=" + data.dataCategories[i] + "'><button>" + data.Schdata[i].toFixed(2) + "</button></a></td><td  align='center'> <a href='/DatahubProfile/IndexDatahub/GetListpupils?searchby=school&code=100&dataname=" + data.dataCategories[i] + "'><button>" + data.Abdcitydata[i].toFixed(2) + "</button></a></td><tr>";
+            sInformation += "<tr><td class='text-left'>" + data.dataCategories[i] + "</td><td  align='center'> <a href='/DatahubProfile/IndexDatahub/GetListpupils?searchby=" + data.searchby + "&code=" + data.searchcode + "&dataname=" + data.dataCategories[i] + "'><button class='btn btn-info btn-xs disabled'>" + data.Schdata[i].toFixed(2) + "</button></a></td><td  align='center'> <a href='/DatahubProfile/IndexDatahub/GetListpupils?searchby=school&code=100&dataname=" + data.dataCategories[i] + "'><button class='btn btn-info btn-xs disabled'>" + data.Abdcitydata[i].toFixed(2) + "</button></a></td><tr>";
 
         }
 
@@ -239,7 +239,14 @@ function ToggleKMLLayer(checked, id) {
                 break;
             case 2: // geojson for geometry
                 layer = new google.maps.Data();
-                layer.loadGeoJson(kml[id].url);
+
+                if (kml[id].dataType == 1) {
+                    layer.addGeoJson(InsightSchoollocationsjsondata);
+                } else if (kml[id].dataType == 2) {
+                    layer.addGeoJson(datazonejsondata);
+                } else if (kml[id].dataType == 3) {
+                    layer.addGeoJson(Neighbourhoodsjsondata);
+                }
 
                 layer.setStyle(function (feature) {
                     var fillop = 0.4;

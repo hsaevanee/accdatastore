@@ -1,11 +1,14 @@
 ﻿@model ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub.DatahubViewModel
 @section Header {
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
-    <script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/MapIndex.js"></script>
-@*<script src="http://code.highcharts.com/maps/modules/data.js"></script>*@
+
 <script src="~/Scripts/jquery.js"></script>
-<!-- Bootstrap Core JavaScript -->
 <script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/highcharts.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+<script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/MapIndex.js"></script>
+<script src="~/Scripts/accdatastore/views/Datazone_with_Desc.js"></script>
+<script src="~/Scripts/accdatastore/views/InsightSchoollocations.js"></script>
+<script src="~/Scripts/accdatastore/views/Neighbourhoods.js"></script>
 }
 @{
     ViewBag.Title = "MapIndex";
@@ -44,7 +47,7 @@
         </div>         <!-- row -->
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-10">
                 <div id="divinformationContainer" style="width: 100%;"></div>
             </div>
         </div>
@@ -71,6 +74,3 @@
 </div>*@
 
 
-<article id="popup-information"></article>
-<div id="content-windows-mouse-over" style="position: absolute; display:none; background-color: lightgray;"></div>
-<div id="divSpinner" class="modal" style="display: none;"></div>

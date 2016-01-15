@@ -29,9 +29,11 @@ function InitMap(data) {
         center: mapCenter
     }
 
-    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+    var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
-    map.data.loadGeoJson('https://dl.dropboxusercontent.com/u/870146/KML/V2/Datazone_with_Desc.json' + "?rand=" + (new Date()).valueOf());
+    //map.data.loadGeoJson('https://dl.dropboxusercontent.com/u/870146/KML/V2/Datazone_with_Desc.json' + "?rand=" + (new Date()).valueOf());
+
+    map.data.addGeoJson(datazonejsondata);
 
     map.data.setStyle(function (feature) {
         var low = [5, 69, 54];  // color of smallest datum
@@ -82,9 +84,9 @@ function InitMap(data) {
 
     // update and display the legend
     document.getElementById('census-min').textContent =
-    data.minimum.toFixed(2) +"%";
+    data.minimum.toFixed(1) +"%";
     document.getElementById('census-max').textContent =
-        data.maximum.toFixed(2) + "%";
+        data.maximum.toFixed(1) + "%";
 
 
     // set up the style rules and events for google.maps.Data
@@ -108,7 +110,7 @@ function InitMap(data) {
         document.getElementById('data-label').textContent =
             event.feature.getProperty('ZONECODE');
         document.getElementById('data-value').textContent =
-            statisticdata.toFixed(2) + '%';
+            statisticdata.toFixed(1) + '%';
         document.getElementById('data-box').style.display = 'block';
         document.getElementById('data-caret').style.display = 'block';
         document.getElementById('data-caret').style.paddingLeft = percent + '%';
@@ -250,15 +252,16 @@ function drawChartColumn(data) {
 }
 
 function ShowPopupInfo(data) {
-    //var sInformation = "<a href='#' class='a-close-popup-information'>Close</a><h3>" + sName + "</h3>";
-    var sInformation = "<h3 align='center'>" + data.dataTitle + "</h3>";
-    sInformation += "<table class='style2'>";
-    sInformation += "<thead><tr><th> </th><th>" + data.schoolname + "</th><th> Aberdeen City </th></tr></thead>";
+    var sInformation = "<hr><div class='panel panel-primary text-center'> <div class='panel-heading'>";
+    sInformation += "<h4 class='text-center'>" + data.dataTitle + "</h4>";
+    sInformation += "</div><div class='panel-body'>";
+    sInformation += "<table class='table table-bordered table-hover'>";
+    sInformation += "<thead><tr><th> </th><th class='text-center'>" + data.schoolname + "</th><th class='text-center'> Aberdeen City </th></tr></thead>";
     sInformation += "<tbody>";
     if (data.dataCategories.length != 0) {
         for (var i = 0; i < data.dataCategories.length; i++) {
             //sInformation += "<tr><td>" + data.dataCategories[i] + "</td><td  align='center'>" + "<input type='button' style='width: 50px; height:25px' value='" + data.Schdata[i].toFixed(2) + "'id='" + data.dataCategories[i] + "'" + "onclick='goToCreateURL(id)'/></td><td  align='center'>" + data.Abdcitydata[i].toFixed(2) + "</td><tr>";
-            sInformation += "<tr><td>" + data.dataCategories[i] + "</td><td  align='center'> <a href='/DatahubProfile/IndexDatahub/GetListpupils?searchby=" + data.searchby + "&code=" + data.searchcode + "&dataname=" + data.dataCategories[i] + "'><button>" + data.Schdata[i].toFixed(2) + "</button></a></td><td  align='center'> <a href='/DatahubProfile/IndexDatahub/GetListpupils?searchby=school&code=100&dataname=" + data.dataCategories[i] + "'><button>" + data.Abdcitydata[i].toFixed(2) + "</button></a></td><tr>";
+            sInformation += "<tr><td class='text-left'>" + data.dataCategories[i] + "</td><td  align='center'> <a href='/DatahubProfile/IndexDatahub/GetListpupils?searchby=" + data.searchby + "&code=" + data.searchcode + "&dataname=" + data.dataCategories[i] + "'><button class='btn btn-info btn-xs disabled'>" + data.Schdata[i].toFixed(2) + "</button></a></td><td  align='center'> <a href='/DatahubProfile/IndexDatahub/GetListpupils?searchby=school&code=100&dataname=" + data.dataCategories[i] + "'><button class='btn btn-info btn-xs disabled'>" + data.Abdcitydata[i].toFixed(2) + "</button></a></td><tr>";
         }
 
     } else {
@@ -267,7 +270,7 @@ function ShowPopupInfo(data) {
     }
 
 
-    sInformation += "</tbody></table>";
+    sInformation += "</tbody></table></div></div>";
     ShowPopupInformation(sInformation);
 
 }

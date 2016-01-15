@@ -8,6 +8,10 @@ function goToCreateURL(object) {
     return object.href += code;
 }
 
+function CheckFormat(number) {
+    if(number.val() <=5)
+        return number.replace("%s","*");;
+}
 
 function FunctiongetDetail(buttonID, dataname) {
     var schcode = $('#selectedschoolcode :selected').val();

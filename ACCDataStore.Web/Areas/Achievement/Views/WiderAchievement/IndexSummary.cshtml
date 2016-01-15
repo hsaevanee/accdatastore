@@ -1,0 +1,63 @@
+﻿@model ACCDataStore.Web.Areas.Achievement.ViewModels.WiderAchievement.WiderAchievementViewModel
+@section Header {
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/highcharts.js"></script>
+    <script src="~/Scripts/accdatastore/areas/schoolprofile/views/WiderAchievement/IndexWiderAchievement.js"></script>
+}
+@{
+    //Wider Achievement
+    ViewBag.Title = "Index";
+}
+
+<body>
+    <div class="container">
+        <div class="row">
+            @*<div class="col-md-2">
+                <div class="list-group">
+                    <a href="@Url.Action("Index", "WiderAchievement", new { Area = "Achievement", sSchoolName = "" }, null)" class="list-group-item">Data</a>
+                    <a href="@Url.Action("MapData", "WiderAchievement", new { area = "Achievement", sschoolname = "" }, null)" class="list-group-item">Interactive Map</a>
+                </div>
+            </div>*@
+            <div class="col-md-12">
+                <h2>Wider Achievement Framework Data 2013 - 2015</h2>
+                <div class="panel panel-primary text-center">
+                    <div class="panel-heading">
+                        <h4 class="panel-title" style="text-align: center"> Wider Achievement Framework Data 2013 - 2015</h4>
+                    </div>
+                    <div class="panel-body">
+                        <table id="WiderAchievementdatatable" class="table table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th colspan="2" class="text-center"></th>
+                                    <th colspan="3" class="text-center">Citywide Totals</th>
+                                </tr>
+
+                                <tr>
+                                    <th class="text-center">Age Range</th>
+                                    <th class="text-center">Awardname</th>
+                                    <th class="text-center"> 2013-2014</th>
+                                    <th class="text-center"> 2014-2015</th>
+                                    <th class="text-center"> 2015-2016</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.ListWiderAchievementData)
+                                {
+                                    <tr>
+                                        <td class="text-left">@item.age_range</td>
+                                        <td class="text-left">@item.awardname</td>
+                                        <td class="text-center">@item.award2013</td>
+                                        <td class="text-center">@item.award2014</td>
+                                        <td class="text-center">@item.award2015</td>
+                                    </tr>
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div><!--row-->
+    </div> <!--container-->
+</body>

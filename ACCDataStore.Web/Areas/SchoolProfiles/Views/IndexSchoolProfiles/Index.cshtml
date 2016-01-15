@@ -1,0 +1,87 @@
+﻿@model ACCDataStore.Web.Areas.SchoolProfiles.ViewModels.SchoolProfiles.IndexSchoolProfilesViewModel
+@using System.Data;
+ 
+@section Header {
+    @*<link rel="stylesheet" href="~/Content/accdatastore/areas/nationality/views/nationality/nationality.css" type="text/css" />*@
+    <script src="~/Scripts/accdatastore/areas/schoolprofile/views/IndexSchoolProfile/Index2SchoolProfile.js"></script>
+    <script src="~/Scripts/highcharts.js"></script>
+    @*<script type="text/javascript" src="http://code.highcharts.com/modules/exporting.js"></script>*@
+        <!-- jQuery -->
+<script src="~/Scripts/jquery.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="~/Scripts/bootstrap.min.js"></script>
+}
+@{
+    ViewBag.Title = "Index";
+}
+
+<body>
+    <!-- Page Content -->
+    <div class="container">
+        @*@using (Html.BeginForm("Compareable", "IndexSchoolProfile", new { area = "SchoolProfile" }))
+        {
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Please Select School</h3>
+                        </div>
+                        <div class="panel-body">
+                            @Html.DropDownListFor(x => x.selectedschoolname, new SelectList(Model.ListSchoolNameData), "---Please Select School---")
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Please Select School</h3>
+                        </div>
+                        <div class="panel-body">
+                            @Html.DropDownListFor(x => x.selectedschoolname2, new SelectList(Model.ListSchoolNameData2), "---Please Select School---")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }*@
+
+        <hr>
+        <!-- Content Row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary text-center">
+                    <div class="panel-heading">
+                        <h4 class="panel-title" > <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Nationality/Index/">Nationality</a></h4>
+                    </div>
+                    <div class="panel-body">
+                            <p>% of pupils of each nationality</p>
+                            <table id="Nationalitydatatable" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        @foreach (DataColumn col in Model.nationalityData.Columns)
+                                        {
+                                            <th>@col.ColumnName</th>
+                                        }    
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                         @foreach (DataRow row in Model.nationalityData.Rows)
+                                         {
+                                            <tr>
+                                                @foreach (DataColumn col in Model.nationalityData.Columns)
+                                                {
+                                                    <td>@row[col.ColumnName]</td>
+                                                }
+                                            </tr>
+                                         }
+     
+                                </tbody>
+                            </table>
+                            <p>*In 2011  the Scottish Government introduced a new code list for Nationality, hence the historic data is not comparable.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+

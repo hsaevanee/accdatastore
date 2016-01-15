@@ -43,6 +43,19 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub
             return (double)(number * 100) / allpupils;
         }
 
+        public object FormatNumber(int number)
+        {
+            if (number <= 5)
+            {
+                return "*";
+            }
+            else
+            {
+                return number;
+            }
+                
+        }
+
         public double Participating()
         {
             return (double)(Percentage(this.schoolpupils) + 

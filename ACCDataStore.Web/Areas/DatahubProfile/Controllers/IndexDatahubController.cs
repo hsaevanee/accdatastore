@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Reflection;
 
 namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 {
@@ -34,7 +35,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             var vmDatahubViewModel = new DatahubViewModel();
             var datahubAbdcitydata = new DatahubData();
 
-            vmDatahubViewModel.AberdeencityData = CreatDatahubdata(GetDatahubdatabySchoolcode(rpGeneric, "100"),"100");
+            vmDatahubViewModel.AberdeencityData = CreatDatahubdata(GetDatahubdatabySchoolcode(rpGeneric, "100"), "100");
             vmDatahubViewModel.ListSchoolNameData = GetListSchoolname();
             vmDatahubViewModel.ListNeighbourhoodsName = GetListNeighbourhoodsname(rpGeneric);
 
@@ -182,6 +183,19 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             datahubdata.pupilsinUnavailableillHealth = listdata.Count(x => x.Current_Status.ToLower().Equals("unavailable - ill health"));
             datahubdata.pupilsinUnemployed = listdata.Count(x => x.Current_Status.ToLower().Equals("unemployed"));
             datahubdata.pupilsinUnknown = listdata.Count(x => x.Current_Status.ToLower().Equals("unknown"));
+
+            return datahubdata;
+        }
+
+        protected DatahubData FormatDatahubdata(DatahubData listdata)
+        {
+            var datahubdata = new DatahubData();
+            PropertyInfo[] properties = typeof(DatahubData).GetProperties();
+            foreach (PropertyInfo property in properties)
+            {
+                if (!property.Name.Equals("datacode"))
+                property.SetValue(datahubdata, 15);
+            }
 
             return datahubdata;
         }

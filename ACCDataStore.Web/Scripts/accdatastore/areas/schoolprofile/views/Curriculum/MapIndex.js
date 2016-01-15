@@ -230,7 +230,11 @@ function ToggleKMLLayer(checked, id) {
                 break;
             case 2: // geojson for geometry
                 layer = new google.maps.Data();
-                layer.loadGeoJson(kml[id].url);
+                if (kml[id].dataType == 1) {
+                    layer.addGeoJson(PrimarySchoollocationjsondata);
+                } else if (kml[id].dataType == 2) {
+                    layer.addGeoJson(datazonejsondata);
+                }
 
                 layer.setStyle(function (feature) {
                     var fillop = 0.4;

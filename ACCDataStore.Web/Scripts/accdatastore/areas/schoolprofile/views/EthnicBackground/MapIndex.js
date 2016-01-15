@@ -1,6 +1,7 @@
 ﻿var map; // map object
 var mapOverlay; // overlay map object
 
+
 // initialize all kml layers
 var kml = {
     // type : 0 = direct kml file, 1 = kml from fusion table
@@ -15,14 +16,13 @@ var kml = {
     //},
     a: {
         name: "Primary Schools Locations",
-        type: 2,
+        type: 2,       
         //url: 'https://dl.dropboxusercontent.com/u/55734762/PrimarySchoollocations.json' + "?rand=" + (new Date()).valueOf(),
-        url: 'https://www.dropbox.com/s/ngd0yrko6xn8ojm/PrimarySchoollocations.json?dl=0' + "?rand=" + (new Date()).valueOf(),
         dataType: 1
     },
     b: {
         name: "Aberdeen DataZone Districts",
-        type: 2,
+        type: 2,        
         url: 'https://dl.dropboxusercontent.com/u/870146/KML/V2/Datazone_with_Desc.json' + "?rand=" + (new Date()).valueOf(),
         dataType: 2
     },
@@ -218,8 +218,12 @@ function ToggleKMLLayer(checked, id) {
                 break;
             case 2: // geojson for geometry
                 layer = new google.maps.Data();
-                layer.loadGeoJson(kml[id].url);
-
+                if (kml[id].dataType == 1) {
+                    layer.addGeoJson(PrimarySchoollocationjsondata);
+                } else if (kml[id].dataType == 2) {
+                    layer.addGeoJson(datazonejsondata);
+                }
+                
                 layer.setStyle(function (feature) {
                     var fillop = 0.4;
                     if (feature.getProperty('isColorful')) {

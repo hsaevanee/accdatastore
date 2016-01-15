@@ -18,10 +18,12 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         private static ILog log = LogManager.GetLogger(typeof(WiderAchievementController));
 
         private readonly IGenericRepository rpGeneric;
+        private readonly IGenericRepository3nd rpGeneric3nd;
 
-        public WiderAchievementController(IGenericRepository rpGeneric)
+        public WiderAchievementController(IGenericRepository rpGeneric, IGenericRepository3nd rpGeneric3nd)
         {
             this.rpGeneric = rpGeneric;
+            this.rpGeneric3nd = rpGeneric3nd;
         }
 
         // GET: SchoolProfile/WiderAchievement

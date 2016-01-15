@@ -2,12 +2,12 @@
 
 namespace ACCDataStore.Helpers.ORM
 {
-    public class NHibernateUnitOfWork : IUnitOfWork
+    public class NHibernateUnitOfWork2nd : IUnitOfWork2nd
     {
         private readonly ISession _session;
         private ITransaction _transaction;
 
-        public NHibernateUnitOfWork(ISession session)
+        public NHibernateUnitOfWork2nd(ISession session)
         {
             _session = session;
             _transaction = session.BeginTransaction();

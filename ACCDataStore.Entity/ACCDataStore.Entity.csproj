@@ -67,10 +67,14 @@
     <Compile Include="GeneralCounter.cs" />
     <Compile Include="InsightProfile\DestinationObj.cs" />
     <Compile Include="Mapping\MSAccess\Age05sInfoMap.cs" />
+    <Compile Include="Mapping\MSAccess\LuEnglishLevelMap.cs" />
     <Compile Include="Mapping\MSAccess\NeighbourhoodMap.cs" />
     <Compile Include="Mapping\MSAccess\DatahubDataMap.cs" />
+    <Compile Include="Mapping\MSAccess\SchoolProfile\SchStudentMap.cs" />
     <Compile Include="Mapping\MSAccess\SchPrimarySchoolMap.cs" />
     <Compile Include="Mapping\MSAccess\SchStudentMap.cs" />
+    <Compile Include="SchoolProfile\LuEnglishLevel.cs" />
+    <Compile Include="SchoolProfile\PupilObj.cs" />
     <Compile Include="SchoolProfile\SchPrimarySchool.cs" />
     <Compile Include="SchoolProfile\SchStudent.cs" />
     <Compile Include="Mapping\MSAccess\WiderAchievementMap.cs" />

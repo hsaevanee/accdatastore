@@ -222,6 +222,7 @@
     <Content Include="Images\bruce_scharlau.JPG" />
     <Content Include="Images\Do_Coyle.jpg" />
     <Content Include="Images\Ian_Heywood.jpg" />
+    <Content Include="Images\insight_logo.jpg" />
     <Content Include="Images\Jan2.png" />
     <Content Include="Images\Kevin.jpeg" />
     <Content Include="Images\Pamela_Bain.jpeg" />
@@ -250,7 +251,11 @@
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\StudentStage\MapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\StudentStage\StudentStage.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\WiderAchievement\IndexWiderAchievement.js" />
+    <Content Include="Scripts\accdatastore\views\Datazone_with_Desc.js" />
     <Content Include="Scripts\accdatastore\views\global.js" />
+    <Content Include="Scripts\accdatastore\views\InsightSchoollocations.js" />
+    <Content Include="Scripts\accdatastore\views\Neighbourhoods.js" />
+    <Content Include="Scripts\accdatastore\views\PrimarySchoollocations.js" />
     <Content Include="Scripts\bootstrap-multiselect.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -273,6 +278,9 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\Achievement\AchievementAreaRegistration.cs" />
+    <Compile Include="Areas\Achievement\Controllers\WiderAchievementController.cs" />
+    <Compile Include="Areas\Achievement\ViewModels\WiderAchievement\WiderAchievementViewModel.cs" />
     <Compile Include="Areas\DatahubProfile\Controllers\IndexDatahubController.cs" />
     <Compile Include="Areas\DatahubProfile\DatahubProfileAreaRegistration.cs" />
     <Compile Include="Areas\DatahubProfile\ViewModels\Datahub\PupilObject.cs" />
@@ -294,6 +302,9 @@
     <Compile Include="Areas\PupilsPopulation\Controllers\IndexPupilsPopulationController.cs" />
     <Compile Include="Areas\PupilsPopulation\PupilsPopulationAreaRegistration.cs" />
     <Compile Include="Areas\PupilsPopulation\ViewModels\Pupils05\Pupils05Data.cs" />
+    <Compile Include="Areas\SchoolProfiles\Controllers\IndexSchoolProfilesController.cs" />
+    <Compile Include="Areas\SchoolProfiles\SchoolProfilesAreaRegistration.cs" />
+    <Compile Include="Areas\SchoolProfiles\ViewModels\SchoolProfiles\IndexSchoolProfilesViewModel.cs" />
     <Compile Include="Areas\SchoolProfile\Controllers\BaseSchoolProfileController.cs" />
     <Compile Include="Areas\SchoolProfile\Controllers\CurriculumController.cs" />
     <Compile Include="Areas\SchoolProfile\Controllers\LanguageController.cs" />
@@ -323,13 +334,16 @@
     <Compile Include="Helpers\ConstantHelper.cs" />
     <Compile Include="Helpers\ConvertHelper.cs" />
     <Compile Include="Helpers\ORM\INHibernateHelper.cs" />
+    <Compile Include="Helpers\ORM\IUnitOfWork3nd.cs" />
     <Compile Include="Helpers\ORM\IUnitOfWork2nd.cs" />
     <Compile Include="Helpers\ORM\IUnitOfWork.cs" />
     <Compile Include="Helpers\ORM\MVCApplicationModule.cs" />
     <Compile Include="Helpers\ORM\NHibernateHelper.cs" />
     <Compile Include="Helpers\ORM\NHibernateModule.cs" />
+    <Compile Include="Helpers\ORM\NHibernateUnitOfWork3nd.cs" />
     <Compile Include="Helpers\ORM\NHibernateUnitOfWork2nd.cs" />
     <Compile Include="Helpers\ORM\NHibernateUnitOfWork.cs" />
+    <Compile Include="Helpers\ORM\TransactionalAttribute3nd.cs" />
     <Compile Include="Helpers\ORM\TransactionalAttribute2nd.cs" />
     <Compile Include="Helpers\ORM\TransactionalAttribute.cs" />
     <Compile Include="Helpers\ORM\TransactionAttribute.cs" />
@@ -397,6 +411,16 @@
     <Content Include="Areas\SchoolProfile\Views\WiderAchievement\Index 2.cshtml" />
     <Content Include="Less\bootstrap-multiselect.less" />
     <Content Include="Areas\SchoolProfile\Views\StudentStage\Index2.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\web.config" />
+    <Content Include="Areas\SchoolProfiles\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\IndexSchoolProfiles\Index.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\MainIndex.cshtml" />
+    <Content Include="Areas\Achievement\Views\web.config" />
+    <Content Include="Areas\Achievement\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Achievement\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Achievement\Views\WiderAchievement\Index.cshtml" />
+    <Content Include="Areas\Achievement\Views\WiderAchievement\IndexSummary.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\About.cshtml" />
@@ -410,10 +434,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Achievement\Models\" />
     <Folder Include="Areas\DatahubProfile\Models\" />
     <Folder Include="Areas\InsightProfile\Models\" />
     <Folder Include="Areas\Nationality\Models\" />
     <Folder Include="Areas\PupilsPopulation\Models\" />
+    <Folder Include="Areas\SchoolProfiles\Models\" />
     <Folder Include="Areas\SchoolProfile\Models\" />
     <Folder Include="Models\" />
     <Folder Include="Resources\Upload\" />
