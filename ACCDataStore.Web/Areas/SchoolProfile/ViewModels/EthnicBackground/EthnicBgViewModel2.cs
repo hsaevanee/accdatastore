@@ -15,5 +15,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.ViewModels.EthnicBackground
         public bool IsShowData { get; set; }
         public List<string> ListSelectedEthnicBg { get; set; }
         public int NoSelectedSchool { get; set; }
+        //public List<GenderObj> listSelectedGender;
+        //public List<GenderObj> listGender; 
+
     }
 }

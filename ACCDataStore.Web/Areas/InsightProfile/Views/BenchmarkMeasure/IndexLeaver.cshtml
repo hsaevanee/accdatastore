@@ -51,25 +51,23 @@
                             <table class="table table-bordered">
                                 <tbody>
                                     <tr>
-                                        <td >School Name</td>
-                                        <td>@Html.DropDownListFor(m => m.selectedschoolcode, new SelectList(Model.ListSchoolNameData, "seedcode", "name"))</td>
+                                        <td class="text-left">School Name</td>
+                                        <td colspan="3" class="text-left">@Html.DropDownListFor(m => m.selectedschoolcode, new SelectList(Model.ListSchoolNameData, "seedcode", "name"))</td>
                                     </tr>
 
                                     <tr>
-                                        <td colspan="2">Gender</td>
-                                    </tr>
+                                        <td class="text-left">Gender</td>
 
                                     @for (int i = 0; i < Model.ListGenderData.Count(); i++)
                                     {
-                                        <tr>
-                                            <td></td>
                                             <td>
                                                 @Html.CheckBoxFor(m => m.ListGenderData[i].isSelected, new { id = "gender_" + i })
                                                 @Html.HiddenFor(m => m.ListGenderData[i].gendercode)
                                                 @Html.DisplayFor(m => m.ListGenderData[i].name)
                                             </td>
-                                        </tr>
+
                                     }
+                                    </tr>
                                 </tbody>
                             </table>
                             <p><button id="buttonGetData" type="submit" class="btn btn-primary">Get Data!</button></p>
@@ -94,12 +92,12 @@
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <th>Academic Year</th>
+                                    <th class="text-center">Academic Year</th>
                                     @foreach (var gender in Model.ListGenderData)
                                     {
                                         if (gender.isSelected)
                                         {
-                                            <th>@gender.name</th>
+                                            <th class="text-center">@gender.name</th>
                                         }
                                     }
 

@@ -31,15 +31,13 @@
                                 {
                                     <table class="table table-bordered">
                                         <tr>
-                                            <td colspan="2">Select school name </td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td>@Html.DropDownListFor(x => x.selectedschoolname, new SelectList(Model.ListSchoolNameData), "---Please Select School---")</td>
+                                            <td class="text-left">Select school name </td>
+                                            <td class="text-left">@Html.DropDownListFor(x => x.selectedschoolname, new SelectList(Model.ListSchoolNameData), "---Please Select School---")</td>
                                             @*<td>@Html.DropDownList("selectSchoolname", new SelectList(Model.ListSchoolNameData, "----Select------"))</td>*@
                                         </tr>
                                         <tr>
-                                            <td colspan="2">Data available </td>
+                                            <td class="text-left">Data available </td>
+                                            <td></td>
                                         </tr>
                                         @{
                                     var check = "";
@@ -61,7 +59,7 @@
 
                                         <tr>
                                             <td></td>
-                                            <td>
+                                            <td class="text-left">
                                                 <input type="checkbox" name="years" value="@itemYear"
                                                        @check /> @itemYear
                                                 </td>
@@ -87,14 +85,15 @@
                                         }
                                         <tr>
                                             <td></td>
-                                            <td>
+                                            <td class="text-left">
                                                 <input type="checkbox" name="CheckYearAll"
                                                        value="ALL" id="CheckYearAll" @check />CheckALL
                                             </td>
 
                                         </tr>
                                         <tr>
-                                            <td colspan="2">Select Deciles </td>
+                                            <td class="text-left">Select Deciles </td>
+                                            <td></td>
                                         </tr>
                                         @{
                                     foreach (var itemSIMD in Model.ListSIMDdefinition)
@@ -115,7 +114,7 @@
 
                                         <tr>
                                             <td></td>
-                                            <td>
+                                            <td class="text-left">
                                                 <input type="checkbox" name="SIMD" value="@itemSIMD"
                                                        @check /> @itemSIMD
                                                 </td>
@@ -150,7 +149,7 @@
                                         }
                                         <tr>
                                             <td></td>
-                                            <td>
+                                            <td class="text-left">
                                                 <input type="checkbox" name="CheckSIMDAll"
                                                        value="ALL" id="CheckSIMDAll" @check />CheckALL
                                             </td>

@@ -38,15 +38,9 @@
                                 {
                                     <table class="table table-bordered">
                                         <tr>
-                                            <td colspan="2">Select school name </td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td>@Html.DropDownListFor(x => x.selectedschoolname, new SelectList(Model.ListSchoolNameData), "---Please Select School---")</td>
+                                            <td class="text-left">Select school name </td>
+                                            <td class="text-left">@Html.DropDownListFor(x => x.selectedschoolname, new SelectList(Model.ListSchoolNameData), "---Please Select School---")</td>
                                             @*<td>@Html.DropDownList("selectSchoolname", new SelectList(Model.ListSchoolNameData, "----Select------"))</td>*@
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">Select Gender </td>
                                         </tr>
 
                                         @*@foreach (var itemGender in Model.ListGenderCode)
@@ -62,44 +56,44 @@
                                                         </tr>
                                                 }
                                             }*@
-                                        @foreach (var itemGender in Model.ListGenderCode)
-                                        {
-                                            if (Model.DicGenderWithSelected.ContainsKey(itemGender))
-                                            {
-                                                <tr>
-                                                    <td></td>
-                                                    <td>
+                                        <tr>
+                                            <td class="text-left">Select Gender</td>
+                                            <td colspan="3" class="text-left">
+                                                @foreach (var itemGender in Model.ListGenderCode)
+                                                {
+                                                    if (Model.DicGenderWithSelected.ContainsKey(itemGender))
+                                                    {
+
+
+
                                                         <input type="checkbox" name="gender" value="@itemGender"
                                                                @Model.DicGenderWithSelected[itemGender][1] /> @Model.DicGenderWithSelected[itemGender][0]
-                                                        </td>
-                                                    </tr>
-                                            }
-                                        }
-                                        <tr>
-                                            <td></td>
-                                            <td>
-                                                @{
-                                        var check = "";
-                                        if (Model.ListSelectedGender != null)
-                                        {
-                                            if (Model.ListSelectedGender.Count == 3)
-                                            {
-                                                check = "checked";
-                                            }
 
-                                        }
-                                        else
-                                        {
-                                            check = "checked";
-                                        }
+
+                                                    }
                                                 }
-                                                <input type="checkbox" name="CheckGenderAll" value="ALL" id="CheckGenderAll" @check />CheckALL
+                                                @{
+                                                var check = "";
+                                                if (Model.ListSelectedGender != null)
+                                                {
+                                                    if (Model.ListSelectedGender.Count == 3)
+                                                    {
+                                                        check = "checked";
+                                                    }
 
+                                                }
+                                                else
+                                                {
+                                                    check = "checked";
+                                                }
+                                                }
+                                                <input type="checkbox" name="CheckGenderAll"
+                                                       value="ALL" id="CheckGenderAll" @check />CheckALL
                                             </td>
-
                                         </tr>
                                         <tr>
-                                            <td colspan="2">Select Natioanlity </td>
+                                            <td class="text-left">Select Natioanlity </td>
+                                            <td> </td>
                                         </tr>
                                         @{
 
@@ -123,7 +117,7 @@
                                         {
                                             <tr>
                                                 <td></td>
-                                                <td>
+                                                <td class="text-left">
                                                     <input type="checkbox" name="nationality" value="@itemNational"
                                                            @check /> @Model.DicNational[itemNational]
                                                     </td>
@@ -133,7 +127,7 @@
                                         }
                                         <tr>
                                             <td></td>
-                                            <td>
+                                            <td class="text-left">
                                                 @{
                                     check = "";
                                     if (Model.ListSelectedNationality != null)

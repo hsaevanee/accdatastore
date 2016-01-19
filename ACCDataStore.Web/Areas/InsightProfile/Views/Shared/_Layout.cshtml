@@ -53,14 +53,14 @@
                             <li>
                                 <a href="@Url.Action("Index", "IndexDatahub", new { Area = "DatahubProfile" }, null)">DataHub Data</a>
                             </li>
-                            <li>
+                            @*<li>
                                 <a href="@Url.Action("IndexSummary", "WiderAchievement", new { Area = "Achievement" }, null)">Achievement</a>
-                            </li>
+                            </li>*@
                         </ul>
                     </li>
-                    <li>
+                    @*<li>
                         <a href="@Url.Action("Index", "Index", new { Area = "", id = "about" }, null)">About</a>
-                    </li>
+                    </li>*@
                     @*<li>
                             <a href="@Url.Action("Index", "Index", new { Area = "", id = "theTeam" }, null)">The Team</a>
                         </li>*@
@@ -103,7 +103,7 @@
                         <a href="@Url.Action("IndexLeaverDestination", "BenchmarkMeasure", new { Area = "InsightProfile" }, null)">Leaver Initial Destination</a>
                     </li>
                     <li>
-                        <a href="@Url.Action("LeaverDestinationBreakdown", "BenchmarkMeasure", new { Area = "InsightProfile", sSchoolName = "" }, null)">Improving Attainment for All</a>
+                        <a href="@Url.Action("LeaverDestinationBreakdown", "BenchmarkMeasure", new { Area = "InsightProfile", sSchoolName = "" }, null)">Breakdown by Destination</a>
                     </li>
                 </ol>
             </div>

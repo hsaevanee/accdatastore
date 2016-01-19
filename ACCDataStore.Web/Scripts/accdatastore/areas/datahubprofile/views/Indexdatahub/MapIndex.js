@@ -198,7 +198,7 @@ function ShowPopupInfo(data) {
     if (data.dataCategories.length != 0) {
         for (var i = 0; i < data.dataCategories.length; i++) {
             //sInformation += "<tr><td>" + data.dataCategories[i] + "</td><td  align='center'>" + data.Schdata[i].toFixed(2) + "</td><td  align='center'>" + data.Abdcitydata[i].toFixed(2) + "</td><tr>";
-            sInformation += "<tr><td class='text-left'>" + data.dataCategories[i] + "</td><td  align='center'> <a href='/DatahubProfile/IndexDatahub/GetListpupils?searchby=" + data.searchby + "&code=" + data.searchcode + "&dataname=" + data.dataCategories[i] + "'><button class='btn btn-info btn-xs disabled'>" + data.Schdata[i].toFixed(2) + "</button></a></td><td  align='center'> <a href='/DatahubProfile/IndexDatahub/GetListpupils?searchby=school&code=100&dataname=" + data.dataCategories[i] + "'><button class='btn btn-info btn-xs disabled'>" + data.Abdcitydata[i].toFixed(2) + "</button></a></td><tr>";
+            sInformation += "<tr><td class='text-left'>" + data.dataCategories[i] + "</td><td  align='center'> <a href='/DatahubProfile/IndexDatahub/GetListpupils?searchby=" + data.searchby + "&code=" + data.searchcode + "&dataname=" + data.dataCategories[i] + "'><button disabled class='btn btn-info btn-xs disabled'>" + data.Schdata[i].toFixed(2) + "</button></a></td><td  align='center'> <a href='/DatahubProfile/IndexDatahub/GetListpupils?searchby=school&code=100&dataname=" + data.dataCategories[i] + "'><button disabled class='btn btn-info btn-xs disabled'>" + data.Abdcitydata[i].toFixed(2) + "</button></a></td><tr>";
 
         }
 
@@ -276,8 +276,8 @@ function ToggleKMLLayer(checked, id) {
                             layer.overrideStyle(event.feature, { strokeWeight: 5 });
                             var divContent = document.getElementById('content-windows-mouse-over');
                             divContent.style.display = "block";
-                            divContent.style.left = (point.x + 20) + "px";
-                            divContent.style.top = (point.y + 20) + "px";
+                            divContent.style.left = (point.x+10) + "px";
+                            divContent.style.top = (point.y+10) + "px";
                             divContent.textContent = event.feature.getProperty('description');
                             break;
                         case "Point":

@@ -653,9 +653,11 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             vmEthnicbackground2.ListGenderCode = fooList;
             vmEthnicbackground2.DicGender = GetDicGender();
 
-            var tempAA = Request["example-getting-started"];
 
-            var sSchoolName1 = Request["selectedschoolname"];
+            //vmEthnicbackground2.listGender = new List<GenderObj> { new GenderObj("1", "F", "Female"), new GenderObj("2", "M", "Male"), new GenderObj("3", "T", "Total") };
+            //vmEthnicbackground2.listSelectedGender = new List<GenderObj> { new GenderObj("1", "F", "Female"), new GenderObj("2", "M", "Male") };
+
+             var sSchoolName1 = Request["selectedschoolname"];
 
             var sSchoolName2 = Request["selectedschoolname2"];
 
@@ -683,10 +685,12 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
                 if (Request["gender"] != null)
                 {
                     vmEthnicbackground2.ListSelectedGender = Request["gender"].Split(',').ToList();
+                    //vmEthnicbackground2.listSelectedGender = new List<GenderObj> { new GenderObj("1", "F", "Female"), new GenderObj("2", "M", "Male") };
                 }
                 else
                 {
                     vmEthnicbackground2.ListSelectedGender = vmEthnicbackground2.ListGenderCode;
+                    //vmEthnicbackground2.listSelectedGender = new List<GenderObj> { new GenderObj("1", "F", "Female"), new GenderObj("2", "M", "Male"), new GenderObj("3", "T", "Total") };
                 }
 
                 vmEthnicbackground2.ListSelectedEthnicBg = sethnicityCriteria;

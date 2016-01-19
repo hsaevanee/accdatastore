@@ -150,14 +150,15 @@ function drawChartColumn(data) {
 }
 
 function ShowPopupInfo(data) {
-    //var sInformation = "<a href='#' class='a-close-popup-information'>Close</a><h3>" + sName + "</h3>";
-    var sInformation = "<h3 align='center'> Leaver in a Positive Destination <br>" + data.dataTitle + "</h3>";
-    sInformation += "<table class='style2'>";
-    sInformation += "<thead><tr><th>Year</th><th>" + data.dataTitle + "</th><th>Aberdeen City</th></tr></thead>";
+    var sInformation = "<hr><div class='panel panel-primary text-center'> <div class='panel-heading'>";
+    sInformation += "<h4 class='text-center'> Curriculum for Excellence - " + data.dataTitle + "</h4>";
+    sInformation += "</div><div class='panel-body'>";
+    sInformation += "<table class='table table-bordered table-hover'>";
+    sInformation += "<thead><tr><th class='text-center'>Year</th><th class='text-center'>" + data.dataTitle + "</th><th class='text-center'>Aberdeen City</th></tr></thead>";
     sInformation += "<tbody>";
     if (data.dataCategories.length != 0) {
         for (var i = 0; i < data.dataCategories.length; i++) {
-            sInformation += "<tr><td>" + data.dataCategories[i] + "</td><td  align='center'>" + data.Schooldata[i].toFixed(2) + "</td><td  align='center'>" + data.Abddata[i].toFixed(2) + "</td><tr>";
+            sInformation += "<tr><td class='text-left'>" + data.dataCategories[i] + "</td><td  class='text-center'>" + data.Schooldata[i].toFixed(2) + "</td><td  class='text-center'>" + data.Abddata[i].toFixed(2) + "</td><tr>";
 
         }
 
@@ -198,7 +199,14 @@ function ToggleKMLLayer(checked, id) {
                 break;
             case 2: // geojson for geometry
                 layer = new google.maps.Data();
-                layer.loadGeoJson(kml[id].url);
+                
+                if (kml[id].dataType == 1) {
+                    layer.addGeoJson(InsightSchoollocationsjsondata);
+                } else if (kml[id].dataType == 2) {
+                    layer.addGeoJson(datazonejsondata);
+                } else if (kml[id].dataType == 3) {
+                    layer.addGeoJson(Neighbourhoodsjsondata);
+                }
 
                 layer.setStyle(function (feature) {
                     var fillop = 0.4;

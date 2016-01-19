@@ -46,28 +46,26 @@
                         <table class="table table-bordered">
                             <tbody>
                                 <tr>
-                                    <td width="200">School Name</td>
-                                    <td>@Html.DropDownListFor(m => m.selectedschoolcode, new SelectList(Model.ListSchoolNameData, "seedcode", "name"))</td>
+                                    <td class="text-left" width="200">School Name</td>
+                                    <td colspan="3" class="text-left">@Html.DropDownListFor(m => m.selectedschoolcode, new SelectList(Model.ListSchoolNameData, "seedcode", "name"))</td>
                                 </tr>
 
                                 <tr>
-                                    <td colspan="2">Gender</td>
-                                </tr>
+                                    <td class="text-left">Gender</td>
 
-                                @for (int i = 0; i < Model.ListGenderData.Count(); i++)
-                                {
-                                    <tr>
-                                        <td></td>
+                                    @for (int i = 0; i < Model.ListGenderData.Count(); i++)
+                                    {
                                         <td>
                                             @Html.CheckBoxFor(m => m.ListGenderData[i].isSelected, new { id = "gender_" + i })
                                             @Html.HiddenFor(m => m.ListGenderData[i].gendercode)
                                             @Html.DisplayFor(m => m.ListGenderData[i].name)
                                         </td>
-                                    </tr>
-                                }
+
+                                    }
+                                </tr>
                                 <tr>
-                                    <td width="200">Year</td>
-                                    <td>@Html.DropDownListFor(x => x.selectedyear, new SelectList(Model.ListYearData, "year", "academicyear"))</td>
+                                    <td class="text-left" width="200">Year</td>
+                                    <td class="text-left" colspan="3">@Html.DropDownListFor(x => x.selectedyear, new SelectList(Model.ListYearData, "year", "academicyear"))</td>
                                 </tr>
                                 @*<tr><td colspan="2"><button onclick='Getdestinationbreakdown()'><label>Get Destination Breakdown</label></button></td></tr>*@
                             </tbody>

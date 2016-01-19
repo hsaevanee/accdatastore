@@ -27,10 +27,13 @@
 <body>
     @*<script type="text/javascript">
         $(function () {
-            $('#example-getting-started').multiselect({
+            var data = "1,2";
+            var dataarray = data.split(",");
+            $('example-getting-started').val(dataarray)
+            $('example-getting-started').multiselect({
                 includeSelectAllOption: true
             });
-
+            $("example-getting-started").multiselect("refresh");
         });
     </script>*@
     <div class="container">
@@ -56,83 +59,37 @@
                             {
                                 <table class="table table-bordered">
                                     <tr>
-                                        <td colspan="2">Select school name One </td>
-                                    </tr>
-                                    @*<tr>
-                                        <td>
-                                            <select id="example-getting-started" multiple="multiple">
-                                                <option value="cheese">Cheese</option>
-                                                <option value="tomatoes">Tomatoes</option>
-                                                <option value="mozarella">Mozzarella</option>
-                                                <option value="mushrooms">Mushrooms</option>
-                                                <option value="pepperoni">Pepperoni</option>
-                                                <option value="onions">Onions</option>
-                                            </select>
-                                        </td>
-
-                                    </tr>*@
-                                    <tr>
-                                        <td></td>
-                                        <td>@Html.DropDownListFor(x => x.selectedschoolname, new SelectList(Model.ListSchoolNameData), "---Please Select School---", new { multiple = "multiple" })</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">Select school name Two</td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
+                                        <td class="text-left">Select school 1</td>
+                                        <td>@Html.DropDownListFor(x => x.selectedschoolname, new SelectList(Model.ListSchoolNameData), "---Please Select School---")</td>
+                                        <td class="text-left"> Select school 2</td>
                                         <td>@Html.DropDownListFor(x => x.selectedschoolname2, new SelectList(Model.ListSchoolNameData2), "---Please Select School---")</td>
                                     </tr>
-
+                                    @*<tr>
+                                        <td>Select Gender</td>
+                                        @*<td>@Html.DropDownListFor(x => x.listSelectedGender, new MultiSelectList(Model.listGender, "id", "fullName"), new { Multiple = "multiple" })</td>*@
+                                    @*<td>@Html.DropDownListFor(x => x.listSelectedGender, Model.listGender.Select(x => new SelectListItem { Text = x.fullName, Value = x.id, Selected = x.selected}), new { Multiple = "multiple" })</td>
+                                        </tr>*@
                                     <tr>
-                                        <td colspan="2">Select Gender </td>
-                                    </tr>
-                                    @foreach (var itemGender in Model.ListGenderCode)
-                                    {
-                                        if (Model.DicGenderWithSelected.ContainsKey(itemGender))
-                                        {
-                                            <tr>
-                                                <td></td>
-                                                <td>
+                                        <td class="text-left">Select Gender</td>
+                                        <td colspan="3" class="text-left">
+                                            @foreach (var itemGender in Model.ListGenderCode)
+                                            {
+                                                if (Model.DicGenderWithSelected.ContainsKey(itemGender))
+                                                {
+
+
+
                                                     <input type="checkbox" name="gender" value="@itemGender"
                                                            @Model.DicGenderWithSelected[itemGender][1] /> @Model.DicGenderWithSelected[itemGender][0]
-                                                    </td>
-                                                </tr>
-                                        }
-                                    }
-                                    @{
-                                    var check = "";
-                                    if (Model.ListSelectedGender != null)
-                                    {
-                                        if (Model.ListSelectedGender.Count == 3)
-                                        {
-                                            check = "checked";
-                                        }
 
-                                    }
-                                    else
-                                    {
-                                        check = "checked";
-                                    }
-                                    }
-                                    <tr>
-                                        <td></td>
-                                        <td>
 
-                                            <input type="checkbox" name="CheckGenderAll"
-                                                   value="ALL" id="CheckGenderAll" @check />CheckALL
-                                        </td>
-
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">Select EthnicBackground </td>
-                                    </tr>
-                                    @{
-                                        foreach (var itemEthnic in Model.ListEthnicCode)
-                                        {
-                                            check = "";
-                                            if (Model.ListSelectedEthnicBg != null)
+                                                }
+                                            }
+                                            @{
+                                            var check = "";
+                                            if (Model.ListSelectedGender != null)
                                             {
-                                                if (Model.ListSelectedEthnicBg.Contains(itemEthnic))
+                                                if (Model.ListSelectedGender.Count == 3)
                                                 {
                                                     check = "checked";
                                                 }
@@ -142,37 +99,63 @@
                                             {
                                                 check = "checked";
                                             }
-
-                                            if (Model.DicEthnicBG.ContainsKey(itemEthnic))
-                                            {
-                                                <tr>
-                                                    <td></td>
-                                                    <td>
-                                                        <input type="checkbox" name="ethnicity" value="@itemEthnic"
-                                                               @check /> @Model.DicEthnicBG[itemEthnic]
-                                                        </td>
-                                                    </tr>
-
                                             }
-                                        }
-                                     }
-                                        <tr>
-                                        <td></td>
-                                        <td>
-                                            @{
-                                                check = "";
-                                                if (Model.ListSelectedEthnicBg != null)
-                                                {
-                                                    if (Model.ListSelectedEthnicBg.Count == 20)
-                                                    {
-                                                        check = "checked";
-                                                    }
+                                            <input type="checkbox" name="CheckGenderAll"
+                                                   value="ALL" id="CheckGenderAll" @check />CheckALL
+                                    </td></tr>
 
-                                                }
-                                                else
-                                                {
-                                                    check = "checked";
-                                                }
+                                    <tr>
+                                        <td class="text-left">Select EthnicBackground</td>
+                                        <td colspan="3"> </td>
+                                    </tr>
+                                    @{
+                                foreach (var itemEthnic in Model.ListEthnicCode)
+                                {
+                                    check = "";
+
+                                    if (Model.ListSelectedEthnicBg != null)
+                                    {
+                                        if (Model.ListSelectedEthnicBg.Contains(itemEthnic))
+                                        {
+                                            check = "checked";
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        check = "checked";
+                                    }
+
+                                    if (Model.DicEthnicBG.ContainsKey(itemEthnic))
+                                    {
+                                            <tr>
+                                                <td></td>
+                                            <td colspan="3" class="text-left">
+                                                <input type="checkbox" name="ethnicity" value="@itemEthnic"
+                                                       @check /> @Model.DicEthnicBG[itemEthnic]
+                                             </td>
+                                            </tr>
+
+                                    }
+                                }
+                                    }
+                                    <tr>
+                                        <td></td>
+                                        <td colspan="3" class="text-left">
+                                            @{
+                                check = "";
+                                if (Model.ListSelectedEthnicBg != null)
+                                {
+                                    if (Model.ListSelectedEthnicBg.Count == 20)
+                                    {
+                                        check = "checked";
+                                    }
+
+                                }
+                                else
+                                {
+                                    check = "checked";
+                                }
                                             }
 
                                             <input type="checkbox" name="CheckEthnicityAll"
@@ -185,13 +168,18 @@
                                 <p><button id="buttonGetData" type="submit" class="btn btn-primary">Get Data!</button></p>
                             }
                             <!-- Initialize the plugin: -->
-                            <script type="text/javascript">
+                            @*<script type="text/javascript">
                                 $(document).ready(function () {
-                                    //$('#example-getting-started').multiselect();
-                                    $('#selectedschoolname').multiselect();
-                                    //selectedschoolname
+                                    var selectid = @Html.Raw(Json.Encode(Model.listSelectedGender.Select(x=>x.id).ToList()));
+                                    alert(selectid);
+                                    
+                                    $('#listSelectedGender').multiselect({
+                                        includeSelectAllOption: true
+                                    });
+                                    $('#listSelectedGender').multiselect('select', selectid);
+                                    $('#listSelectedGender').multiselect('refresh');
                                 });
-                            </script>
+</script>*@
                     </div>
                 </div>
             </div>
