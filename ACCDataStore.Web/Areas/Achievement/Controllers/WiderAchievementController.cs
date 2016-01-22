@@ -58,7 +58,7 @@ namespace ACCDataStore.Web.Areas.Achievement.Controllers
                     List<WiderAchievementObj> listdata = this.rpGeneric.FindAll<WiderAchievementObj>().ToList();
                     if (listdata != null)
                     {
-                        temp = (from a in listdata where a.schoolname.Equals(sSchoolname) select a).ToList();
+                        temp = (from a in listdata where a.centre.Equals(sSchoolname) select a).ToList();
 
                     }
 

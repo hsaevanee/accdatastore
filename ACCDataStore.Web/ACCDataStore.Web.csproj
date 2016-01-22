@@ -251,6 +251,7 @@
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\StudentStage\MapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\StudentStage\StudentStage.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\WiderAchievement\IndexWiderAchievement.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofile\views\WiderAchievement\MapIndex.js" />
     <Content Include="Scripts\accdatastore\views\Datazone_with_Desc.js" />
     <Content Include="Scripts\accdatastore\views\global.js" />
     <Content Include="Scripts\accdatastore\views\InsightSchoollocations.js" />
@@ -421,6 +422,7 @@
     <Content Include="Areas\Achievement\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Achievement\Views\WiderAchievement\Index.cshtml" />
     <Content Include="Areas\Achievement\Views\WiderAchievement\IndexSummary.cshtml" />
+    <Content Include="Areas\SchoolProfile\Views\WiderAchievement\MapIndex.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\About.cshtml" />

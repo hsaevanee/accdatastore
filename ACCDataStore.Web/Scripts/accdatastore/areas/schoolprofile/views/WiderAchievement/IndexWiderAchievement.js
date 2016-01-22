@@ -20,7 +20,7 @@ function FunctiongetDetail(buttonID, dataname) {
 
         $.ajax({
             type: 'POST',
-            url: sContextPath + 'DatahubProfile/IndexDatahub/GetDatadetails',
+            url: sContextPath + '',
             data: JSON.stringify(JSONObject),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
