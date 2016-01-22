@@ -13,7 +13,8 @@ namespace ACCDataStore.Entity.SchoolProfile
         public virtual string age_range { get; set; }
         public virtual string awardname { get; set; }
         public virtual string scqf_rating { get; set; }
-        public virtual string course_venue { get; set; }
+        public virtual string post_out { get; set; }
+        public virtual string post_in { get; set; }
         public virtual string gender { get; set; }
         public virtual int award2013 { get; set; }
         public virtual int award2014 { get; set; }

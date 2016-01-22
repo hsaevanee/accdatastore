@@ -219,6 +219,7 @@
     <Content Include="Areas\Nationality\Views\web.config" />
     <Content Include="Images\Aberdeen  Gaurtees logo.png" />
     <Content Include="Images\acc-logo.gif" />
+    <Content Include="Images\AchievementLogo.png" />
     <Content Include="Images\bruce_scharlau.JPG" />
     <Content Include="Images\Do_Coyle.jpg" />
     <Content Include="Images\Ian_Heywood.jpg" />
@@ -252,6 +253,8 @@
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\StudentStage\StudentStage.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\WiderAchievement\IndexWiderAchievement.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\WiderAchievement\MapIndex.js" />
+    <Content Include="Scripts\accdatastore\areas\widerAchievement\IndexWiderAchievement.js" />
+    <Content Include="Scripts\accdatastore\areas\widerAchievement\MapIndex.js" />
     <Content Include="Scripts\accdatastore\views\Datazone_with_Desc.js" />
     <Content Include="Scripts\accdatastore\views\global.js" />
     <Content Include="Scripts\accdatastore\views\InsightSchoollocations.js" />
@@ -395,7 +398,6 @@
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\MapIndex.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\PersonalDetails.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Pupilslist.cshtml" />
-    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Index2.cshtml" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -421,8 +423,10 @@
     <Content Include="Areas\Achievement\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Achievement\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Achievement\Views\WiderAchievement\Index.cshtml" />
-    <Content Include="Areas\Achievement\Views\WiderAchievement\IndexSummary.cshtml" />
+    <Content Include="Areas\Achievement\Views\WiderAchievement\Home.cshtml" />
     <Content Include="Areas\SchoolProfile\Views\WiderAchievement\MapIndex.cshtml" />
+    <Content Include="Areas\Achievement\Views\WiderAchievement\MapIndex.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Index2.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\About.cshtml" />
