@@ -17,5 +17,7 @@ namespace ACCDataStore.Web.Areas.Achievement.ViewModels.WiderAchievement
         public List<string> Listawardname { get; set; }
         public string selectedawardname { get; set; }
         public List<WiderAchievementObj> Listresults { get; set; }
+        public List<string> Listscqf_rating { get; set; }
+        public string selectescqf_rating { get; set; }
     }
 }

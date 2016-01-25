@@ -1,4 +1,5 @@
-﻿
+﻿//********** Wider Achievement ***********//
+
 var map; // map object
 
 // initialize all kml layers
@@ -14,23 +15,17 @@ var kml = {
     //    }
     //},
     a: {
-        name: "Schools Locations",
+        name: "Primary Schools Locations",
         type: 2,
-        url: 'https://storage.googleapis.com/maps-devrel/google.json' + "?rand=" + (new Date()).valueOf(),
-        dataType : 1
+        url: 'https://dl.dropboxusercontent.com/u/55734762/PrimarySchoollocations.json' + "?rand=" + (new Date()).valueOf(),
+        dataType: 1
     },
-    b: {
-        name: "Aberdeen DataZone Districts",
-        type: 2,
-        url: '~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/Datazone_with_Desc.json' + "?rand=" + (new Date()).valueOf(),
-        dataType: 2
-    },
-    c: {
-        name: "Neighbourhoods Districts",
-        type: 2,
-        url: 'https://dl.dropboxusercontent.com/u/55734762/Neighbourhoods.json' + "?rand=" + (new Date()).valueOf(),
-        dataType: 3
-    },
+    //b: {
+    //    name: "Aberdeen DataZone Districts",
+    //    type: 2,
+    //    url: 'https://dl.dropboxusercontent.com/u/870146/KML/V2/Datazone_with_Desc.json' + "?rand=" + (new Date()).valueOf(),
+    //    dataType: 2
+    //},
 };
 
 // on document ready
@@ -85,16 +80,6 @@ function ShowPopupInformation(sInformation) {
 // call server side method via ajax
 function SearchData(sCondition,sKeyname) {
     //var param = JSON.stringify({ 'sCondition': sCondition }); // just an example, need to adjust
-    //sCondition = "5235324,MILLTIMBER PRIMARY SCHOOL";
-    //var res = sCondition.split(",");
-    //var kcode = res[0];
-    //var kname = res[1];
-
-    //var JSONObject = {
-    //    "keyvalue": kcode,
-    //    "keyname": sKeyname
-    //}
-
     var JSONObject = {
         "keyvalue": sCondition,
         "keyname": sKeyname
@@ -102,15 +87,13 @@ function SearchData(sCondition,sKeyname) {
 
     $.ajax({
         type: "POST",
-        url: sContextPath + "DatahubProfile/IndexDatahub/SearchByName",
+        url: sContextPath + "Achievement/WiderAchievement/SearchByName",
         data: JSON.stringify(JSONObject),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
-            //alert(data.schoolname);
-            //alert(data.data);
             ShowPopupInfo(data);
-            drawChartColumn(data);
+            //myFunctionColumn(data);
                 
         },
         error: function (xhr, err) {
@@ -119,92 +102,26 @@ function SearchData(sCondition,sKeyname) {
     });
 }
 
-function myFunctionColumn(pdata) {
-        $.ajax({
-            type: 'POST',
-            url: sContextPath + 'DatahubProfile/IndexDatahub/GetChartDataforMap',
-            data: JSON.stringify(pdata.dataSeries),
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            success: function (data) {
-                drawChartColumn(data);
-            },
-            error: function (xhr, err) {
-                if (xhr.readyState != 0 && xhr.status != 0) {
-                    alert('readyState: ' + xhr.readyState + '\nstatus: ' + xhr.status);
-                    alert('responseText: ' + xhr.responseText);
-                }
-            }
-        });
-    
-
-}
-
-function drawChartColumn(data) {
-   
-    $('#divChartContainer')
-            .highcharts(
-                    {
-                        chart: {
-                            type: 'column'
-                        },
-                        title: {
-                            text: data.dataTitle
-                        },
-                        subtitle: {
-                            text: ''
-                        },
-                        xAxis: {
-                            //categories: [ '0%', '5%', '10%', '15%','20%','25%','30%'],
-                            categories: data.dataCategories,
-                            title: {
-                                text: 'Destination'
-                            }
-                        },
-                        yAxis: {
-                            min: 0,
-                            title: {
-                                text: 'Percentages'
-                            }
-                        },
-                        tooltip: {
-                            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                            pointFormat: '<tr><td nowrap style="color:{series.color};padding:0">{series.name}: </td>'
-                                    + '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
-                            footerFormat: '</table>',
-                            shared: true,
-                            useHTML: true
-                        },
-                        plotOptions: {
-                            column: {
-                                pointPadding: 0.2,
-                                borderWidth: 0
-                            }
-                        },
-                        series: [{ name: data.schoolname, data: data.Schdata }, { name: 'All Clients', data: data.Abdcitydata }],
-                        credits: {
-                            enabled: false
-                        }
-                    });
-}
-
 function ShowPopupInfo(data) {
     var sInformation = "<hr><div class='panel panel-primary text-center'> <div class='panel-heading'>";
-    sInformation += "<h4 class='text-center'>" + data.dataTitle + "</h4>";
+    sInformation += "<h4 class='text-center'> Wider Achievement Framework - "+ data.dataTitle+"</h4>";
     sInformation += "</div><div class='panel-body'>";
     sInformation += "<table class='table table-bordered table-hover'>";
-    sInformation += "<thead><tr><th> </th><th class='text-center'>" + data.schoolname + "</th><th class='text-center'> Aberdeen City </th></tr></thead>";
+    sInformation += "<thead><tr><th class='text-center'>Age Range</th><th class='text-center'>Award</th><th class='text-center'>SCQF Rating</th>";
+    sInformation += "<th class='text-center'>Gender</th><th class='text-center'>2013-2014</th><th class='text-center'>2014-2015</th><th class='text-center'>2015-2016</th></tr></thead>";
     sInformation += "<tbody>";
-    if (data.dataCategories.length != 0) {
-        for (var i = 0; i < data.dataCategories.length; i++) {
-            //sInformation += "<tr><td>" + data.dataCategories[i] + "</td><td  align='center'>" + data.Schdata[i].toFixed(2) + "</td><td  align='center'>" + data.Abdcitydata[i].toFixed(2) + "</td><tr>";
-            sInformation += "<tr><td class='text-left'>" + data.dataCategories[i] + "</td><td  align='center'> <a href='/DatahubProfile/IndexDatahub/GetListpupils?searchby=" + data.searchby + "&code=" + data.searchcode + "&dataname=" + data.dataCategories[i] + "'><button enabled class='btn btn-info btn-xs enabled'>" + data.Schdata[i].toFixed(2) + "</button></a></td><td  align='center'> <a href='/DatahubProfile/IndexDatahub/GetListpupils?searchby=school&code=100&dataname=" + data.dataCategories[i] + "'><button enabled class='btn btn-info btn-xs enabled'>" + data.Abdcitydata[i].toFixed(2) + "</button></a></td><tr>";
+    if (data.dataSeries.length != 0) {
+        for (var i = 0; i < data.dataSeries.length; i++) {
+            sInformation += "<tr><td class='text-center'>" + data.dataSeries[i].age_range + "</td><td  class='text-center'>" + data.dataSeries[i].awardname + "</td>";
+            sInformation += "<td  class='text-center'>" + data.dataSeries[i].scqf_rating + "</td><td  class='text-center'>" + data.dataSeries[i].gender + "</td>";
+            sInformation += "<td  class='text-center'>" + data.dataSeries[i].award2013 + "</td><td  class='text-center'>" + data.dataSeries[i].award2014 + "</td>"
+            sInformation += "<td  class='text-center'>" + data.dataSeries[i].award2015 + "</td><tr>";
 
         }
 
     } else {
 
-        sInformation += "<tr><td colspan='3' align='center'> No data available</td><tr>";
+        sInformation += "<tr><td colspan='7' class='text-center'> No data available</td><tr>";
     }
 
 
@@ -241,11 +158,9 @@ function ToggleKMLLayer(checked, id) {
                 layer = new google.maps.Data();
 
                 if (kml[id].dataType == 1) {
-                    layer.addGeoJson(InsightSchoollocationsjsondata);
+                    layer.addGeoJson(PrimarySchoollocationjsondata);
                 } else if (kml[id].dataType == 2) {
                     layer.addGeoJson(datazonejsondata);
-                } else if (kml[id].dataType == 3) {
-                    layer.addGeoJson(Neighbourhoodsjsondata);
                 }
 
                 layer.setStyle(function (feature) {
@@ -276,8 +191,8 @@ function ToggleKMLLayer(checked, id) {
                             layer.overrideStyle(event.feature, { strokeWeight: 5 });
                             var divContent = document.getElementById('content-windows-mouse-over');
                             divContent.style.display = "block";
-                            divContent.style.left = (point.x+10) + "px";
-                            divContent.style.top = (point.y+10) + "px";
+                            divContent.style.left = (point.x + 20) + "px";
+                            divContent.style.top = (point.y + 20) + "px";
                             divContent.textContent = event.feature.getProperty('description');
                             break;
                         case "Point":
@@ -306,14 +221,11 @@ function ToggleKMLLayer(checked, id) {
             if (kml[id].dataType == 0) {
                 SearchData(kmlEvent.featureData.description, "ZoneCode");
             } else if (kml[id].dataType == 1) {
-                SearchData(kmlEvent.feature.getProperty('SCHOCODE'), "SchCode");
+                SearchData(kmlEvent.feature.getProperty('POSTCODE'), "postcode");
             } else if (kml[id].dataType == 2) {
                 SearchData(kmlEvent.feature.getProperty('ZONECODE'), "ZoneCode");
-            } else if (kml[id].dataType == 3) {
-                SearchData(kmlEvent.feature.getProperty('name'), "Neighbourhoods");
             }
         });
-
     } else {
         kml[id].obj.setMap(null);
         delete kml[id].obj;
@@ -326,9 +238,9 @@ function CreateLayerControl() {
     var html = "<form action='' name='formLayer'><ul class='list-unstyled'>";
     for (var prop in kml) {
         i++;
-        html += "<li class='text-left' id=\"selector" + i + "\"><input name='box' type='checkbox' id='" + prop + "'" +
+        html += "<li class='text-left'  id=\"selector" + i + "\"><input name='box' type='checkbox' id='" + prop + "'" +
         " onclick='ToggleKMLLayer(this.checked, this.id)' \/>&nbsp;" +
-        kml[prop].name + "<\/li><hr>";
+        kml[prop].name + "<\/li> <hr>";
     }
     html += "<li class='control'><a href='#' onclick='RemoveAllLayers();return false;'>" +
     "Remove all layers<\/a><\/li>" +

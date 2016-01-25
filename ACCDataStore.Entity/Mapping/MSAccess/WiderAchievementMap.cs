@@ -18,7 +18,8 @@ namespace ACCDataStore.Entity.Mapping.MSAccess
             Map(x => x.age_range);
             Map(x => x.awardname);
             Map(x => x.scqf_rating);
-            Map(x => x.course_venue);
+            Map(x => x.post_out);
+            Map(x => x.post_in);
             Map(x => x.gender);
             Map(x => x.award2013);
             Map(x => x.award2014);

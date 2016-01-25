@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>School Roll Forecast</title>
-   
+
     @*<title>@HttpContext.Current.Application["APP_NAME"]</title>*@
     @*<link rel="stylesheet" href="~/Content/accdatastore/areas/DatahubProfile/views/datahub/datahub.css" type="text/css" />*@
     @*<script src="~/Scripts/accdatastore/views/global.js"></script>
@@ -84,16 +84,16 @@
                     School Roll Forecast
                 </h1>
                 @*<ol class="breadcrumb">
-                    <li>
-                        <a href="@Url.Action("IndexSummary", "WiderAchievement", new { Area = "Achievement" }, null)">Home</a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("index", "WiderAchievement", new { Area = "Achievement" }, null)">Data</a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("MapData", "WiderAchievement", new { Area = "Achievement" }, null)">Interactive Map</a>
-                    </li>
-             </ol>   *@
+                           <li>
+                               <a href="@Url.Action("IndexSummary", "WiderAchievement", new { Area = "Achievement" }, null)">Home</a>
+                           </li>
+                           <li>
+                               <a href="@Url.Action("index", "WiderAchievement", new { Area = "Achievement" }, null)">Data</a>
+                           </li>
+                           <li>
+                               <a href="@Url.Action("MapData", "WiderAchievement", new { Area = "Achievement" }, null)">Interactive Map</a>
+                           </li>
+                    </ol>   *@
             </div>
         </div>
     </div>
@@ -113,7 +113,8 @@
     <div>
         @RenderBody()
     </div>
-    
+
+
     <style type="text/css">
         table.tableizer-table {
             font-size: 12px;
@@ -121,6 +122,10 @@
             font-family: Arial, Helvetica, sans-serif;
             margin: 0 auto !important;
             float: none !important;
+            height: 100%;
+            width: 100%;
+        }
+
         }
 
         .tableizer-table td {
@@ -134,9 +139,8 @@
             color: #FFF;
             font-weight: bold;
         }
-       
-       
     </style>
+
     <table class="tableizer-table">
         <tr class="tableizer-firstrow"><th>GRANITE CITY ACADEMY</th><th>ACTUAL</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>   FORECAST</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th></tr>
         <tr><td>&nbsp;</td><td>2010</td><td>2011</td><td>2012</td><td>2013</td><td>2014</td><td>2015</td><td>2016</td><td>2017</td><td>2018</td><td>2019</td><td>2020</td><td>2021</td></tr>
@@ -278,14 +282,10 @@
         <tr><td>(Tot Roll/Funct Work Cap)%</td><td>70%</td><td>70%</td><td>70%</td><td>70%</td><td>99%</td><td>125%</td><td>149%</td><td>173%</td><td>197%</td><td>221%</td><td>241%</td><td>246%</td></tr>
     </table>
     <style type="text/css">
-        
-        <table style="width:100%;height:100%;">
-        table.tableizer-table {
+        <table style="width:100%;height:100%;" > table.tableizer-table {
             font-size: 12px;
             border: 1px solid #CCC;
             font-family: Arial, Helvetica, sans-serif;
-           
-            
         }
 
         .tableizer-table td {
@@ -302,27 +302,139 @@
     </style>
     
         <table class="tableizer-table">
-           
-                <tr class="tableizer-firstrow"><th>DEEBANK</th><th>ACTUAL</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>   FORECAST</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th></tr>
-                <tr><td>&nbsp;</td><td>2010</td><td>2011</td><td>2012</td><td>2013</td><td>2014</td><td>2015</td><td>2016</td><td>2017</td><td>2018</td><td>2019</td><td>2020</td><td>2021</td></tr>
-                <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-                <tr><td>PI Input</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>20</td><td>20</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-                <tr><td>Pupils/Hhld</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td></tr>
-                <tr><td>Housing</td><td>0</td><td>0</td><td>0</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td></tr>
-                <tr><td>Parents Charter</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td></tr>
-                <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
-                <tr><td>P I</td><td>20</td><td>20</td><td>20</td><td>20</td><td>19</td><td>19</td><td>22</td><td>26</td><td>30</td><td>34</td><td>37</td><td>41</td></tr>
-                <tr><td>P II</td><td>20</td><td>20</td><td>20</td><td>20</td><td>24</td><td>23</td><td>22</td><td>26</td><td>29</td><td>33</td><td>37</td><td>40</td></tr>
-                <tr><td>P III</td><td>20</td><td>20</td><td>20</td><td>20</td><td>24</td><td>27</td><td>26</td><td>25</td><td>29</td><td>32</td><td>36</td><td>39</td></tr>
-                <tr><td>P IV</td><td>20</td><td>20</td><td>20</td><td>20</td><td>23</td><td>27</td><td>30</td><td>28</td><td>28</td><td>31</td><td>35</td><td>38</td></tr>
-                <tr><td>P V</td><td>20</td><td>20</td><td>20</td><td>20</td><td>23</td><td>26</td><td>29</td><td>32</td><td>31</td><td>30</td><td>33</td><td>37</td></tr>
-                <tr><td>P VI</td><td>20</td><td>20</td><td>20</td><td>20</td><td>23</td><td>25</td><td>28</td><td>31</td><td>34</td><td>33</td><td>32</td><td>35</td></tr>
-                <tr><td>P VII</td><td>20</td><td>20</td><td>20</td><td>20</td><td>23</td><td>25</td><td>27</td><td>30</td><td>33</td><td>36</td><td>34</td><td>34</td></tr>
-                <tr><td>Total Roll</td><td>140</td><td>140</td><td>140</td><td>140</td><td>158</td><td>171</td><td>184</td><td>198</td><td>214</td><td>231</td><td>245</td><td>265</td></tr>
-                <tr><td>Maximum Capacity</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td></tr>
-                <tr><td>Tot Roll - Funct Work Cap</td><td>-260</td><td>-260</td><td>-260</td><td>-260</td><td>-242</td><td>-229</td><td>-216</td><td>-202</td><td>-186</td><td>-169</td><td>-155</td><td>-135</td></tr>
-                <tr><td>(Tot Roll/Funct Work Cap)%</td><td>35%</td><td>35%</td><td>35%</td><td>35%</td><td>39%</td><td>43%</td><td>46%</td><td>50%</td><td>54%</td><td>58%</td><td>61%</td><td>66%</td></tr>
-            </table>
+
+            <tr class="tableizer-firstrow"><th>DEEBANK</th><th>ACTUAL</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>   FORECAST</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th></tr>
+            <tr><td>&nbsp;</td><td>2010</td><td>2011</td><td>2012</td><td>2013</td><td>2014</td><td>2015</td><td>2016</td><td>2017</td><td>2018</td><td>2019</td><td>2020</td><td>2021</td></tr>
+            <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+            <tr><td>PI Input</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>20</td><td>20</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+            <tr><td>Pupils/Hhld</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td></tr>
+            <tr><td>Housing</td><td>0</td><td>0</td><td>0</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td></tr>
+            <tr><td>Parents Charter</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td></tr>
+            <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+            <tr><td>P I</td><td>20</td><td>20</td><td>20</td><td>20</td><td>19</td><td>19</td><td>22</td><td>26</td><td>30</td><td>34</td><td>37</td><td>41</td></tr>
+            <tr><td>P II</td><td>20</td><td>20</td><td>20</td><td>20</td><td>24</td><td>23</td><td>22</td><td>26</td><td>29</td><td>33</td><td>37</td><td>40</td></tr>
+            <tr><td>P III</td><td>20</td><td>20</td><td>20</td><td>20</td><td>24</td><td>27</td><td>26</td><td>25</td><td>29</td><td>32</td><td>36</td><td>39</td></tr>
+            <tr><td>P IV</td><td>20</td><td>20</td><td>20</td><td>20</td><td>23</td><td>27</td><td>30</td><td>28</td><td>28</td><td>31</td><td>35</td><td>38</td></tr>
+            <tr><td>P V</td><td>20</td><td>20</td><td>20</td><td>20</td><td>23</td><td>26</td><td>29</td><td>32</td><td>31</td><td>30</td><td>33</td><td>37</td></tr>
+            <tr><td>P VI</td><td>20</td><td>20</td><td>20</td><td>20</td><td>23</td><td>25</td><td>28</td><td>31</td><td>34</td><td>33</td><td>32</td><td>35</td></tr>
+            <tr><td>P VII</td><td>20</td><td>20</td><td>20</td><td>20</td><td>23</td><td>25</td><td>27</td><td>30</td><td>33</td><td>36</td><td>34</td><td>34</td></tr>
+            <tr><td>Total Roll</td><td>140</td><td>140</td><td>140</td><td>140</td><td>158</td><td>171</td><td>184</td><td>198</td><td>214</td><td>231</td><td>245</td><td>265</td></tr>
+            <tr><td>Maximum Capacity</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td></tr>
+            <tr><td>Tot Roll - Funct Work Cap</td><td>-260</td><td>-260</td><td>-260</td><td>-260</td><td>-242</td><td>-229</td><td>-216</td><td>-202</td><td>-186</td><td>-169</td><td>-155</td><td>-135</td></tr>
+            <tr><td>(Tot Roll/Funct Work Cap)%</td><td>35%</td><td>35%</td><td>35%</td><td>35%</td><td>39%</td><td>43%</td><td>46%</td><td>50%</td><td>54%</td><td>58%</td><td>61%</td><td>66%</td></tr>
+        </table>
+
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="text-center">School Forecast Table<span class="fa fa-edit pull-right bigicon"></span></h4>
+            </div>
+            <div class="panel-body text-center">
+                <div id="grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- you need to include the shieldui css and js assets in order for the grids to work -->
+    <link rel="stylesheet" type="text/css" href="http://www.prepbootstrap.com/Content/shieldui-lite/dist/css/light/all.min.css" />
+    <script type="text/javascript" src="http://www.prepbootstrap.com/Content/shieldui-lite/dist/js/shieldui-lite-all.min.js"></script>
+
+    <script type="text/javascript" src="http://www.prepbootstrap.com/Content/data/shortGridData.js"></script>
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $("#grid").shieldGrid({
+            dataSource: {
+                data: gridData,
+                schema: {
+                    fields: {
+                        id: { path: "id", type: Number },
+                        age: { path: "age", type: Number },
+                        name: { path: "name", type: String },
+                        company: { path: "company", type: String },
+                        month: { path: "month", type: Date },
+                        isActive: { path: "isActive", type: Boolean },
+                        email: { path: "email", type: String },
+                        transport: { path: "transport", type: String }
+                    }
+                }
+            },
+            sorting: {
+                multiple: true
+            },
+            rowHover: false,
+            columns: [
+                { field: "name", title: "School Name", width: "120px" },
+                { field: "School", title: "Age", width: "80px" },
+                { field: "company", title: "Company Name" },
+                { field: "month", title: "Date of Birth", format: "{0:MM/dd/yyyy}", width: "120px" },
+                { field: "isActive", title: "Active" },
+                { field: "email", title: "Email Address", width: "250px" },
+                { field: "transport", title: "Custom Editor", width: "120px", editor: myCustomEditor },
+                {
+                    width: "104px",
+                    title: "Delete Column",
+                    buttons: [
+                        { cls: "deleteButton", commandName: "delete", caption: "<img src='http://www.prepbootstrap.com/Content/images/template/BootstrapEditableGrid/delete.png' /><span>Delete</span>" }
+                    ]
+                }
+            ],
+            editing: {
+                enabled: true,
+                event: "click",
+                type: "cell",
+                confirmation: {
+                    "delete": {
+                        enabled: true,
+                        template: function (item) {
+                            return "Delete row with ID = " + item.id
+                        }
+                    }
+                }
+            },
+            events:
+            {
+                getCustomEditorValue: function (e) {
+                    e.value = $("#dropdown").swidget().value();
+                    $("#dropdown").swidget().destroy();
+                }
+            }
+        });
+
+        function myCustomEditor(cell, item) {
+            $('<div id="dropdown"/>')
+                .appendTo(cell)
+                .shieldDropDown({
+                    dataSource: {
+                        data: ["motorbike", "car", "truck"]
+                    },
+                    value: !item["transport"] ? null : item["transport"].toString()
+                }).swidget().focus();
+        }
+    });
+    </script>
+
+    <style type="text/css">
+        .sui-button-cell {
+            text-align: center;
+        }
+
+        .sui-checkbox {
+            font-size: 17px !important;
+            padding-bottom: 4px !important;
+        }
+
+        .deleteButton img {
+            margin-right: 3px;
+            vertical-align: bottom;
+        }
+
+        .bigicon {
+            color: #5CB85C;
+            font-size: 20px;
+        }
+    </style>
+
 
 
         <!-- Footer -->
