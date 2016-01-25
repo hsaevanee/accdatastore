@@ -21,6 +21,7 @@
     <IISExpressUseClassicPipelineMode />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -261,6 +262,9 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\highcharts.js" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\jquery-2.1.1.min.map" />
     <Content Include="Scripts\jquery-ui.min-1.11.1.js" />
@@ -327,6 +331,8 @@
     <Compile Include="Areas\SchoolProfile\ViewModels\StudentStage\StudentStageViewModel.cs" />
     <Compile Include="Areas\SchoolProfile\Controllers\WiderAchievementController.cs" />
     <Compile Include="Areas\SchoolProfile\ViewModels\WiderAchievement\WiderAchievementViewModel.cs" />
+    <Compile Include="Areas\SchoolRollForecast\Controllers\IndexSchoolRollForecastController.cs" />
+    <Compile Include="Areas\SchoolRollForecast\SchoolRollForecastAreaRegistration.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\IndexController.cs" />
     <Compile Include="Global.asax.cs">
@@ -423,10 +429,15 @@
     <Content Include="Areas\Achievement\Views\WiderAchievement\Index.cshtml" />
     <Content Include="Areas\Achievement\Views\WiderAchievement\IndexSummary.cshtml" />
     <Content Include="Areas\SchoolProfile\Views\WiderAchievement\MapIndex.cshtml" />
+    <Content Include="Areas\SchoolRollForecast\Views\web.config" />
+    <Content Include="Areas\SchoolRollForecast\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\SchoolRollForecast\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\SchoolRollForecast\Views\IndexSchoolRollForecast\Home.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\About.cshtml" />
     <Content Include="Views\Index\Contact.cshtml" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -443,6 +454,7 @@
     <Folder Include="Areas\PupilsPopulation\Models\" />
     <Folder Include="Areas\SchoolProfiles\Models\" />
     <Folder Include="Areas\SchoolProfile\Models\" />
+    <Folder Include="Areas\SchoolRollForecast\Models\" />
     <Folder Include="Models\" />
     <Folder Include="Resources\Upload\" />
   </ItemGroup>
