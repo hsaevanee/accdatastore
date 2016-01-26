@@ -1,6 +1,10 @@
 ﻿<GeneralCounter>
   <SiteCounter>3</SiteCounter>
+<<<<<<< HEAD
   <HomepgCounter>68</HomepgCounter>
+=======
+  <HomepgCounter>64</HomepgCounter>
+>>>>>>> parent of d2004b0... centered tables
   <TeampgCounter>0</TeampgCounter>
   <SchProfilepgCounter>67</SchProfilepgCounter>
   <EthinicBGpgCounter>37</EthinicBGpgCounter>
