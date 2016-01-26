@@ -21,6 +21,7 @@
     <IISExpressUseClassicPipelineMode />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -264,6 +265,9 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\highcharts.js" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\jquery-2.1.1.min.map" />
     <Content Include="Scripts\jquery-ui.min-1.11.1.js" />
@@ -330,6 +334,9 @@
     <Compile Include="Areas\SchoolProfile\ViewModels\StudentStage\StudentStageViewModel.cs" />
     <Compile Include="Areas\SchoolProfile\Controllers\WiderAchievementController.cs" />
     <Compile Include="Areas\SchoolProfile\ViewModels\WiderAchievement\WiderAchievementViewModel.cs" />
+    <Compile Include="Areas\SchoolRollForecast\Controllers\IndexSchoolRollForecastController.cs" />
+    <Compile Include="Areas\SchoolRollForecast\Controllers\OleDBConnection.cs" />
+    <Compile Include="Areas\SchoolRollForecast\SchoolRollForecastAreaRegistration.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\IndexController.cs" />
     <Compile Include="Global.asax.cs">
@@ -425,12 +432,20 @@
     <Content Include="Areas\Achievement\Views\WiderAchievement\Index.cshtml" />
     <Content Include="Areas\Achievement\Views\WiderAchievement\Home.cshtml" />
     <Content Include="Areas\SchoolProfile\Views\WiderAchievement\MapIndex.cshtml" />
+<<<<<<< HEAD
+    <Content Include="Areas\SchoolRollForecast\Views\web.config" />
+    <Content Include="Areas\SchoolRollForecast\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\SchoolRollForecast\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\SchoolRollForecast\Views\IndexSchoolRollForecast\Home.cshtml" />
+=======
     <Content Include="Areas\Achievement\Views\WiderAchievement\MapIndex.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Index2.cshtml" />
+>>>>>>> refs/remotes/origin/master
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\About.cshtml" />
     <Content Include="Views\Index\Contact.cshtml" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -447,6 +462,7 @@
     <Folder Include="Areas\PupilsPopulation\Models\" />
     <Folder Include="Areas\SchoolProfiles\Models\" />
     <Folder Include="Areas\SchoolProfile\Models\" />
+    <Folder Include="Areas\SchoolRollForecast\Models\" />
     <Folder Include="Models\" />
     <Folder Include="Resources\Upload\" />
   </ItemGroup>
@@ -463,6 +479,35 @@
       <Project>{8c8cc883-dc02-419f-8160-b9dd8a8ae273}</Project>
       <Name>ACCDataStore.Repository</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>7</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Excel">
+      <Guid>{00020813-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>8</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

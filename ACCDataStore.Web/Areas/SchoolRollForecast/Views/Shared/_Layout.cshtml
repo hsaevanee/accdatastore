@@ -1,0 +1,489 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>School Roll Forecast</title>
+
+    @*<title>@HttpContext.Current.Application["APP_NAME"]</title>*@
+    @*<link rel="stylesheet" href="~/Content/accdatastore/areas/DatahubProfile/views/datahub/datahub.css" type="text/css" />*@
+    @*<script src="~/Scripts/accdatastore/views/global.js"></script>
+        <script src="~/Scripts/jquery-2.1.1.min.js"></script>*@
+    @*<script src="~/Scripts/highcharts.js"></script>*@
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet">
+    @*<script src="~/Scripts/accdatastore/views/global.js"></script>*@
+    <script src="~/Scripts/jquery-2.1.1.min.js"></script>
+    <script>
+        var sContextPath = '@Url.Content("~")';
+    </script>
+
+    @RenderSection("Header")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="@Url.Action("Index", "Index", new { Area = "", id = "" }, null)">Data Observatory</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Data Categories<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="@Url.Action("Compareable", "IndexSchoolProfile", new { Area = "SchoolProfile" }, null)">School Profile</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Index", "InsightProfile", new { Area = "InsightProfile" }, null)">Insight Data</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Index", "IndexDatahub", new { Area = "DatahubProfile" }, null)">DataHub Data</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("IndexSummary", "WiderAchievement", new { Area = "Achievement" }, null)">Achievement</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Index", new { Area = "", id = "about" }, null)">About</a>
+                    </li>
+                    @*<li>
+                            <a href="@Url.Action("Index", "Index", new { Area = "", id = "theTeam" }, null)">The Team</a>
+                        </li>*@
+                    <li>
+                        <a href="@Url.Action("Index", "Index", new { Area = "", id = "contact" }, null)">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Subheading Content -->
+    <div class="container">
+        <!-- Page Heading/Breadcrumbs -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    School Roll Forecast
+                </h1>
+                @*<ol class="breadcrumb">
+                           <li>
+                               <a href="@Url.Action("IndexSummary", "WiderAchievement", new { Area = "Achievement" }, null)">Home</a>
+                           </li>
+                           <li>
+                               <a href="@Url.Action("index", "WiderAchievement", new { Area = "Achievement" }, null)">Data</a>
+                           </li>
+                           <li>
+                               <a href="@Url.Action("MapData", "WiderAchievement", new { Area = "Achievement" }, null)">Interactive Map</a>
+                           </li>
+                    </ol>   *@
+            </div>
+        </div>
+    </div>
+    @*<div id="main">
+            <div id="banners">
+                <div id="Topic" style="text-align: left">
+                    <h1 style="float: left;" > Data Hub Statistics: City Wide Participation</h1>
+                </div>
+                <div id="logoes" style="text-align: right">
+                    <img src="@Url.Content("~/Images/acc-logo.gif")" alt="Aberdeen City Council" width="130" height="108" />
+                    <img src="@Url.Content("~/Images/Aberdeen  Gaurtees logo.png")" alt="Aberdeen Gaurtees logo" width="250" height="108" />
+                    <img src="@Url.Content("~/Images/Skilldevelopmentlogo.png")" alt="Skills Development Scotland logo" width="200" height="108" />
+                </div>
+            </div>
+            @RenderBody()
+        </div>*@
+    <div>
+        @RenderBody()
+    </div>
+
+
+    <style type="text/css">
+        table.tableizer-table {
+            font-size: 12px;
+            border: 1px solid #CCC;
+            font-family: Arial, Helvetica, sans-serif;
+<<<<<<< HEAD
+            margin: 0 auto !important;
+            float: none !important;
+            height: 100%;
+            width: 100%;
+        }
+
+=======
+>>>>>>> parent of d2004b0... centered tables
+        }
+
+        .tableizer-table td {
+            padding: 4px;
+            margin: 3px;
+            border: 1px solid #ccc;
+        }
+
+        .tableizer-table th {
+            background-color: #104E8B;
+            color: #FFF;
+            font-weight: bold;
+        }
+    </style>
+
+    <table class="tableizer-table">
+        <tr class="tableizer-firstrow"><th>GRANITE CITY ACADEMY</th><th>ACTUAL</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>   FORECAST</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th></tr>
+        <tr><td>&nbsp;</td><td>2010</td><td>2011</td><td>2012</td><td>2013</td><td>2014</td><td>2015</td><td>2016</td><td>2017</td><td>2018</td><td>2019</td><td>2020</td><td>2021</td></tr>
+        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr><td>Pupils/Hhld</td><td>0.10</td><td>0.10</td><td>0.10</td><td>0.10</td><td>0.10</td><td>0.10</td><td>0.10</td><td>0.10</td><td>0.10</td><td>0.10</td><td>0.10</td><td>0.10</td></tr>
+        <tr><td>Housing</td><td>0</td><td>0</td><td>0</td><td>300</td><td>300</td><td>300</td><td>300</td><td>300</td><td>300</td><td>300</td><td>300</td><td>300</td></tr>
+        <tr><td>Par Charter/Tfr Ratio</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1.10</td><td>1.10</td><td>1.10</td><td>1.10</td><td>1.10</td><td>1.10</td><td>1.10</td><td>1.10</td></tr>
+        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr><td>S I</td><td>80</td><td>80</td><td>80</td><td>80</td><td>94</td><td>111</td><td>126</td><td>141</td><td>160</td><td>179</td><td>197</td><td>246</td></tr>
+        <tr><td>S II</td><td>80</td><td>80</td><td>80</td><td>80</td><td>86</td><td>99</td><td>115</td><td>129</td><td>145</td><td>164</td><td>181</td><td>199</td></tr>
+        <tr><td>S III</td><td>80</td><td>80</td><td>80</td><td>80</td><td>86</td><td>92</td><td>104</td><td>118</td><td>134</td><td>150</td><td>166</td><td>184</td></tr>
+        <tr><td>S IV</td><td>80</td><td>80</td><td>80</td><td>80</td><td>86</td><td>92</td><td>96</td><td>107</td><td>123</td><td>138</td><td>152</td><td>169</td></tr>
+        <tr><td>S V</td><td>80</td><td>80</td><td>80</td><td>80</td><td>60</td><td>64</td><td>69</td><td>72</td><td>80</td><td>92</td><td>104</td><td>114</td></tr>
+        <tr><td>S VI</td><td>80</td><td>80</td><td>80</td><td>80</td><td>40</td><td>30</td><td>32</td><td>34</td><td>36</td><td>40</td><td>46</td><td>52</td></tr>
+        <tr><td>Total Roll</td><td>480</td><td>480</td><td>480</td><td>480</td><td>452</td><td>488</td><td>541</td><td>601</td><td>679</td><td>763</td><td>846</td><td>965</td></tr>
+        <tr><td>Effective Overall Capacity </td><td>1000</td><td>1000</td><td>1000</td><td>1000</td><td>1000</td><td>1000</td><td>1000</td><td>1000</td><td>1000</td><td>1000</td><td>1000</td><td>1000</td></tr>
+        <tr><td>Tot Roll - Effect Overall Cap</td><td>-520</td><td>-520</td><td>-520</td><td>-520</td><td>-548</td><td>-512</td><td>-459</td><td>-399</td><td>-321</td><td>-237</td><td>-154</td><td>-35</td></tr>
+        <tr><td>Tot Roll/Effect Overall Cap%</td><td>48%</td><td>48%</td><td>48%</td><td>48%</td><td>45%</td><td>49%</td><td>54%</td><td>60%</td><td>68%</td><td>76%</td><td>85%</td><td>96%</td></tr>
+    </table>
+
+    <style type="text/css">
+        table.tableizer-table {
+            font-size: 12px;
+            border: 1px solid #CCC;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .tableizer-table td {
+            padding: 4px;
+            margin: 3px;
+            border: 1px solid #ccc;
+        }
+
+        .tableizer-table th {
+            background-color: #104E8B;
+            color: #FFF;
+            font-weight: bold;
+        }
+    </style>
+    <table class="tableizer-table">
+        <tr class="tableizer-firstrow"><th>BON ACCORD</th><th>ACTUAL</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>   FORECAST</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th></tr>
+        <tr><td>&nbsp;</td><td>2010</td><td>2011</td><td>2012</td><td>2013</td><td>2014</td><td>2015</td><td>2016</td><td>2017</td><td>2018</td><td>2019</td><td>2020</td><td>2021</td></tr>
+        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr><td>PI Input</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>20</td><td>20</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr><td>Pupils/Hhld</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td></tr>
+        <tr><td>Housing</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td>Parents Charter</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr><td>P I</td><td>20</td><td>20</td><td>20</td><td>20</td><td>20</td><td>20</td><td>19</td><td>19</td><td>19</td><td>18</td><td>18</td><td>17</td></tr>
+        <tr><td>P II</td><td>20</td><td>20</td><td>20</td><td>20</td><td>20</td><td>19</td><td>19</td><td>18</td><td>18</td><td>18</td><td>18</td><td>17</td></tr>
+        <tr><td>P III</td><td>20</td><td>20</td><td>20</td><td>20</td><td>20</td><td>19</td><td>19</td><td>18</td><td>18</td><td>18</td><td>17</td><td>17</td></tr>
+        <tr><td>P IV</td><td>20</td><td>20</td><td>20</td><td>20</td><td>20</td><td>19</td><td>19</td><td>18</td><td>18</td><td>17</td><td>17</td><td>17</td></tr>
+        <tr><td>P V</td><td>20</td><td>20</td><td>20</td><td>20</td><td>20</td><td>19</td><td>19</td><td>18</td><td>18</td><td>17</td><td>17</td><td>16</td></tr>
+        <tr><td>P VI</td><td>20</td><td>20</td><td>20</td><td>20</td><td>20</td><td>19</td><td>19</td><td>18</td><td>18</td><td>17</td><td>17</td><td>16</td></tr>
+        <tr><td>P VII</td><td>20</td><td>20</td><td>20</td><td>20</td><td>20</td><td>19</td><td>19</td><td>18</td><td>18</td><td>17</td><td>17</td><td>16</td></tr>
+        <tr><td>Total Roll</td><td>140</td><td>140</td><td>140</td><td>140</td><td>138</td><td>135</td><td>132</td><td>128</td><td>126</td><td>123</td><td>120</td><td>118</td></tr>
+        <tr><td>Maximum Capacity</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td></tr>
+        <tr><td>Tot Roll - Funct Work Cap</td><td>-60</td><td>-60</td><td>-60</td><td>-60</td><td>-62</td><td>-65</td><td>-68</td><td>-72</td><td>-74</td><td>-77</td><td>-80</td><td>-82</td></tr>
+        <tr><td>(Tot Roll/Funct Work Cap)%</td><td>70%</td><td>70%</td><td>70%</td><td>70%</td><td>69%</td><td>68%</td><td>66%</td><td>64%</td><td>63%</td><td>62%</td><td>60%</td><td>59%</td></tr>
+    </table>
+    <style type="text/css">
+        table.tableizer-table {
+            font-size: 12px;
+            border: 1px solid #CCC;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .tableizer-table td {
+            padding: 4px;
+            margin: 3px;
+            border: 1px solid #ccc;
+        }
+
+        .tableizer-table th {
+            background-color: #104E8B;
+            color: #FFF;
+            font-weight: bold;
+        }
+    </style>
+    <table class="tableizer-table">
+        <tr class="tableizer-firstrow"><th>MARISCHAL</th><th>ACTUAL</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>   FORECAST</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th></tr>
+        <tr><td>&nbsp;</td><td>2010</td><td>2011</td><td>2012</td><td>2013</td><td>2014</td><td>2015</td><td>2016</td><td>2017</td><td>2018</td><td>2019</td><td>2020</td><td>2021</td></tr>
+        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr><td>PI Input</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>20</td><td>20</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr><td>Pupils/Hhld</td><td>1.00</td><td>1.00</td><td>1.00</td><td>1.00</td><td>1.00</td><td>1.00</td><td>1.00</td><td>1.00</td><td>1.00</td><td>1.00</td><td>1.00</td><td>1.00</td></tr>
+        <tr><td>Housing</td><td>0</td><td>0</td><td>0</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td></tr>
+        <tr><td>Parents Charter</td><td>0 </td><td>0 </td><td>0 </td><td>0 </td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr><td>P I</td><td>20</td><td>20</td><td>20</td><td>20</td><td>36</td><td>36</td><td>52</td><td>67</td><td>83</td><td>99</td><td>113</td><td>126</td></tr>
+        <tr><td>P II</td><td>20</td><td>20</td><td>20</td><td>20</td><td>35</td><td>51</td><td>51</td><td>66</td><td>81</td><td>97</td><td>111</td><td>125</td></tr>
+        <tr><td>P III</td><td>20</td><td>20</td><td>20</td><td>20</td><td>35</td><td>50</td><td>65</td><td>65</td><td>79</td><td>94</td><td>109</td><td>123</td></tr>
+        <tr><td>P IV</td><td>20</td><td>20</td><td>20</td><td>20</td><td>34</td><td>48</td><td>62</td><td>77</td><td>76</td><td>91</td><td>104</td><td>119</td></tr>
+        <tr><td>P V</td><td>20</td><td>20</td><td>20</td><td>20</td><td>33</td><td>46</td><td>60</td><td>73</td><td>87</td><td>87</td><td>100</td><td>114</td></tr>
+        <tr><td>P VI</td><td>20</td><td>20</td><td>20</td><td>20</td><td>32</td><td>44</td><td>56</td><td>69</td><td>83</td><td>97</td><td>95</td><td>109</td></tr>
+        <tr><td>P VII</td><td>20</td><td>20</td><td>20</td><td>20</td><td>32</td><td>43</td><td>54</td><td>66</td><td>79</td><td>92</td><td>105</td><td>104</td></tr>
+        <tr><td>Total Roll</td><td>140</td><td>140</td><td>140</td><td>140</td><td>236</td><td>318</td><td>399</td><td>483</td><td>569</td><td>656</td><td>737</td><td>818</td></tr>
+        <tr><td>Maximum Capacity</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td></tr>
+        <tr><td>Tot Roll - Funct Work Cap</td><td>-60</td><td>-60</td><td>-60</td><td>-60</td><td>36</td><td>118</td><td>199</td><td>283</td><td>369</td><td>456</td><td>537</td><td>618</td></tr>
+        <tr><td>(Tot Roll/Funct Work Cap)%</td><td>70%</td><td>70%</td><td>70%</td><td>70%</td><td>118%</td><td>159%</td><td>200%</td><td>241%</td><td>285%</td><td>328%</td><td>368%</td><td>409%</td></tr>
+    </table>
+    <style type="text/css">
+        table.tableizer-table {
+            font-size: 12px;
+            border: 1px solid #CCC;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .tableizer-table td {
+            padding: 4px;
+            margin: 3px;
+            border: 1px solid #ccc;
+        }
+
+        .tableizer-table th {
+            background-color: #104E8B;
+            color: #FFF;
+            font-weight: bold;
+        }
+    </style>
+    <table class="tableizer-table">
+        <tr class="tableizer-firstrow"><th>DUTHIE</th><th>ACTUAL</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>   FORECAST</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th></tr>
+        <tr><td>&nbsp;</td><td>2010</td><td>2011</td><td>2012</td><td>2013</td><td>2014</td><td>2015</td><td>2016</td><td>2017</td><td>2018</td><td>2019</td><td>2020</td><td>2021</td></tr>
+        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr><td>PI Input</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>50</td><td>50</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr><td>Pupils/Hhld</td><td>0.20</td><td>0.20</td><td>0.20</td><td>0.20</td><td>0.20</td><td>0.20</td><td>0.20</td><td>0.20</td><td>0.20</td><td>0.20</td><td>0.20</td><td>0.20</td></tr>
+        <tr><td>Housing</td><td>0</td><td>0</td><td>0</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td></tr>
+        <tr><td>Parents Charter</td><td>10</td><td>10</td><td>10</td><td>10</td><td>10</td><td>10</td><td>10</td><td>10</td><td>10</td><td>10</td><td>10</td><td>10</td></tr>
+        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr><td>P I</td><td>20</td><td>20</td><td>20</td><td>20</td><td>62</td><td>62</td><td>64</td><td>66</td><td>68</td><td>71</td><td>72</td><td>73</td></tr>
+        <tr><td>P II</td><td>20</td><td>20</td><td>20</td><td>20</td><td>23</td><td>64</td><td>63</td><td>65</td><td>67</td><td>70</td><td>71</td><td>73</td></tr>
+        <tr><td>P III</td><td>20</td><td>20</td><td>20</td><td>20</td><td>23</td><td>26</td><td>65</td><td>64</td><td>66</td><td>68</td><td>70</td><td>72</td></tr>
+        <tr><td>P IV</td><td>20</td><td>20</td><td>20</td><td>20</td><td>22</td><td>25</td><td>27</td><td>66</td><td>65</td><td>67</td><td>68</td><td>71</td></tr>
+        <tr><td>P V</td><td>20</td><td>20</td><td>20</td><td>20</td><td>22</td><td>25</td><td>27</td><td>29</td><td>67</td><td>66</td><td>67</td><td>69</td></tr>
+        <tr><td>P VI</td><td>20</td><td>20</td><td>20</td><td>20</td><td>22</td><td>24</td><td>26</td><td>28</td><td>31</td><td>67</td><td>66</td><td>67</td></tr>
+        <tr><td>P VII</td><td>20</td><td>20</td><td>20</td><td>20</td><td>22</td><td>24</td><td>26</td><td>28</td><td>30</td><td>32</td><td>67</td><td>66</td></tr>
+        <tr><td>Total Roll</td><td>140</td><td>140</td><td>140</td><td>140</td><td>197</td><td>250</td><td>298</td><td>346</td><td>394</td><td>441</td><td>482</td><td>491</td></tr>
+        <tr><td>Maximum Capacity</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td><td>200</td></tr>
+        <tr><td>Tot Roll - Funct Work Cap</td><td>-60</td><td>-60</td><td>-60</td><td>-60</td><td>-3</td><td>50</td><td>98</td><td>146</td><td>194</td><td>241</td><td>282</td><td>291</td></tr>
+        <tr><td>(Tot Roll/Funct Work Cap)%</td><td>70%</td><td>70%</td><td>70%</td><td>70%</td><td>99%</td><td>125%</td><td>149%</td><td>173%</td><td>197%</td><td>221%</td><td>241%</td><td>246%</td></tr>
+    </table>
+    <style type="text/css">
+<<<<<<< HEAD
+        <table style="width:100%;height:100%;" > table.tableizer-table {
+=======
+        table.tableizer-table {
+>>>>>>> parent of d2004b0... centered tables
+            font-size: 12px;
+            border: 1px solid #CCC;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .tableizer-table td {
+            padding: 4px;
+            margin: 3px;
+            border: 1px solid #ccc;
+        }
+
+        .tableizer-table th {
+            background-color: #104E8B;
+            color: #FFF;
+            font-weight: bold;
+        }
+    </style>
+<<<<<<< HEAD
+    
+        <table class="tableizer-table">
+
+            <tr class="tableizer-firstrow"><th>DEEBANK</th><th>ACTUAL</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>   FORECAST</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th></tr>
+            <tr><td>&nbsp;</td><td>2010</td><td>2011</td><td>2012</td><td>2013</td><td>2014</td><td>2015</td><td>2016</td><td>2017</td><td>2018</td><td>2019</td><td>2020</td><td>2021</td></tr>
+            <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+            <tr><td>PI Input</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>20</td><td>20</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+            <tr><td>Pupils/Hhld</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td></tr>
+            <tr><td>Housing</td><td>0</td><td>0</td><td>0</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td></tr>
+            <tr><td>Parents Charter</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td></tr>
+            <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+            <tr><td>P I</td><td>20</td><td>20</td><td>20</td><td>20</td><td>19</td><td>19</td><td>22</td><td>26</td><td>30</td><td>34</td><td>37</td><td>41</td></tr>
+            <tr><td>P II</td><td>20</td><td>20</td><td>20</td><td>20</td><td>24</td><td>23</td><td>22</td><td>26</td><td>29</td><td>33</td><td>37</td><td>40</td></tr>
+            <tr><td>P III</td><td>20</td><td>20</td><td>20</td><td>20</td><td>24</td><td>27</td><td>26</td><td>25</td><td>29</td><td>32</td><td>36</td><td>39</td></tr>
+            <tr><td>P IV</td><td>20</td><td>20</td><td>20</td><td>20</td><td>23</td><td>27</td><td>30</td><td>28</td><td>28</td><td>31</td><td>35</td><td>38</td></tr>
+            <tr><td>P V</td><td>20</td><td>20</td><td>20</td><td>20</td><td>23</td><td>26</td><td>29</td><td>32</td><td>31</td><td>30</td><td>33</td><td>37</td></tr>
+            <tr><td>P VI</td><td>20</td><td>20</td><td>20</td><td>20</td><td>23</td><td>25</td><td>28</td><td>31</td><td>34</td><td>33</td><td>32</td><td>35</td></tr>
+            <tr><td>P VII</td><td>20</td><td>20</td><td>20</td><td>20</td><td>23</td><td>25</td><td>27</td><td>30</td><td>33</td><td>36</td><td>34</td><td>34</td></tr>
+            <tr><td>Total Roll</td><td>140</td><td>140</td><td>140</td><td>140</td><td>158</td><td>171</td><td>184</td><td>198</td><td>214</td><td>231</td><td>245</td><td>265</td></tr>
+            <tr><td>Maximum Capacity</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td></tr>
+            <tr><td>Tot Roll - Funct Work Cap</td><td>-260</td><td>-260</td><td>-260</td><td>-260</td><td>-242</td><td>-229</td><td>-216</td><td>-202</td><td>-186</td><td>-169</td><td>-155</td><td>-135</td></tr>
+            <tr><td>(Tot Roll/Funct Work Cap)%</td><td>35%</td><td>35%</td><td>35%</td><td>35%</td><td>39%</td><td>43%</td><td>46%</td><td>50%</td><td>54%</td><td>58%</td><td>61%</td><td>66%</td></tr>
+        </table>
+
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="text-center">School Forecast Table<span class="fa fa-edit pull-right bigicon"></span></h4>
+            </div>
+            <div class="panel-body text-center">
+                <div id="grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- you need to include the shieldui css and js assets in order for the grids to work -->
+    <link rel="stylesheet" type="text/css" href="http://www.prepbootstrap.com/Content/shieldui-lite/dist/css/light/all.min.css" />
+    <script type="text/javascript" src="http://www.prepbootstrap.com/Content/shieldui-lite/dist/js/shieldui-lite-all.min.js"></script>
+
+    <script type="text/javascript" src="http://www.prepbootstrap.com/Content/data/shortGridData.js"></script>
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $("#grid").shieldGrid({
+            dataSource: {
+                data: gridData,
+                schema: {
+                    fields: {
+                        id: { path: "id", type: Number },
+                        age: { path: "age", type: Number },
+                        name: { path: "name", type: String },
+                        company: { path: "company", type: String },
+                        month: { path: "month", type: Date },
+                        isActive: { path: "isActive", type: Boolean },
+                        email: { path: "email", type: String },
+                        transport: { path: "transport", type: String }
+                    }
+                }
+            },
+            sorting: {
+                multiple: true
+            },
+            rowHover: false,
+            columns: [
+                { field: "name", title: "School Name", width: "120px" },
+                { field: "School", title: "Age", width: "80px" },
+                { field: "company", title: "Company Name" },
+                { field: "month", title: "Date of Birth", format: "{0:MM/dd/yyyy}", width: "120px" },
+                { field: "isActive", title: "Active" },
+                { field: "email", title: "Email Address", width: "250px" },
+                { field: "transport", title: "Custom Editor", width: "120px", editor: myCustomEditor },
+                {
+                    width: "104px",
+                    title: "Delete Column",
+                    buttons: [
+                        { cls: "deleteButton", commandName: "delete", caption: "<img src='http://www.prepbootstrap.com/Content/images/template/BootstrapEditableGrid/delete.png' /><span>Delete</span>" }
+                    ]
+                }
+            ],
+            editing: {
+                enabled: true,
+                event: "click",
+                type: "cell",
+                confirmation: {
+                    "delete": {
+                        enabled: true,
+                        template: function (item) {
+                            return "Delete row with ID = " + item.id
+                        }
+                    }
+                }
+            },
+            events:
+            {
+                getCustomEditorValue: function (e) {
+                    e.value = $("#dropdown").swidget().value();
+                    $("#dropdown").swidget().destroy();
+                }
+            }
+        });
+
+        function myCustomEditor(cell, item) {
+            $('<div id="dropdown"/>')
+                .appendTo(cell)
+                .shieldDropDown({
+                    dataSource: {
+                        data: ["motorbike", "car", "truck"]
+                    },
+                    value: !item["transport"] ? null : item["transport"].toString()
+                }).swidget().focus();
+        }
+    });
+    </script>
+
+    <style type="text/css">
+        .sui-button-cell {
+            text-align: center;
+        }
+
+        .sui-checkbox {
+            font-size: 17px !important;
+            padding-bottom: 4px !important;
+        }
+
+        .deleteButton img {
+            margin-right: 3px;
+            vertical-align: bottom;
+        }
+
+        .bigicon {
+            color: #5CB85C;
+            font-size: 20px;
+        }
+    </style>
+
+
+=======
+    <table class="tableizer-table">
+        <tr class="tableizer-firstrow"><th>DEEBANK</th><th>ACTUAL</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>   FORECAST</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th></tr>
+        <tr><td>&nbsp;</td><td>2010</td><td>2011</td><td>2012</td><td>2013</td><td>2014</td><td>2015</td><td>2016</td><td>2017</td><td>2018</td><td>2019</td><td>2020</td><td>2021</td></tr>
+        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr><td>PI Input</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>20</td><td>20</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr><td>Pupils/Hhld</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td><td>0.25</td></tr>
+        <tr><td>Housing</td><td>0</td><td>0</td><td>0</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td><td>100</td></tr>
+        <tr><td>Parents Charter</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td><td>-5</td></tr>
+        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr><td>P I</td><td>20</td><td>20</td><td>20</td><td>20</td><td>19</td><td>19</td><td>22</td><td>26</td><td>30</td><td>34</td><td>37</td><td>41</td></tr>
+        <tr><td>P II</td><td>20</td><td>20</td><td>20</td><td>20</td><td>24</td><td>23</td><td>22</td><td>26</td><td>29</td><td>33</td><td>37</td><td>40</td></tr>
+        <tr><td>P III</td><td>20</td><td>20</td><td>20</td><td>20</td><td>24</td><td>27</td><td>26</td><td>25</td><td>29</td><td>32</td><td>36</td><td>39</td></tr>
+        <tr><td>P IV</td><td>20</td><td>20</td><td>20</td><td>20</td><td>23</td><td>27</td><td>30</td><td>28</td><td>28</td><td>31</td><td>35</td><td>38</td></tr>
+        <tr><td>P V</td><td>20</td><td>20</td><td>20</td><td>20</td><td>23</td><td>26</td><td>29</td><td>32</td><td>31</td><td>30</td><td>33</td><td>37</td></tr>
+        <tr><td>P VI</td><td>20</td><td>20</td><td>20</td><td>20</td><td>23</td><td>25</td><td>28</td><td>31</td><td>34</td><td>33</td><td>32</td><td>35</td></tr>
+        <tr><td>P VII</td><td>20</td><td>20</td><td>20</td><td>20</td><td>23</td><td>25</td><td>27</td><td>30</td><td>33</td><td>36</td><td>34</td><td>34</td></tr>
+        <tr><td>Total Roll</td><td>140</td><td>140</td><td>140</td><td>140</td><td>158</td><td>171</td><td>184</td><td>198</td><td>214</td><td>231</td><td>245</td><td>265</td></tr>
+        <tr><td>Maximum Capacity</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td><td>400</td></tr>
+        <tr><td>Tot Roll - Funct Work Cap</td><td>-260</td><td>-260</td><td>-260</td><td>-260</td><td>-242</td><td>-229</td><td>-216</td><td>-202</td><td>-186</td><td>-169</td><td>-155</td><td>-135</td></tr>
+        <tr><td>(Tot Roll/Funct Work Cap)%</td><td>35%</td><td>35%</td><td>35%</td><td>35%</td><td>39%</td><td>43%</td><td>46%</td><td>50%</td><td>54%</td><td>58%</td><td>61%</td><td>66%</td></tr>
+    </table>
+>>>>>>> parent of d2004b0... centered tables
+
+    <!-- Footer -->
+    <div class="container">
+        <hr>
+
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    @*<p>Copyright &copy; Your Website 2014</p>*@
+                    <p>Feedback Contact:-  <a href="mailto:HSaevanee@aberdeencity.gov.uk">HSaevanee@aberdeencity.gov.uk</a></p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div id="divSpinner" class="modal" style="display: none;">
+    </div>
+   
+</body>
+</html>
