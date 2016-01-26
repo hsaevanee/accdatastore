@@ -11,7 +11,7 @@ namespace ACCDataStore.Entity.MySQL
         public virtual int ID { get; set; }
         public virtual int scn { get; set; }
         public virtual int year { get; set; }
-        public virtual int centre { get; set; }
+        public virtual string centre { get; set; }
         public virtual int stage { get; set; }
         public virtual int gender { get; set; }
         public virtual int ethnicity { get; set; }

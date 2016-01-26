@@ -17,12 +17,12 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
         private static ILog log = LogManager.GetLogger(typeof(InsightProfileController));
 
         private readonly IGenericRepository rpGeneric;
-        private readonly IGenericRepository2nd rpGeneric2nd;
+        //private readonly IGenericRepository2nd rpGeneric2nd;
 
-        public InsightProfileController(IGenericRepository rpGeneric, IGenericRepository2nd rpGeneric2nd)
+        public InsightProfileController(IGenericRepository rpGeneric)
         {
             this.rpGeneric = rpGeneric;
-            this.rpGeneric2nd = rpGeneric2nd;
+            //this.rpGeneric2nd = rpGeneric2nd;
         }
 
         ////private readonly IGenericRepository rpGeneric;

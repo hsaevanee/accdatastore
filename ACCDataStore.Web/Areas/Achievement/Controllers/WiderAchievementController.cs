@@ -321,7 +321,7 @@ namespace ACCDataStore.Web.Areas.Achievement.Controllers
                     }
                     oChartData = new
                     {
-                        dataTitle = first.Count() == 0 ? "" : first[0].centre.ToString(),
+                        dataTitle = first.Count() == 0 ? keyvalue : first[0].centre.ToString(),
                         dataSeries = temp
                     };
 

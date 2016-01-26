@@ -68,7 +68,7 @@
                                 <a href="@Url.Action("Index", "InsightProfile", new { Area = "InsightProfile" }, null)">Insight Data</a>
                             </li>
                             <li>
-                                <a href="@Url.Action("Index", "IndexDatahub", new { Area = "DatahubProfile" }, null)">DataHub Data</a>
+                                <a href="@Url.Action("IndexHome", "IndexDatahub", new { Area = "DatahubProfile" }, null)">DataHub Data</a>
                             </li>
                             <li>
                                 <a href="@Url.Action("IndexHome", "WiderAchievement", new { Area = "Achievement" }, null)">Achievement Data</a>
@@ -115,7 +115,10 @@
                 </ul>
                 <ol class="breadcrumb">
                     <li>
-                        <a href="@Url.Action("Index", "IndexDatahub", new { Area = "DatahubProfile" }, null)">Home</a>
+                        <a href="@Url.Action("IndexHome", "IndexDatahub", new { Area = "DatahubProfile" }, null)">Home</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "IndexDatahub", new { Area = "DatahubProfile" }, null)">Data</a>
                     </li>
                     <li>
                         <a href="@Url.Action("MapData", "IndexDatahub", new { Area = "DatahubProfile" }, null)">Interactive Map</a>

@@ -26,6 +26,16 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
         {
             this.rpGeneric = rpGeneric;
         }
+
+        public ActionResult IndexHome()
+        {
+            //var eGeneralSettings = TS.Core.Helper.ConvertHelper.XmlFile2Object(HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"), typeof(GeneralCounter)) as GeneralCounter;
+            //eGeneralSettings.CurriculumpgCounter++;
+            //TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
+            var vmDatahubViewModel = new DatahubViewModel();
+
+            return View("Home", vmDatahubViewModel);
+        }
         // GET: DatahubProfile/IndexDatahub
         public ActionResult Index(string schoolsubmitButton, string neighbourhoodssubmitButton)
         {
@@ -309,7 +319,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
                 var Schooldata = new DatahubData();
 
-                if (keyname.ToLower().Equals("schcode"))
+                if (keyname.ToLower().Equals("school"))
                 {
                      //Schooldata = GetDatahubdatabySchoolcode(rpGeneric, keyvalue);
                      Schooldata = CreatDatahubdata(GetDatahubdatabySchoolcode(rpGeneric, keyvalue), keyvalue);
@@ -322,7 +332,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                      schname = keyvalue;
                 
                 }
-                else if (keyname.ToLower().Equals("neighbourhoods"))
+                else if (keyname.ToLower().Equals("neighbourhood"))
                 {
                     //Schooldata = GetDatahubdatabyNeighbourhoods(rpGeneric, keyvalue);
                     Schooldata = CreatDatahubdata(GetDatahubdatabyNeighbourhoods(rpGeneric, keyvalue), keyvalue);
