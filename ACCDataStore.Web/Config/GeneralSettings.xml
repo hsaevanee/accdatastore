@@ -1,11 +1,15 @@
 ﻿<GeneralCounter>
   <SiteCounter>3</SiteCounter>
-  <HomepgCounter>52</HomepgCounter>
+<<<<<<< HEAD
+  <HomepgCounter>68</HomepgCounter>
+=======
+  <HomepgCounter>64</HomepgCounter>
+>>>>>>> parent of d2004b0... centered tables
   <TeampgCounter>0</TeampgCounter>
-  <SchProfilepgCounter>57</SchProfilepgCounter>
+  <SchProfilepgCounter>67</SchProfilepgCounter>
   <EthinicBGpgCounter>37</EthinicBGpgCounter>
   <NationalitypgCounter>121</NationalitypgCounter>
-  <SIMDpgCounter>19</SIMDpgCounter>
+  <SIMDpgCounter>21</SIMDpgCounter>
   <StdSatgepgCounter>27</StdSatgepgCounter>
   <EALpgCounter>21</EALpgCounter>
   <CurriculumpgCounter>10</CurriculumpgCounter>
