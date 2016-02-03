@@ -17,5 +17,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.ViewModels.SchoolProfiles
         public DataTable ethnicityData { get; set; }
         public DataTable freeSchoolMealData { get; set; }
         public string selectedschoolname2 { get; set; }
+        public List<School> listSchoolname { get; set; }
+        public List<School> listSelectedSchoolname { get; set; }
+        
     }
 }

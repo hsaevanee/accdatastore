@@ -224,8 +224,7 @@
                                     </tbody>
                                     <tr>
                                         @*@{var colspan = (@Model.ListSelectedGender.Count * 2) + 1;}*@
-                                        <td colspan="15"></td>
-                                        <td align="center"><input type='checkbox' name='CheckDataitem1All' id='CheckDataitem1All' value="ALL" checked="checked" />CheckALL</td>
+                                        <td colspan="15" align="center"><input type='checkbox' name='CheckDataitem1All' id='CheckDataitem1All' value="ALL" checked="checked" />CheckALL</td>
                                     </tr>
                                     @*<tr>
                                         <td><button id="1" onclick='myFunctionBar(this.id, "ListLiteracydata")'><label>Bar Chart</label></button></td>
@@ -235,10 +234,10 @@
                                 </table>
                                 <ul class="list-inline">
                                     <li>
-                                        <button class="btn btn-primary" onclick='myFunctionBar(this.id, "ListLiteracydata")'><label>Bar Chart</label></button>
+                                        <button id="1" class="btn btn-primary" onclick='myFunctionBar(this.id, "ListLiteracydata")'><label>Bar Chart</label></button>
                                     </li>
                                     <li>
-                                        <button class="btn btn-primary" onclick='myFunctionColumn(this.id, "ListLiteracydata")'><label>Column Chart</label></button>
+                                        <button id="1" class="btn btn-primary" onclick='myFunctionColumn(this.id, "ListLiteracydata")'><label>Column Chart</label></button>
                                     </li>
                                     <li>
                                         @Html.ActionLink("Export Excel", "ExportExcel", "Curriculum", new { Area = "SchoolProfile", dataname = "ListLiteracydata" }, null)
@@ -329,8 +328,8 @@
                                     </tbody>
                                     <tr>
                                         @*@{var colspan = (@Model.ListSelectedGender.Count * 2) + 1;}*@
-                                        <td colspan="15"></td>
-                                        <td align="center"><input type='checkbox' name='CheckDataitem2All' id='CheckDataitem2All' value="ALL" checked="checked" />CheckALL</td>
+                                        @*<td colspan="15"></td>*@
+                                        <td colspan="15" align="center"><input type='checkbox' name='CheckDataitem2All' id='CheckDataitem2All' value="ALL" checked="checked" />CheckALL</td>
                                     </tr>
                                     @*<tr>
                                         <td><button id="2" onclick='myFunctionBar(this.id, "ListReadingdata")'><label>Bar Chart</label></button></td>
@@ -342,10 +341,10 @@
                                 </table>
                                 <ul class="list-inline">
                                     <li>
-                                        <button class="btn btn-primary" onclick='myFunctionBar(this.id, "ListReadingdata")'><label>Bar Chart</label></button>
+                                        <button id="2" class="btn btn-primary" onclick='myFunctionBar(this.id, "ListReadingdata")'><label>Bar Chart</label></button>
                                     </li>
                                     <li>
-                                        <button class="btn btn-primary" onclick='myFunctionColumn(this.id, "ListReadingdata")'><label>Column Chart</label></button>
+                                        <button id="2" class="btn btn-primary" onclick='myFunctionColumn(this.id, "ListReadingdata")'><label>Column Chart</label></button>
                                     </li>
                                     <li>
                                         @Html.ActionLink("Export Excel", "ExportExcel", "Curriculum", new { Area = "SchoolProfile", dataname = "ListReadingdata" }, null)
@@ -437,8 +436,8 @@
                                     </tbody>
                                     <tr>
                                         @*@{var colspan = (@Model.ListSelectedGender.Count * 2) + 1;}*@
-                                        <td colspan="15"></td>
-                                        <td align="center"><input type='checkbox' name='CheckDataitem3All' id='CheckDataitem3All' value="ALL" checked="checked" />CheckALL</td>
+                                        @*<td colspan="15"></td>*@
+                                        <td colspan="15" align="center"><input type='checkbox' name='CheckDataitem3All' id='CheckDataitem3All' value="ALL" checked="checked" />CheckALL</td>
                                     </tr>
                                     @*<tr>
                                         <td><button id="3" onclick='myFunctionBar(this.id, "ListWritingdata")'><label>Bar Chart</label></button></td>
@@ -450,10 +449,10 @@
                                 </table>
                                 <ul class="list-inline">
                                     <li>
-                                        <button class="btn btn-primary" onclick='myFunctionBar(this.id, "ListWritingdata")'><label>Bar Chart</label></button>
+                                        <button id="3" class="btn btn-primary" onclick='myFunctionBar(this.id, "ListWritingdata")'><label>Bar Chart</label></button>
                                     </li>
                                     <li>
-                                        <button class="btn btn-primary" onclick='myFunctionColumn(this.id, "ListWritingdata")'><label>Column Chart</label></button>
+                                        <button id="3" class="btn btn-primary" onclick='myFunctionColumn(this.id, "ListWritingdata")'><label>Column Chart</label></button>
                                     </li>
                                     <li>
                                         @Html.ActionLink("Export Excel", "ExportExcel", "Curriculum", new { Area = "SchoolProfile", dataname = "ListWritingdata" }, null)
@@ -543,8 +542,8 @@
                                     </tbody>
                                     <tr>
                                         @*@{var colspan = (@Model.ListSelectedGender.Count * 2) + 1;}*@
-                                        <td colspan="15"></td>
-                                        <td align="center"><input type='checkbox' name='CheckDataitem4All' id='CheckDataitem4All' value="ALL" checked="checked" />CheckALL</td>
+                                        @*<td colspan="15"></td>*@
+                                        <td colspan="15" align="center"><input type='checkbox' name='CheckDataitem4All' id='CheckDataitem4All' value="ALL" checked="checked" />CheckALL</td>
                                     </tr>
                                     @*<tr>
                                         <td><button id="4" onclick='myFunctionBar(this.id, "ListLandTdata")'><label>Bar Chart</label></button></td>
@@ -556,10 +555,10 @@
                                 </table>
                                 <ul class="list-inline">
                                     <li>
-                                        <button class="btn btn-primary" onclick='myFunctionBar(this.id, "ListLandTdata")'><label>Bar Chart</label></button>
+                                        <button id="4" class="btn btn-primary" onclick='myFunctionBar(this.id, "ListLandTdata")'><label>Bar Chart</label></button>
                                     </li>
                                     <li>
-                                        <button class="btn btn-primary" onclick='myFunctionColumn(this.id, "ListLandTdata")'><label>Column Chart</label></button>
+                                        <button id="4" class="btn btn-primary" onclick='myFunctionColumn(this.id, "ListLandTdata")'><label>Column Chart</label></button>
                                     </li>
                                     <li>
                                         @Html.ActionLink("Export Excel", "ExportExcel", "Curriculum", new { Area = "SchoolProfile", dataname = "ListLandTdata" }, null)
@@ -649,8 +648,8 @@
                                     </tbody>
                                     <tr>
                                         @*@{var colspan = (@Model.ListSelectedGender.Count * 2) + 1;}*@
-                                        <td colspan="15"></td>
-                                        <td align="center"><input type='checkbox' name='CheckDataitem5All' id='CheckDataitem5All' value="ALL" checked="checked" />CheckALL</td>
+                                        @*<td colspan="15"></td>*@
+                                        <td colspan="15" align="center"><input type='checkbox' name='CheckDataitem5All' id='CheckDataitem5All' value="ALL" checked="checked" />CheckALL</td>
                                     </tr>
                                     @*<tr>
                                         <td><button id="5" onclick='myFunctionBar(this.id, "ListNumeracydata")'><label>Bar Chart</label></button></td>
@@ -662,10 +661,10 @@
                                 </table>
                                 <ul class="list-inline">
                                     <li>
-                                        <button class="btn btn-primary" onclick='myFunctionBar(this.id, "ListNumeracydata")'><label>Bar Chart</label></button>
+                                        <button id="5" class="btn btn-primary" onclick='myFunctionBar(this.id, "ListNumeracydata")'><label>Bar Chart</label></button>
                                     </li>
                                     <li>
-                                        <button class="btn btn-primary" onclick='myFunctionColumn(this.id, "ListNumeracydata")'><label>Column Chart</label></button>
+                                        <button id="5" class="btn btn-primary" onclick='myFunctionColumn(this.id, "ListNumeracydata")'><label>Column Chart</label></button>
                                     </li>
                                     <li>
                                         @Html.ActionLink("Export Excel", "ExportExcel", "Curriculum", new { Area = "SchoolProfile", dataname = "ListNumeracydata" }, null)
@@ -755,8 +754,8 @@
                                     </tbody>
                                     <tr>
                                         @*@{var colspan = (@Model.ListSelectedGender.Count * 2) + 1;}*@
-                                        <td colspan="15"></td>
-                                        <td align="center"><input type='checkbox' name='CheckDataitem6All' id='CheckDataitem6All' value="ALL" checked="checked" />CheckALL</td>
+                                        @*<td colspan="15"></td>*@
+                                        <td colspan="15" align="center"><input type='checkbox' name='CheckDataitem6All' id='CheckDataitem6All' value="ALL" checked="checked" />CheckALL</td>
                                     </tr>
                                     @*<tr>
                 <td><button id="6" onclick='myFunctionBar(this.id, "ListNMMdata")'><label>Bar Chart</label></button></td>
@@ -768,10 +767,10 @@
                                 </table>
                                 <ul class="list-inline">
                                     <li>
-                                        <button class="btn btn-primary" onclick='myFunctionBar(this.id, "ListNMMdata")'><label>Bar Chart</label></button>
+                                        <button id="6" class="btn btn-primary" onclick='myFunctionBar(this.id, "ListNMMdata")'><label>Bar Chart</label></button>
                                     </li>
                                     <li>
-                                        <button class="btn btn-primary" onclick='myFunctionColumn(this.id, "ListNMMdata")'><label>Column Chart</label></button>
+                                        <button id="6" class="btn btn-primary" onclick='myFunctionColumn(this.id, "ListNMMdata")'><label>Column Chart</label></button>
                                     </li>
                                     <li>
                                         @Html.ActionLink("Export Excel", "ExportExcel", "Curriculum", new { Area = "SchoolProfile", dataname = "ListNMMdata" }, null)
@@ -861,8 +860,8 @@
                                     </tbody>
                                     <tr>
                                         @*@{var colspan = (@Model.ListSelectedGender.Count * 2) + 1;}*@
-                                        <td colspan="15"></td>
-                                        <td align="center"><input type='checkbox' name='CheckDataitem7All' id='CheckDataitem7All' value="ALL" checked="checked" />CheckALL</td>
+                                        @*<td colspan="15"></td>*@
+                                        <td colspan="15" align="center"><input type='checkbox' name='CheckDataitem7All' id='CheckDataitem7All' value="ALL" checked="checked" />CheckALL</td>
                                     </tr>
                                     @*<tr>
                                         <td><button id="7" onclick='myFunctionBar(this.id, "ListSPMdata")'><label>Bar Chart</label></button></td>
@@ -874,10 +873,10 @@
                                 </table>
                                 <ul class="list-inline">
                                     <li>
-                                        <button class="btn btn-primary" onclick='myFunctionBar(this.id, "ListSPMdata")'><label>Bar Chart</label></button>
+                                        <button id="7" class="btn btn-primary" onclick='myFunctionBar(this.id, "ListSPMdata")'><label>Bar Chart</label></button>
                                     </li>
                                     <li>
-                                        <button class="btn btn-primary" onclick='myFunctionColumn(this.id, "ListSPMdata")'><label>Column Chart</label></button>
+                                        <button id="7" class="btn btn-primary" onclick='myFunctionColumn(this.id, "ListSPMdata")'><label>Column Chart</label></button>
                                     </li>
                                     <li>
                                         @Html.ActionLink("Export Excel", "ExportExcel", "Curriculum", new { Area = "SchoolProfile", dataname = "ListSPMdata" }, null)
@@ -967,8 +966,8 @@
                                     </tbody>
                                     <tr>
                                         @*@{var colspan = (@Model.ListSelectedGender.Count * 2) + 1;}*@
-                                        <td colspan="15"></td>
-                                        <td align="center"><input type='checkbox' name='CheckDataitem8All' id='CheckDataitem8All' value="ALL" checked="checked" />CheckALL</td>
+                                        @*<td colspan="15"></td>*@
+                                        <td colspan="15" align="center"><input type='checkbox' name='CheckDataitem8All' id='CheckDataitem8All' value="ALL" checked="checked" />CheckALL</td>
                                     </tr>
                                     @*<tr>
                                         <td><button id="8" onclick='myFunctionBar(this.id,"ListIHdata")'><label>Bar Chart</label></button></td>
@@ -980,10 +979,10 @@
                                 </table>
                                 <ul class="list-inline">
                                     <li>
-                                        <button class="btn btn-primary" onclick='myFunctionBar(this.id, "ListIHdata")'><label>Bar Chart</label></button>
+                                        <button id="8" class="btn btn-primary" onclick='myFunctionBar(this.id, "ListIHdata")'><label>Bar Chart</label></button>
                                     </li>
                                     <li>
-                                        <button class="btn btn-primary" onclick='myFunctionColumn(this.id, "ListIHdata")'><label>Column Chart</label></button>
+                                        <button id="8" class="btn btn-primary" onclick='myFunctionColumn(this.id, "ListIHdata")'><label>Column Chart</label></button>
                                     </li>
                                     <li>
                                         @Html.ActionLink("Export Excel", "ExportExcel", "Curriculum", new { Area = "SchoolProfile", dataname = "ListIHdata" }, null)

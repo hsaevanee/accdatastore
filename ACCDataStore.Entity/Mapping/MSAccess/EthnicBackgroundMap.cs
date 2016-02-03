@@ -13,8 +13,8 @@ namespace ACCDataStore.Entity.Mapping.MSAccess
             Table("Lu_EthnicBackground"); //from Scotxed_15 database
             Id(x => x.id);
             Map(x => x.code);
-            Map(x => x.name);
-            Map(x => x.scotXedCode);  
+            Map(x => x.value);
+            Map(x => x.ScotXedcode);  
         }
     }
 }

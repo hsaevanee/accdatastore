@@ -105,7 +105,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
             fooList.Add("Third Consolidating");
             fooList.Add("Third Secure");
             fooList.Add("blank");
-            fooList.Add("Grand Total");
+            //fooList.Add("Grand Total");
             vmCurriculum.ListSkills = fooList;
 
             if (Request.HttpMethod == "GET") // get method
