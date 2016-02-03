@@ -77,7 +77,9 @@
     <Compile Include="Mapping\MSAccess\SchoolProfile\SchStudentMap.cs" />
     <Compile Include="Mapping\MSAccess\SchPrimarySchoolMap.cs" />
     <Compile Include="Mapping\MSAccess\SchStudentMap.cs" />
+    <Compile Include="SchoolProfile\Common.cs" />
     <Compile Include="SchoolProfile\Costcentre.cs" />
+    <Compile Include="SchoolProfile\EthnicBackgroundObj.cs" />
     <Compile Include="SchoolProfile\LuEnglishLevel.cs" />
     <Compile Include="SchoolProfile\PupilObj.cs" />
     <Compile Include="SchoolProfile\SchPrimarySchool.cs" />

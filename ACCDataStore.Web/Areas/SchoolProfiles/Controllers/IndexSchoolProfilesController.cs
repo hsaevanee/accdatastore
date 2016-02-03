@@ -37,6 +37,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             //select primary_pupil data based on shooltype id = 2 
             List<PupilObj> listPrimaryPupilData = listPupilData.Where(b => listCostcentre.Any(a => Convert.ToInt16(a.seedcode) == b.CostCentreKey)).ToList();
             Session["listPrimary_PupilData"] = listPrimaryPupilData;
+            Session["lististCostcentre"] = listCostcentre;
             Dictionary<string, string> DicEthnicBG = GetDicEhtnicBG();
             DataTable nationalityTable = new DataTable();
             //nationalityTable.Columns.Add("Nationality", typeof(string));
@@ -54,37 +55,35 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         {
             var vmIndexSchoolProfilesModel = new IndexSchoolProfilesViewModel();
             List<PupilObj> listPupilData = Session["listPrimary_PupilData"] as List<PupilObj>;
+            List<School> listCostcentre = Session["lististCostcentre"] as List<School>;
             List<string> listSelectedSchoolname = new List<string>();
+            List<School> listSelectedSchool = new List<School>();
             List<object> listobject = new List<object>();
             bool schoolIsSelect = false;
             if (Request["listSelectedSchoolname"] != null)
             {
                 schoolIsSelect = true;
                 listSelectedSchoolname = Request["listSelectedSchoolname"].Split(',').ToList();
+                foreach (var item in listSelectedSchoolname) {
+                    listSelectedSchool.Add(listCostcentre.First(x =>x.seedcode.Equals(item)));
+                }
             }
 
             if (schoolIsSelect)
             {
-                //var listResult = listPupilData.GroupBy(p => p.CostCentreKey, p => p.EthnicBackground, (key, g) => new { CostCentreKey = key, list = g.ToList().Count() });
-                var listResult = listPupilData.GroupBy(x => new { x.CostCentreKey, x.EthnicBackground }).Select(y => new { CostCentreKey = y.Key.CostCentreKey, EthnicBackground = y.Key.EthnicBackground, list = y.ToList(), count = y.ToList().Count() }).ToList();
-                foreach (var name in listSelectedSchoolname)
-                {
-                    var temp = listResult.FindAll(x => name.Contains(x.CostCentreKey.ToString())).ToList();
-                    var sum = (decimal)temp.Select(r => r.count).Sum();
-                    var listResultwithPercentage = temp.Select(y => new { CostCentreKey = y.CostCentreKey, EthnicBackground = y.EthnicBackground, list = y.list, count = y.count, percentage = sum != 0 ? (y.count / sum) * 100 : 0 }).ToList();
-                    listobject.Add(listResultwithPercentage);               
-                }
-            }
+                DataTable ethnicBackgroundTable = GetEthnicBackgroundDataTable(listPupilData, listSelectedSchool);
+
+             }
             return View(vmIndexSchoolProfilesModel);
         }
 
-        protected DataTable GetEthnicBackgroundDataTable(List<PupilObj> listPupilData, List<string> listSelectedSchoolname)
+        protected DataTable GetEthnicBackgroundDataTable(List<PupilObj> listPupilData, List<School> listSelectedSchool)
         {
             List<object> listobject = new List<object>();
             var listResult = listPupilData.GroupBy(x => new { x.CostCentreKey, x.EthnicBackground }).Select(y => new { CostCentreKey = y.Key.CostCentreKey, EthnicBackground = y.Key.EthnicBackground, list = y.ToList(), count = y.ToList().Count() }).ToList();
-            foreach (var name in listSelectedSchoolname)
+            foreach (var item in listSelectedSchool)
             {
-                var temp = listResult.FindAll(x => name.Contains(x.CostCentreKey.ToString())).ToList();
+                var temp = listResult.FindAll(x => item.seedcode.Contains(x.CostCentreKey.ToString())).ToList();
                 var sum = (decimal)temp.Select(r => r.count).Sum();
                 var listResultwithPercentage = temp.Select(y => new { CostCentreKey = y.CostCentreKey, EthnicBackground = y.EthnicBackground, list = y.list, count = y.count, percentage = sum != 0 ? (y.count / sum) * 100 : 0 }).ToList();
                 listobject.Add(listResultwithPercentage);
