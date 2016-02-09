@@ -98,7 +98,7 @@
                                 <tr>
                                     <td class="text-left">All Clients</td>
                                     <td class="text-center">
-                                        <input disabled type="button" class="btn btn-info btn-xs disabled" style="width: 50px; height:25px" value="@Model.SchoolData.FormatNumber(Model.SchoolData.allpupils)" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby , code = @Model.searchcode, dataname = "AllClients" })'" />
+                                        <input enabled type="button" class="btn btn-info btn-xs disabled" style="width: 50px; height:25px" value="@Model.SchoolData.FormatNumber(Model.SchoolData.allpupils)" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby , code = @Model.searchcode, dataname = "AllClients" })'" />
                                     </td>
                                     <td class="text-center">@Model.SchoolData.FormatNumber(Model.SchoolData.allpupils)</td>
                                     <td class="text-center">@Model.AberdeencityData.FormatNumber(Model.AberdeencityData.allpupils)</td>

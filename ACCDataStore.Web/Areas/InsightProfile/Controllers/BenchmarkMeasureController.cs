@@ -20,17 +20,17 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
     {
         private static ILog log = LogManager.GetLogger(typeof(BenchmarkMeasureController));
 
-        private readonly IGenericRepository rpGeneric;
+        private readonly IGenericRepository2nd rpGeneric2nd; // connect tp mysql
 
-        public BenchmarkMeasureController(IGenericRepository rpGeneric)
+        public BenchmarkMeasureController(IGenericRepository2nd rpGeneric2nd)
         {
-            this.rpGeneric = rpGeneric;
+            this.rpGeneric2nd = rpGeneric2nd;
         }
 
-        protected IList<School> GetListSchoolname(IGenericRepository rpGeneric)
+        protected IList<School> GetListSchoolname(IGenericRepository2nd rpGeneric2nd)
         {
             // test
-            var listResultMySQL = this.rpGeneric.FindByNativeSQL("SELECT distinct t1.centre, t2.SchoolName from la100pupils t1 INNER JOIN la100schools t2 on t1.centre = t2.SeedCode ");
+            var listResultMySQL = this.rpGeneric2nd.FindByNativeSQL("SELECT distinct t1.centre, t2.SchoolName from la100pupils t1 INNER JOIN la100schools t2 on t1.centre = t2.SeedCode ");
             List<School> temp = new List<School>();
 
             if (listResultMySQL.Any())
@@ -79,7 +79,7 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
         {
             var vmBenchmarkMeasure = new BenchmarkMeasureViewModel();
 
-            vmBenchmarkMeasure.ListSchoolNameData = GetListSchoolname(rpGeneric);
+            vmBenchmarkMeasure.ListSchoolNameData = GetListSchoolname(rpGeneric2nd);
             vmBenchmarkMeasure.ListGenderData = GetListGender();
             vmBenchmarkMeasure.ListYearData = GetListYear();
             return View("IndexLeaver", vmBenchmarkMeasure);
@@ -91,7 +91,7 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
         {
             var vmBenchmarkMeasure = new BenchmarkMeasureViewModel();
 
-            vmBenchmarkMeasure.ListSchoolNameData = GetListSchoolname(rpGeneric);
+            vmBenchmarkMeasure.ListSchoolNameData = GetListSchoolname(rpGeneric2nd);
             vmBenchmarkMeasure.ListYearData = GetListYear();
             vmBenchmarkMeasure.ListGenderData = model.ListGenderData;
             if (vmBenchmarkMeasure.ListGenderData.Where(x => x.isSelected == true).Count() == 0)
@@ -115,7 +115,7 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
 
                 List<LeaverDestination> listLeaverDestination = null;
 
-                //List<LA100Pupils> listResultMySQss = this.rpGeneric.FindAll<LA100Pupils>().ToList();
+                List<LA100Pupils> listResultMySQss = this.rpGeneric2nd.FindAll<LA100Pupils>().ToList();
 
                string query = "SELECT t1.leaver_centre, t2.SchoolName,t1.year,t1.gender, t1.leaver_destination_group, count(*) FROM la100pupils t1 Inner join la100schools t2 on t1.leaver_centre = t2.SeedCode where t1.leaver_centre = '" + schoolcode + "'  group by leaver_centre, SchoolName, year, gender, leaver_destination_group";
 
@@ -131,7 +131,7 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
 
                 //query += "SELECT 100, 'Aberdeen City', t1.year,0, t1.leaver_destination_group, count(*) FROM la100pupils t1  where t1.leaver_centre <> 'NULL' group by year, leaver_destination_group";
 
-                var listResultMySQL = this.rpGeneric.FindByNativeSQL(query);
+                var listResultMySQL = this.rpGeneric2nd.FindByNativeSQL(query);
 
                 string query2 = "SELECT t1.leaver_centre, t2.SchoolName,t1.year,0, t1.leaver_destination_group, count(*) FROM la100pupils t1 Inner join la100schools t2 on t1.leaver_centre = t2.SeedCode where t1.leaver_centre = '" + schoolcode + "'  group by leaver_centre, SchoolName, year, leaver_destination_group";
 
@@ -139,7 +139,7 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
 
                 query2 += "SELECT 100, 'Aberdeen City', t1.year,0, t1.leaver_destination_group, count(*) FROM la100pupils t1  where t1.leaver_centre <> 'NULL' group by year, leaver_destination_group";
 
-                var listResultMySQL2 = this.rpGeneric.FindByNativeSQL(query2);
+                var listResultMySQL2 = this.rpGeneric2nd.FindByNativeSQL(query2);
 
                 if (listResultMySQL != null && listResultMySQL2!=null)
                 {
@@ -326,7 +326,7 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
                 //query += " union ";
                 //query += "SELECT 100, 'Aberdeen City', year, 0, destination, count(*) FROM la100pupils where year='" + year + "' group by year, destination ";
 
-                var listResultMySQL = this.rpGeneric.FindByNativeSQL(query);
+                var listResultMySQL = this.rpGeneric2nd.FindByNativeSQL(query);
 
                 if (listResultMySQL != null)
                 {
@@ -341,7 +341,7 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
                 query += " union ";
                 query += "SELECT 100, 'Aberdeen City', year, 0, destination, count(*) FROM la100pupils where year=" + year + " group by year, destination ";
 
-                listResultMySQL = this.rpGeneric.FindByNativeSQL(query);
+                listResultMySQL = this.rpGeneric2nd.FindByNativeSQL(query);
 
                 if (listResultMySQL != null)
                 {
@@ -411,9 +411,9 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
         protected IList<LeaverDestinationBreakdown> GetListDestinationBreakdown()
         {
             // test
-            var listTest = this.rpGeneric.FindAll<LA100Pupils>();
+            var listTest = this.rpGeneric2nd.FindAll<LA100Pupils>();
 
-            var listResultMySQL = this.rpGeneric.FindByNativeSQL("select destinationcode,destinationtype from destinationcategory");
+            var listResultMySQL = this.rpGeneric2nd.FindByNativeSQL("select destinationcode,destinationtype from destinationcategory");
             List<LeaverDestinationBreakdown> temp = new List<LeaverDestinationBreakdown>();
 
             if (listResultMySQL.Any())
@@ -498,7 +498,7 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
         {
             var vmBenchmarkMeasure = new BenchmarkMeasureViewModel();
 
-            vmBenchmarkMeasure.ListSchoolNameData = GetListSchoolname(rpGeneric);
+            vmBenchmarkMeasure.ListSchoolNameData = GetListSchoolname(rpGeneric2nd);
             vmBenchmarkMeasure.ListGenderData = GetListGender();
             vmBenchmarkMeasure.ListYearData = GetListYear();
             
@@ -511,7 +511,7 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
             //var listNationalityData = Session["SessionListNationalityData"] as List<NationalityObj>;
 
             var vmBenchmarkMeasure = new BenchmarkMeasureViewModel();
-            vmBenchmarkMeasure.ListSchoolNameData = GetListSchoolname(rpGeneric);
+            vmBenchmarkMeasure.ListSchoolNameData = GetListSchoolname(rpGeneric2nd);
             return View("MapLeaverDestinationIndex", vmBenchmarkMeasure);
         }
         protected JsonResult ThrowJSONError(Exception ex)

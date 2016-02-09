@@ -80,22 +80,43 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         protected DataTable GetEthnicBackgroundDataTable(List<PupilObj> listPupilData, List<School> listSelectedSchool)
         {
             List<object> listobject = new List<object>();
+
+            var mydicEhtnicBG = GetDicEhtnicBG();     
+   
+            // get data for all primary schools
+            var listResultforAll = listPupilData.GroupBy(x => x.EthnicBackground).Select(y => new { EthnicBackground = y.Key , list = y.ToList(), count = y.ToList().Count() }).ToList();
+            var sum = (decimal)listResultforAll.Select(r => r.count).Sum();
+            var listResultwithPercentage = listResultforAll.Select(y => new { CostCentreKey = 18775, EthnicBackground = y.EthnicBackground, list = y.list, count = y.count, percentage = sum != 0 ? (y.count / sum) * 100 : 0 }).ToList();
+            listobject.Add(listResultwithPercentage);
+            
+            
             var listResult = listPupilData.GroupBy(x => new { x.CostCentreKey, x.EthnicBackground }).Select(y => new { CostCentreKey = y.Key.CostCentreKey, EthnicBackground = y.Key.EthnicBackground, list = y.ToList(), count = y.ToList().Count() }).ToList();
+ 
             foreach (var item in listSelectedSchool)
             {
                 var temp = listResult.FindAll(x => item.seedcode.Contains(x.CostCentreKey.ToString())).ToList();
-                var sum = (decimal)temp.Select(r => r.count).Sum();
-                var listResultwithPercentage = temp.Select(y => new { CostCentreKey = y.CostCentreKey, EthnicBackground = y.EthnicBackground, list = y.list, count = y.count, percentage = sum != 0 ? (y.count / sum) * 100 : 0 }).ToList();
+                sum = (decimal)temp.Select(r => r.count).Sum();
+                listResultwithPercentage = temp.Select(y => new { CostCentreKey = y.CostCentreKey, EthnicBackground = y.EthnicBackground, list = y.list, count = y.count, percentage = sum != 0 ? (y.count / sum) * 100 : 0 }).ToList();
                 listobject.Add(listResultwithPercentage);
             }
 
+
+
             DataTable ethnicBackgroundTable = new DataTable();
+            //add column to data table
+
+            ethnicBackgroundTable.Columns.Add("Nationality", typeof(string));
+ 
+            foreach (var temp in mydicEhtnicBG)
+            {
+                var temppp = temp.Key;
+            }
 
 
 
 
            
-            ethnicBackgroundTable.Columns.Add("Aberdeencity", typeof(double));
+            
 
             //nationalityTable.Rows.Add(listResult, 100);
             //nationalityTable.Rows.Add("AA", 100);

@@ -55,6 +55,13 @@ namespace ACCDataStore.Web.Controllers
                     TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
                     return View("Contact");
                 }
+                else if (id.ToLower().Equals("datacentre"))
+                {
+                    eGeneralSettings.TeampgCounter++;
+                    TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
+                    return View("DataCentre");
+                }
+
                 else {
                     eGeneralSettings.HomepgCounter++;
                     TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));

@@ -77,6 +77,7 @@
     <Compile Include="Mapping\MSAccess\SchoolProfile\SchStudentMap.cs" />
     <Compile Include="Mapping\MSAccess\SchPrimarySchoolMap.cs" />
     <Compile Include="Mapping\MSAccess\SchStudentMap.cs" />
+    <Compile Include="Mapping\UsersMap.cs" />
     <Compile Include="SchoolProfile\Common.cs" />
     <Compile Include="SchoolProfile\Costcentre.cs" />
     <Compile Include="SchoolProfile\EthnicBackgroundObj.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="SchoolProfile\StdStageObj.cs" />
     <Compile Include="SchoolProfile\StudentSIMD.cs" />
     <Compile Include="SchoolProfile\WiderAchievementObj.cs" />
+    <Compile Include="Users.cs" />
     <Compile Include="Year.cs" />
   </ItemGroup>
   <ItemGroup>

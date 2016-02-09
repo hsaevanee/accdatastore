@@ -13,6 +13,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Reflection;
+using ACCDataStore.Helpers.ORM.Helpers.Security;
+using ACCDataStore.Helpers.ORM;
 
 namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 {
@@ -394,6 +396,8 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             return tempPupilslist;
         }
 
+        [AdminAuthentication]
+        [Transactional]
         public ActionResult GetListpupils(string searchby, string code, string dataname)
         {
             var vmListpupilsViewModel = new DatahubViewModel();
