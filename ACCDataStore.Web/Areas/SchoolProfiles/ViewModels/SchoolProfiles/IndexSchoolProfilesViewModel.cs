@@ -1,5 +1,6 @@
 ﻿using ACCDataStore.Entity;
 using ACCDataStore.Entity.SchoolProfile;
+using ACCDataStore.Entity.SchoolProfiles;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -17,8 +18,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.ViewModels.SchoolProfiles
         public DataTable ethnicityData { get; set; }
         public DataTable freeSchoolMealData { get; set; }
         public string selectedschoolname2 { get; set; }
-        public List<School> listSchoolname { get; set; }
-        public List<School> listSelectedSchoolname { get; set; }
-        
+        public List<Costcentre> listSchoolname { get; set; }
+        public List<Costcentre> listSelectedSchoolname { get; set; }
+        public Dictionary<string, string> DicEthnicBG { get; set; }
     }
 }

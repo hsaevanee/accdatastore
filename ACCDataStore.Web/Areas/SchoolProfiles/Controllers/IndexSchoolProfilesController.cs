@@ -1,5 +1,5 @@
 ﻿using ACCDataStore.Entity;
-using ACCDataStore.Entity.SchoolProfile;
+using ACCDataStore.Entity.SchoolProfiles;
 using ACCDataStore.Repository;
 using ACCDataStore.Web.Areas.SchoolProfiles.ViewModels.SchoolProfiles;
 using Common.Logging;
@@ -28,26 +28,12 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         public ActionResult Index()
         {
             var vmIndexSchoolProfilesModel = new IndexSchoolProfilesViewModel();
-            //get listpupils from database
-            List<PupilObj> listPupilData = this.rpGeneric3nd.FindAll<PupilObj>().ToList();
-            Session["listPupilData"] = listPupilData;
-            //get list of school from database
-            List<School> listCostcentre = GetListSchool();
-            vmIndexSchoolProfilesModel.listSchoolname = listCostcentre;
-            //select primary_pupil data based on shooltype id = 2 
-            List<PupilObj> listPrimaryPupilData = listPupilData.Where(b => listCostcentre.Any(a => Convert.ToInt16(a.seedcode) == b.CostCentreKey)).ToList();
+            //get list primary school pupils from database 
+            List<PupilObj> listPrimaryPupilData = this.rpGeneric3nd.Find<PupilObj>(" from PupilObj where Costcentre.schoolType_id = :schoolType_id ", new string[] { "schoolType_id" }, new object[] { 2 }).ToList(); 
             Session["listPrimary_PupilData"] = listPrimaryPupilData;
-            Session["lististCostcentre"] = listCostcentre;
-            Dictionary<string, string> DicEthnicBG = GetDicEhtnicBG();
-            DataTable nationalityTable = new DataTable();
-            //nationalityTable.Columns.Add("Nationality", typeof(string));
-            //nationalityTable.Columns.Add("Aberdeencity", typeof(double));
+            vmIndexSchoolProfilesModel.listSchoolname = listPrimaryPupilData.Select(x => (Costcentre)x.Costcentre).Distinct().OrderBy(x=>x.name).ToList();
+            Session["listCostcentre"] = vmIndexSchoolProfilesModel.listSchoolname;
 
-            //nationalityTable.Rows.Add(listResult, 100);
-            //nationalityTable.Rows.Add("AA", 100);
-            //nationalityTable.Rows.Add("AA", 100);
-
-            //vmIndexSchoolProfilesModel.nationalityData = nationalityTable;
             return View(vmIndexSchoolProfilesModel);
         }
 
@@ -55,48 +41,53 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         {
             var vmIndexSchoolProfilesModel = new IndexSchoolProfilesViewModel();
             List<PupilObj> listPupilData = Session["listPrimary_PupilData"] as List<PupilObj>;
-            List<School> listCostcentre = Session["lististCostcentre"] as List<School>;
+            List<Costcentre> listCostcentre = Session["listCostcentre"] as List<Costcentre>;
             List<string> listSelectedSchoolname = new List<string>();
-            List<School> listSelectedSchool = new List<School>();
-            List<object> listobject = new List<object>();
+            List<Costcentre> listSelectedCostcentre = new List<Costcentre>();
+            var mydicEhtnicBG = GetDicEhtnicBG();
+
             bool schoolIsSelect = false;
             if (Request["listSelectedSchoolname"] != null)
             {
                 schoolIsSelect = true;
+                //get CostCentreKey from dropdownlist in UI
                 listSelectedSchoolname = Request["listSelectedSchoolname"].Split(',').ToList();
-                foreach (var item in listSelectedSchoolname) {
-                    listSelectedSchool.Add(listCostcentre.First(x =>x.seedcode.Equals(item)));
-                }
+                //select selected CostCentre from dropdownlist in UI
+                listSelectedCostcentre = listCostcentre.Where(x => listSelectedSchoolname.Any(y => Int32.Parse(y) == x.CostCentreKey)).ToList();
+                
             }
 
             if (schoolIsSelect)
             {
-                DataTable ethnicBackgroundTable = GetEthnicBackgroundDataTable(listPupilData, listSelectedSchool);
+                DataTable ethnicBackgroundTable = GetEthnicBackgroundDataTable(listPupilData, listSelectedCostcentre);
 
              }
             return View(vmIndexSchoolProfilesModel);
         }
 
-        protected DataTable GetEthnicBackgroundDataTable(List<PupilObj> listPupilData, List<School> listSelectedSchool)
+        protected DataTable GetEthnicBackgroundDataTable(List<PupilObj> listPupilData, List<Costcentre> listSelectedCostcentre)
         {
             List<object> listobject = new List<object>();
 
-            var mydicEhtnicBG = GetDicEhtnicBG();     
-   
+            var mydicEhtnicBG = GetDicEhtnicBG();
+
             // get data for all primary schools
-            var listResultforAll = listPupilData.GroupBy(x => x.EthnicBackground).Select(y => new { EthnicBackground = y.Key , list = y.ToList(), count = y.ToList().Count() }).ToList();
+            var listResultforAll = listPupilData.GroupBy(x => x.EthnicBackground.ScotXedcode).Select(y => new { EthnicBackgroundcode = y.Key, list = y.ToList(), count = y.ToList().Count() }).ToList();
+            //calculate the total number of pupils in Aberdeen
             var sum = (decimal)listResultforAll.Select(r => r.count).Sum();
-            var listResultwithPercentage = listResultforAll.Select(y => new { CostCentreKey = 18775, EthnicBackground = y.EthnicBackground, list = y.list, count = y.count, percentage = sum != 0 ? (y.count / sum) * 100 : 0 }).ToList();
+            var listResultwithPercentage = listResultforAll.Select(y => new { CostCentreKey = 18775, EthnicBackgroundcode = y.EthnicBackgroundcode, list = y.list, count = y.count, percentage = sum != 0 ? (y.count / sum) * 100 : 0 }).ToList();
             listobject.Add(listResultwithPercentage);
-            
-            
-            var listResult = listPupilData.GroupBy(x => new { x.CostCentreKey, x.EthnicBackground }).Select(y => new { CostCentreKey = y.Key.CostCentreKey, EthnicBackground = y.Key.EthnicBackground, list = y.ToList(), count = y.ToList().Count() }).ToList();
- 
-            foreach (var item in listSelectedSchool)
+
+            //select primary pupils for selected school
+            var listtempPupilData = listPupilData.Where(x => listSelectedCostcentre.Any(y => y.CostCentreKey == x.Costcentre.CostCentreKey)).ToList();
+
+            var listResult = listtempPupilData.GroupBy(x => new { x.Costcentre.CostCentreKey, x.EthnicBackground.ScotXedcode}).Select(y => new { CostCentreKey = y.Key.CostCentreKey, EthnicBackgroundcode = y.Key.ScotXedcode, list = y.ToList(), count = y.ToList().Count() }).ToList();
+
+            foreach (var item in listSelectedCostcentre)
             {
-                var temp = listResult.FindAll(x => item.seedcode.Contains(x.CostCentreKey.ToString())).ToList();
+                var temp = listResult.FindAll(x => x.CostCentreKey == item.CostCentreKey).ToList();
                 sum = (decimal)temp.Select(r => r.count).Sum();
-                listResultwithPercentage = temp.Select(y => new { CostCentreKey = y.CostCentreKey, EthnicBackground = y.EthnicBackground, list = y.list, count = y.count, percentage = sum != 0 ? (y.count / sum) * 100 : 0 }).ToList();
+                listResultwithPercentage = temp.Select(y => new { CostCentreKey = y.CostCentreKey, EthnicBackgroundcode = y.EthnicBackgroundcode, list = y.list, count = y.count, percentage = sum != 0 ? (y.count / sum) * 100 : 0 }).ToList();
                 listobject.Add(listResultwithPercentage);
             }
 
@@ -106,17 +97,22 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             //add column to data table
 
             ethnicBackgroundTable.Columns.Add("Nationality", typeof(string));
- 
-            foreach (var temp in mydicEhtnicBG)
+
+            foreach (var item in listSelectedCostcentre)
             {
-                var temppp = temp.Key;
+                ethnicBackgroundTable.Columns.Add(item.name, typeof(string));
+                foreach (var temp in mydicEhtnicBG)
+                {
+                    var temppp = temp.Key;
+                }
             }
 
 
 
 
-           
-            
+
+
+
 
             //nationalityTable.Rows.Add(listResult, 100);
             //nationalityTable.Rows.Add("AA", 100);
@@ -126,6 +122,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             return ethnicBackgroundTable;
 
         }
+
+        //not using
         protected List<School> GetListSchool()
         {
             var listResult = this.rpGeneric3nd.FindByNativeSQL("Select CostCentreKey, Name from View_Costcentre where  schoolType_id = 2 and costCentreKey in (Select distinct CostCentreKey from sx_pupil)");

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACCDataStore.Entity
+namespace ACCDataStore.Entity.SchoolProfiles
 {
-    public class EthnicBackgroundObj:BaseEntity
+    public class EthnicBackground:BaseEntity
     {
-        public virtual double id { get; set; }
+        //public virtual int id { get; set; }
         public virtual string code { get; set; }
         public virtual string value { get; set; }
         public virtual string ScotXedcode { get; set; }

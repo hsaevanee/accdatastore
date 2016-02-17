@@ -13,11 +13,11 @@ namespace ACCDataStore.Web.Controllers
     {
         private static ILog log = LogManager.GetLogger(typeof(IndexController));
 
-        private readonly IGenericRepository rpGeneric;
-        public IndexController(IGenericRepository rpGeneric)
-        {
-            this.rpGeneric = rpGeneric;
-        }
+        //private readonly IGenericRepository rpGeneric;
+        //public IndexController(IGenericRepository rpGeneric)
+        //{
+        //    this.rpGeneric = rpGeneric;
+        //}
 
         public ActionResult Index(string id)
         {

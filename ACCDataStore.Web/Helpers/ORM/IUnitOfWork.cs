@@ -2,8 +2,7 @@
 
 namespace ACCDataStore.Helpers.ORM
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork : IBaseUnitOfWork, IDisposable
     {
-        void SaveChanges();
     }
 }

@@ -12,15 +12,38 @@ namespace ACCDataStore.Helpers.ORM.Helpers.Security
 {
     public class AdminAuthenticationAttribute : ActionFilterAttribute, IAuthenticationFilter
     {
+        //public void OnAuthentication(AuthenticationContext filterContext)
+        //{
+        //    var sUserLogined = filterContext.HttpContext.Session["SessionUser"] as string;
+        //    if (sUserLogined != null)
+        //    {
+        //        // do nothing
+        //    }
+        //    else
+        //    {
+        //        if (filterContext.HttpContext.Request.IsAjaxRequest())
+        //        {
+        //            filterContext.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+        //            filterContext.HttpContext.Response.SuppressFormsAuthenticationRedirect = true;
+        //            filterContext.HttpContext.Response.End();
+        //        }
+        //        else
+        //        {
+        //            filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary { { "action", "Index" }, { "controller", "Index" }, { "area", "" } });
+        //        }
+        //    }
+        //}
+
         public void OnAuthentication(AuthenticationContext filterContext)
         {
-            var sUserLogined = filterContext.HttpContext.Session["SessionUser"] as string;
-            if (sUserLogined != null)
+            var eUsers = filterContext.HttpContext.Session["SessionUser"] as Users;
+            if (eUsers != null && eUsers.IsAdministrator)
             {
-                // do nothing
+                // only administrator can access this action
             }
             else
             {
+                // no right access, return to login page
                 if (filterContext.HttpContext.Request.IsAjaxRequest())
                 {
                     filterContext.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
@@ -29,10 +52,12 @@ namespace ACCDataStore.Helpers.ORM.Helpers.Security
                 }
                 else
                 {
-                    filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary { { "action", "Index" }, { "controller", "Index" }, { "area", "" } });
+                    //login page
+                    filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary { { "action", "Index" }, { "controller", "IndexAuthorisation" }, { "area", "Authorisation" } });
                 }
             }
         }
+
 
         public void OnAuthenticationChallenge(AuthenticationChallengeContext filterContext)
         {

@@ -44,7 +44,11 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
 
             //var listResultMySQL = this.rpGeneric2nd.FindAll<LA100Schools>();
 
-            //var listResultMySQL2 = this.rpGeneric2nd.FindAll<LA100Pupils>();
+            var listResultMySQL2 = this.rpGeneric2nd.FindAll<Users>();
+
+            var listResultMySQL21 = this.rpGeneric2nd.Find<Rights>(" from Rights where Users.UserID = :UserID ", new string[] { "UserID" }, new object[] { 1 });
+
+
 
             return View();
         }

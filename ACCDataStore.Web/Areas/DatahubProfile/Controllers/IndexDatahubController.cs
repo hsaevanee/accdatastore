@@ -75,7 +75,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             }
 
 
-            return View("index", vmDatahubViewModel);
+            return View("index2", vmDatahubViewModel);
         }
 
         protected IList<School> GetListSchoolname()
@@ -395,7 +395,6 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             }
             return tempPupilslist;
         }
-
         [AdminAuthentication]
         [Transactional]
         public ActionResult GetListpupils(string searchby, string code, string dataname)

@@ -1,4 +1,5 @@
 ﻿using NHibernate;
+using System;
 
 namespace ACCDataStore.Helpers.ORM
 {
@@ -29,5 +30,22 @@ namespace ACCDataStore.Helpers.ORM
         {
             _transaction.Commit();
         }
+        public void Commit()
+        {
+            if (!_transaction.IsActive)
+            {
+                throw new InvalidOperationException("No active transation");
+            }
+            _transaction.Commit();
+        }
+
+        public void Rollback()
+        {
+            if (_transaction.IsActive)
+            {
+                _transaction.Rollback();
+            }
+        }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using ACCDataStore.Entity.SchoolProfile;
+﻿
+using ACCDataStore.Entity.SchoolProfiles;
 using FluentNHibernate.Mapping;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,8 @@ namespace ACCDataStore.Entity.Mapping.MSAccess
         {
             Table("sx_pupil"); //from Scotxed_15 database
             Id(x => x.StudentID);
-            Map(x => x.CostCentreKey);
+            References(x => x.Costcentre, "CostCentreKey");
+            //Map(x => x.CostCentreKey);
             Map(x => x.StudentID);
             Map(x => x.Gender);
             Map(x => x.Stage);
@@ -22,8 +24,10 @@ namespace ACCDataStore.Entity.Mapping.MSAccess
             Map(x => x.DOB);
             Map(x => x.CandidateNumber);
             Map(x => x.AdmissionDate);
-            Map(x => x.EthnicBackground);
-            Map(x => x.NationalIdentity);
+            References(x => x.EthnicBackground, "EthnicBackground");
+            //Map(x => x.EthnicBackground);
+            References(x => x.NationalIdentity, "NationalIdentity");
+            //Map(x => x.NationalIdentity);
             Map(x => x.AsylumStatus);
             Map(x => x.FreeSchoolMeal);
             Map(x => x.LookedAfter);
@@ -41,7 +45,8 @@ namespace ACCDataStore.Entity.Mapping.MSAccess
             Map(x => x.CurriculumAdaptation);
             Map(x => x.CommunicationAdaptation);
             Map(x => x.GaelicEducation);
-            Map(x => x.LevelofEnglish);
+            References(x => x.EnglishLevel, "LevelofEnglish");
+            //Map(x => x.LevelofEnglish);
             Map(x => x.MainHomeLanguage);
             Map(x => x.Knownam);
             Map(x => x.Property);

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACCDataStore.Entity.SchoolProfile
+namespace ACCDataStore.Entity.SchoolProfiles
 {
     public class Costcentre:BaseEntity
     {

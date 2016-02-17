@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using ACCDataStore.Entity
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -81,6 +82,24 @@
                     @*<li>
                             <a href="@Url.Action("Index", "Index", new { Area = "", id = "theTeam" }, null)">The Team</a>
                         </li>*@
+                    @{
+                        Users user = Session["SessionUser"] as Users;
+                        if (user != null)
+                        {
+                            <li>
+                                <a href="@Url.Action("Logout", "IndexAuthorisation", new { Area = "Authorisation"}, null)">Logout</a>
+                            </li>
+
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="@Url.Action("Index", "IndexAuthorisation", new { Area = "Authorisation"}, null)">Login</a>
+                            </li>
+                        }
+
+
+                    }
                     <li>
                         <a href="@Url.Action("Index", "Index", new {  Area = "" ,id = "datacentre" }, null)">Data Centre</a>
                     </li>

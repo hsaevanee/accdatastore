@@ -285,6 +285,9 @@
     <Compile Include="Areas\Achievement\AchievementAreaRegistration.cs" />
     <Compile Include="Areas\Achievement\Controllers\WiderAchievementController.cs" />
     <Compile Include="Areas\Achievement\ViewModels\WiderAchievement\WiderAchievementViewModel.cs" />
+    <Compile Include="Areas\Authorisation\AuthorisationAreaRegistration.cs" />
+    <Compile Include="Areas\Authorisation\Controllers\IndexAuthorisationController.cs" />
+    <Compile Include="Areas\Authorisation\ViewModels\IndexAuthorisation\IndexViewModel.cs" />
     <Compile Include="Areas\DatahubProfile\Controllers\IndexDatahubController.cs" />
     <Compile Include="Areas\DatahubProfile\DatahubProfileAreaRegistration.cs" />
     <Compile Include="Areas\DatahubProfile\ViewModels\Datahub\PupilObject.cs" />
@@ -339,6 +342,7 @@
     </Compile>
     <Compile Include="Helpers\ConstantHelper.cs" />
     <Compile Include="Helpers\ConvertHelper.cs" />
+    <Compile Include="Helpers\ORM\IBaseUnitOfWork.cs" />
     <Compile Include="Helpers\ORM\INHibernateHelper.cs" />
     <Compile Include="Helpers\ORM\IUnitOfWork3nd.cs" />
     <Compile Include="Helpers\ORM\IUnitOfWork2nd.cs" />
@@ -349,8 +353,8 @@
     <Compile Include="Helpers\ORM\NHibernateUnitOfWork3nd.cs" />
     <Compile Include="Helpers\ORM\NHibernateUnitOfWork2nd.cs" />
     <Compile Include="Helpers\ORM\NHibernateUnitOfWork.cs" />
-    <Compile Include="Helpers\ORM\TransactionalAttribute3nd.cs" />
-    <Compile Include="Helpers\ORM\TransactionalAttribute2nd.cs" />
+    <Compile Include="Helpers\ORM\TransactionalAttribute3nd-temp.cs" />
+    <Compile Include="Helpers\ORM\TransactionalAttribute2nd-temp.cs" />
     <Compile Include="Helpers\ORM\TransactionalAttribute.cs" />
     <Compile Include="Helpers\ORM\TransactionAttribute.cs" />
     <Compile Include="Helpers\ORM\TransactionFilter.cs" />
@@ -435,6 +439,10 @@
     <Content Include="Areas\SchoolRollForecast\Views\_ViewStart.cshtml" />
     <Content Include="Areas\SchoolRollForecast\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\SchoolRollForecast\Views\IndexSchoolRollForecast\Home.cshtml" />
+    <Content Include="Areas\Authorisation\Views\web.config" />
+    <Content Include="Areas\Authorisation\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Authorisation\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Authorisation\Views\IndexAuthorisation\Index.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\About.cshtml" />
@@ -450,6 +458,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Achievement\Models\" />
+    <Folder Include="Areas\Authorisation\Models\" />
     <Folder Include="Areas\DatahubProfile\Models\" />
     <Folder Include="Areas\InsightProfile\Models\" />
     <Folder Include="Areas\Nationality\Models\" />

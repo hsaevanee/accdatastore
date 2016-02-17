@@ -20,7 +20,7 @@ namespace ACCDataStore.Helpers.ORM
         {
             if (filterContext.Controller.ViewData.ModelState.IsValid && filterContext.Exception == null && filterContext.HttpContext.Error == null && _unitOfWork3nd != null)
             {
-                _unitOfWork3nd.SaveChanges();
+               // _unitOfWork3nd.SaveChanges();
             }
 
             base.OnActionExecuted(filterContext);

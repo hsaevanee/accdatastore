@@ -7,24 +7,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Achievement</title>
-    @*<title>@HttpContext.Current.Application["APP_NAME"]</title>*@
-    @*<link rel="stylesheet" href="~/Content/accdatastore/areas/DatahubProfile/views/datahub/datahub.css" type="text/css" />*@
-    @*<script src="~/Scripts/accdatastore/views/global.js"></script>
-    <script src="~/Scripts/jquery-2.1.1.min.js"></script>*@
-    @*<script src="~/Scripts/highcharts.js"></script>*@
+    <title>Log in</title>
+    <!-- Bootstrap Core CSS -->
+    <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
+    <!-- Custom CSS -->
+    <!--<link href="css/heroic-features.css" rel="stylesheet">-->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
     <link href="~/Content/bootstrap.min.css" rel="stylesheet">
-    @*<script src="~/Scripts/accdatastore/views/global.js"></script>*@
+    <script src="~/Scripts/accdatastore/views/global.js"></script>
     <script src="~/Scripts/jquery-2.1.1.min.js"></script>
     <script>
         var sContextPath = '@Url.Content("~")';
     </script>
-
     @RenderSection("Header")
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
-
 <body>
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -59,12 +63,6 @@
                             </li>
                         </ul>
                     </li>
-                    @*<li>
-                        <a href="@Url.Action("Index", "Index", new { Area = "", id = "about" }, null)">About</a>
-                    </li>*@
-                    @*<li>
-                            <a href="@Url.Action("Index", "Index", new { Area = "", id = "theTeam" }, null)">The Team</a>
-                        </li>*@
                     @{
                         Users user = Session["SessionUser"] as Users;
                         if (user != null)
@@ -95,59 +93,27 @@
         </div>
         <!-- /.container -->
     </nav>
-
     <!-- Subheading Content -->
     <div class="container">
-        <!-- Page Heading/Breadcrumbs -->
-        <div class="row">
-            <div class="col-lg-12">
-                        <h1 class="page-header">
-                            Wider Achievement Framework                           
-                        </h1>
-                <ol class="breadcrumb">
-                    <li>
-                        <a href="@Url.Action("IndexHome", "WiderAchievement", new { Area = "Achievement" }, null)">Home</a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("index", "WiderAchievement", new { Area = "Achievement" }, null)">Data</a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("MapData", "WiderAchievement", new { Area = "Achievement" }, null)">Interactive Map</a>
-                    </li>
-                </ol>
-            </div>
+    </div>
+        <div>
+            @RenderBody()
         </div>
-    </div>
-                @*<div id="main">
-                    <div id="banners">
-                        <div id="Topic" style="text-align: left">
-                            <h1 style="float: left;" > Data Hub Statistics: City Wide Participation</h1>
-                        </div>
-                        <div id="logoes" style="text-align: right">
-                            <img src="@Url.Content("~/Images/acc-logo.gif")" alt="Aberdeen City Council" width="130" height="108" />
-                            <img src="@Url.Content("~/Images/Aberdeen  Gaurtees logo.png")" alt="Aberdeen Gaurtees logo" width="250" height="108" />
-                            <img src="@Url.Content("~/Images/Skilldevelopmentlogo.png")" alt="Skills Development Scotland logo" width="200" height="108" />
-                        </div>
+        <!-- Footer -->
+        <div class="container">
+            <hr>
+            <footer>
+                <div class="row">
+                    <div class="col-lg-12">
+                        @*<p>Copyright &copy; Your Website 2014</p>*@
+                        <p>Feedback Contact:-  <a href="mailto:HSaevanee@aberdeencity.gov.uk">HSaevanee@aberdeencity.gov.uk</a></p>
                     </div>
-                    @RenderBody()
-                </div>*@
-    <div>
-        @RenderBody()
-    </div>
-    <!-- Footer -->
-    <div class="container">
-        <hr>
-        <footer>
-            <div class="row">
-                <div class="col-lg-12">
-                    @*<p>Copyright &copy; Your Website 2014</p>*@
-                    <p>Feedback Contact:-  <a href="mailto:HSaevanee@aberdeencity.gov.uk">HSaevanee@aberdeencity.gov.uk</a></p>
                 </div>
-            </div>
-        </footer>
-    </div>
+            </footer>
+        </div>
 
-    <div id="divSpinner" class="modal" style="display: none;">
-    </div>
+        <div id="divSpinner" class="modal" style="display: none;">
+        </div>
+
 </body>
 </html>
