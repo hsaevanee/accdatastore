@@ -54,11 +54,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="@Url.Action("Index", "Index", new { Area = "", id = "" }, null)">Data Observatory</a>
+                <a class="navbar-brand" href="@Url.Action("Index", "Index", new { Area = "", id = "" }, null)" style="color: whitesmoke; font-weight: bold; font-style: italic; font-family: Verdana; font-size: x-large;">Data Observatory</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
+                <ul class="nav navbar-nav navbar-left">
                     <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Data Categories<b class="caret"></b></a>
                         <ul class="dropdown-menu">
@@ -82,30 +82,44 @@
                     @*<li>
                             <a href="@Url.Action("Index", "Index", new { Area = "", id = "theTeam" }, null)">The Team</a>
                         </li>*@
-                    @{
-                        Users user = Session["SessionUser"] as Users;
-                        if (user != null)
-                        {
-                            <li>
-                                <a href="@Url.Action("Logout", "IndexAuthorisation", new { Area = "Authorisation"}, null)">Logout</a>
-                            </li>
-
-                        }
-                        else
-                        {
-                            <li>
-                                <a href="@Url.Action("Index", "IndexAuthorisation", new { Area = "Authorisation"}, null)">Login</a>
-                            </li>
-                        }
-
-
-                    }
                     <li>
                         <a href="@Url.Action("Index", "Index", new {  Area = "" ,id = "datacentre" }, null)">Data Centre</a>
                     </li>
                     <li>
                         <a href="@Url.Action("Index", "Index", new { Area = "", id = "contact" }, null)">Contact</a>
                     </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    @{
+                        Users user = Session["SessionUser"] as Users;
+                        if (user != null)
+                        {
+                            <li>
+                                <a>Hello @user.UserName</a>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Account</a></li>
+                                    <li><a href="@Url.Action("Logout", "IndexAuthorisation", new { Area = "Authorisation"}, null)">Sign out</a></li>
+                                </ul>
+                            </li>
+
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="@Url.Action("Index", "IndexAuthorisation", new { Area = "Authorisation"}, null)">
+                                    <span class="glyphicon glyphicon-log-in"></span>&nbsp;&nbsp;Login
+                                </a>
+                            </li>
+                        }
+
+
+                    }
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

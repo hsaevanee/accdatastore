@@ -230,9 +230,11 @@
     <Content Include="Images\Skilldevelopmentlogo.png" />
     <Content Include="Images\spinner.gif" />
     <Content Include="Rotativa\wkhtmltopdf.exe" />
+    <Content Include="Scripts\accdatastore\areas\authorisation\Login.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\HeatMapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\IndexdatahubProfile.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\MapIndex.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\Pupilslist.js" />
     <Content Include="Scripts\accdatastore\areas\insightprofile\views\benchmarkmeasure\IndexLeaver.js" />
     <Content Include="Scripts\accdatastore\areas\insightprofile\views\benchmarkmeasure\MapLeaverDestinationIndex.js" />
     <Content Include="Scripts\accdatastore\areas\nationality\views\nationality\nationality.js" />
@@ -271,6 +273,8 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\accdatastore\areas\nationality\views\indexnationality\index.js" />
     <Content Include="Scripts\accdatastore\views\index\index.js" />
+    <Content Include="Scripts\pdfmake.min.js" />
+    <Content Include="Scripts\vfs_fonts.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -443,6 +447,7 @@
     <Content Include="Areas\Authorisation\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Authorisation\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Authorisation\Views\IndexAuthorisation\Index.cshtml" />
+    <Content Include="Areas\Authorisation\Views\IndexAuthorisation\Login.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\About.cshtml" />
@@ -466,6 +471,7 @@
     <Folder Include="Areas\SchoolProfiles\Models\" />
     <Folder Include="Areas\SchoolProfile\Models\" />
     <Folder Include="Areas\SchoolRollForecast\Models\" />
+    <Folder Include="Content\accdatastore\areas\Authorisation\" />
     <Folder Include="Models\" />
     <Folder Include="Resources\Upload\" />
   </ItemGroup>

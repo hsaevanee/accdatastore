@@ -37,7 +37,7 @@ namespace ACCDataStore.Web.Areas.Achievement.Controllers
             return View("Home", vmWiderAchievement);
         }
 
-        public ActionResult Index(string schoolsubmitButton, string awardsubmitButton, string scqfsubmitButton)
+        public ActionResult Index(string schoolsubmitButton, string awardsubmitButton, string scqfsubmitButton, string searchButton)
         {
             //var eGeneralSettings = TS.Core.Helper.ConvertHelper.XmlFile2Object(HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"), typeof(GeneralCounter)) as GeneralCounter;
             //eGeneralSettings.CurriculumpgCounter++;
@@ -49,22 +49,96 @@ namespace ACCDataStore.Web.Areas.Achievement.Controllers
 
             List<WiderAchievementObj> temp = new List<WiderAchievementObj>();
 
-            if (schoolsubmitButton != null)
+            //if (schoolsubmitButton != null)
+            //{
+            //    var sSchoolname = Request["selectedschoolname"];
+            //    vmWiderAchievement.selectedschoolname = sSchoolname;
+            //    if (sSchoolname != null)
+            //    {
+            //        List<WiderAchievementObj> listdata = this.rpGeneric.FindAll<WiderAchievementObj>().ToList();
+            //        if (sSchoolname.Equals("Citywide"))
+            //        {
+            //            if (listdata != null)
+            //            {
+            //                //temp = (from a in listdata where a.schoolname.Equals(sSchoolname) select a).ToList();
+            //                temp = listdata.GroupBy(a => new { a.age_range, a.awardname }).Select(x => new WiderAchievementObj
+            //                {
+            //                    age_range = x.Key.age_range,
+            //                    awardname = x.Key.awardname,
+            //                    award2013 = x.Sum(y => y.award2013),
+            //                    award2014 = x.Sum(y => y.award2014),
+            //                    award2015 = x.Sum(y => y.award2015),
+            //                }).ToList();
+
+            //            }
+
+            //            temp = temp.OrderByDescending(x => x.age_range).ThenBy(x => x.awardname).ToList();
+            //        }
+            //        else
+            //        {
+            //            if (listdata != null)
+            //            {
+            //                temp = (from a in listdata where a.centre.Equals(sSchoolname) select a).ToList();
+
+            //            }
+            //        }
+
+            //    }
+            //}
+            //if (awardsubmitButton != null)
+            //{
+            //    var sAwardname = Request["selectedawardname"];
+            //    vmWiderAchievement.selectedawardname = sAwardname;
+            //    if (sAwardname != null)
+            //    {
+            //        List<WiderAchievementObj> listdata = this.rpGeneric.FindAll<WiderAchievementObj>().ToList();
+            //        if (listdata != null)
+            //        {
+            //            temp = (from a in listdata where a.awardname.Equals(sAwardname) select a).ToList();
+
+            //        }
+
+            //    }
+            //}
+            //if (scqfsubmitButton != null)
+            //{
+            //    var sScqFname = Request["selectescqf_rating"];
+            //    vmWiderAchievement.selectescqf_rating = sScqFname;
+            //    if (sScqFname != null)
+            //    {
+            //        List<WiderAchievementObj> listdata = this.rpGeneric.FindAll<WiderAchievementObj>().ToList();
+            //        if (listdata != null)
+            //        {
+            //            temp = (from a in listdata where a.scqf_rating.Equals(sScqFname) select a).ToList();
+
+            //        }
+
+            //    }
+            //}
+            if (searchButton != null)
             {
                 var sSchoolname = Request["selectedschoolname"];
                 vmWiderAchievement.selectedschoolname = sSchoolname;
-                if (sSchoolname != null)
+
+                var sAwardname = Request["selectedawardname"];
+                vmWiderAchievement.selectedawardname = sAwardname;
+
+                var sScqFname = Request["selectescqf_rating"];
+                vmWiderAchievement.selectescqf_rating = sScqFname;
+
+                List<WiderAchievementObj> listdata = this.rpGeneric.FindAll<WiderAchievementObj>().ToList();
+                if (!sSchoolname.Equals(""))
                 {
-                    List<WiderAchievementObj> listdata = this.rpGeneric.FindAll<WiderAchievementObj>().ToList();
-                    if (sSchoolname.Equals("Citywide"))
+                    if (sSchoolname.Equals("Aberdeen City"))
                     {
                         if (listdata != null)
                         {
                             //temp = (from a in listdata where a.schoolname.Equals(sSchoolname) select a).ToList();
-                            temp = listdata.GroupBy(a => new { a.age_range, a.awardname }).Select(x => new WiderAchievementObj
+                            temp = listdata.GroupBy(a => new { a.age_range, a.awardname, a.scqf_rating}).Select(x => new WiderAchievementObj
                             {
                                 age_range = x.Key.age_range,
                                 awardname = x.Key.awardname,
+                                scqf_rating = x.Key.scqf_rating,
                                 award2013 = x.Sum(y => y.award2013),
                                 award2014 = x.Sum(y => y.award2014),
                                 award2015 = x.Sum(y => y.award2015),
@@ -84,37 +158,35 @@ namespace ACCDataStore.Web.Areas.Achievement.Controllers
                     }
 
                 }
-            }
-            if (awardsubmitButton != null)
-            {
-                var sAwardname = Request["selectedawardname"];
-                vmWiderAchievement.selectedawardname = sAwardname;
-                if (sAwardname != null)
+                if (!sAwardname.Equals(""))
                 {
-                    List<WiderAchievementObj> listdata = this.rpGeneric.FindAll<WiderAchievementObj>().ToList();
-                    if (listdata != null)
+                    if (temp.Count !=0)
                     {
+                        temp = (from a in temp where a.awardname.Equals(sAwardname) select a).ToList();
+
+                    }
+                    else {
                         temp = (from a in listdata where a.awardname.Equals(sAwardname) select a).ToList();
-
                     }
 
                 }
-            }
-            if (scqfsubmitButton != null)
-            {
-                var sScqFname = Request["selectescqf_rating"];
-                vmWiderAchievement.selectescqf_rating = sScqFname;
-                if (sScqFname != null)
+                if (!sScqFname.Equals(""))
                 {
-                    List<WiderAchievementObj> listdata = this.rpGeneric.FindAll<WiderAchievementObj>().ToList();
-                    if (listdata != null)
+                    if (temp.Count != 0)
                     {
-                        temp = (from a in listdata where a.scqf_rating.Equals(sScqFname) select a).ToList();
+                        temp = (from a in temp where a.scqf_rating.Equals(sScqFname) select a).ToList();
 
+                    }
+                    else {
+                        temp = (from a in listdata where a.scqf_rating.Equals(sScqFname) select a).ToList();
+                    
                     }
 
                 }
+
             }
+
+            
 
             vmWiderAchievement.Listresults = temp;
             Session["SessionWiderAchievementData"] = temp;
@@ -154,7 +226,7 @@ namespace ACCDataStore.Web.Areas.Achievement.Controllers
         {
             List<School> temp = new List<School>();
 
-            temp.Add(new School("Citywide", "Citywide"));
+            temp.Add(new School("Aberdeen City", "Aberdeen City"));
 
             var listdata = rpGeneric.FindSingleColumnByNativeSQL("Select distinct centre from WiderAchievementdata");
             if (listdata != null)

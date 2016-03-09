@@ -174,7 +174,7 @@ function SearchData(sCondition, sKeyname) {
         success: function (data) {
             ShowPopupInfo(data);
             drawChartColumn(data);
-
+            drawPieChart(data);
         },
         error: function (xhr, err) {
             SetErrorMessage(xhr);
@@ -201,6 +201,51 @@ function myFunctionColumn(pdata) {
     });
 
 
+}
+
+function drawPieChart(data) {
+    var name = Array();
+    var y = Array();
+    var dataArrayFinal = Array();
+    for (i = 0; i < data.dataCategories.length; i++) {
+        name[i] = data.dataCategories[i];
+        y[i] = data.Schdata[i];
+    }
+
+    for (j = 0; j < name.length; j++) {
+        var temp = new Array(name[j], y[j]);
+        dataArrayFinal[j] = temp;
+    }
+    // Build the chart
+    $('#divPieChartContainer').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: data.dataTitle
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: false
+                },
+                showInLegend: true
+            }
+        },
+        series: [{
+            name: 'Percentage',
+            colorByPoint: true,
+            data: dataArrayFinal
+        }]
+    });
 }
 
 function drawChartColumn(data) {
@@ -261,7 +306,7 @@ function ShowPopupInfo(data) {
     if (data.dataCategories.length != 0) {
         for (var i = 0; i < data.dataCategories.length; i++) {
             //sInformation += "<tr><td>" + data.dataCategories[i] + "</td><td  align='center'>" + "<input type='button' style='width: 50px; height:25px' value='" + data.Schdata[i].toFixed(2) + "'id='" + data.dataCategories[i] + "'" + "onclick='goToCreateURL(id)'/></td><td  align='center'>" + data.Abdcitydata[i].toFixed(2) + "</td><tr>";
-            sInformation += "<tr><td class='text-left'>" + data.dataCategories[i] + "</td><td  align='center'> <a href='/DatahubProfile/IndexDatahub/GetListpupils?searchby=" + data.searchby + "&code=" + data.searchcode + "&dataname=" + data.dataCategories[i] + "'><button disabled class='btn btn-info btn-xs disabled'>" + data.Schdata[i].toFixed(2) + "</button></a></td><td  align='center'> <a href='/DatahubProfile/IndexDatahub/GetListpupils?searchby=school&code=100&dataname=" + data.dataCategories[i] + "'><button disabled class='btn btn-info btn-xs disabled'>" + data.Abdcitydata[i].toFixed(2) + "</button></a></td><tr>";
+            sInformation += "<tr><td class='text-left'>" + data.dataCategories[i] + "</td><td  align='center'> <a href='/DatahubProfile/IndexDatahub/GetListpupils?searchby=" + data.searchby + "&code=" + data.searchcode + "&dataname=" + data.dataCategories[i] + "'><button enabled class='btn btn-info btn-xs enabled'>" + data.Schdata[i].toFixed(2) + "</button></a></td><td  align='center'> <a href='/DatahubProfile/IndexDatahub/GetListpupils?searchby=school&code=100&dataname=" + data.dataCategories[i] + "'><button enabled class='btn btn-info btn-xs enabled'>" + data.Abdcitydata[i].toFixed(2) + "</button></a></td><tr>";
         }
 
     } else {

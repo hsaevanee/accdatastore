@@ -613,9 +613,9 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
         }
 
 
-        public ActionResult ExportExcel()
+        public ActionResult ExportExcel(string dataname, string schoolname)
         {
-            var dataStream = GetWorkbookDataStream(GetData());
+            var dataStream = GetWorkbookDataStream(GetData(), dataname,schoolname);
             return File(dataStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "LeaverExport.xlsx");
         }
 
@@ -631,13 +631,13 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
            return dtResult;
         }
 
-        private MemoryStream GetWorkbookDataStream(DataTable dtResult)
+        private MemoryStream GetWorkbookDataStream(DataTable dtResult, string dataname, string schoolname)
         {
             var workbook = new XLWorkbook();
             var worksheet = workbook.Worksheets.Add("Sheet 1");
-            worksheet.Cell("A1").Value = "Leaver Initial Destination"; // use cell address in range
+            worksheet.Cell("A1").Value = schoolname; // use cell address in range
             //worksheet.Cell("A2").Value = "Nationality"; // use cell address in range
-            worksheet.Cell("A2").Value = "% of Schools Leavers in a Positive Destination";
+            worksheet.Cell("A2").Value = dataname;
             worksheet.Cell(3, 1).InsertTable(dtResult); // use row & column index
             worksheet.Rows().AdjustToContents();
             worksheet.Columns().AdjustToContents();
@@ -648,6 +648,34 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             return memoryStream;
         }
 
+        [HttpPost]
+        public JsonResult getJsonPupilList(string schoolname, string levercategory)
+        {
+            try
+            {
+                object oData = new object();
+
+                var ListLeaverDestinationData = Session["ListPupilsData"] as List<DatahubDataObj>;
+
+
+
+                oData = new
+                    {
+                        schoolname = schoolname,
+                        levercategory = levercategory,
+                        listpupils = ListLeaverDestinationData
+                    };
+
+
+                // use sName (AB24) to query data from database
+                return Json(oData, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                return ThrowJSONError(ex);
+            }
+        }
 
     }
 }

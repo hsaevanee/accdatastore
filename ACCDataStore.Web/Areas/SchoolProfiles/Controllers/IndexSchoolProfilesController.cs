@@ -91,21 +91,25 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 listobject.Add(listResultwithPercentage);
             }
 
+ 
+
 
 
             DataTable ethnicBackgroundTable = new DataTable();
-            //add column to data table
+            //add column headers to data table
 
             ethnicBackgroundTable.Columns.Add("Nationality", typeof(string));
-
-            foreach (var item in listSelectedCostcentre)
-            {
+            //ADDING select school names into column headers         
+            foreach(var item in listSelectedCostcentre){
                 ethnicBackgroundTable.Columns.Add(item.name, typeof(string));
-                foreach (var temp in mydicEhtnicBG)
-                {
-                    var temppp = temp.Key;
-                }
             }
+ 
+                // foreach (var objitem in mydicEhtnicBG)
+                //{
+                //    objitem
+                //}
+                //ethnicBackgroundTable.Columns.Add(obj., typeof(string));
+ 
 
 
 

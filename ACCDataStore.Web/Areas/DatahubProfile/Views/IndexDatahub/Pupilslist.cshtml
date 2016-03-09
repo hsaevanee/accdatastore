@@ -2,9 +2,11 @@
 @section Header {
 <script src="~/Scripts/bootstrap.min.js"></script>
 <script src="~/Scripts/highcharts.js"></script>
+<script src="~/Scripts/pdfmake.min.js"></script>
+<script src="~/Scripts/vfs_fonts.js"></script>
     @*<link rel="stylesheet" href="~/Content/accdatastore/areas/DatahubProfile/views/datahub/datahub.css" type="text/css" />*@
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.css" type="text/css" />
-    <script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/IndexdatahubProfile.js"></script>
+    <script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/Pupilslist.js"></script>
     @*<script type="text/javascript" src="http://code.highcharts.com/modules/exporting.js"></script>*@
     <script type="text/javascript" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
 }
@@ -24,9 +26,15 @@
                         <table id="datatable" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th class="text-center" colspan="8" >@Model.levercategory</th>
+                                    <th class="text-center" colspan="7" >@Model.levercategory</th>
                                     <th align="left">
-                                        <a href='@Url.Action("ExportExcel", "IndexDatahub", new {  dataname = "All Clients" })'><button>Export to Excel</button></a>
+                                        @*<a href='@Url.Action("ExportExcel", "IndexDatahub", new { dataname = @Model.levercategory, schoolname = @Model.selectedschool.name })'><button>Export to Excel</button></a>*@
+                                        <input type="button" class="btn btn-info btn-xs text-center" style="width: 120px; height:30px" value="Export to Excel" onclick="location.href='@Url.Action("ExportExcel", "IndexDatahub", new { dataname = @Model.levercategory, schoolname = @Model.selectedschool.name })'" />
+                                    </th>
+                                    <th align="left">
+                                        @*<a href='@Url.Action("ExportPdf", "IndexDatahub", new { dataname = @Model.levercategory, schoolname = @Model.selectedschool.name })'><button>Export to PDF</button></a>*@
+                                        @*<input type="button" class="btn btn-info btn-xs text-center" style="width: 120px; height:30px" value="Export to PDF" onclick="location.href='@Url.Action("ExportPdf", "IndexDatahub", new { dataname = @Model.levercategory, schoolname = @Model.selectedschool.name })'" />*@
+                                        <input type="button" class="btn btn-info btn-xs text-center" style="width: 120px; height:30px" value="Export to PDF" onclick="exportPDF('@Model.selectedschool.name','@Model.levercategory')" />
                                     </th>
                                 </tr>
                                 <tr>
@@ -54,7 +62,10 @@
                                         <td class="text-left">@item.School_Name</td>
                                         <td class="text-center">@item.Scottish_Candidate_Number</td>
                                         <td class="text-center">@item.Telephone_Number</td>
-                                        <td class="text-center"><a href='@Url.Action("Getpupilsdetails", "IndexDatahub", new { pupil = item.SDS_Client_Ref })'><button>Full Details</button></a></td>
+                                        <td>
+                                            <input type="button" class="btn btn-info btn-xs text-center" style="width: 80px; height:25px" value="Full Details" onclick="location.href='@Url.Action("Getpupilsdetails", "IndexDatahub", new { pupil = item.SDS_Client_Ref })'" />
+                                        </td>
+                                        @*<td class="text-center"><a href='@Url.Action("Getpupilsdetails", "IndexDatahub", new { pupil = item.SDS_Client_Ref })'><button>Full Details</button></a></td>*@
                                     </tr>
                                 }
                             </tbody>
