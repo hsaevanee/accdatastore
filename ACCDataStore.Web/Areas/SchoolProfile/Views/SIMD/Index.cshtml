@@ -5,6 +5,17 @@
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.css" type="text/css" />
     <script src="~/Scripts/accdatastore/areas/schoolprofile/views/SIMD/SIMD.js"></script>
     <script type="text/javascript" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+
+<script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+<script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+<script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+<script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.html5.min.js"></script>
+<script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.print.min.js"></script>
+
+<link rel="stylesheet" href=" https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" type="text/css" />
+<link rel="stylesheet" href=" https://cdn.datatables.net/buttons/1.1.2/css/buttons.dataTables.min.css" type="text/css" />
 }
 @{
     //SIMD
@@ -262,15 +273,11 @@
                                 <li>
                                     <button class="btn btn-primary" onclick='myFunctionColumn()'><label>Column Chart</label></button>
                                 </li>
-                                <li>
+                                @*<li>
                                     @Html.ActionLink("Export Excel", "ExportExcel", "SIMD", new { Area = "SchoolProfile", sSchoolName = "" }, null)
-                                </li>
+                                </li>*@
                             </ul>
-                            <script type="text/javascript">
-                                $('#datatable').DataTable({
-                                    paging: false
-                                });
-                            </script>
+ 
 
                             <div id="divChartContainer"></div>
                             <p>

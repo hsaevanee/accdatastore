@@ -1,4 +1,30 @@
-﻿function exportPDF(schoolname, levercategory) {
+﻿$(document).ready(function () {
+    $('#datatable').DataTable({
+        paging: false,
+        "aaSorting": [[1, "asc"]],
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'copyHtml5',
+            },
+            {
+                extend: 'excelHtml5',              
+            },
+            {
+                extend: 'csvHtml5',               
+            },
+            {
+                extend: 'pdfHtml5',
+                message: 'PDF created by PDFMake with Buttons for DataTables.'
+            },
+            {
+                extend: 'print',
+            }
+        ]
+    });
+});
+
+function exportPDF(schoolname, levercategory) {
     //var pupilsList = @(Html.Raw(Json.Encode(data)));
 
     var JSONObject = {

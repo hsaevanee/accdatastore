@@ -8,6 +8,17 @@
 <script src="~/Scripts/jquery.js"></script>
 <!-- Bootstrap Core JavaScript -->
 <script src="~/Scripts/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+<script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+<script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+<script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.html5.min.js"></script>
+<script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.print.min.js"></script>
+
+<link rel="stylesheet" href=" https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" type="text/css" />
+<link rel="stylesheet" href=" https://cdn.datatables.net/buttons/1.1.2/css/buttons.dataTables.min.css" type="text/css" />
 }
 @{
     ViewBag.Title = "Index";
@@ -291,7 +302,7 @@
                     </div>
                     <div class="panel-body">
                             <p>% of pupils in each stage</p>
-                            <table id="Ethnicdatatable" class="table table-hover table-bordered">
+                            <table id="StdStagedatatable" class="table table-hover table-bordered">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Stage</th>
@@ -480,11 +491,8 @@
             </div>
         </div>
 
-       
-        <hr>
-
         <!-- Content Row -->
-        <div class="row">
+        @*<div class="row">
             <div class="col-md-12">
                 <div class="panel panel-primary text-center">
                     <div class="panel-heading">
@@ -523,7 +531,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>*@
     </div>
 </body>
 

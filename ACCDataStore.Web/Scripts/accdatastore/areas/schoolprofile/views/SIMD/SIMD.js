@@ -52,6 +52,30 @@ $(document).ready(function () {
         }
     });
 
+    $('#datatable').DataTable({
+        paging: false,
+        dom: 'Bfrtip',
+        buttons: [
+             {
+                 extend: 'copyHtml5',
+             },
+             {
+                 extend: 'excelHtml5',
+             },
+             {
+                 extend: 'csvHtml5',
+             },
+             {
+                 extend: 'pdfHtml5',
+                 orientation: 'landscape',
+
+             },
+             {
+                 extend: 'print',
+             }
+        ]
+    });
+
 });
 
 function validateCheckBoxs() {

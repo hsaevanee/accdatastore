@@ -2,6 +2,17 @@
 @section Header {
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/highcharts.js"></script>
+<script src="~/Scripts/accdatastore/areas/widerAchievement/IndexWiderAchievement.js"></script>
+<script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+<script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+<script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+<script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.html5.min.js"></script>
+<script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.print.min.js"></script>
+
+<link rel="stylesheet" href=" https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" type="text/css" />
+<link rel="stylesheet" href=" https://cdn.datatables.net/buttons/1.1.2/css/buttons.dataTables.min.css" type="text/css" />
 }
 @{
     //Wider Achievement 
@@ -58,40 +69,41 @@
                             <h4 class="panel-title text-center"> Wider Achievement Framework Data 2013 - 2015 </h4>
                         </div>
                         <div class="panel-body">
-                                <table class="table table-bordered table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th colspan="4"></th>
-                                            <th colspan="4" class="text-center">Citywide Totals</th>
-                                        </tr>
-                                        <tr>
-                                            <th class="text-center">Centre</th>
-                                            <th class="text-center">Age Range</th>
-                                            <th class="text-center">Award</th>
-                                            <th class="text-center">SCQF_Rating</th>
-                                            <th class="text-center">Gender</th>
-                                            <th class="text-center">2013-2014</th>
-                                            <th class="text-center">2014-2015</th>
-                                            <th class="text-center">2015-2016</th>
-                                        </tr>
-                                    </thead>
+                            <table id="datatable" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th colspan="4"></th>
+                                        <th colspan="4" class="text-center">Citywide Totals</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center">Centre</th>
+                                        <th class="text-center">Age Range</th>
+                                        <th class="text-center">Award</th>
+                                        <th class="text-center">SCQF_Rating</th>
+                                        <th class="text-center">Gender</th>
+                                        <th class="text-center">2013-2014</th>
+                                        <th class="text-center">2014-2015</th>
+                                        <th class="text-center">2015-2016</th>
+                                    </tr>
+                                </thead>
 
-                                    <tbody>
-                                        @foreach (var item in Model.Listresults)
-                                        {
-                                            <tr>
-                                                <td class="text-left">@item.centre</td>
-                                                <td class="text-left">@item.age_range</td>
-                                                <td class="text-left">@item.awardname</td>
-                                                <td class="text-left">@item.scqf_rating</td>
-                                                <td>@item.gender</td>
-                                                <td>@item.award2013</td>
-                                                <td>@item.award2014</td>
-                                                <td>@item.award2015</td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
+                                <tbody>
+                                    @foreach (var item in Model.Listresults)
+                                    {
+                                        <tr>
+                                            <td class="text-left">@item.centre</td>
+                                            <td class="text-left">@item.age_range</td>
+                                            <td class="text-left">@item.awardname</td>
+                                            <td class="text-left">@item.scqf_rating</td>
+                                            <td>@item.gender</td>
+                                            <td>@item.award2013</td>
+                                            <td>@item.award2014</td>
+                                            <td>@item.award2015</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+
                             <ul class="list-inline">
                                 <li>
                                     @Html.ActionLink("Export Excel", "ExportExcel", "WiderAchievement", new { Area = "SchoolProfile", sSchoolName = "" }, null)
