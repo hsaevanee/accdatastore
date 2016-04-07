@@ -31,6 +31,12 @@ var kml = {
         url: 'https://dl.dropboxusercontent.com/u/55734762/Neighbourhoods.json' + "?rand=" + (new Date()).valueOf(),
         dataType: 3
     },
+    d: {
+        name: "Glasgow Districts",
+        type: 2,
+        url: 'https://dl.dropboxusercontent.com/u/55734762/Neighbourhoods.json' + "?rand=" + (new Date()).valueOf(),
+        dataType: 4
+    },
 };
 
 // on document ready
@@ -291,6 +297,9 @@ function ToggleKMLLayer(checked, id) {
                     layer.addGeoJson(datazonejsondata);
                 } else if (kml[id].dataType == 3) {
                     layer.addGeoJson(Neighbourhoodsjsondata);
+                }
+                else if (kml[id].dataType == 4) {
+                    layer.addGeoJson(datazoneglasgowdata);
                 }
 
                 layer.setStyle(function (feature) {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
 using ClosedXML.Excel;
 using System.Data;
@@ -10,7 +7,13 @@ using ACCDataStore.Repository;
 using ACCDataStore.Entity.SchoolProfile;
 using ACCDataStore.Entity;
 using System.IO;
-using ACCDataStore.Web.Areas.SchoolProfile.ViewModels.WiderAchievement;
+using ACCDataStore.Web.Areas.SchoolRollForecast.ViewModels;
+using System.Collections.Generic;
+using System;
+using System.Linq;
+using System.Reflection;
+using ACCDataStore.Entity.SchoolRollForecast;
+
 
 namespace ACCDataStore.Web.Areas.SchoolRollForecast.Controllers
 {
@@ -19,156 +22,157 @@ namespace ACCDataStore.Web.Areas.SchoolRollForecast.Controllers
         // GET: SchoolRollForecast/IndexSchoolRollForecast
         public ActionResult Index()
         {
-            var vmWiderAchievement = new WiderAchievementViewModel();
-            string filePath = "C:\\data\\WiderAchievementData.xlsx";
-            DataTable dt1 = new DataTable();
-
-
+            var vmSchoolRollForecastViewModel = new SchoolRollForecastViewModel();
+            SchoolRollForecastObj schObj = new SchoolRollForecastObj();
+                 
+            string filePath = "C:\\data\\BonAccord.xlsx";
+            List<double> ListP1Input = new List<double>();
             using (XLWorkbook workBook = new XLWorkbook(filePath))
             {
                 IXLWorksheet workSheet = workBook.Worksheet(1);
-                //adding columns
-                dt1.Columns.Add(workSheet.Row(3).Cell(1).Value.ToString());
-                dt1.Columns.Add(workSheet.Row(3).Cell(2).Value.ToString());
-                dt1.Columns.Add(workSheet.Row(3).Cell(3).Value.ToString());
-                dt1.Columns.Add(workSheet.Row(3).Cell(4).Value.ToString());
-                dt1.Columns.Add(workSheet.Row(3).Cell(5).Value.ToString());
-
-                //adding table1
-
-
-                for (int i = 4; i <= 26; i++)
+                int autonumber = 5;
+                for (int i = 2; i <= 13; i++)
                 {
-                    DataRow dataRow = dt1.NewRow();
-                    IXLRow row = workSheet.Row(i);
-                    for (int j = 0; j <= 4; j++)
-                    {
-                        dataRow[j] = (workSheet.Row(i).Cell(j + 1).Value.ToString());
-                    }
-                    dt1.Rows.Add(dataRow);
+                    ListP1Input.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
                 }
-                DataRow dataRow1 = dt1.NewRow();
-                dataRow1[0] = ("");
-                dataRow1[1] = (workSheet.Row(31).Cell(2).Value.ToString());
-                dataRow1[2] = (workSheet.Row(31).Cell(3).Value.ToString());
-                dataRow1[3] = (workSheet.Row(31).Cell(4).Value.ToString());
-                dataRow1[4] = (workSheet.Row(31).Cell(5).Value.ToString());
-                dt1.Rows.Add(dataRow1);
-            }
+                schObj.ListP1Input = ListP1Input;
 
-            vmWiderAchievement.dtTable1 = dt1;
-
-            DataTable dt2 = new DataTable();
-            using (XLWorkbook workBook = new XLWorkbook(filePath))
-            {
-                IXLWorksheet workSheet = workBook.Worksheet(1);
-                //adding columns
-                dt2.Columns.Add(workSheet.Row(3).Cell(7).Value.ToString());
-                dt2.Columns.Add(workSheet.Row(3).Cell(8).Value.ToString());
-                dt2.Columns.Add(workSheet.Row(3).Cell(9).Value.ToString());
-                dt2.Columns.Add(workSheet.Row(3).Cell(10).Value.ToString());
-                dt2.Columns.Add(workSheet.Row(3).Cell(11).Value.ToString());
-
-                //adding table1
-
-
-                for (int i = 4; i <= 29; i++)
+                List<double> ListPupilsHhld = new List<double>();
+                autonumber = 6;
+                for (int i = 2; i <= 13; i++)
                 {
-                    DataRow dataRow = dt2.NewRow();
-                    IXLRow row = workSheet.Row(i);
-                    for (int j = 0; j <= 4; j++)
-                    {
-                        dataRow[j] = (workSheet.Row(i).Cell(j + 7).Value.ToString());
-                    }
-                    dt2.Rows.Add(dataRow);
+                    ListPupilsHhld.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
                 }
-                DataRow dataRow1 = dt2.NewRow();
-                dataRow1[0] = ("");
-                dataRow1[1] = (workSheet.Row(31).Cell(8).Value.ToString());
-                dataRow1[2] = (workSheet.Row(31).Cell(9).Value.ToString());
-                dataRow1[3] = (workSheet.Row(31).Cell(10).Value.ToString());
-                dataRow1[4] = (workSheet.Row(31).Cell(11).Value.ToString());
-                dt2.Rows.Add(dataRow1);
+                schObj.ListPupilsHhld = ListPupilsHhld;
+
+                List<double> ListHousing = new List<double>();
+                autonumber = 7;
+                for (int i = 2; i <= 13; i++)
+                {
+                    ListHousing.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
+                }
+                schObj.ListHousing = ListHousing;
+
+                List<double> ListParentsCharter = new List<double>();
+                autonumber = 8;
+                for (int i = 2; i <= 13; i++)
+                {
+                    ListParentsCharter.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
+                }
+                schObj.ListParentsCharter = ListParentsCharter;
+
+                List<double> ListP1 = new List<double>();
+                autonumber = 10;
+                for (int i = 2; i <= 13; i++)
+                {
+                    ListP1.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
+                }
+                schObj.ListP1 = ListP1;
+
+                List<double> ListP2 = new List<double>();
+                autonumber = 11;
+                for (int i = 2; i <= 13; i++)
+                {
+                    ListP2.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
+                }
+                schObj.ListP2 = ListP2;
+
+                List<double> ListP3 = new List<double>();
+                autonumber = 12;
+                for (int i = 2; i <= 13; i++)
+                {
+                    ListP3.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
+                }
+                schObj.ListP3 = ListP3;
+
+                List<double> ListP4 = new List<double>();
+                autonumber = 13;
+                for (int i = 2; i <= 13; i++)
+                {
+                    ListP4.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
+                }
+                schObj.ListP4 = ListP4;
+
+                List<double> ListP5 = new List<double>();
+                autonumber = 14;
+                for (int i = 2; i <= 13; i++)
+                {
+                    ListP5.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
+                }
+                schObj.ListP5 = ListP5;
+
+                List<double> ListP6 = new List<double>();
+                autonumber = 15;
+                for (int i = 2; i <= 13; i++)
+                {
+                    ListP6.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
+                }
+                schObj.ListP6 = ListP6;
+
+                List<double> ListP7 = new List<double>();
+                autonumber = 16;
+                for (int i = 2; i <= 13; i++)
+                {
+                    ListP7.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
+                }
+                schObj.ListP7 = ListP7;
+
+                List<double> ListTotalRoll = new List<double>();
+                autonumber = 17;
+                for (int i = 2; i <= 13; i++)
+                {
+                    ListTotalRoll.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
+                }
+                schObj.ListTotalRoll = ListTotalRoll;
+
+                List<double> ListMaxCap = new List<double>();
+                autonumber = 18;
+                for (int i = 2; i <= 13; i++)
+                {
+                    ListMaxCap.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
+                }
+                schObj.ListMaxCap = ListMaxCap;
+
+                List<double> ListTotRollFunctWCap = new List<double>();
+                autonumber = 19;
+                for (int i = 2; i <= 13; i++)
+                {
+                    ListTotRollFunctWCap.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
+                }
+                schObj.ListTotRollFunctWCap = ListTotRollFunctWCap;
+
+                List<double> ListTotRollFunctWCapPer = new List<double>();
+                autonumber = 20;
+                for (int i = 2; i <= 13; i++)
+                {
+                    ListTotRollFunctWCapPer.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
+                }
+                schObj.ListTotRollFunctWCapPer = ListTotRollFunctWCapPer;
+
+                vmSchoolRollForecastViewModel.schObj = schObj;
+
+                Session["vmSchoolRollForecastViewModel"] = schObj;
+
             }
-
-
-            vmWiderAchievement.dtTable2 = dt2;
-            return View("Home", vmWiderAchievement);
+            return View("Home", vmSchoolRollForecastViewModel);
         }
 
-        // GET: SchoolProfile/WiderAchievement
-        public DataTable ReadDataFromExcel()
+        public ActionResult Calculate(string calculateButton)
         {
-            string filePath = "C:\\data\\WiderAchievementData.xlsx";
-            DataTable dt1 = new DataTable();
-           
+            var vmSchoolRollForecastViewModel = new SchoolRollForecastViewModel();
 
-            using (XLWorkbook workBook = new XLWorkbook(filePath))
-            {
-                IXLWorksheet workSheet = workBook.Worksheet(1);
-                //adding columns
-                dt1.Columns.Add(workSheet.Row(3).Cell(1).Value.ToString());
-                dt1.Columns.Add(workSheet.Row(3).Cell(2).Value.ToString());
-                dt1.Columns.Add(workSheet.Row(3).Cell(3).Value.ToString());
-                dt1.Columns.Add(workSheet.Row(3).Cell(4).Value.ToString());
-                dt1.Columns.Add(workSheet.Row(3).Cell(5).Value.ToString());
+            SchoolRollForecastObj schObj = Session["vmSchoolRollForecastViewModel"] as SchoolRollForecastObj;
 
-                //adding table1
-
-
-                for (int i = 4; i <= 26; i++)
+            if (calculateButton != null)
+            {           
+                if (Request["housing"] != null)
                 {
-                    DataRow dataRow = dt1.NewRow();
-                    IXLRow row = workSheet.Row(i);
-                    for (int j = 0; j <= 4; j++)
-                    {
-                        dataRow[j] = (workSheet.Row(i).Cell(j + 1).Value.ToString());
-                    }
-                    dt1.Rows.Add(dataRow);
+                    var housinglist = Request["housing"].Split(',').Select(Double.Parse).ToList();
                 }
-                DataRow dataRow1 = dt1.NewRow();
-                dataRow1[0] = ("");
-                dataRow1[1] = (workSheet.Row(31).Cell(2).Value.ToString());
-                dataRow1[2] = (workSheet.Row(31).Cell(3).Value.ToString());
-                dataRow1[3] = (workSheet.Row(31).Cell(4).Value.ToString());
-                dataRow1[4] = (workSheet.Row(31).Cell(5).Value.ToString());
-                dt1.Rows.Add(dataRow1);
             }
 
-
-            DataTable dt2 = new DataTable();
-            using (XLWorkbook workBook = new XLWorkbook(filePath))
-            {
-                IXLWorksheet workSheet = workBook.Worksheet(1);
-                //adding columns
-                dt2.Columns.Add(workSheet.Row(3).Cell(7).Value.ToString());
-                dt2.Columns.Add(workSheet.Row(3).Cell(8).Value.ToString());
-                dt2.Columns.Add(workSheet.Row(3).Cell(9).Value.ToString());
-                dt2.Columns.Add(workSheet.Row(3).Cell(10).Value.ToString());
-                dt2.Columns.Add(workSheet.Row(3).Cell(11).Value.ToString());
-
-                //adding table1
-
-
-                for (int i = 4; i <= 29; i++)
-                {
-                    DataRow dataRow = dt2.NewRow();
-                    IXLRow row = workSheet.Row(i);
-                    for (int j = 0; j <= 4; j++)
-                    {
-                        dataRow[j] = (workSheet.Row(i).Cell(j + 7).Value.ToString());
-                    }
-                    dt2.Rows.Add(dataRow);
-                }
-                DataRow dataRow1 = dt2.NewRow();
-                dataRow1[0] = ("");
-                dataRow1[1] = (workSheet.Row(31).Cell(8).Value.ToString());
-                dataRow1[2] = (workSheet.Row(31).Cell(9).Value.ToString());
-                dataRow1[3] = (workSheet.Row(31).Cell(10).Value.ToString());
-                dataRow1[4] = (workSheet.Row(31).Cell(11).Value.ToString());
-                dt2.Rows.Add(dataRow1);
-            }
-            return dt2;
+            vmSchoolRollForecastViewModel.schObj = schObj;
+            return View("Home", vmSchoolRollForecastViewModel);
         }
     }
 }

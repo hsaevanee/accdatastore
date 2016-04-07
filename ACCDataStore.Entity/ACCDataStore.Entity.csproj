@@ -113,6 +113,7 @@
     <Compile Include="SchoolProfile\StdStageObj.cs" />
     <Compile Include="SchoolProfile\StudentSIMD.cs" />
     <Compile Include="SchoolProfile\WiderAchievementObj.cs" />
+    <Compile Include="SchoolRollForecast\SchoolRollForecastObj.cs" />
     <Compile Include="Users.cs" />
     <Compile Include="Year.cs" />
   </ItemGroup>

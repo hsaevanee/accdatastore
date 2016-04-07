@@ -45,7 +45,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub
 
         public object FormatNumber(int number)
         {
-            if (number <= 5)
+            if (number <= 10)
             {
                 return "*";
             }

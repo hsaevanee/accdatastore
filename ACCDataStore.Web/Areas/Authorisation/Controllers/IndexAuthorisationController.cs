@@ -69,7 +69,7 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
                     
                     return RedirectToAction("Index", "Index", new { Area = "", id = "" });
                 }
-                else if (vmIndex.Username.Equals("admin", StringComparison.CurrentCultureIgnoreCase) && vmIndex.Password.Equals("admin", StringComparison.CurrentCultureIgnoreCase))
+                else if (vmIndex.Username.Equals("admin", StringComparison.CurrentCultureIgnoreCase) && vmIndex.Password.Equals("adminhatai1232498!", StringComparison.CurrentCultureIgnoreCase))
                 {
                     // store user session for 'admin' user
                     var eUsers = new Users();
@@ -82,13 +82,13 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("Login");
+                    return RedirectToAction("Index", "IndexAuthorisation", new { Area = "Authorisation", id = "" });
                 }
             }
             catch (Exception ex)
             {
                 log.Error(ex.Message, ex);
-                return RedirectToAction("Login");
+                return RedirectToAction("Index", "IndexAuthorisation", new { Area = "Authorisation", id = "" });
             }
         }
 

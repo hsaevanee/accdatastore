@@ -576,27 +576,21 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             return View("PersonalDetails", tempobj);
         }
 
-
+        [AdminAuthentication]
+        [Transactional]
         public ActionResult SearchpupilbyName(string searchsubmitButton)
         {
             var vmListpupilsViewModel = new DatahubViewModel();
 
-            var sForname = "";
-            var sSurename = "";
+            var sForname = Request["forename"];
+            var sSurename = Request["surname"];
 
-            if (searchsubmitButton.ToLower().Equals("search"))
+            if (searchsubmitButton.ToLower().Equals("search") && (!sForname.Equals("") || !sSurename.Equals("")))
             {
-                 sForname = Request["forename"];
-                 sSurename = Request["surname"];
 
                 var listdata = this.rpGeneric.FindAll<ACCDataStore.Entity.DatahubProfile.DatahubDataObj>();
                 List<DatahubDataObj> tempobj = listdata.Where(x => x.Forename.ToLower().Contains(sForname) && x.Surname.ToLower().Contains(sSurename)).ToList();
-
-               
                 vmListpupilsViewModel.Listpupils = tempobj;
-
-
-
             }
             else {
                 vmListpupilsViewModel.Listpupils = null;

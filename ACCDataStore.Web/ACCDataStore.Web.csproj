@@ -257,6 +257,7 @@
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\WiderAchievement\MapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\widerAchievement\IndexWiderAchievement.js" />
     <Content Include="Scripts\accdatastore\areas\widerAchievement\MapIndex.js" />
+    <Content Include="Scripts\accdatastore\views\DZGlasgow.js" />
     <Content Include="Scripts\accdatastore\views\Datazone_with_Desc.js" />
     <Content Include="Scripts\accdatastore\views\global.js" />
     <Content Include="Scripts\accdatastore\views\InsightSchoollocations.js" />
@@ -339,6 +340,7 @@
     <Compile Include="Areas\SchoolProfile\ViewModels\WiderAchievement\WiderAchievementViewModel.cs" />
     <Compile Include="Areas\SchoolRollForecast\Controllers\IndexSchoolRollForecastController.cs" />
     <Compile Include="Areas\SchoolRollForecast\SchoolRollForecastAreaRegistration.cs" />
+    <Compile Include="Areas\SchoolRollForecast\ViewModels\SchoolRollForecastViewModel.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\IndexController.cs" />
     <Compile Include="Global.asax.cs">

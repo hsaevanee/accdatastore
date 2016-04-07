@@ -54,23 +54,32 @@
                                 </tr>
                             </thead>
                             <tbody>
-
-                                @foreach (var item in Model.Listpupils)
+                                @if (Model.Listpupils == null)
                                 {
+
+
                                     <tr>
-                                        <td class="text-left">@item.SDS_Client_Ref</td>
-                                        <td class="text-left">@{var name = item.Forename + " " + item.Surname;} @name</td>
-                                        <td class="text-center">@item.Age</td>
-                                        <td class="text-center">@item.Date_of_Birth</td>
-                                        <td class="text-center">@item.Gender</td>
-                                        <td class="text-left">@item.School_Name</td>
-                                        <td class="text-center">@item.Scottish_Candidate_Number</td>
-                                        <td class="text-center">@item.Telephone_Number</td>
-                                        <td>
-                                            <input type="button" class="btn btn-info btn-xs text-center" style="width: 80px; height:25px" value="Full Details" onclick="location.href='@Url.Action("Getpupilsdetails", "IndexDatahub", new { pupil = item.SDS_Client_Ref })'" />
-                                        </td>
-                                        @*<td class="text-center"><a href='@Url.Action("Getpupilsdetails", "IndexDatahub", new { pupil = item.SDS_Client_Ref })'><button>Full Details</button></a></td>*@
+                                        <td class="text-center" colspan="9">No data available</td>
                                     </tr>
+                                }
+                                else { 
+                                    foreach (var item in Model.Listpupils)
+                                    {
+                                        <tr>
+                                            <td class="text-left">@item.SDS_Client_Ref</td>
+                                            <td class="text-left">@{var name = item.Forename + " " + item.Surname;} @name</td>
+                                            <td class="text-center">@item.Age</td>
+                                            <td class="text-center">@item.Date_of_Birth</td>
+                                            <td class="text-center">@item.Gender</td>
+                                            <td class="text-left">@item.School_Name</td>
+                                            <td class="text-center">@item.Scottish_Candidate_Number</td>
+                                            <td class="text-center">@item.Telephone_Number</td>
+                                            <td>
+                                                <input type="button" class="btn btn-info btn-xs text-center" style="width: 80px; height:25px" value="Full Details" onclick="location.href='@Url.Action("Getpupilsdetails", "IndexDatahub", new { pupil = item.SDS_Client_Ref })'" />
+                                            </td>
+                                            @*<td class="text-center"><a href='@Url.Action("Getpupilsdetails", "IndexDatahub", new { pupil = item.SDS_Client_Ref })'><button>Full Details</button></a></td>*@
+                                        </tr>
+                                    }
                                 }
                             </tbody>
                         </table>
