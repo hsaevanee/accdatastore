@@ -1,0 +1,20 @@
+{
+  "name": "ACCDataStore.Web",
+  "homepage": "https://github.com/hsaevanee/accdatastore",
+  "authors": [
+    "hsaevanee <hataichanok.saevanee@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "angularjs#^1.5.4"
+  }
+}

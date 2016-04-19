@@ -14,16 +14,16 @@
             <div class="col-md-12">
                 <div class="panel panel-primary text-center">
                     <div class="panel-body">
-@using (Html.BeginForm("Calculate", "IndexSchoolRollForecast", new { area = "SchoolRollForecast" }))
-{
-                        <table class="table table-bordered">
-                            @*<thead>*@
+                        @using (Html.BeginForm("Calculate", "IndexSchoolRollForecast", FormMethod.Post, new { area = "SchoolRollForecast" }))
+                        {
+                            <table class="table table-bordered">
+                                @*<thead>*@
                                 @*<tr>
-                                    <th colspan="1">Bon Accord</th>
-                                    <th colspan="5">Actual</th>
-                                    <th colspan="7">Forecast</th>
+                                        <th colspan="1">Bon Accord</th>
+                                        <th colspan="5">Actual</th>
+                                        <th colspan="7">Forecast</th>
 
-                                </tr>*@
+                                    </tr>*@
                                 <tr>
                                     <td width="10%"></td>
                                     <td width="10%"><strong>2010</strong></td>
@@ -39,122 +39,122 @@
                                     <td><strong>2020</strong></td>
                                     <td><strong>2021</strong></td>
                                 </tr>
-                            @*</thead>*@
-                            <tbody>
-                                <tr>
-                                    <td><strong>P1 Input</strong></td>
-                                    @foreach (double data in Model.schObj.ListP1Input)
-                                    {
-                                        <td>@String.Format("{0:#,0.00}", @data)</td>
-                                    }
-                                </tr>
-                                <tr>
-                                    <td><strong>Pupils/Hhld</strong></td>
-                                    @foreach (double data in Model.schObj.ListPupilsHhld)
-                                    {
-                                        <td>@String.Format("{0:#,0.00}", @data)</td>
-                                    }
-                                </tr>
-                                <tr>
-                                    <td><strong>Housing</strong></td>
-                                    @foreach (double data in Model.schObj.ListHousing)
-                                    {
-                                        <td><input class="text-primary" name="housing" type="text" value="@String.Format("{0:#,0}", @data)"></td>
-                                    }
-                                </tr>
-                                <tr>
-                                    <td><strong>Parents Charter</strong></td>
-                                    @foreach (double data in Model.schObj.ListParentsCharter)
-                                    {
-                                        <td>@String.Format("{0:#,0.00}", @data)</td>
-                                    }
-                                </tr>
-                                <tr>
-                                    <td><strong>P1</strong></td>
-                                    @foreach (double data in Model.schObj.ListP1)
-                                    {
-                                        <td>@String.Format("{0:#,0.00}", @data)</td>
-                                    }
-                                </tr>
-                                <tr>
-                                    <td><strong>P2</strong></td>
-                                    @foreach (double data in Model.schObj.ListP2)
-                                    {
-                                        <td>@String.Format("{0:#,0.00}", @data)</td>
-                                    }
-                                </tr>
-                                <tr>
-                                    <td><strong>P3</strong></td>
-                                    @foreach (double data in Model.schObj.ListP3)
-                                    {
-                                        <td>@String.Format("{0:#,0.00}", @data)</td>
-                                    }
-                                </tr>
-                                <tr>
-                                    <td><strong>P4</strong></td>
-                                    @foreach (double data in Model.schObj.ListP4)
-                                    {
-                                        <td>@String.Format("{0:#,0.00}", @data)</td>
-                                    }
-                                </tr>
-                                <tr>
-                                    <td><strong>P5</strong></td>
-                                    @foreach (double data in Model.schObj.ListP5)
-                                    {
-                                        <td>@String.Format("{0:#,0.00}", @data)</td>
-                                    }
-                                </tr>
-                                <tr>
-                                    <td><strong>P6</strong></td>
-                                    @foreach (double data in Model.schObj.ListP6)
-                                    {
-                                        <td>@String.Format("{0:#,0.00}", @data)</td>
-                                    }
-                                </tr>
-                                <tr>
-                                    <td><strong>P7</strong></td>
-                                    @foreach (double data in Model.schObj.ListP7)
-                                    {
-                                        <td>@String.Format("{0:#,0.00}", @data)</td>
-                                    }
-                                </tr>
-                                <tr>
-                                    <td><strong>Total Roll</strong></td>
-                                    @foreach (double data in Model.schObj.ListTotalRoll)
-                                    {
-                                        <td>@String.Format("{0:#,0.00}", @data)</td>
-                                    }
-                                </tr>
-                                <tr>
-                                    <td><strong>Max Capacity</strong></td>
-                                    @foreach (double data in Model.schObj.ListMaxCap)
-                                    {
-                                        <td>@String.Format("{0:#,0.00}", @data)</td>
-                                    }
-                                </tr>
-                                <tr>
-                                    <td><strong>Total Roll - Funct Work Cap</strong></td>
-                                    @foreach (double data in Model.schObj.ListTotRollFunctWCap)
-                                    {
-                                        <td>@String.Format("{0:#,0.00}", @data)</td>
-                                    }
-                                </tr>
-                                <tr>
-                                    <td><strong>Total Roll/Funct Work Cap%</strong></td>
-                                    @foreach (double data in Model.schObj.ListTotRollFunctWCapPer)
-                                    {
-                                        <td>@String.Format("{0:#,0.00}", @data)</td>
-                                    }
-                                </tr>
-                                <tr>
-                                    <td colspan="13" align="center">
-                                        <input type="submit" class="btn btn-primary" name="calculateButton" value="Calculate" />
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    
-}
+                                @*</thead>*@
+                                <tbody>
+                                    <tr>
+                                        <td><strong>P1 Input</strong></td>
+                                        @foreach (double data in Model.schObj.ListP1Input)
+                                        {
+                                            <td><input class="text-primary" name="P1Input" type="text" value="@String.Format("{0:#,0}", @data)" /></td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Pupils/Hhld</strong></td>
+                                        @foreach (double data in Model.schObj.ListPupilsHhld)
+                                        {
+                                            <td><input class="text-primary" name="Pupils/Hhld" type="text" value="@String.Format("{0:#,0}", @data)" /></td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Housing</strong></td>
+                                        @foreach (double data in Model.schObj.ListHousing)
+                                        {
+                                            <td><input class="text-primary" name="housing" type="text" value="@String.Format("{0:#,0}", @data)"></td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Parents Charter</strong></td>
+                                        @foreach (double data in Model.schObj.ListParentsCharter)
+                                        {
+                                            <td><input class="text-primary" name="ParentsCharter" type="text" value="@String.Format("{0:#,0}", @data)" /></td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td><strong>P1</strong></td>
+                                        @foreach (double data in Model.schObj.ListP1)
+                                        {
+                                            <td>@String.Format("{0:#,0.00}", @data)</td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td><strong>P2</strong></td>
+                                        @foreach (double data in Model.schObj.ListP2)
+                                        {
+                                            <td>@String.Format("{0:#,0.00}", @data)</td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td><strong>P3</strong></td>
+                                        @foreach (double data in Model.schObj.ListP3)
+                                        {
+                                            <td>@String.Format("{0:#,0.00}", @data)</td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td><strong>P4</strong></td>
+                                        @foreach (double data in Model.schObj.ListP4)
+                                        {
+                                            <td>@String.Format("{0:#,0.00}", @data)</td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td><strong>P5</strong></td>
+                                        @foreach (double data in Model.schObj.ListP5)
+                                        {
+                                            <td>@String.Format("{0:#,0.00}", @data)</td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td><strong>P6</strong></td>
+                                        @foreach (double data in Model.schObj.ListP6)
+                                        {
+                                            <td>@String.Format("{0:#,0.00}", @data)</td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td><strong>P7</strong></td>
+                                        @foreach (double data in Model.schObj.ListP7)
+                                        {
+                                            <td>@String.Format("{0:#,0.00}", @data)</td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Total Roll</strong></td>
+                                        @foreach (double data in Model.schObj.ListTotalRoll)
+                                        {
+                                            <td>@String.Format("{0:#,0.00}", @data)</td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Max Capacity</strong></td>
+                                        @foreach (double data in Model.schObj.ListMaxCap)
+                                        {
+                                            <td>@String.Format("{0:#,0.00}", @data)</td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Total Roll - Funct Work Cap</strong></td>
+                                        @foreach (double data in Model.schObj.ListTotRollFunctWCap)
+                                        {
+                                            <td>@String.Format("{0:#,0.00}", @data)</td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Total Roll/Funct Work Cap%</strong></td>
+                                        @foreach (double data in Model.schObj.ListTotRollFunctWCapPer)
+                                        {
+                                            <td>@String.Format("{0:#,0.00}", @data)</td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td colspan="13" align="center">
+                                            <input type="submit" class="btn btn-primary" name="calculateButton" value="Calculate" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        }
                     </div>
                 </div>
             </div>

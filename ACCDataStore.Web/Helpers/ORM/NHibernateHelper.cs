@@ -13,6 +13,7 @@ namespace ACCDataStore.Helpers.ORM
             var sDbName = System.Configuration.ConfigurationManager.AppSettings["dbName"];
             var sDbHost = System.Configuration.ConfigurationManager.AppSettings["dbHost"];
             var sDbType = System.Configuration.ConfigurationManager.AppSettings["dbType"];
+            var sDbPort = System.Configuration.ConfigurationManager.AppSettings["dbPort"];
 
             string sConnectionString;
             global::NHibernate.Cfg.Configuration configuration;
@@ -56,7 +57,7 @@ namespace ACCDataStore.Helpers.ORM
                     .BuildConfiguration();
                     break;
                 default:
-                    sConnectionString = @"Server=" + sDbHost + ";Database=" + sDbName + ";User ID=" + sDbUser + ";Password=" + sDbPassword + ";";
+                    sConnectionString = @"Server =" + sDbHost + ";Port=" + sDbPort + ";Database=" + sDbName + ";User ID=" + sDbUser + ";Password=" + sDbPassword + ";";
                     configuration = Fluently
                         .Configure()
                         .Database(MySQLConfiguration
@@ -79,6 +80,7 @@ namespace ACCDataStore.Helpers.ORM
             var sDbName = System.Configuration.ConfigurationManager.AppSettings["dbName_2nd"];
             var sDbHost = System.Configuration.ConfigurationManager.AppSettings["dbHost_2nd"];
             var sDbType = System.Configuration.ConfigurationManager.AppSettings["dbType_2nd"];
+            var sDbPort = System.Configuration.ConfigurationManager.AppSettings["dbPort_2nd"];
 
             string sConnectionString;
             global::NHibernate.Cfg.Configuration configuration;
@@ -122,7 +124,7 @@ namespace ACCDataStore.Helpers.ORM
                     .BuildConfiguration();
                     break;
                 default:
-                    sConnectionString = @"Server=" + sDbHost + ";Database=" + sDbName + ";User ID=" + sDbUser + ";Password=" + sDbPassword + ";";
+                    sConnectionString = @"Server =" + sDbHost + ";Port=" + sDbPort + ";Database=" + sDbName + ";User ID=" + sDbUser + ";Password=" + sDbPassword + ";";
                     configuration = Fluently
                         .Configure()
                         .Database(MySQLConfiguration
@@ -145,6 +147,7 @@ namespace ACCDataStore.Helpers.ORM
             var sDbName = System.Configuration.ConfigurationManager.AppSettings["dbName_3nd"];
             var sDbHost = System.Configuration.ConfigurationManager.AppSettings["dbHost_3nd"];
             var sDbType = System.Configuration.ConfigurationManager.AppSettings["dbType_3nd"];
+            var sDbPort = System.Configuration.ConfigurationManager.AppSettings["dbPort_3nd"];
 
             string sConnectionString;
             global::NHibernate.Cfg.Configuration configuration;
@@ -188,7 +191,7 @@ namespace ACCDataStore.Helpers.ORM
                     .BuildConfiguration();
                     break;
                 default:
-                    sConnectionString = @"Server=" + sDbHost + ";Database=" + sDbName + ";User ID=" + sDbUser + ";Password=" + sDbPassword + ";";
+                    sConnectionString = @"Server =" + sDbHost + ";Port=" + sDbPort + ";Database=" + sDbName + ";User ID=" + sDbUser + ";Password=" + sDbPassword + ";";
                     configuration = Fluently
                         .Configure()
                         .Database(MySQLConfiguration
