@@ -12,6 +12,31 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                <h2>School Roll Forecast</h2>
+                <div class="panel panel-primary text-center">
+                    <div class="panel-heading">
+                        <h4 class="panel-title text-center"> Please Select Criteria</h4>
+                    </div>
+                    <div class="panel-body">
+                        @using (Html.BeginForm("Index", "IndexSchoolRollForecast", new { area = "SchoolRollForecast" }))
+                        {
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td width="200" class="text-left">School Name</td>
+                                        <td class="text-left">@Html.DropDownListFor(m => m.selectedschoolname, new SelectList(Model.listSchoolname, "name", "seedcode"), "---Please Select School---")</td>
+                                        <td width="200"><input class="btn btn-primary" type="submit" name="schoolsubmitButton" value="Search" /></td>
+                                    </tr>                                    
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div><!--row-->
+
+        <div class="row">
+            <div class="col-md-12">
                 <div class="panel panel-primary text-center">
                     <div class="panel-body">
                         @using (Html.BeginForm("Calculate", "IndexSchoolRollForecast", FormMethod.Post, new { area = "SchoolRollForecast" }))
@@ -45,28 +70,28 @@
                                         <td><strong>P1 Input</strong></td>
                                         @foreach (double data in Model.schObj.ListP1Input)
                                         {
-                                            <td><input class="text-primary" name="P1Input" type="text" value="@String.Format("{0:#,0}", @data)" /></td>
+                                            <td><input class="text-primary" name="P1Input" type="text" value="@String.Format("{0:#,0.00}", @data)" /></td>
                                         }
                                     </tr>
                                     <tr>
                                         <td><strong>Pupils/Hhld</strong></td>
                                         @foreach (double data in Model.schObj.ListPupilsHhld)
                                         {
-                                            <td><input class="text-primary" name="Pupils/Hhld" type="text" value="@String.Format("{0:#,0}", @data)" /></td>
+                                            <td><input class="text-primary" name="Pupils/Hhld" type="text" value="@String.Format("{0:#,0.00}", @data)" /></td>
                                         }
                                     </tr>
                                     <tr>
                                         <td><strong>Housing</strong></td>
                                         @foreach (double data in Model.schObj.ListHousing)
                                         {
-                                            <td><input class="text-primary" name="housing" type="text" value="@String.Format("{0:#,0}", @data)"></td>
+                                            <td><input class="text-primary" name="housing" type="text" value="@String.Format("{0:#,0.00}", @data)"></td>
                                         }
                                     </tr>
                                     <tr>
                                         <td><strong>Parents Charter</strong></td>
                                         @foreach (double data in Model.schObj.ListParentsCharter)
                                         {
-                                            <td><input class="text-primary" name="ParentsCharter" type="text" value="@String.Format("{0:#,0}", @data)" /></td>
+                                            <td><input class="text-primary" name="ParentsCharter" type="text" value="@String.Format("{0:#,0.00}", @data)" /></td>
                                         }
                                     </tr>
                                     <tr>

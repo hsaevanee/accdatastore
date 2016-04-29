@@ -311,7 +311,7 @@ function ShowPopupInfo(data) {
 
     } else {
 
-        sInformation += "<tr><td colspan='3' align='center'> No data available</td><tr>";
+        sInformation += "<tr><td colspan='3' align='center'> No data available</td><tr>"
     }
 
 

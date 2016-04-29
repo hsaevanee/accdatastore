@@ -2270,7 +2270,7 @@
                 "MAXEAST": "3911575",
                 "MAXNORTH": "8083881"
             }
-        },
+        },      
         {
             "type": "Feature",
             "geometry": {

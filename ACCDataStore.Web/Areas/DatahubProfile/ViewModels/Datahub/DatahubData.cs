@@ -37,10 +37,11 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub
         public int pupilsinUnavailableillHealth { get; set; }
         public int pupilsinUnemployed{ get; set; }
         public int pupilsinUnknown { get; set; }
+        public int allpupilsexcludemovedoutscotland { get; set; }
 
         public double Percentage(int number)
         {
-            return (double)(number * 100) / allpupils;
+            return (double)(number * 100) / allpupilsexcludemovedoutscotland;
         }
 
         public object FormatNumber(int number)
@@ -56,23 +57,42 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub
                 
         }
 
+        //public double Participating()
+        //{
+        //    return (double)(Percentage(this.schoolpupils) + 
+        //        Percentage(this.schoolpupilsintransition) +
+        //        Percentage(this.pupilsinAtivityAgreement) +
+        //        Percentage(this.pupilsinEmployFundSt2) +
+        //        Percentage(this.pupilsinEmployFundSt3)+
+        //        Percentage(this.pupilsinEmployFundSt4)+
+        //        Percentage(this.pupilsinFullTimeEmployed)+
+        //        Percentage(this.pupilsinFurtherEdu)+
+        //        Percentage(this.pupilsinHigherEdu) +
+        //        Percentage(this.pupilsinModernApprenship) +
+        //        Percentage(this.pupilsinPartTimeEmployed) +
+        //        Percentage(this.pupilsinPersonalSkillDevelopment)+
+        //        Percentage(this.pupilsinSelfEmployed)+
+        //        Percentage(this.pupilsinTraining)+
+        //        Percentage(this.pupilsinVolunteerWork));
+        //}
+
         public double Participating()
         {
-            return (double)(Percentage(this.schoolpupils) + 
-                Percentage(this.schoolpupilsintransition) +
-                Percentage(this.pupilsinAtivityAgreement) +
-                Percentage(this.pupilsinEmployFundSt2) +
-                Percentage(this.pupilsinEmployFundSt3)+
-                Percentage(this.pupilsinEmployFundSt4)+
-                Percentage(this.pupilsinFullTimeEmployed)+
-                Percentage(this.pupilsinFurtherEdu)+
-                Percentage(this.pupilsinHigherEdu) +
-                Percentage(this.pupilsinModernApprenship) +
-                Percentage(this.pupilsinPartTimeEmployed) +
-                Percentage(this.pupilsinPersonalSkillDevelopment)+
-                Percentage(this.pupilsinSelfEmployed)+
-                Percentage(this.pupilsinTraining)+
-                Percentage(this.pupilsinVolunteerWork));
+            return (double)(Percentage(this.schoolpupils +
+               this.schoolpupilsintransition+
+                this.pupilsinAtivityAgreement+
+                this.pupilsinEmployFundSt2 +
+                this.pupilsinEmployFundSt3 +
+                this.pupilsinEmployFundSt4 +
+                this.pupilsinFullTimeEmployed +
+                this.pupilsinFurtherEdu +
+                this.pupilsinHigherEdu +
+                this.pupilsinModernApprenship +
+                this.pupilsinPartTimeEmployed +
+                this.pupilsinPersonalSkillDevelopment +
+                this.pupilsinSelfEmployed +
+                this.pupilsinTraining +
+                this.pupilsinVolunteerWork));
         }
 
         public double NotParticipating()

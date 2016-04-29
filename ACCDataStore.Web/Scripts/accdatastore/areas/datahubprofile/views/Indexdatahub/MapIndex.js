@@ -31,12 +31,12 @@ var kml = {
         url: 'https://dl.dropboxusercontent.com/u/55734762/Neighbourhoods.json' + "?rand=" + (new Date()).valueOf(),
         dataType: 3
     },
-    d: {
-        name: "Glasgow Districts",
-        type: 2,
-        url: 'https://dl.dropboxusercontent.com/u/55734762/Neighbourhoods.json' + "?rand=" + (new Date()).valueOf(),
-        dataType: 4
-    },
+    //d: {
+    //    name: "Glasgow Districts",
+    //    type: 2,
+    //    url: 'https://dl.dropboxusercontent.com/u/55734762/Neighbourhoods.json' + "?rand=" + (new Date()).valueOf(),
+    //    dataType: 4
+    //},
 };
 
 // on document ready
@@ -249,7 +249,7 @@ function ShowPopupInfo(data) {
     if (data.dataCategories.length != 0) {
         for (var i = 0; i < data.dataCategories.length; i++) {
             //sInformation += "<tr><td>" + data.dataCategories[i] + "</td><td  align='center'>" + data.Schdata[i].toFixed(2) + "</td><td  align='center'>" + data.Abdcitydata[i].toFixed(2) + "</td><tr>";
-            sInformation += "<tr><td class='text-left'>" + data.dataCategories[i] + "</td><td  align='center'> <a href='/DatahubProfile/IndexDatahub/GetListpupils?searchby=" + data.searchby + "&code=" + data.searchcode + "&dataname=" + data.dataCategories[i] + "'><button enabled class='btn btn-info btn-xs enabled'>" + data.Schdata[i].toFixed(2) + "</button></a></td><td  align='center'> <a href='/DatahubProfile/IndexDatahub/GetListpupils?searchby=school&code=100&dataname=" + data.dataCategories[i] + "'><button enabled class='btn btn-info btn-xs enabled'>" + data.Abdcitydata[i].toFixed(2) + "</button></a></td><tr>";
+            sInformation += "<tr><td class='text-left'>" + data.dataCategories[i] + "</td><td  align='center'> <a href= " + sContextPath + "DatahubProfile/IndexDatahub/GetListpupils?searchby=" + data.searchby + "&code=" + data.searchcode + "&dataname=" + data.dataCategories[i] + "'><button enabled class='btn btn-info btn-xs enabled'>" + data.Schdata[i].toFixed(2) + "</button></a></td><td  align='center'> <a href= " + sContextPath + "DatahubProfile/IndexDatahub/GetListpupils?searchby=school&code=100&dataname=" + data.dataCategories[i] + "'><button enabled class='btn btn-info btn-xs enabled'>" + data.Abdcitydata[i].toFixed(2) + "</button></a></td><tr>";
 
         }
 

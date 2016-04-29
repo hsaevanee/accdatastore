@@ -35,17 +35,27 @@ namespace ACCDataStore.Web.Areas.SchoolRollForecast.Controllers
         List<double> ListMaxCap = new List<double>();
         List<double> ListTotRollFunctWCap = new List<double>();
         List<double> ListTotalRollFunctWCapPer = new List<double>();
+        //private List<double> P1Input;
 
         // GET: SchoolRollForecast/IndexSchoolRollForecast
-        public ActionResult Index()
+        public ActionResult Index(string schoolsubmitButton)
         {
             var vmSchoolRollForecastViewModel = new SchoolRollForecastViewModel();
             SchoolRollForecastObj schObj = new SchoolRollForecastObj();
 
-            string filePath = "C:\\data\\BonAccord.xlsx";
+            var sSchoolName = Request["selectedschoolname"];
+
+            string filePath = "C:\\data\\schools\\BonAccord.xlsx";
+
+            if (sSchoolName != null) {
+                filePath = sSchoolName;        
+            }
+            //string filePath = "C:\\data\\BonAccord.xlsx";
+            
             List<double> ListP1Input = new List<double>();
             using (XLWorkbook workBook = new XLWorkbook(filePath))
             {
+                //input sheet =1, Granite city = 2 bon accord = 3 etc
                 IXLWorksheet workSheet = workBook.Worksheet(1);
                 int autonumber = 5;
                 for (int i = 2; i <= 13; i++)
@@ -168,12 +178,22 @@ namespace ACCDataStore.Web.Areas.SchoolRollForecast.Controllers
 
                 vmSchoolRollForecastViewModel.schObj = schObj;
 
+                vmSchoolRollForecastViewModel.listSchoolname = GetListSchoolName();
                 Session["vmSchoolRollForecastViewModel"] = schObj;
 
             }
             return View("Home", vmSchoolRollForecastViewModel);
         }
 
+        protected List<School> GetListSchoolName()
+        {
+            List<School> temp = new List<School>();
+            temp.Add(new School("Bonaccord", "C:\\data\\schools\\BonAccord.xlsx"));
+            temp.Add(new School("Deebank", "C:\\data\\schools\\BonAccord1.xlsx"));
+            temp.Add(new School("duthie", "C:\\data\\schools\\BonAccord2.xlsx"));     
+            return temp;
+
+        }       
         public ActionResult Calculate(string calculateButton, SchoolRollForecastViewModel schoorollforecastmodel)
         {
             var vmSchoolRollForecastViewModel = new SchoolRollForecastViewModel();
@@ -182,16 +202,47 @@ namespace ACCDataStore.Web.Areas.SchoolRollForecast.Controllers
 
             SchoolRollForecastObj tempObj = schObj;
 
-            List<double> housinglist = new List<double>();
+            List<double> ListHousing = new List<double>();
 
             if (calculateButton != null)
             {
                 if (Request["housing"] != null)
                 {
-                    housinglist = Request["housing"].Split(',').Select(Double.Parse).ToList();
+                    ListHousing = Request["housing"].Split(',').Select(Double.Parse).ToList();
+
                 }
             }
+            List<double> ListP1Input = new List<double>();
 
+            if (calculateButton != null)
+            {
+                if (Request["P1Input"] != null)
+                {
+                    ListP1Input = Request["P1Input"].Split(',').Select(Double.Parse).ToList();
+
+                }
+            }
+            List<double> ListParentsCharter = new List<double>();
+
+            if (calculateButton != null)
+            {
+                if (Request["ParentsCharter"] != null)
+                {
+                    ListParentsCharter = Request["ParentsCharter"].Split(',').Select(Double.Parse).ToList();
+
+                }
+            }
+            List<double> ListPupilsHhld = new List<double>();
+
+            if (calculateButton != null)
+            {
+                if (Request["Pupils/Hhld"] != null)
+                {
+                    ListPupilsHhld = Request["Pupils/Hhld"].Split(',').Select(Double.Parse).ToList();
+
+                }
+            }
+            //bon accord
             //2014 Year
             double P1Input2014 = schObj.ListP1Input[4];
             double P1PupilsPrevious2013 = schObj.ListP1[3];
@@ -203,8 +254,8 @@ namespace ACCDataStore.Web.Areas.SchoolRollForecast.Controllers
             double P7PupilsPrevious2013 = schObj.ListP7[3];
             double PupilHhld = schObj.ListPupilsHhld[4];
             double ParentsCharter = schObj.ListParentsCharter[4];
-            double housing_current = housinglist[4];
-            double housing_previous = housinglist[3];
+            double housing_current = schObj.ListHousing[4];
+            double housing_previous = schObj.ListHousing[3];
             double primclassP1 = 0.17;
             double primclassP2 = 0.16;
             double primclassP3 = 0.16;
@@ -298,7 +349,7 @@ namespace ACCDataStore.Web.Areas.SchoolRollForecast.Controllers
             double propadjustfact2016 = 0.968060566478151;
             double birthRateFactor2016 = 1.005182363;
 
-            tempObj.ListP1[6] = ((P1Input2016 - ParentsCharter2016) * birthRateFactor2016 + ParentsCharter2016 + ((housing_previous2016 + housing_current2016) / 2) * PupilHhld2016 * primclassP1) * propadjustfact2016;
+            tempObj.ListP1[6] = ((P1PupilsPrevious2015 - ParentsCharter2016) * birthRateFactor2016 + ParentsCharter2016 + ((housing_previous2016 + housing_current2016) / 2) * PupilHhld2016 * primclassP1) * propadjustfact2016;
 
             tempObj.ListP2[6] = (P1PupilsPrevious2015 + ((housing_previous2016 + housing_current2016) / 2) * PupilHhld2016 * primclassP2) * propadjustfact2016;
 
@@ -336,7 +387,8 @@ namespace ACCDataStore.Web.Areas.SchoolRollForecast.Controllers
             double propadjustfact2017 = 0.969959540743594;
             double birthRateFactor2017 = 1.010696867;
 
-            tempObj.ListP1[7] = ((P1Input2017 - ParentsCharter2017) * birthRateFactor2017 + ParentsCharter2017 + ((housing_previous2017 + housing_current2017) / 2) * PupilHhld2017 * primclassP1) * propadjustfact2017;
+
+            tempObj.ListP1[7] = ((P1PupilsPrevious2016 - ParentsCharter2017) * birthRateFactor2017 + ParentsCharter2017 + ((housing_previous2017 + housing_current2017) / 2) * PupilHhld2017 * primclassP1) * propadjustfact2017;
 
             tempObj.ListP2[7] = (P1PupilsPrevious2016 + ((housing_previous2017 + housing_current2017) / 2) * PupilHhld2017 * primclassP2) * propadjustfact2017;
 
@@ -375,7 +427,8 @@ namespace ACCDataStore.Web.Areas.SchoolRollForecast.Controllers
             double propadjustfact2018 = 0.97202537700975;
             double birthRateFactor2018 = 1.02517364;
 
-            tempObj.ListP1[8] = ((P1Input2018 - ParentsCharter2018) * birthRateFactor2018 + ParentsCharter2018 + ((housing_previous2018 + housing_current2018) / 2) * PupilHhld2018 * primclassP1) * propadjustfact2018;
+
+            tempObj.ListP1[8] = ((P1PupilsPrevious2017 - ParentsCharter2018) * birthRateFactor2018 + ParentsCharter2018 + ((housing_previous2018 + housing_current2018) / 2) * PupilHhld2018 * primclassP1) * propadjustfact2018;
 
             tempObj.ListP2[8] = (P1PupilsPrevious2017 + ((housing_previous2018 + housing_current2018) / 2) * PupilHhld2018 * primclassP2) * propadjustfact2018;
 
@@ -415,7 +468,8 @@ namespace ACCDataStore.Web.Areas.SchoolRollForecast.Controllers
             double propadjustfact2019 = 0.972389778542098;
             double birthRateFactor2019 = 1.012702558;
 
-            tempObj.ListP1[9] = ((P1Input2019 - ParentsCharter2019) * birthRateFactor2019 + ParentsCharter2019 + ((housing_previous2019 + housing_current2019) / 2) * PupilHhld2019 * primclassP1) * propadjustfact2019;
+
+            tempObj.ListP1[9] = ((P1PupilsPrevious2018 - ParentsCharter2019) * birthRateFactor2019 + ParentsCharter2019 + ((housing_previous2019 + housing_current2019) / 2) * PupilHhld2019 * primclassP1) * propadjustfact2019;
 
             tempObj.ListP2[9] = (P1PupilsPrevious2018 + ((housing_previous2019 + housing_current2019) / 2) * PupilHhld2019 * primclassP2) * propadjustfact2019;
 
@@ -456,7 +510,8 @@ namespace ACCDataStore.Web.Areas.SchoolRollForecast.Controllers
             double propadjustfact2020 = 0.964444503941792;
             double birthRateFactor2020 = 1.011106417;
 
-            tempObj.ListP1[10] = ((P1Input2020 - ParentsCharter2020) * birthRateFactor2020 + ParentsCharter2020 + ((housing_previous2020 + housing_current2020) / 2) * PupilHhld2020 * primclassP1) * propadjustfact2020;
+
+            tempObj.ListP1[10] = ((P1PupilsPrevious2019 - ParentsCharter2020) * birthRateFactor2020 + ParentsCharter2020 + ((housing_previous2020 + housing_current2020) / 2) * PupilHhld2020 * primclassP1) * propadjustfact2020;
 
             tempObj.ListP2[10] = (P1PupilsPrevious2019 + ((housing_previous2020 + housing_current2020) / 2) * PupilHhld2020 * primclassP2) * propadjustfact2020;
 
@@ -496,7 +551,8 @@ namespace ACCDataStore.Web.Areas.SchoolRollForecast.Controllers
             double propadjustfact2021 = 0.967584648504448;
             double birthRateFactor2021 = 1.007846664;
 
-            tempObj.ListP1[11] = ((P1Input2021 - ParentsCharter2021) * birthRateFactor2021 + ParentsCharter2021 + ((housing_previous2021 + housing_current2021) / 2) * PupilHhld2021 * primclassP1) * propadjustfact2021;
+
+            tempObj.ListP1[11] = ((P1PupilsPrevious2020 - ParentsCharter2021) * birthRateFactor2021 + ParentsCharter2021 + ((housing_previous2021 + housing_current2021) / 2) * PupilHhld2021 * primclassP1) * propadjustfact2021;
 
             tempObj.ListP2[11] = (P1PupilsPrevious2020 + ((housing_previous2021 + housing_current2021) / 2) * PupilHhld2021 * primclassP2) * propadjustfact2021;
 
@@ -520,8 +576,17 @@ namespace ACCDataStore.Web.Areas.SchoolRollForecast.Controllers
 
             tempObj.ListTotRollFunctWCapPer[11] = (schObj.ListTotalRoll[10] / schObj.ListMaxCap[11]);
 
+            tempObj.ListHousing = ListHousing;
+            tempObj.ListP1Input = ListP1Input;
+            tempObj.ListParentsCharter = ListParentsCharter;
+            tempObj.ListPupilsHhld = ListPupilsHhld;
+
             vmSchoolRollForecastViewModel.schObj = tempObj;
+
+
             return View("Home", vmSchoolRollForecastViewModel);
         }
     }
 }
+
+

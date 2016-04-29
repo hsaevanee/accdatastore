@@ -195,6 +195,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             datahubdata.pupilsinUnavailableillHealth = listdata.Count(x => x.Current_Status.ToLower().Equals("unavailable - ill health"));
             datahubdata.pupilsinUnemployed = listdata.Count(x => x.Current_Status.ToLower().Equals("unemployed"));
             datahubdata.pupilsinUnknown = listdata.Count(x => x.Current_Status.ToLower().Equals("unknown"));
+            datahubdata.allpupilsexcludemovedoutscotland = datahubdata.allpupils - datahubdata.schoolpupilsmovedoutinscotland;
 
             return datahubdata;
         }
@@ -555,6 +556,10 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 case "unconfirmed":
                     listdata = (from a in listdata where a.Current_Status.ToLower().Equals("unknown") select a).ToList();
                     vmListpupilsViewModel.levercategory = "Unconfirmed ";
+                    break;
+                case "allpupilsexcludemovedoutscotland":
+                    listdata = (from a in listdata where a.SDS_Client_Ref != null select a).ToList().Except(from b in listdata where b.Current_Status.ToLower().Equals("moved outwith scotland") select b).ToList();
+                    vmListpupilsViewModel.levercategory = "Allpupils Exclude Movedout Scotland ";
                     break;
             }
 

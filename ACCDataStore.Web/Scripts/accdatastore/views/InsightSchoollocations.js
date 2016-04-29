@@ -476,6 +476,57 @@
                 "MAXNORTH": "8104454"
             }
         },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            -2.170524351855685,
+                            57.17648038557666
+                        ]
+                    },
+
+                "properties": {
+                    "name": "Bucksburn Academy",
+                    "Name": "Bucksburn Academy",
+                "NURSERY": "1",
+                "PRIMARY": "1",
+                "SECONDARY": "0",
+                "RC": "0",
+                "SPECIAL": "1",
+                "OTHER": "0",
+                "BLDGNO": "0",
+                "STREET": "INVERURIE ROAD",
+                "POSTCODE": "AB219LL",
+                "TEL": "01224 712862",
+                "FAX": "01224 716522",
+                "EMAIL": "enquiries@bucksburn.aberdeen.sch.uk",
+                "WWW_URL": "",
+                "HEAD": "Michael Robertson",
+                "UPRN": "9051013784",
+                "ROLL1996": "165",
+                "ROLL1997": "168",
+                "ROLL1998": "196",
+                "ROLL1999": "185",
+                "ROLL2000": "180",
+                "ROLL2001": "173",
+                "ROLL2002": "176",
+                "ROLL2003": "0",
+                "LOCALITY": "Bucksburn",
+                "SCHOCODE": "5234034",//"5234220",
+                "PEAST": "389691100",
+                "PNORTH": "809508600",
+                "UPDDATE": "",
+                "EAST": "3896911",
+                "NORTH": "8095086",
+                "LENGTH": "0",
+                "AREA_": "0",
+                "MINEAST": "3896911",
+                "MINNORTH": "8095086",
+                "MAXEAST": "3896911",
+                "MAXNORTH": "8095086"
+            }
+        },
         {
             "type": "Feature",
             "geometry": {
