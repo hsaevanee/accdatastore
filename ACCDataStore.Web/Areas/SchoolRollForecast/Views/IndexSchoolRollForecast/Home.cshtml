@@ -9,7 +9,7 @@
 }
 
 <body>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <h2>School Roll Forecast</h2>
@@ -23,10 +23,10 @@
                             <table class="table table-bordered">
                                 <tbody>
                                     <tr>
-                                        <td width="200" class="text-left">School Name</td>
-                                        <td class="text-left">@Html.DropDownListFor(m => m.selectedschoolname, new SelectList(Model.listSchoolname, "name", "seedcode"), "---Please Select School---")</td>
-                                        <td width="200"><input class="btn btn-primary" type="submit" name="schoolsubmitButton" value="Search" /></td>
-                                    </tr>                                    
+                                        <td width="200" class="text-left ">School Name and (Associated Academy)</td>
+                                        <td class="text-left">@Html.DropDownListFor(m => m.selectedschoolname, new SelectList(Model.listSchoolname, "name", "seedcode"))</td>
+                                        <td width="200"><input class="btn btn-primary btn-lg" type="submit" name="schoolsubmitButton" value="Search" /></td>
+                                    </tr>
                                 </tbody>
                             </table>
                         }
@@ -39,7 +39,7 @@
             <div class="col-md-12">
                 <div class="panel panel-primary text-center">
                     <div class="panel-body">
-                        @using (Html.BeginForm("Calculate", "IndexSchoolRollForecast", FormMethod.Post, new { area = "SchoolRollForecast" }))
+                        @using (Html.BeginForm("Calculate", "IndexSchoolRollForecast", new { area = "SchoolRollForecast" }))
                         {
                             <table class="table table-bordered">
                                 @*<thead>*@
@@ -50,9 +50,7 @@
 
                                     </tr>*@
                                 <tr>
-                                    <td width="10%"></td>
-                                    <td width="10%"><strong>2010</strong></td>
-                                    <td><strong>2011</strong></td>
+                                    <td width="5%"></td>
                                     <td><strong>2012</strong></td>
                                     <td><strong>2013</strong></td>
                                     <td><strong>2014</strong></td>
@@ -63,6 +61,8 @@
                                     <td><strong>2019</strong></td>
                                     <td><strong>2020</strong></td>
                                     <td><strong>2021</strong></td>
+                                    <td><strong>2022</strong></td>
+                                    <td><strong>2023</strong></td>
                                 </tr>
                                 @*</thead>*@
                                 <tbody>
@@ -70,84 +70,84 @@
                                         <td><strong>P1 Input</strong></td>
                                         @foreach (double data in Model.schObj.ListP1Input)
                                         {
-                                            <td><input class="text-primary" name="P1Input" type="text" value="@String.Format("{0:#,0.00}", @data)" /></td>
+                                            <td><input class="text-primary" name="P1Input" type="text" value="@String.Format("{0:#,0.00}", @data)" size="13" /></td>
                                         }
                                     </tr>
                                     <tr>
                                         <td><strong>Pupils/Hhld</strong></td>
                                         @foreach (double data in Model.schObj.ListPupilsHhld)
                                         {
-                                            <td><input class="text-primary" name="Pupils/Hhld" type="text" value="@String.Format("{0:#,0.00}", @data)" /></td>
+                                            <td><input class="text-primary" name="Pupils/Hhld" type="text" value="@String.Format("{0:#,0.00}", @data)" size="13" /></td>
                                         }
                                     </tr>
                                     <tr>
                                         <td><strong>Housing</strong></td>
                                         @foreach (double data in Model.schObj.ListHousing)
                                         {
-                                            <td><input class="text-primary" name="housing" type="text" value="@String.Format("{0:#,0.00}", @data)"></td>
+                                            <td><input class="text-primary" name="housing" type="text" value="@String.Format("{0:#,0.00}", @data)" size="13"></td>
                                         }
                                     </tr>
-                                    <tr>
+                                    <tr dir="auto">
                                         <td><strong>Parents Charter</strong></td>
                                         @foreach (double data in Model.schObj.ListParentsCharter)
                                         {
-                                            <td><input class="text-primary" name="ParentsCharter" type="text" value="@String.Format("{0:#,0.00}", @data)" /></td>
+                                            <td><input class="text-primary" name="ParentsCharter" type="text" value="@String.Format("{0:#,0.00}", @data)" size="13" /></td>
                                         }
                                     </tr>
                                     <tr>
                                         <td><strong>P1</strong></td>
                                         @foreach (double data in Model.schObj.ListP1)
                                         {
-                                            <td>@String.Format("{0:#,0.00}", @data)</td>
+                                            <td>@String.Format("{0:#,0}", @data)</td>
                                         }
                                     </tr>
                                     <tr>
                                         <td><strong>P2</strong></td>
                                         @foreach (double data in Model.schObj.ListP2)
                                         {
-                                            <td>@String.Format("{0:#,0.00}", @data)</td>
+                                            <td>@String.Format("{0:#,0}", @data)</td>
                                         }
                                     </tr>
                                     <tr>
                                         <td><strong>P3</strong></td>
                                         @foreach (double data in Model.schObj.ListP3)
                                         {
-                                            <td>@String.Format("{0:#,0.00}", @data)</td>
+                                            <td>@String.Format("{0:#,0}", @data)</td>
                                         }
                                     </tr>
                                     <tr>
                                         <td><strong>P4</strong></td>
                                         @foreach (double data in Model.schObj.ListP4)
                                         {
-                                            <td>@String.Format("{0:#,0.00}", @data)</td>
+                                            <td>@String.Format("{0:#,0}", @data)</td>
                                         }
                                     </tr>
                                     <tr>
                                         <td><strong>P5</strong></td>
                                         @foreach (double data in Model.schObj.ListP5)
                                         {
-                                            <td>@String.Format("{0:#,0.00}", @data)</td>
+                                            <td>@String.Format("{0:#,0}", @data)</td>
                                         }
                                     </tr>
                                     <tr>
                                         <td><strong>P6</strong></td>
                                         @foreach (double data in Model.schObj.ListP6)
                                         {
-                                            <td>@String.Format("{0:#,0.00}", @data)</td>
+                                            <td>@String.Format("{0:#,0}", @data)</td>
                                         }
                                     </tr>
                                     <tr>
                                         <td><strong>P7</strong></td>
                                         @foreach (double data in Model.schObj.ListP7)
                                         {
-                                            <td>@String.Format("{0:#,0.00}", @data)</td>
+                                            <td>@String.Format("{0:#,0}", @data)</td>
                                         }
                                     </tr>
-                                    <tr>
+                                    <tr dir="rtl">
                                         <td><strong>Total Roll</strong></td>
                                         @foreach (double data in Model.schObj.ListTotalRoll)
                                         {
-                                            <td>@String.Format("{0:#,0.00}", @data)</td>
+                                            <td>@String.Format("{0:#,0}", @data)</td>
                                         }
                                     </tr>
                                     <tr>
@@ -172,8 +172,8 @@
                                         }
                                     </tr>
                                     <tr>
-                                        <td colspan="13" align="center">
-                                            <input type="submit" class="btn btn-primary" name="calculateButton" value="Calculate" />
+                                        <td colspan="13" align="right">
+                                            <input type="submit" class="btn btn-primary btn-lg" name="calculateButton" value="Calculate" />
                                         </td>
                                     </tr>
                                 </tbody>

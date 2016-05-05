@@ -161,6 +161,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             datahubdata.allpupils = listdata.Count(x => !x.SDS_Client_Ref.Equals(""));
             datahubdata.allFemalepupils = listdata.Count(x => x.Gender.ToLower().Equals("female"));
             datahubdata.allMalepupils = listdata.Count(x => x.Gender.ToLower().Equals("male"));
+            datahubdata.all15pupils = listdata.Count(x => x.Age == 15);
             datahubdata.all16pupils = listdata.Count(x => x.Age == 16);
             datahubdata.all17pupils = listdata.Count(x => x.Age == 17);
             datahubdata.all18pupils = listdata.Count(x => x.Age == 18);

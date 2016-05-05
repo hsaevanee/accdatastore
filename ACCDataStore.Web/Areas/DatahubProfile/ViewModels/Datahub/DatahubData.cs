@@ -11,6 +11,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub
         public int allpupils { get; set; }
         public int allFemalepupils { get; set; }
         public int allMalepupils { get; set; }
+        public int all15pupils { get; set; }
         public int all16pupils { get; set; }
         public int all17pupils { get; set; }
         public int all18pupils { get; set; }

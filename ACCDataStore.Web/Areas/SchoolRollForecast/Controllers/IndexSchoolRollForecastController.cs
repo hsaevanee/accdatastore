@@ -31,6 +31,12 @@ namespace ACCDataStore.Web.Areas.SchoolRollForecast.Controllers
         List<double> ListP5 = new List<double>();
         List<double> ListP6 = new List<double>();
         List<double> ListP7 = new List<double>();
+        List<double> ListS1 = new List<double>();
+        List<double> ListS2 = new List<double>();
+        List<double> ListS3 = new List<double>();
+        List<double> ListS4 = new List<double>();
+        List<double> ListS5 = new List<double>();
+        List<double> ListS6 = new List<double>();
         List<double> ListTotalRoll = new List<double>();
         List<double> ListMaxCap = new List<double>();
         List<double> ListTotRollFunctWCap = new List<double>();
@@ -45,13 +51,14 @@ namespace ACCDataStore.Web.Areas.SchoolRollForecast.Controllers
 
             var sSchoolName = Request["selectedschoolname"];
 
-            string filePath = "C:\\data\\schools\\BonAccord.xlsx";
+            string filePath = "C:\\data\\schools\\primary\\abbotswell.xlsx";
 
-            if (sSchoolName != null) {
-                filePath = sSchoolName;        
+            if (sSchoolName != null)
+            {
+                filePath = sSchoolName;
             }
             //string filePath = "C:\\data\\BonAccord.xlsx";
-            
+
             List<double> ListP1Input = new List<double>();
             using (XLWorkbook workBook = new XLWorkbook(filePath))
             {
@@ -179,26 +186,254 @@ namespace ACCDataStore.Web.Areas.SchoolRollForecast.Controllers
                 vmSchoolRollForecastViewModel.schObj = schObj;
 
                 vmSchoolRollForecastViewModel.listSchoolname = GetListSchoolName();
-                Session["vmSchoolRollForecastViewModel"] = schObj;
+                vmSchoolRollForecastViewModel.selectedschoolname = sSchoolName;
+
+                Session["vmSchoolRollForecastViewModel"] = vmSchoolRollForecastViewModel;
 
             }
             return View("Home", vmSchoolRollForecastViewModel);
         }
 
+        // Do not touch this jan will kill you :P
+        public ActionResult IndexPrimarySchool(string schoolsubmitButton)
+        {
+            var vmSchoolRollForecastViewModel = new SchoolRollForecastViewModel();
+            SchoolRollForecastObj schObj = new SchoolRollForecastObj();
+
+            var sSchoolName = Request["selectedschoolname"];
+
+            string filePath = "C:\\data\\BonAccord.xlsx";
+
+            if (sSchoolName != null)
+            {
+                filePath = sSchoolName;
+            }
+            //string filePath = "C:\\data\\Duthie.xlsx";
+
+            List<double> ListP1Input = new List<double>();
+            using (XLWorkbook workBook = new XLWorkbook(filePath))
+            {
+                //input sheet =1, Granite city = 2 bon accord = 3 etc
+                IXLWorksheet workSheet = workBook.Worksheet(1);
+                int autonumber = 5;
+                for (int i = 2; i <= 13; i++)
+                {
+                    ListP1Input.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
+                }
+                schObj.ListP1Input = ListP1Input;
+
+                //List<double> ListPupilsHhld = new List<double>();
+                autonumber = 6;
+                for (int i = 2; i <= 13; i++)
+                {
+                    ListPupilsHhld.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
+                }
+                schObj.ListPupilsHhld = ListPupilsHhld;
+
+                //List<double> ListHousing = new List<double>();
+                autonumber = 7;
+                for (int i = 2; i <= 13; i++)
+                {
+                    ListHousing.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
+                }
+                schObj.ListHousing = ListHousing;
+
+                //List<double> ListParentsCharter = new List<double>();
+                autonumber = 8;
+                for (int i = 2; i <= 13; i++)
+                {
+                    ListParentsCharter.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
+                }
+                schObj.ListParentsCharter = ListParentsCharter;
+
+                //List<double> ListP1 = new List<double>();
+                autonumber = 10;
+                for (int i = 2; i <= 13; i++)
+                {
+                    ListP1.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
+                }
+                schObj.ListP1 = ListP1;
+
+                //List<double> ListP2 = new List<double>();
+                autonumber = 11;
+                for (int i = 2; i <= 13; i++)
+                {
+                    ListP2.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
+                }
+                schObj.ListP2 = ListP2;
+
+                //List<double> ListP3 = new List<double>();
+                autonumber = 12;
+                for (int i = 2; i <= 13; i++)
+                {
+                    ListP3.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
+                }
+                schObj.ListP3 = ListP3;
+
+                //List<double> ListP4 = new List<double>();
+                autonumber = 13;
+                for (int i = 2; i <= 13; i++)
+                {
+                    ListP4.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
+                }
+                schObj.ListP4 = ListP4;
+
+                //List<double> ListP5 = new List<double>();
+                autonumber = 14;
+                for (int i = 2; i <= 13; i++)
+                {
+                    ListP5.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
+                }
+                schObj.ListP5 = ListP5;
+
+                //List<double> ListP6 = new List<double>();
+                autonumber = 15;
+                for (int i = 2; i <= 13; i++)
+                {
+                    ListP6.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
+                }
+                schObj.ListP6 = ListP6;
+
+                // List<double> ListP7 = new List<double>();
+                autonumber = 16;
+                for (int i = 2; i <= 13; i++)
+                {
+                    ListP7.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
+                }
+                schObj.ListP7 = ListP7;
+
+                // List<double> ListTotalRoll = new List<double>();
+                autonumber = 17;
+                for (int i = 2; i <= 13; i++)
+                {
+                    ListTotalRoll.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
+                }
+                schObj.ListTotalRoll = ListTotalRoll;
+
+                // List<double> ListMaxCap = new List<double>();
+                autonumber = 18;
+                for (int i = 2; i <= 13; i++)
+                {
+                    ListMaxCap.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
+                }
+                schObj.ListMaxCap = ListMaxCap;
+
+                //List<double> ListTotRollFunctWCap = new List<double>();
+                autonumber = 19;
+                for (int i = 2; i <= 13; i++)
+                {
+                    ListTotRollFunctWCap.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
+                }
+                schObj.ListTotRollFunctWCap = ListTotRollFunctWCap;
+
+                //List<double> ListTotRollFunctWCapPer = new List<double>();
+                autonumber = 20;
+                for (int i = 2; i <= 13; i++)
+                {
+                    ListTotalRollFunctWCapPer.Add(workSheet.Row(autonumber).Cell(i).IsEmpty() ? 0.00 : workSheet.Row(autonumber).Cell(i).GetDouble());
+                }
+                schObj.ListTotRollFunctWCapPer = ListTotalRollFunctWCapPer;
+
+                vmSchoolRollForecastViewModel.schObj = schObj;
+
+                vmSchoolRollForecastViewModel.listSchoolname = GetListSchoolName();
+                Session["vmSchoolRollForecastViewModel"] = vmSchoolRollForecastViewModel;
+
+            }
+            return View("Home", vmSchoolRollForecastViewModel);
+        }
+
+
         protected List<School> GetListSchoolName()
         {
             List<School> temp = new List<School>();
-            temp.Add(new School("Bonaccord", "C:\\data\\schools\\BonAccord.xlsx"));
-            temp.Add(new School("Deebank", "C:\\data\\schools\\BonAccord1.xlsx"));
-            temp.Add(new School("duthie", "C:\\data\\schools\\BonAccord2.xlsx"));     
+
+
+            string filePath = "C:\\data\\schools\\primary\\";
+
+
+            temp.Add(new School("AbbotsWell Primary (KincorthAcademy)", filePath+"abbotswell.xlsx"));
+            temp.Add(new School("Airyhall Primary (Hazlehead Academy)", filePath+"airyhall.xlsx"));
+            temp.Add(new School("Ashley Road Primary (Aberdeen Grammar)", filePath + "ashleyrd.xlsx"));
+            temp.Add(new School("Braehead Primary (BOD Academy)", filePath + "braehead.xlsx"));
+            temp.Add(new School("Bramblebrae Primary (Northfield Academy)", filePath + "bramblebrae.xlsx"));
+            temp.Add(new School("Brimmond Primary (Bucksburn Academy)", filePath + "brimmond.xlsx"));
+            temp.Add(new School("Broomhill Primary (Harlaw Academy)", filePath + "broomhill.xlsx"));
+            temp.Add(new School("Charleston Primary (Kincorth Academy)", filePath + "charleston.xlsx"));
+            temp.Add(new School("Cornhill Primary (St Machar Academy)", filePath + "cornhill.xlsx"));
+            temp.Add(new School("Culter Primary (Cults Academy)", filePath + "culter.xlsx"));
+            temp.Add(new School("Cults Primary (Cults Academy)", filePath + "cults.xlsx"));
+            temp.Add(new School("Danestone Primary (Old Machar Academy)", filePath + "danestone.xlsx"));
+            temp.Add(new School("Dyce Primary (Dyce Academy)", filePath + "dyce.xlsx"));
+            temp.Add(new School("Fernielea Primary (HazleHead Academy)", filePath + "fernielea.xlsx"));
+            temp.Add(new School("FerryHill Primary (Harlaw Academy)", filePath + "ferryhill.xlsx"));
+            temp.Add(new School("Forehill Primary (Old Machar Academy)", filePath + "forehill.xlsx"));
+            temp.Add(new School("Gilcomstoun Primary (Aberdeen Grammar)", filePath + "gilcomstoun.xlsx"));
+            temp.Add(new School("Glashieburn Primary (Old Machar Academy)", filePath + "glashieburn.xlsx"));
+            temp.Add(new School("Greenbrae Primary (Old Machar Academy)", filePath + "greenbrae.xlsx"));
+            temp.Add(new School("Hanover Primary (Harlaw Academy)", filePath + "hanover.xlsx"));
+            temp.Add(new School("Hazlehead Primary (Hazlehead Academy)", filePath + "hazlehead.xlsx"));
+            temp.Add(new School("Heathryburn Primary (Northfield Academy)", filePath + "heathryburn.xlsx"));
+            temp.Add(new School("Holy Family RC Primary (Northfield Academy)", filePath + "holyfamily.xlsx"));
+            temp.Add(new School("Kaimhill Primary (Harlaw Academy)", filePath + "kaimhill.xlsx"));
+            temp.Add(new School("Kingsford Primary (Hazlehead Academy)", filePath + "kingsford.xlsx"));
+            temp.Add(new School("Kingswells Primary (Bucksburn Academy)", filePath + "kingswells.xlsx"));
+            temp.Add(new School("Kirkhill Primary (Kincorth Academy)", filePath + "kirkhill.xlsx"));
+            temp.Add(new School("Kittybrewster Primary (St Machar Academy)", filePath + "kittybrewster.xlsx"));
+            temp.Add(new School("Loirston Primary (Kincorth Academy)", filePath + "loirston.xlsx"));
+            temp.Add(new School("Manor Park Primary (Northfield/St Machar Academy)", filePath + "manorpark.xlsx"));
+            temp.Add(new School("Middleton Park Primary (Old Machar Academy)", filePath + "middletonpark.xlsx"));
+            temp.Add(new School("Mile End Primary (Aberdeen Grammar)", filePath + "mileend.xlsx"));
+            temp.Add(new School("Milltimber Primary (Cults Academy)", filePath + "milltimber.xlsx"));
+            temp.Add(new School("Muirfield Primary (Northfield Academy)", filePath + "muirfield.xlsx"));
+            temp.Add(new School("QuarryHill Primary (Northfield Academy)", filePath + "quarryhill.xlsx"));
+            temp.Add(new School("Riverbank Primary (St Machar Academy)", filePath + "riverbank.xlsx"));
+            temp.Add(new School("Scotstown Primary (BOD Academy)", filePath + "scotstown.xlsx"));
+            temp.Add(new School("Seaton Primary (St Machar Academy)", filePath + "seaton.xlsx"));
+            temp.Add(new School("Skene Square Primary (Aberdeen Grammar)", filePath + "skene.xlsx"));
+            temp.Add(new School("Stoneywood Primary (Bucksburn Academy)", filePath + "stoneywood.xlsx"));
+            temp.Add(new School("St Josephs RC (Aberdeen Grammar)", filePath + "stjosephs.xlsx"));
+            temp.Add(new School("St Peters RC (St Machar Academy)", filePath + "stpeters.xlsx"));
+            temp.Add(new School("Sunnybank Primary (St Machar Academy)", filePath + "sunnybank.xlsx"));
+            temp.Add(new School("Tullos Primary (Torry Academy)", filePath + "tullos.xlsx"));
+            temp.Add(new School("Walker Road Primary (Torry Academy)", filePath + "walker.xlsx"));
+            temp.Add(new School("Westpark Primary (Northfield Academy)", filePath + "westpark.xlsx"));
+            temp.Add(new School("Woodside Primary (St Machar Academy)", filePath + "woodside.xlsx"));
+            temp.Add(new School("Balmedie Primary (BOD Academy)", filePath + "balmedie.xlsx"));
+            temp.Add(new School("Maryculter/Lairhillak Primary (Cults Academy)", filePath + "maryculter.xlsx"));
+            temp.Add(new School("Newmacher Primary (Dyce Academy)", filePath + "newmacher.xlsx"));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             return temp;
 
-        }       
+        }
         public ActionResult Calculate(string calculateButton, SchoolRollForecastViewModel schoorollforecastmodel)
         {
             var vmSchoolRollForecastViewModel = new SchoolRollForecastViewModel();
 
-            SchoolRollForecastObj schObj = Session["vmSchoolRollForecastViewModel"] as SchoolRollForecastObj;
+            var vmtempViewModel = Session["vmSchoolRollForecastViewModel"] as SchoolRollForecastViewModel;
+
+            SchoolRollForecastObj schObj = vmtempViewModel.schObj;
+
+            //var sSchoolName = vmtempViewModel.selectedschoolname;
 
             SchoolRollForecastObj tempObj = schObj;
 
@@ -576,14 +811,285 @@ namespace ACCDataStore.Web.Areas.SchoolRollForecast.Controllers
 
             tempObj.ListTotRollFunctWCapPer[11] = (schObj.ListTotalRoll[10] / schObj.ListMaxCap[11]);
 
+            ////2014 Granite City
+
+            //double S1 = schObj.ListS1[4];
+            //double S2 = schObj.ListS2[4];
+            //double S3 = schObj.ListS3[4];
+            //double S4 = schObj.ListS4[4];
+            //double S5 = schObj.ListS5[4];
+            //double S6 = schObj.ListS6[4];
+            //double ACPupilsPerHousehold = schObj.ListPupilsHhld[4];
+            //double ACHousing2014 = schObj.ListHousing[4];
+            //double ACParentsCharter2014 = schObj.ListParentsCharter[4];
+            //double ACPropadjustFact2014 = 0.979545;
+            //double ACSecClass2014 = 0.25;
+            //double ACStayonRatio2014 = 75;
+            //double ACStayonRatio22014 = 50;
+
+            //tempObj.ListS1[4] = (ACParentsCharter2014 * (20 + 20 + 20)) + ((ListHousing[3] + ListHousing[4]) / 2 * ListPupilsHhld[4] * ACSecClass2014) * ACPropadjustFact2014;
+
+            //tempObj.ListS2[4] = (ListS1[3] + ((ListHousing[3] + ListHousing[4]) / 2) * ListPupilsHhld[4] * ACSecClass2014) * ACPropadjustFact2014;
+
+            //tempObj.ListS3[4] = (ListS2[3] + ((ListHousing[3] + ListHousing[4]) / 2) * ListPupilsHhld[4] * ACSecClass2014) * ACPropadjustFact2014;
+
+            //tempObj.ListS4[4] = (ListS3[4] + ((ListHousing[3] + ListHousing[4]) / 2) * ListPupilsHhld[4] * ACSecClass2014) * ACPropadjustFact2014;
+
+            //tempObj.ListS5[4] = ListS4[3] * ACStayonRatio2014;
+
+            //tempObj.ListS6[4] = ListS5[3] * ACStayonRatio22014;
+
+            //tempObj.ListMaxCap[4] = 200;
+
+            //tempObj.ListTotRollFunctWCap[4] = (schObj.ListTotalRoll[3] - schObj.ListMaxCap[4]);
+
+            //tempObj.ListTotRollFunctWCapPer[4] = (schObj.ListTotalRoll[3] / schObj.ListMaxCap[4]);
+
+            ////2015
+            //double S12015 = schObj.ListS1[5];
+            //double S22015 = schObj.ListS2[5];
+            //double S32015 = schObj.ListS3[5];
+            //double S42015 = schObj.ListS4[5];
+            //double S52015 = schObj.ListS5[5];
+            //double S62015 = schObj.ListS6[5];
+            //double ACPupilsPerHousehold2015 = schObj.ListPupilsHhld[5];
+            //double ACHousing2015 = schObj.ListPupilsHhld[5];
+            //double ACParentsCharter2015 = schObj.ListParentsCharter[5];
+            //double ACPropAdjustFact2015 = 0.979545;
+            //double ACSecClass2015 = 0.25;
+            //double ACStayOnRatio2015 = 75;
+            //double ACStayOnRatio22015 = 50;
+
+            //tempObj.ListS1[5] =  (ACParentsCharter2015 * (19.6 + 19.6 + 19.6)) + ((ListHousing[4] + ListHousing[5]) / 2 * ListPupilsHhld[5] * ACSecClass2015) * ACPropAdjustFact2015;
+
+            //tempObj.ListS2[5] = (ListS1[4] + ((ListHousing[4] + ListHousing[5]) / 2) * ListPupilsHhld[5] * ACSecClass2015) * ACPropAdjustFact2015;
+
+            //tempObj.ListS3[5] = (ListS2[4] + ((ListHousing[4] + ListHousing[5]) / 2) * ListPupilsHhld[5] * ACSecClass2015) * ACPropAdjustFact2015;
+
+            //tempObj.ListS4[5] = (ListS3[4] + ((ListHousing[4] + ListHousing[5]) / 2) * ListPupilsHhld[5] * ACSecClass2015) * ACPropAdjustFact2015;
+
+            //tempObj.ListS5[5] = ListS4[4] * ACStayOnRatio2015;
+
+            //tempObj.ListS6[5] = ListS5[4] * ACStayOnRatio22015;
+
+            //tempObj.ListMaxCap[5] = 200;
+
+            //tempObj.ListTotRollFunctWCap[5] = (schObj.ListTotalRoll[4] - schObj.ListMaxCap[5]);
+
+            //tempObj.ListTotRollFunctWCapPer[5] = (schObj.ListTotalRoll[4] / schObj.ListMaxCap[5]);
+
+            ////2016
+            //double S12016 = schObj.ListS1[6];
+            //double S22016 = schObj.ListS2[6];
+            //double S32016 = schObj.ListS3[6];
+            //double S42016 = schObj.ListS4[6];
+            //double S52016 = schObj.ListS5[6];
+            //double S62016 = schObj.ListS6[6];
+            //double ACPupilsPerHousehold2016 = schObj.ListPupilsHhld[6];
+            //double ACHousing2016 = schObj.ListPupilsHhld[6];
+            //double ACParentsCharter2016 = schObj.ListParentsCharter[6];
+            //double ACPropAdjustFact2016 = 0.970621;
+            //double ACSecClass2016 = 0.25;
+            //double ACStayOnRatio2016 = 75;
+            //double ACStayOnRatio22016 = 50;
+
+            //tempObj.ListS1[6] =  (ACParentsCharter2016 * (19.1 + 19.1 + 19.1)) + ((ListHousing[5] + ListHousing[6]) / 2 * ListPupilsHhld[6] * ACSecClass2016) * ACPropAdjustFact2016;
+
+            //tempObj.ListS2[6] = (ListS1[5] + ((ListHousing[5] + ListHousing[6]) / 2) * ListPupilsHhld[6] * ACSecClass2016) * ACPropAdjustFact2016;
+
+            //tempObj.ListS3[6] = (ListS2[5] + ((ListHousing[5] + ListHousing[6]) / 2) * ListPupilsHhld[6] * ACSecClass2016) * ACPropAdjustFact2016;
+
+            //tempObj.ListS4[6] = (ListS3[5] + ((ListHousing[5] + ListHousing[6]) / 2) * ListPupilsHhld[6] * ACSecClass2016) * ACPropAdjustFact2016;
+
+            //tempObj.ListS5[6] = ListS4[5] * ACStayOnRatio2016;
+
+            //tempObj.ListS6[6] = ListS5[5] * ACStayOnRatio22016;
+
+            //tempObj.ListMaxCap[6] = 200;
+
+            //tempObj.ListTotRollFunctWCap[6] = (schObj.ListTotalRoll[5] - schObj.ListMaxCap[6]);
+
+            //tempObj.ListTotRollFunctWCapPer[6] = (schObj.ListTotalRoll[5] / schObj.ListMaxCap[6]);
+
+            // //2017
+            //double S12017 = schObj.ListS1[7];
+            //double S22017 = schObj.ListS2[7];
+            //double S32017 = schObj.ListS3[7];
+            //double S42017 = schObj.ListS4[7];
+            //double S52017 = schObj.ListS5[7];
+            //double S62017 = schObj.ListS6[7];
+            //double ACPupilsPerHousehold2017 = schObj.ListPupilsHhld[7];
+            //double ACHousing2017 = schObj.ListPupilsHhld[7];
+            //double ACParentsCharter2017 = schObj.ListParentsCharter[7];
+            //double ACPropAdjustFact2017 = 0.965379;
+            //double ACSecClass2017 = 0.25;
+            //double ACStayOnRatio2017 = 75;
+            //double ACStayOnRatio22017 = 50;
+
+            //tempObj.ListS1[7] = (ACParentsCharter2017 * (19.1 + 19.1 + 19.1)) + ((ListHousing[6] + ListHousing[7]) / 2 * ListPupilsHhld[7] * ACSecClass2017) * ACPropAdjustFact2017;
+
+            //tempObj.ListS2[7] = (ListS1[6] + ((ListHousing[6] + ListHousing[7]) / 2) * ListPupilsHhld[7] * ACSecClass2017) * ACPropAdjustFact2017;
+
+            //tempObj.ListS3[7] = (ListS2[6] + ((ListHousing[6] + ListHousing[7]) / 2) * ListPupilsHhld[7] * ACSecClass2017) * ACPropAdjustFact2017;
+
+            //tempObj.ListS4[7] = (ListS3[6] + ((ListHousing[6] + ListHousing[7]) / 2) * ListPupilsHhld[7] * ACSecClass2017) * ACPropAdjustFact2017;
+
+            //tempObj.ListS5[7] = ListS4[6] * ACStayOnRatio2017;
+
+            //tempObj.ListS6[7] = ListS6[6] * ACStayOnRatio22017;
+
+            //tempObj.ListMaxCap[7] = 200;
+
+            //tempObj.ListTotRollFunctWCap[7] = (schObj.ListTotalRoll[6] - schObj.ListMaxCap[7]);
+
+            //tempObj.ListTotRollFunctWCapPer[7] = (schObj.ListTotalRoll[6] / schObj.ListMaxCap[7]);
+
+
+            ////2018
+            //double S12018 = schObj.ListS1[8];
+            //double S22018 = schObj.ListS2[8];
+            //double S32018 = schObj.ListS3[8];
+            //double S42018 = schObj.ListS4[8];
+            //double S52018 = schObj.ListS5[8];
+            //double S62018 = schObj.ListS6[8];
+            //double ACPupilsPerHousehold2018 = schObj.ListPupilsHhld[8];
+            //double ACHousing2018 = schObj.ListPupilsHhld[8];
+            //double ACParentsCharter2018 = schObj.ListParentsCharter[8];
+            //double ACPropAdjustFact2018 = 0.980609;
+            //double ACSecClass2018 = 0.25;
+            //double ACStayOnRatio2018 = 75;
+            //double ACStayOnRatio22018 = 50;
+
+            //tempObj.ListS1[8] = (ACParentsCharter2018 * (19.5 + 19.1 + 19.1)) + ((ListHousing[7] + ListHousing[8]) / 2 * ListPupilsHhld[8] * ACSecClass2018) * ACPropAdjustFact2018;
+
+            //tempObj.ListS2[8] = (ListS1[7] + ((ListHousing[7] + ListHousing[8]) / 2) * ListPupilsHhld[8] * ACSecClass2018) * ACPropAdjustFact2018;
+
+            //tempObj.ListS3[8] = (ListS2[7] + ((ListHousing[7] + ListHousing[8]) / 2) * ListPupilsHhld[8] * ACSecClass2018) * ACPropAdjustFact2018;
+
+            //tempObj.ListS4[8] = (ListS3[7] + ((ListHousing[7] + ListHousing[8]) / 2) * ListPupilsHhld[8] * ACSecClass2018) * ACPropAdjustFact2018;
+
+            //tempObj.ListS5[8] = ListS4[7] * ACStayOnRatio2018;
+
+            //tempObj.ListS6[8] = ListS6[7] * ACStayOnRatio22018;
+
+            //tempObj.ListMaxCap[8] = 200;
+
+            //tempObj.ListTotRollFunctWCap[8] = (schObj.ListTotalRoll[7] - schObj.ListMaxCap[8]);
+
+            //tempObj.ListTotRollFunctWCapPer[8] = (schObj.ListTotalRoll[7] / schObj.ListMaxCap[8]);
+
+
+            ////2019
+            //double S12019 = schObj.ListS1[9];
+            //double S22019 = schObj.ListS2[9];
+            //double S32019 = schObj.ListS3[9];
+            //double S42019 = schObj.ListS4[9];
+            //double S52019 = schObj.ListS5[9];
+            //double S62019 = schObj.ListS6[9];
+            //double ACPupilsPerHousehold2019 = schObj.ListPupilsHhld[9];
+            //double ACHousing2019 = schObj.ListPupilsHhld[9];
+            //double ACParentsCharter2019 = schObj.ListParentsCharter[9];
+            //double ACPropAdjustFact2019 = 0.978155;
+            //double ACSecClass2019 = 0.25;
+            //double ACStayOnRatio2019 = 75;
+            //double ACStayOnRatio22019 = 50;
+
+
+            //tempObj.ListS1[9] = (ACParentsCharter2019 * (19.5 + 19.1 + 19.1)) + ((ListHousing[8] + ListHousing[9]) / 2 * ListPupilsHhld[9] * ACSecClass2019) * ACPropAdjustFact2019;
+
+            //tempObj.ListS2[9] = (ListS1[8] + ((ListHousing[8] + ListHousing[9]) / 2) * ListPupilsHhld[9] * ACSecClass2019) * ACPropAdjustFact2019;
+
+            //tempObj.ListS3[9] = (ListS2[8] + ((ListHousing[8] + ListHousing[9]) / 2) * ListPupilsHhld[9] * ACSecClass2019) * ACPropAdjustFact2019;
+
+            //tempObj.ListS4[9] = (ListS3[8] + ((ListHousing[8] + ListHousing[9]) / 2) * ListPupilsHhld[9] * ACSecClass2019) * ACPropAdjustFact2019;
+
+            //tempObj.ListS5[9] = ListS4[8] * ACStayOnRatio2019;
+
+            //tempObj.ListS6[9] = ListS5[8] * ACStayOnRatio22019;
+
+            //tempObj.ListMaxCap[9] = 200;
+
+            //tempObj.ListTotRollFunctWCap[9] = (schObj.ListTotalRoll[8] - schObj.ListMaxCap[9]);
+
+            //tempObj.ListTotRollFunctWCapPer[9] = (schObj.ListTotalRoll[8] / schObj.ListMaxCap[9]);
+
+
+            ////2020
+            //double S12020 = schObj.ListS1[10];
+            //double S22020 = schObj.ListS2[10];
+            //double S32020 = schObj.ListS3[10];
+            //double S42020 = schObj.ListS4[10];
+            //double S52020 = schObj.ListS5[10];
+            //double S62020 = schObj.ListS6[10];
+            //double ACPupilsPerHousehold2020 = schObj.ListPupilsHhld[10];
+            //double ACHousing2020 = schObj.ListPupilsHhld[10];
+            //double ACParentsCharter2020 = schObj.ListParentsCharter[10];
+            //double ACPropAdjustFact2020 = 0.971013;
+            //double ACSecClass2020 = 0.25;
+            //double ACStayOnRatio2020 = 75;
+            //double ACStayOnRatio22020 = 50;
+
+            //tempObj.ListS1[10] = (ACParentsCharter2019 * (19.5 + 19.1 + 19.1)) + ((ListHousing[9] + ListHousing[10]) / 2 * ListPupilsHhld[10] * ACSecClass2020) * ACPropAdjustFact2020;
+
+            //tempObj.ListS2[10] = (ListS1[9] + ((ListHousing[9] + ListHousing[10]) / 2) * ListPupilsHhld[10] * ACSecClass2020) * ACPropAdjustFact2020;
+
+            //tempObj.ListS3[10] = (ListS2[9] + ((ListHousing[9] + ListHousing[10]) / 2) * ListPupilsHhld[10] * ACSecClass2020) * ACPropAdjustFact2020;
+
+            //tempObj.ListS4[10] = (ListS3[9] + ((ListHousing[9] + ListHousing[10]) / 2) * ListPupilsHhld[10] * ACSecClass2020) * ACPropAdjustFact2020;
+
+            //tempObj.ListS5[10] = ListS4[9] * ACStayOnRatio2020;
+
+            //tempObj.ListS6[10] = ListS5[9] * ACStayOnRatio22020;
+
+            //tempObj.ListMaxCap[10] = 200;
+
+            //tempObj.ListTotRollFunctWCap[10] = (schObj.ListTotalRoll[9] - schObj.ListMaxCap[10]);
+
+            //tempObj.ListTotRollFunctWCapPer[10] = (schObj.ListTotalRoll[9] / schObj.ListMaxCap[10]);
+
+
+
+            ////2021
+            //double S12021 = schObj.ListS1[11];
+            //double S22021 = schObj.ListS2[11];
+            //double S32021 = schObj.ListS3[11];
+            //double S42021 = schObj.ListS4[11];
+            //double S52021 = schObj.ListS5[11];
+            //double S62021 = schObj.ListS6[11];
+            //double ACPupilsPerHousehold2021 = schObj.ListPupilsHhld[11];
+            //double ACHousing2021 = schObj.ListPupilsHhld[11];
+            //double ACParentsCharter2021 = schObj.ListParentsCharter[11];
+            //double ACPropAdjustFact2021 = 0.974821;
+            //double ACSecClass2021 = 0.25;
+            //double ACStayOnRatio2021 = 75;
+            //double ACStayOnRatio22021 = 50;
+
+            //tempObj.ListS1[11] = (ACParentsCharter2021 * (19.5 + 19.1 + 19.1)) + ((ListHousing[10] + ListHousing[11]) / 2 * ListPupilsHhld[11] * ACSecClass2021) * ACPropAdjustFact2021;
+
+            //tempObj.ListS2[11] = (ListS1[10] + ((ListHousing[10] + ListHousing[11]) / 2) * ListPupilsHhld[11] * ACSecClass2021) * ACPropAdjustFact2021;
+
+            //tempObj.ListS3[11] = (ListS2[10] + ((ListHousing[10] + ListHousing[11]) / 2) * ListPupilsHhld[11] * ACSecClass2021) * ACPropAdjustFact2021;
+
+            //tempObj.ListS4[11] = (ListS3[10] + ((ListHousing[10] + ListHousing[11]) / 2) * ListPupilsHhld[11] * ACSecClass2021) * ACPropAdjustFact2021;
+
+            //tempObj.ListS5[11] = ListS4[10] * ACStayOnRatio2021;
+
+            //tempObj.ListS6[11] = ListS5[10] * ACStayOnRatio22021;
+
+            //tempObj.ListMaxCap[11] = 200;
+
+            //tempObj.ListTotRollFunctWCap[11] = (schObj.ListTotalRoll[10] - schObj.ListMaxCap[11]);
+
+            //tempObj.ListTotRollFunctWCapPer[11] = (schObj.ListTotalRoll[10] / schObj.ListMaxCap[11]);
+
             tempObj.ListHousing = ListHousing;
             tempObj.ListP1Input = ListP1Input;
             tempObj.ListParentsCharter = ListParentsCharter;
             tempObj.ListPupilsHhld = ListPupilsHhld;
 
             vmSchoolRollForecastViewModel.schObj = tempObj;
-
-
+            vmSchoolRollForecastViewModel.selectedschoolname = vmtempViewModel.selectedschoolname;
+            vmSchoolRollForecastViewModel.listSchoolname = GetListSchoolName();
             return View("Home", vmSchoolRollForecastViewModel);
         }
     }
