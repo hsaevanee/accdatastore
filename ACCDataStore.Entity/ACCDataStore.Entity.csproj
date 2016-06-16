@@ -86,6 +86,7 @@
     <Compile Include="Mapping\MySQL\RightsCodeMap.cs" />
     <Compile Include="Mapping\MySQL\RightsMap.cs" />
     <Compile Include="SchoolProfiles\NationalIdentity.cs" />
+    <Compile Include="SchoolProfiles\SchoolNew.cs" />
     <Compile Include="SchoolProfile\Common.cs" />
     <Compile Include="SchoolProfiles\Costcentre.cs" />
     <Compile Include="SchoolProfile\EthnicBackgroundObj.cs" />

@@ -1,4 +1,6 @@
 ﻿using ACCDataStore.Entity.PupilsPopulation;
+using ACCDataStore.Helpers.ORM;
+using ACCDataStore.Helpers.ORM.Helpers.Security;
 using ACCDataStore.Repository;
 using ACCDataStore.Web.Areas.PupilsPopulation.ViewModels.Pupils05;
 using Common.Logging;
@@ -19,6 +21,17 @@ namespace ACCDataStore.Web.Areas.PupilsPopulation.Controllers
         public IndexPupilsPopulationController(IGenericRepository rpGeneric)
         {
             this.rpGeneric = rpGeneric;
+        }
+
+        [AdminAuthentication]
+        [Transactional]
+        public ActionResult IndexHome()
+        {
+            //var eGeneralSettings = TS.Core.Helper.ConvertHelper.XmlFile2Object(HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"), typeof(GeneralCounter)) as GeneralCounter;
+            //eGeneralSettings.CurriculumpgCounter++;
+            //TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
+           
+            return View("Home");
         }
         // GET: PupilsPopulation/IndexPupilsPopulation
         public ActionResult Index()

@@ -253,10 +253,11 @@ function drawChartColumn(data) {
 }
 
 function ShowPopupInfo(data) {
-    //var sInformation = "<a href='#' class='a-close-popup-information'>Close</a><h3>" + sName + "</h3>";
-    var sInformation = "<h3 align='center'>" + data.dataTitle + "</h3>";
-    sInformation += "<table class='style2'>";
-    sInformation += "<thead><tr><th> </th><th>" + data.dataname + "</th><th> Aberdeen City </th></tr></thead>";
+    var sInformation = "<hr><div class='panel panel-primary text-center'> <div class='panel-heading'>";
+    sInformation += "<h4 class='text-center'>" + data.dataTitle + "</h4>";
+    sInformation += "</div><div class='panel-body'>";
+    sInformation += "<table class='table table-bordered table-hover'>";
+    sInformation += "<thead><tr><th> </th><th class='text-center'>" + data.dataname + "</th><th class='text-center'> Aberdeen City </th></tr></thead>";
     sInformation += "<tbody>";
     if (data.dataCategories.length != 0) {
         for (var i = 0; i < data.dataCategories.length; i++) {
@@ -270,7 +271,7 @@ function ShowPopupInfo(data) {
     }
 
 
-    sInformation += "</tbody></table>";
+    sInformation += "</tbody></table></div></div>";
     ShowPopupInformation(sInformation);
 
 }

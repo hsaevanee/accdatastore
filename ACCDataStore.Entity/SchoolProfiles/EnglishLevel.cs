@@ -10,5 +10,9 @@ namespace ACCDataStore.Entity.SchoolProfiles
     {
         public virtual string ScotXedCode { get; set; }
         public virtual string Description { get; set; }
+        // attribute for MySql 
+        //public virtual int ID { get; set; }
+        //public virtual string Code { get; set; }
+        //public virtual string Description { get; set; }
     }
 }
