@@ -11,7 +11,7 @@ namespace ACCDataStore.Entity.SchoolProfile
     {
         public School school;
         public List<PupilObj> listpupils;
-        public double pupilscount;
+        public int count; //length of pupils list
         public double percentage;
         public double percentageFemale;
         public double percentageMale;

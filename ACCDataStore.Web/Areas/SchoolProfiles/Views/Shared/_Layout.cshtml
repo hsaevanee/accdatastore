@@ -107,30 +107,14 @@
                         <a href="@Url.Action("Index", "Index", new { Area = "" }, null)">Home</a>
                     </li>*@
                     <li>
-                        <a href="@Url.Action("Compareable", "IndexSchoolProfile", new { Area = "SchoolProfile" }, null)">Home</a>
+                        <a href="@Url.Action("Index", "IndexSchoolProfiles", new { Area = "SchoolProfiles" }, null)">Home</a>
                     </li>
                     <li>
-                        <a href="@Url.Action("Compareable", "EthnicBackground", new { Area = "SchoolProfile", sSchoolName = "" }, null)">EthnicBackground</a>
+                        <a href="@Url.Action("IndexPrimaryProfiles", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "2" }, null)">Primary Schools</a>
                     </li>
                     <li>
-                        <a href="@Url.Action("Index", "Nationality", new { Area = "SchoolProfile", sSchoolName = "" }, null)">Nationality</a>
+                        <a href="@Url.Action("IndexSecondaryProfiles", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "3" }, null)">Secondary Schools</a>
                     </li>
-                    <li>
-                        <a href="@Url.Action("Index", "SIMD", new { Area = "SchoolProfile", sSchoolName = "" }, null)">SIMD</a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("Index", "StudentStage", new { Area = "SchoolProfile", sSchoolName = "" }, null)">Student Stage</a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("Index", "Language", new { Area = "SchoolProfile", sSchoolName = "" }, null)">Level of English</a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("Index", "Curriculum", new { Area = "SchoolProfile", sSchoolName = "" }, null)">Curriculum for Excellence</a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("Index", "WiderAchievement", new { Area = "SchoolProfile", sSchoolName = "" }, null)">Wider Achievement</a>
-                    </li>
-
                 </ol>
             </div>
         </div>

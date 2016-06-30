@@ -1,0 +1,94 @@
+﻿@model ACCDataStore.Web.Areas.SchoolProfiles.ViewModels.SchoolProfiles.TredningViewModel
+@using System.Data;
+@section Header {
+<!-- Bootstrap Multiselect Plugin -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/jquery.js"></script>
+<script type="text/javascript" src="/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/bootstrap-multiselect.js" type="text/javascript"></script>
+<link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+<script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+<script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+<script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.html5.min.js"></script>
+<script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.print.min.js"></script>
+<link rel="stylesheet" href=" https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" type="text/css" />
+<link rel="stylesheet" href=" https://cdn.datatables.net/buttons/1.1.2/css/buttons.dataTables.min.css" type="text/css" />
+}
+@{
+    ViewBag.Title = "Pupilslist";
+}
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title text-center"></h3>
+                    </div>
+                    <div class="panel-body">
+                        <table id="datatable" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    @foreach (DataColumn col in @Model.dataSeriesDataTable.Columns)
+                                    {
+                                        if (Model.dataSeriesDataTable.Columns.IndexOf(col) == 0)
+                                        {
+
+                                            <th class="text-center">@col.ColumnName</th>
+                                        }
+                                        else
+                                        {
+                                            <th class="text-center">@col.ColumnName</th>
+                                            @*<th class="text-center"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "2", datatitle = "nationality", sSchoolName = @col.ColumnName }, null)">@col.ColumnName</a></th>*@
+                                        }
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (DataRow row in Model.dataSeriesDataTable.Rows)
+                                {
+                                    <tr>
+                                        @foreach (DataColumn col in Model.dataSeriesDataTable.Columns)
+                                        {
+                                            if (Model.dataSeriesDataTable.Columns.IndexOf(col) == 0)
+                                            {
+
+                                                <td class="text-left">@row[col.ColumnName]</td>
+                                            }
+                                            else
+                                            {
+                                                <td class="text-center">
+                                                    @row[col.ColumnName]
+                                                @*<input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="@row[col.ColumnName]" onclick="location.href='@Url.Action("GetListpupils", "IndexSchoolProfiles", new { area = "SchoolProfiles", datatitle = "nationalityData", Indexrow = Model.dataSeriesDataTable.Rows.IndexOf(row), Indexcol = Model.dataSeriesDataTable.Columns.IndexOf(col.ColumnName) })'" />*@
+                                            </td>
+                                            }
+                                        }
+                                    </tr>
+                                }
+
+                            </tbody>
+
+                        </table>
+
+                        <script type="text/javascript">
+                            $('#datatable').DataTable({
+                                paging: false,
+                                "aaSorting": [[0, "asc"]],
+                                dom: 'Bfrtip',
+                                buttons: [
+                               'copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5', 'print'
+                                ]
+                            });
+                        </script>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>

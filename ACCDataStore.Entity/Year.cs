@@ -18,25 +18,28 @@ namespace ACCDataStore.Entity
                 switch (value)
                 {
                     case "2008":
-                        this.academicyear = "2007/2008";
-                        break;
-                    case "2009":
                         this.academicyear = "2008/2009";
                         break;
-                    case "2010":
+                    case "2009":
                         this.academicyear = "2009/2010";
                         break;
-                    case "2011":
+                    case "2010":
                         this.academicyear = "2010/2011";
                         break;
-                    case "2012":
-                        this.academicyear = "2011/2012";
+                    case "2011":
+                        this.academicyear = "2011/2010";
                         break;
-                    case "2013":
+                    case "2012":
                         this.academicyear = "2012/2013";
                         break;
-                    case "2014":
+                    case "2013":
                         this.academicyear = "2013/2014";
+                        break;
+                    case "2014":
+                        this.academicyear = "2014/2015";
+                        break;
+                    case "2015":
+                        this.academicyear = "2015/2016";
                         break;
                 }
             }

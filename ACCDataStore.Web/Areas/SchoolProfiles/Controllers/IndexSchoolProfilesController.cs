@@ -12,163 +12,211 @@ using System.Web.Mvc;
 
 namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
 {
-    public class IndexSchoolProfilesController : Controller
+    public class IndexSchoolProfilesController : BaseSchoolProfileController
     {
-
         private static ILog log = LogManager.GetLogger(typeof(IndexSchoolProfilesController));
 
-        private readonly IGenericRepository3nd rpGeneric3nd;
+        private readonly IGenericRepository2nd rpGeneric2nd;
 
-        public IndexSchoolProfilesController(IGenericRepository3nd rpGeneric3nd)
+        private IndexPrimarySchoolProfilesViewModel vmIndexPrimarySchoolProfilesModel;
+        private IndexSecondarySchoolProfilesViewModel vmIndexSecondarySchoolProfilesModel;
+
+        public IndexSchoolProfilesController(IGenericRepository2nd rpGeneric2nd)
         {
-            this.rpGeneric3nd = rpGeneric3nd; // Connect with ScotXed_15 Database
+            this.rpGeneric2nd = rpGeneric2nd; //connect to accdatastore database in MySQL
+            this.vmIndexPrimarySchoolProfilesModel = new IndexPrimarySchoolProfilesViewModel();
+            this.vmIndexSecondarySchoolProfilesModel = new IndexSecondarySchoolProfilesViewModel();
         }
 
         // GET: SchoolProfiles/IndexSchoolProfiles
         public ActionResult Index()
         {
-            var vmIndexSchoolProfilesModel = new IndexSchoolProfilesViewModel();
-            //get list primary school pupils from database 
-            List<PupilObj> listPrimaryPupilData = this.rpGeneric3nd.Find<PupilObj>(" from PupilObj where Costcentre.schoolType_id = :schoolType_id ", new string[] { "schoolType_id" }, new object[] { 2 }).ToList(); 
-            Session["listPrimary_PupilData"] = listPrimaryPupilData;
-            vmIndexSchoolProfilesModel.listSchoolname = listPrimaryPupilData.Select(x => (Costcentre)x.Costcentre).Distinct().OrderBy(x=>x.name).ToList();
-            Session["listCostcentre"] = vmIndexSchoolProfilesModel.listSchoolname;
-
-            return View(vmIndexSchoolProfilesModel);
+           // this.vmIndexPrimarySchoolProfilesModel.listAllPupils = GetListAllPupils(rpGeneric2nd);
+            return View("Home");
         }
 
-        public ActionResult GetData()
+        public ActionResult IndexPrimaryProfiles(string sSchoolType)
         {
-            var vmIndexSchoolProfilesModel = new IndexSchoolProfilesViewModel();
-            List<PupilObj> listPupilData = Session["listPrimary_PupilData"] as List<PupilObj>;
-            List<Costcentre> listCostcentre = Session["listCostcentre"] as List<Costcentre>;
-            List<string> listSelectedSchoolname = new List<string>();
-            List<Costcentre> listSelectedCostcentre = new List<Costcentre>();
-            var mydicEhtnicBG = GetDicEhtnicBG();
+            //get data ready for set up profiles
+            vmIndexPrimarySchoolProfilesModel.listSchoolname = GetListSchool(rpGeneric2nd, sSchoolType);
+            vmIndexPrimarySchoolProfilesModel.listYears = GetListYear();
+            vmIndexPrimarySchoolProfilesModel.DicEnglishLevel = GetDicEnglisheLevel(rpGeneric2nd);
+            vmIndexPrimarySchoolProfilesModel.DicEthnicBG = GetDicEhtnicBG(rpGeneric2nd);
+            vmIndexPrimarySchoolProfilesModel.DicNationalIdentity = GetDicNationalIdenity(rpGeneric2nd);
+            Session["vmIndexPrimarySchoolProfilesModel"] = vmIndexPrimarySchoolProfilesModel;
+            return View("IndexPrimarySchool", vmIndexPrimarySchoolProfilesModel);
+        }
 
-            bool schoolIsSelect = false;
+        public ActionResult IndexSecondaryProfiles(string sSchoolType)
+        {
+
+            vmIndexSecondarySchoolProfilesModel.listSchoolname = GetListSchool(rpGeneric2nd, sSchoolType);
+            //vmIndexSecondarySchoolProfilesModel.listAllPupils = GetListAllPupils(rpGeneric2nd, "secondary");
+            vmIndexSecondarySchoolProfilesModel.listYears = GetListYear();
+            return View("IndexSecondarySchool", vmIndexSecondarySchoolProfilesModel);
+        }
+
+        public ActionResult GetPrimaryProfileData(string sSchoolType)
+        {
+            List<string> templistSelectedSchoolname = new List<string>();
+            List<StudentObj> listAllPupils = new List<StudentObj>();
+            List<School> listSelectedSchoolname = new List<School>();
+            bool schoolIsSelected = false;
+            bool yesrIsSelected = false;         
+            Year selectedYear = null;
+
+            vmIndexPrimarySchoolProfilesModel = Session["vmIndexPrimarySchoolProfilesModel"] as IndexPrimarySchoolProfilesViewModel;
+            List<School> templistSchoolname = vmIndexPrimarySchoolProfilesModel.listSchoolname;
+            List<Year> templistYears = vmIndexPrimarySchoolProfilesModel.listYears;
+
             if (Request["listSelectedSchoolname"] != null)
             {
-                schoolIsSelect = true;
+                schoolIsSelected = true;
                 //get CostCentreKey from dropdownlist in UI
-                listSelectedSchoolname = Request["listSelectedSchoolname"].Split(',').ToList();
+                templistSelectedSchoolname = Request["listSelectedSchoolname"].Split(',').ToList();
                 //select selected CostCentre from dropdownlist in UI
-                listSelectedCostcentre = listCostcentre.Where(x => listSelectedSchoolname.Any(y => Int32.Parse(y) == x.CostCentreKey)).ToList();
-                
+                listSelectedSchoolname = templistSchoolname.Where(x => templistSelectedSchoolname.Any(y => y.Contains(x.seedcode))).ToList();
             }
 
-            if (schoolIsSelect)
+            if (Request["selectedYear"] != null)
             {
-                DataTable ethnicBackgroundTable = GetEthnicBackgroundDataTable(listPupilData, listSelectedCostcentre);
+                yesrIsSelected = true;
+                string year = Request["selectedYear"].ToString();
+                selectedYear = templistYears.Where(x => x.year.Contains(year)).FirstOrDefault();
+            }
 
-             }
-            return View(vmIndexSchoolProfilesModel);
+            if (schoolIsSelected && yesrIsSelected)
+            {
+                listAllPupils = GetListAllPupils(rpGeneric2nd, selectedYear, sSchoolType);
+            }
+
+           //store selected school into view model
+            vmIndexPrimarySchoolProfilesModel.listSelectedSchoolname = listSelectedSchoolname;
+            vmIndexPrimarySchoolProfilesModel.selectedYear = selectedYear;
+            vmIndexPrimarySchoolProfilesModel.listAllPupils = listAllPupils;
+            //setting english data and table
+            List<DataSeries> temp = GetDataSeries("englishlevel", listAllPupils, listSelectedSchoolname, selectedYear);
+            vmIndexPrimarySchoolProfilesModel.listenglishDataSeries = temp;
+            vmIndexPrimarySchoolProfilesModel.englishLevelDataTable = CreateDataTale(temp, vmIndexPrimarySchoolProfilesModel.DicEnglishLevel, "Level of English");
+            //setting ethnic data and table
+            temp = GetDataSeries("ethnicity", listAllPupils, listSelectedSchoolname, selectedYear);
+            vmIndexPrimarySchoolProfilesModel.listethnicityDataSeries = temp;
+            vmIndexPrimarySchoolProfilesModel.ethnicityDataTable = CreateDataTale(temp, vmIndexPrimarySchoolProfilesModel.DicEthnicBG, "Ethnicity");
+            //setting Nationality data and table
+            temp = GetDataSeries("nationality", listAllPupils, listSelectedSchoolname, selectedYear);
+            vmIndexPrimarySchoolProfilesModel.listDataSeriesNationality = temp;
+            vmIndexPrimarySchoolProfilesModel.nationalityDataTable = CreateDataTale(temp, vmIndexPrimarySchoolProfilesModel.DicNationalIdentity, "Nationality");
+            //vmIndexPrimarySchoolProfilesModel.nationalityDataTable = GetNationalIdentityDataTable(rpGeneric2nd, listAllPupils, listSelectedSchoolname);
+            Session["vmIndexPrimarySchoolProfilesModel"] = vmIndexPrimarySchoolProfilesModel;
+            return View("IndexPrimarySchool", vmIndexPrimarySchoolProfilesModel);
         }
 
-        protected DataTable GetEthnicBackgroundDataTable(List<PupilObj> listPupilData, List<Costcentre> listSelectedCostcentre)
+        public ActionResult GetListpupils(string datatitle, string Indexrow, string Indexcol)
         {
-            List<object> listobject = new List<object>();
+            PupilsListViewModel vmPupilsListViewModel = new PupilsListViewModel();
+            vmIndexPrimarySchoolProfilesModel = Session["vmIndexPrimarySchoolProfilesModel"] as IndexPrimarySchoolProfilesViewModel;
+            List<DataSeries> listAllPupils = new List<DataSeries>();
+            List<StudentObj> listtempPupilData = new List<StudentObj>();
+            DataTable dataTable = new DataTable();
+            string colName = "";
+            string catagory = "";
+            string code = "";
+            string title = "";
 
-            var mydicEhtnicBG = GetDicEhtnicBG();
+            Dictionary<string, string> dictionary = new Dictionary<string, string>();
 
-            // get data for all primary schools
-            var listResultforAll = listPupilData.GroupBy(x => x.EthnicBackground.ScotXedcode).Select(y => new { EthnicBackgroundcode = y.Key, list = y.ToList(), count = y.ToList().Count() }).ToList();
-            //calculate the total number of pupils in Aberdeen
-            var sum = (decimal)listResultforAll.Select(r => r.count).Sum();
-            var listResultwithPercentage = listResultforAll.Select(y => new { CostCentreKey = 18775, EthnicBackgroundcode = y.EthnicBackgroundcode, list = y.list, count = y.count, percentage = sum != 0 ? (y.count / sum) * 100 : 0 }).ToList();
-            listobject.Add(listResultwithPercentage);
-
-            //select primary pupils for selected school
-            var listtempPupilData = listPupilData.Where(x => listSelectedCostcentre.Any(y => y.CostCentreKey == x.Costcentre.CostCentreKey)).ToList();
-
-            var listResult = listtempPupilData.GroupBy(x => new { x.Costcentre.CostCentreKey, x.EthnicBackground.ScotXedcode}).Select(y => new { CostCentreKey = y.Key.CostCentreKey, EthnicBackgroundcode = y.Key.ScotXedcode, list = y.ToList(), count = y.ToList().Count() }).ToList();
-
-            foreach (var item in listSelectedCostcentre)
+            switch (datatitle)
             {
-                var temp = listResult.FindAll(x => x.CostCentreKey == item.CostCentreKey).ToList();
-                sum = (decimal)temp.Select(r => r.count).Sum();
-                listResultwithPercentage = temp.Select(y => new { CostCentreKey = y.CostCentreKey, EthnicBackgroundcode = y.EthnicBackgroundcode, list = y.list, count = y.count, percentage = sum != 0 ? (y.count / sum) * 100 : 0 }).ToList();
-                listobject.Add(listResultwithPercentage);
+                case "englishLevel":
+                                  listAllPupils = vmIndexPrimarySchoolProfilesModel.listenglishDataSeries;
+                                  dataTable = vmIndexPrimarySchoolProfilesModel.englishLevelDataTable;
+                        colName = dataTable.Rows[Convert.ToInt16(Indexrow)][0].ToString();
+                dictionary = vmIndexPrimarySchoolProfilesModel.DicEnglishLevel;
+                code = dictionary.FirstOrDefault(x => x.Value.Contains(colName)).Key; //get englishlevelcode
+                catagory = dictionary.FirstOrDefault(x => x.Value.Contains(colName)).Value;
+                //query to get pupils list by code from DataSeries
+                listtempPupilData = listAllPupils.ElementAt(Convert.ToInt16(Indexcol) - 1).listdataitems.Where(x => x.itemcode.Equals(code)).FirstOrDefault().liststudents;
+                title = "Level of English";
+                    break;
+
+                case "ethnicityData":
+                 listAllPupils = vmIndexPrimarySchoolProfilesModel.listethnicityDataSeries;
+                dataTable = vmIndexPrimarySchoolProfilesModel.ethnicityDataTable;
+                colName = dataTable.Rows[Convert.ToInt16(Indexrow)][0].ToString();
+                dictionary = vmIndexPrimarySchoolProfilesModel.DicEthnicBG;
+                code = dictionary.FirstOrDefault(x => x.Value.Contains(colName)).Key; //get englishlevelcode
+                catagory = dictionary.FirstOrDefault(x => x.Value.Contains(colName)).Value;
+                //query to get pupils list by code from DataSeries
+                listtempPupilData = listAllPupils.ElementAt(Convert.ToInt16(Indexcol) - 1).listdataitems.Where(x => x.itemcode.Equals(code)).FirstOrDefault().liststudents;
+                title = "Ethnicity";
+                    break;
+
+                case "nationalityData":
+                                    listAllPupils = vmIndexPrimarySchoolProfilesModel.listDataSeriesNationality;
+                dataTable = vmIndexPrimarySchoolProfilesModel.nationalityDataTable;
+                colName = dataTable.Rows[Convert.ToInt16(Indexrow)][0].ToString();
+                dictionary = vmIndexPrimarySchoolProfilesModel.DicNationalIdentity;
+                code = dictionary.FirstOrDefault(x => x.Value.Contains(colName)).Key; //get englishlevelcode
+                catagory = dictionary.FirstOrDefault(x => x.Value.Contains(colName)).Value;
+                //query to get pupils list by code from DataSeries
+                listtempPupilData = listAllPupils.ElementAt(Convert.ToInt16(Indexcol) - 1).listdataitems.Where(x => x.itemcode.Equals(code)).FirstOrDefault().liststudents;
+                title = "Nationality";
+                    break;
+
+
             }
-
- 
-
-
-
-            DataTable ethnicBackgroundTable = new DataTable();
-            //add column headers to data table
-
-            ethnicBackgroundTable.Columns.Add("Nationality", typeof(string));
-            //ADDING select school names into column headers         
-            foreach(var item in listSelectedCostcentre){
-                ethnicBackgroundTable.Columns.Add(item.name, typeof(string));
-            }
- 
-                // foreach (var objitem in mydicEhtnicBG)
-                //{
-                //    objitem
-                //}
-                //ethnicBackgroundTable.Columns.Add(obj., typeof(string));
- 
-
-
-
-
-
-
-
-
-            //nationalityTable.Rows.Add(listResult, 100);
-            //nationalityTable.Rows.Add("AA", 100);
-            //nationalityTable.Rows.Add("AA", 100);
-
-
-            return ethnicBackgroundTable;
-
+            vmPupilsListViewModel.listPupils = listtempPupilData;
+            vmPupilsListViewModel.school = listAllPupils.ElementAt(Convert.ToInt16(Indexcol) - 1).school;
+            vmPupilsListViewModel.catagory = catagory;
+            vmPupilsListViewModel.datatile = title;
+            return View("Pupilslist", vmPupilsListViewModel);
         }
 
-        //not using
-        protected List<School> GetListSchool()
+        public ActionResult GetTrendData(string sSchoolType, string datatitle, string sSchoolName)
         {
-            var listResult = this.rpGeneric3nd.FindByNativeSQL("Select CostCentreKey, Name from View_Costcentre where  schoolType_id = 2 and costCentreKey in (Select distinct CostCentreKey from sx_pupil)");
+            TredningViewModel vmTrendingModel = new TredningViewModel();
+            vmTrendingModel.listYear = GetListYear();
 
-            //var listResult = this.rpGeneric3nd.FindAll<Costcentre>().ToList();
-
-            List<School> listdata = new List<School>();
-
-            if (listResult != null)
+            //declare variable
+            List<StudentObj> listAllPupils = new List<StudentObj>();
+            List<DataSeries> tempDataSeries = new List<DataSeries>();
+            List<List<DataSeries>> listobject = new List<List<DataSeries>>();
+            //get school from list of primaryschool based on schoolname
+            List<School> listSchoolname = GetListSchool(rpGeneric2nd, sSchoolType);
+            List<School> school = listSchoolname.Where(x => x.name.Equals(sSchoolName)).ToList();
+            string tabletitle = "";
+            
+            Dictionary<string, string> dictionary = new Dictionary<string, string>();
+            //get dictionary based on dataset
+            switch (datatitle)
             {
-                foreach (var itemRow in listResult)
-                {
-                    if (itemRow != null)
-                    {
-                        listdata.Add(new School(itemRow[0].ToString(), itemRow[1].ToString()));
-                    }
-                }
+                case "englishlevel":
+                    dictionary = GetDicEnglisheLevel(rpGeneric2nd);
+                    tabletitle = "Level of English";
+                    break;
+                case "ethnicity":
+                    dictionary = GetDicEhtnicBG(rpGeneric2nd);
+                    tabletitle = "Ethnicity";
+                    break;
+                case "nationality":
+                    dictionary = GetDicNationalIdenity(rpGeneric2nd);
+                    tabletitle = "Nationality";
+                    break;            
             }
-            return listdata;
+
+            foreach (var item in vmTrendingModel.listYear) {
+                listAllPupils = GetListAllPupils(rpGeneric2nd, item, sSchoolType);
+                tempDataSeries = GetDataSeries(datatitle, listAllPupils, school, item);
+                listobject.Add(tempDataSeries);
+            
+            }
+
+            vmTrendingModel.school = school;
+            vmTrendingModel.listDataSeries = listobject;
+            vmTrendingModel.dataSeriesDataTable = CreateDataTale(listobject, dictionary, tabletitle);
              
+
+            return View("Trending", vmTrendingModel);
         }
-
-        protected Dictionary<string, string> GetDicEhtnicBG()
-        {
-            var listResult = this.rpGeneric3nd.FindByNativeSQL("Select distinct ScotXedcode, value from Lu_EthnicBackground");
-
-            var dicNational = new Dictionary<string, string>();
-
-            if (listResult != null)
-            {
-                foreach (var itemRow in listResult)
-                {
-                    if (itemRow != null)
-                    {
-                        dicNational.Add(itemRow[0].ToString(), itemRow[1].ToString());
-                    }
-                }
-            }
-            return dicNational;
-
-        }
-
     }
 }

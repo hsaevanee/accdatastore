@@ -61,6 +61,7 @@
     <Compile Include="ChartData.cs" />
     <Compile Include="Mapping\MSAccess\SchoolProfiles\EnglishLevelMap.cs" />
     <Compile Include="Mapping\MSAccess\SchoolProfiles\NationalIdentityMap.cs" />
+    <Compile Include="SchoolProfiles\DataSeries.cs" />
     <Compile Include="SchoolProfiles\EnglishLevel.cs" />
     <Compile Include="SchoolProfiles\EthnicBackground.cs" />
     <Compile Include="CriteriaParameters.cs" />
@@ -85,9 +86,17 @@
     <Compile Include="RightsCode.cs" />
     <Compile Include="Mapping\MySQL\RightsCodeMap.cs" />
     <Compile Include="Mapping\MySQL\RightsMap.cs" />
+    <Compile Include="SchoolProfiles\Mapping\Student2013Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\Student2014Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\Student2015Map.cs" />
     <Compile Include="SchoolProfiles\NationalIdentity.cs" />
+    <Compile Include="SchoolProfiles\ObjectDetail.cs" />
     <Compile Include="SchoolProfiles\SchoolNew.cs" />
-    <Compile Include="SchoolProfile\Common.cs" />
+    <Compile Include="SchoolProfiles\Student2013.cs" />
+    <Compile Include="SchoolProfiles\Student2014.cs" />
+    <Compile Include="SchoolProfiles\Student2015.cs" />
+    <Compile Include="SchoolProfiles\StudentObj.cs" />
+    <Compile Include="Common.cs" />
     <Compile Include="SchoolProfiles\Costcentre.cs" />
     <Compile Include="SchoolProfile\EthnicBackgroundObj.cs" />
     <Compile Include="SchoolProfile\LuEnglishLevel.cs" />

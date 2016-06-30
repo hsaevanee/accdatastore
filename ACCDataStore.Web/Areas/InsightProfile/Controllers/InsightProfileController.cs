@@ -48,7 +48,10 @@ namespace ACCDataStore.Web.Areas.InsightProfile.Controllers
 
             var listResultMySQL21 = this.rpGeneric2nd.Find<Rights>(" from Rights where Users.UserID = :UserID ", new string[] { "UserID" }, new object[] { 1 });
 
-            var listResultMySQL = this.rpGeneric2nd.FindByNativeSQL("SELECT * from sch_primaryschool");
+            var listResultMySQL13 = this.rpGeneric2nd.FindByNativeSQL("SELECT * from test_student_2013");
+            var listResultMySQL14 = this.rpGeneric2nd.FindByNativeSQL("SELECT * from test_student_2014");
+            var listResultMySQL15 = this.rpGeneric2nd.FindByNativeSQL("SELECT * from test_student_2015");
+             
 
 
             return View();

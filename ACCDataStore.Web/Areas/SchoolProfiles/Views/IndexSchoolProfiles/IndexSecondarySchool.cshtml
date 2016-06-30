@@ -1,4 +1,4 @@
-﻿@model ACCDataStore.Web.Areas.SchoolProfiles.ViewModels.SchoolProfiles.IndexSchoolProfilesViewModel
+﻿@model ACCDataStore.Web.Areas.SchoolProfiles.ViewModels.SchoolProfiles.IndexSecondarySchoolProfilesViewModel
 @using System.Data;
  
 @section Header {
@@ -27,15 +27,15 @@
                 <div class="col-md-12">
                     <div class="panel panel-primary text-center">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Please Select School</h3>
+                            <h3 class="panel-title">Please Select Secondary School</h3>
                         </div>
                         <div class="panel-body">
                             @using (Html.BeginForm("GetData", "IndexSchoolProfiles", new { area = "SchoolProfiles" }))
                             {
                                 <table class="table table-bordered">
                                     <tr>
-                                        <td class="text-left">
-                                            @Html.DropDownListFor(x => x.listSelectedSchoolname, new MultiSelectList(Model.listSchoolname, "CostCentreKey", "name"), new { Multiple = "multiple" })
+                                        <td class="text-center">
+                                            @Html.DropDownListFor(x => x.listSelectedSchoolname, new MultiSelectList(Model.listSchoolname, "seedcode", "name"), new { Multiple = "multiple" })
                                         </td>
                                     </tr>
                                 </table>
@@ -50,16 +50,45 @@
                 </div>
 
         <!-- Initialize the plugin: -->
-                <script type="text/javascript">
-                                                $(document).ready(function () {
-                                                    $('#listSelectedSchoolname').multiselect({
-                                                        uttonWidth: '400px',
-                                                        maxHeight: 200,
-                                                        enableFiltering: true,
-                                                        numberDisplayed: 3
-                                                    });
-                                                });
-                </script>
+        <script type="text/javascript">
+    $(document).ready(function () {
+        $('#listSelectedSchoolname').multiselect({
+            buttonWidth: '80%',
+            nonSelectedText: '--- School Name ---',
+            maxHeight: 200,
+            enableFiltering: true,
+            numberDisplayed: 3,
+            onChange: function (option, checked) {
+                // Get selected options.
+                var selectedOptions = $('#listSelectedSchoolname option:selected');
+
+                if (selectedOptions.length >= 3) {
+                    // Disable all other checkboxes.
+                    var nonSelectedOptions = $('#listSelectedSchoolname option').filter(function () {
+                        return !$(this).is(':selected');
+                    });
+
+                    var dropdown = $('listSelectedSchoolname').siblings('.multiselect-container');
+                    nonSelectedOptions.each(function () {
+                        var input = $('input[value="' + $(this).val() + '"]');
+                        input.prop('disabled', true);
+                        input.parent('li').addClass('disabled');
+                    });
+                }
+                else {
+                    // Enable all checkboxes.
+                    var dropdown = $('#listSelectedSchoolname').siblings('.multiselect-container');
+                    $('#listSelectedSchoolname option').each(function () {
+                        var input = $('input[value="' + $(this).val() + '"]');
+                        input.prop('disabled', false);
+                        input.parent('li').addClass('disabled');
+                    });
+                }
+            }
+        });
+    });
+        </script>
+
             <hr>
             <!-- Content Row -->
             <div class="row">
