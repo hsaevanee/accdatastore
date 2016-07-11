@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ACCDataStore.Entity.SchoolProfiles
 {
-    public class StudentObj : BaseEntity
+    public class StudentObjtemp : BaseEntity
     {
         public virtual int ID { get; set; }
         public virtual string LaCode { get; set; }

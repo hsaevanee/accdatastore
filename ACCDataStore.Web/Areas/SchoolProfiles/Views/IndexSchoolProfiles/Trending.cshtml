@@ -17,6 +17,11 @@
 <script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.print.min.js"></script>
 <link rel="stylesheet" href=" https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" type="text/css" />
 <link rel="stylesheet" href=" https://cdn.datatables.net/buttons/1.1.2/css/buttons.dataTables.min.css" type="text/css" />
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/data.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+<script src="~/Scripts/accdatastore/areas/schoolprofiles/views/IndexSchoolProfile/Trending.js"></script>
 }
 @{
     ViewBag.Title = "Pupilslist";
@@ -28,66 +33,77 @@
             <div class="col-md-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title text-center"></h3>
+                        <h3 class="panel-title text-center">@Model.school.ElementAt(0).name - @Model.datatitle</h3>
                     </div>
                     <div class="panel-body">
-                        <table id="datatable" class="table table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    @foreach (DataColumn col in @Model.dataSeriesDataTable.Columns)
+                        <div class="table-responsive">
+                            <table id="datatable" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        @foreach (DataColumn col in @Model.dataTableSchool.Columns)
                                     {
-                                        if (Model.dataSeriesDataTable.Columns.IndexOf(col) == 0)
+                                        if (Model.dataTableSchool.Columns.IndexOf(col) == 0)
                                         {
 
-                                            <th class="text-center">@col.ColumnName</th>
+                                    <th class="text-center">@col.ColumnName</th>
                                         }
                                         else
                                         {
-                                            <th class="text-center">@col.ColumnName</th>
-                                            @*<th class="text-center"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "2", datatitle = "nationality", sSchoolName = @col.ColumnName }, null)">@col.ColumnName</a></th>*@
+                                    <th class="text-center">@col.ColumnName</th>
+                                    @*<th class="text-center"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "2", datatitle = "nationality", sSchoolName = @col.ColumnName }, null)">@col.ColumnName</a></th>*@
                                         }
                                     }
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (DataRow row in Model.dataSeriesDataTable.Rows)
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (DataRow row in Model.dataTableSchool.Rows)
                                 {
-                                    <tr>
-                                        @foreach (DataColumn col in Model.dataSeriesDataTable.Columns)
+                                <tr>
+                                    @foreach (DataColumn col in Model.dataTableSchool.Columns)
                                         {
-                                            if (Model.dataSeriesDataTable.Columns.IndexOf(col) == 0)
+                                            if (Model.dataTableSchool.Columns.IndexOf(col) == 0)
                                             {
 
-                                                <td class="text-left">@row[col.ColumnName]</td>
+                                        <td class="text-left">@row[col.ColumnName]</td>
                                             }
                                             else
                                             {
-                                                <td class="text-center">
-                                                    @row[col.ColumnName]
-                                                @*<input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="@row[col.ColumnName]" onclick="location.href='@Url.Action("GetListpupils", "IndexSchoolProfiles", new { area = "SchoolProfiles", datatitle = "nationalityData", Indexrow = Model.dataSeriesDataTable.Rows.IndexOf(row), Indexcol = Model.dataSeriesDataTable.Columns.IndexOf(col.ColumnName) })'" />*@
-                                            </td>
+                                        <td class="text-center">
+                                            @row[col.ColumnName]
+                                            @*<input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="@row[col.ColumnName]" onclick="location.href='@Url.Action("GetListpupils", "IndexSchoolProfiles", new { area = "SchoolProfiles", datatitle = "nationalityData", Indexrow = Model.dataSeriesDataTable.Rows.IndexOf(row), Indexcol = Model.dataSeriesDataTable.Columns.IndexOf(col.ColumnName) })'" />*@
+                                        </td>
                                             }
                                         }
-                                    </tr>
+                                </tr>
                                 }
 
-                            </tbody>
+                                </tbody>
 
-                        </table>
+                            </table>
+                        </div>
+                            <script type="text/javascript">
+                                var datatitle = function () { return @Html.Raw(Json.Encode(Model.datatitle)); }();
 
-                        <script type="text/javascript">
-                            $('#datatable').DataTable({
-                                paging: false,
-                                "aaSorting": [[0, "asc"]],
-                                dom: 'Bfrtip',
-                                buttons: [
-                               'copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5', 'print'
-                                ]
-                            });
-                        </script>
-                    </div>
+                                @*var schoolname = function () { return @Html.Raw(Json.Encode(@Model.school.ElementAt(0).name)); }();*@
+
+                                $('#datatable').DataTable({
+                                    paging: false,
+                                    "aaSorting": [[0, "asc"]],
+                                    dom: 'Bfrtip',
+                                    buttons: [
+                                   'copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5', 'print'
+                                    ]
+                                });
+                            </script>
+                        </div>
                 </div>
 
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div id="Chartcontainer" style="width: 100%;"></div>
             </div>
         </div>
     </div>

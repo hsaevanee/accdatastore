@@ -1,6 +1,5 @@
 ﻿
 $(document).ready(function () {
-
     $('#FreeMealDatatable').DataTable({
         dom: 'Bfrtip',
         paging: false,
@@ -15,7 +14,6 @@ $(document).ready(function () {
             ]
         }
     });
-
 
     $('#LookedAfterDatatable').DataTable({
         dom: 'Bfrtip',
@@ -98,39 +96,6 @@ $(document).ready(function () {
 
 });
 
-function DrawTempGraph() {
-    var options = {
-        chart: {
-            renderTo: 'TempGraphContainer',
-            type: 'spline'
-        },
-        series: [{}]
-    };
-
-    $.getJSON('jsonDataTable', function (data) {
-        options.series[0].data = data;
-        var chart = new Highcharts.Chart(options);
-    });
-
-}
-
-function requestData() {
-    $.ajax({
-        url: 'api/v1/dashboard/month_mention_graphic',
-        type: "GET",
-        dataType: "json",
-        data: { username: "demo" },
-        success: function (data) {
-            chart.addSeries({
-                name: "mentions",
-                data: data.month_mentions_graphic
-            });
-        },
-        cache: false
-    });
-}
-
-
 function DrawNationlityGraph() {
     var data = {
         table: 'Nationalitydatatable',
@@ -210,7 +175,7 @@ function DrawEnglishLevelGraph() {
     var chart = $('#EnglishLevelGraphContainer').highcharts(json, function(chart)
     {
         //remove English as a \"first-language\" data from graphs
-        //console.log(chart)
+        console.log(chart)
         var len = this.series.length
         var newCategories = [];
         //remove point in dataseries
@@ -228,7 +193,7 @@ function DrawEnglishLevelGraph() {
         for (j = 0; j < this.series[0].data.length; j++) {
             newCategories.push(this.series[0].data[j].name);
         }
-        this.xAxis[0].setCategories(newCategories); // set new x label
+        this.xAxis[0].setCategories(newCategories); // set net x label
     }
     );
 

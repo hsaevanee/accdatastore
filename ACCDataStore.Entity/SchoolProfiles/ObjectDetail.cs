@@ -16,6 +16,5 @@ namespace ACCDataStore.Entity.SchoolProfiles
         public double percentage;
         public double percentageFemale;
         public double percentageMale;
-
     }
 }

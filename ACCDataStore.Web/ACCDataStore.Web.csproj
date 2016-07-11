@@ -248,8 +248,10 @@
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\EthnicBackground\EthnicBackground.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\EthnicBackground\EthnicBackground2.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\EthnicBackground\MapIndex.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\IndexSecondarySchool.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\IndexPrimarySchool.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\IndexSchoolProfile.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\Trending.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Language\LevelOfEnglish.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Language\MapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Nationality\MapIndex.js" />

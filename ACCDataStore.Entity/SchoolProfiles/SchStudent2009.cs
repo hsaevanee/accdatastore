@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ACCDataStore.Entity.SchoolProfiles
 {
-    public class Student2014: StudentObj
+    public class SchStudent2009: StudentObj
     {
     }
 }

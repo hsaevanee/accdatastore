@@ -58,9 +58,9 @@
                                     {
                                         <tr>
                                             <td class="text-left">@item.StudentID</td>
-                                            <td class="text-left">@item.SCN</td>
+                                            <td class="text-left">@item.ScottishCandidateNumber</td>
                                             <td class="text-left">@{var name = item.ForeName + " " + item.SurName;} @name</td>
-                                            <td class="text-center">@item.Stage</td>
+                                            <td class="text-center">@item.StudentStage</td>
                                             @*<td>
                                                 <input type="button" class="btn btn-info btn-xs text-center" style="width: 80px; height:25px" value="Full Details" onclick="location.href='@Url.Action("Getpupilsdetails", "IndexDatahub", new { pupil = item.SCN })'" />
                                             </td>*@

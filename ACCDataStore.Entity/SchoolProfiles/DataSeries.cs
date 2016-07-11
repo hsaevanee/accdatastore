@@ -11,5 +11,7 @@ namespace ACCDataStore.Entity.SchoolProfiles
         public School school;
         public Year year;
         public List<ObjectDetail> listdataitems;
+        public double checkSumPercentage;
+        public int checkSumCount;
     }
 }
