@@ -1,8 +1,8 @@
-﻿@model ACCDataStore.Web.Areas.SchoolProfiles.ViewModels.SchoolProfiles.IndexSecondarySchoolProfilesViewModel
+﻿@model ACCDataStore.Web.Areas.SchoolProfiles.ViewModels.SchoolProfiles.IndexAberdeenProfileViewModel
 @using System.Data;
 @section Header {
     @*<link rel="stylesheet" href="~/Content/accdatastore/areas/nationality/views/nationality/nationality.css" type="text/css" />*@
-    <script src="~/Scripts/accdatastore/areas/schoolprofiles/views/IndexSchoolProfile/IndexSecondarySchool.js"></script>
+    <script src="~/Scripts/accdatastore/areas/schoolprofiles/views/IndexSchoolProfile/IndexAberdeenProfile.js"></script>
     <!-- Bootstrap Multiselect Plugin -->
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -34,10 +34,10 @@
             <div class="col-md-12">
                 <div class="panel panel-primary text-center">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Please Select Secondary School</h3>
+                        <h3 class="panel-title">Please Select Year for Aberdeen City Profile</h3>
                     </div>
                     <div class="panel-body">
-                        @using (Html.BeginForm("GetSecondaryProfileData", "IndexSchoolProfiles", new { area = "SchoolProfiles", sSchoolType = "3" }))
+                        @using (Html.BeginForm("GetAberdeenProfileData", "IndexAberdeenProfile", new { area = "SchoolProfiles", sSchoolType = "5" }))
                         {
                             <table class="table table-bordered">
                                 <tbody>
@@ -47,8 +47,6 @@
                                         </td>
                                         <td class="text-left" colspan="2">
                                             @Html.DropDownListFor(x => x.listSelectedSchoolname, new MultiSelectList(Model.listSchoolname, "seedcode", "name"), new { Multiple = "multiple" })
-
-                                            * Maximum 3 Schools
                                         </td>
                                         @*<td class="text-center" width="20%"> * Maximum 3 Schools </td>*@
 
@@ -71,79 +69,20 @@
         <!-- Initialize the plugin: -->
         <script type="text/javascript">
             $(document).ready(function () {
-
-                //var selectid = @Html.Raw(Json.Encode(Model.listSelectedSchoolname.Select(x=>x.seedcode).ToList()));
-
                 var selectid = function () { return @Html.Raw(Json.Encode(Model.listSelectedSchoolname.Select(x => x.seedcode).ToList())); }();
-                // alert(selectid22.length)
 
                 $('#listSelectedSchoolname').multiselect({
                     buttonWidth: '80%',
-                    nonSelectedText: '--- Please Select School ---',
+                    nonSelectedText: '--- Please Select Aberdeen City ---',
                     maxHeight: 200,
                     enableFiltering: true,
                     numberDisplayed: 3,
-                    onDropdownShow: function (event) {
-                        var selectedOptions = $('#listSelectedSchoolname option:selected');
-                        if (selectedOptions.length == 0) {
-                            $('#buttonGetData').prop('disabled', true);
-                        } else if (selectedOptions.length >= 3) {
-                            // Disable all other checkboxes.
-                            var nonSelectedOptions = $('#listSelectedSchoolname option').filter(function () {
-                                return !$(this).is(':selected');
-                            });
-
-                            var dropdown = $('listSelectedSchoolname').siblings('.multiselect-container');
-                            nonSelectedOptions.each(function () {
-                                var input = $('input[value="' + $(this).val() + '"]');
-                                input.prop('disabled', true);
-                                input.parent('li').addClass('disabled');
-                            });
-                        }
-                        else {
-                            // Enable all checkboxes.
-                            var dropdown = $('#listSelectedSchoolname').siblings('.multiselect-container');
-                            $('#listSelectedSchoolname option').each(function () {
-                                var input = $('input[value="' + $(this).val() + '"]');
-                                input.prop('disabled', false);
-                                input.parent('li').addClass('disabled');
-                            });
-                            $('#buttonGetData').prop('disabled', false);
-                        }
-                    },
-                    onChange: function (option, checked) {
-                        // Get selected options.
-                        var selectedOptions = $('#listSelectedSchoolname option:selected');
-                        if (selectedOptions.length == 0) {
-                            $('#buttonGetData').prop('disabled', true);
-                        } else if (selectedOptions.length >= 3) {
-                            // Disable all other checkboxes.
-                            var nonSelectedOptions = $('#listSelectedSchoolname option').filter(function () {
-                                return !$(this).is(':selected');
-                            });
-
-                            var dropdown = $('listSelectedSchoolname').siblings('.multiselect-container');
-                            nonSelectedOptions.each(function () {
-                                var input = $('input[value="' + $(this).val() + '"]');
-                                input.prop('disabled', true);
-                                input.parent('li').addClass('disabled');
-                            });
-                        }
-                        else {
-                            // Enable all checkboxes.
-                            var dropdown = $('#listSelectedSchoolname').siblings('.multiselect-container');
-                            $('#listSelectedSchoolname option').each(function () {
-                                var input = $('input[value="' + $(this).val() + '"]');
-                                input.prop('disabled', false);
-                                input.parent('li').addClass('disabled');
-                            });
-                            $('#buttonGetData').prop('disabled', false);
-                        }
-                    }
                 });
                 $('#listSelectedSchoolname').multiselect('select', selectid);
 
                 $('#listSelectedSchoolname').multiselect('refresh');
+
+                $("#listSelectedSchoolname").multiselect("disable");
 
             });
         </script>
@@ -215,8 +154,7 @@
                                 </table>
                                 <p class="text-right"><a href="http://www.gov.scot/Topics/Statistics/Browse/School-Education/dspupcensus/dspupcensus15">Pupils in Scotland 2015: Scottish Government Publication</a></p>
 
-                            </div>
-
+                            </div>                            
                         </div>
                     </div>
                 </div>

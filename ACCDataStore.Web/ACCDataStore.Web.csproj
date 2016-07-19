@@ -248,6 +248,8 @@
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\EthnicBackground\EthnicBackground.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\EthnicBackground\EthnicBackground2.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\EthnicBackground\MapIndex.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\IndexAberdeenProfile.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\IndexSpecialSchool.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\IndexSecondarySchool.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\IndexPrimarySchool.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\IndexSchoolProfile.js" />
@@ -337,10 +339,12 @@
     <Compile Include="Areas\PupilsPopulation\PupilsPopulationAreaRegistration.cs" />
     <Compile Include="Areas\PupilsPopulation\ViewModels\Pupils05\Pupils05Data.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\BaseSchoolProfileController.cs" />
+    <Compile Include="Areas\SchoolProfiles\Controllers\IndexAberdeenProfileController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\IndexSchoolProfilesController.cs" />
     <Compile Include="Areas\SchoolProfiles\SchoolProfilesAreaRegistration.cs" />
     <Compile Include="Areas\SchoolProfiles\ViewModels\SchoolProfiles\BaseSchoolProfilesViewModel.cs" />
     <Compile Include="Areas\SchoolProfiles\ViewModels\SchoolProfiles\IndexPrimarySchoolProfilesViewModel.cs" />
+    <Compile Include="Areas\SchoolProfiles\ViewModels\SchoolProfiles\IndexAberdeenProfileViewModel.cs" />
     <Compile Include="Areas\SchoolProfiles\ViewModels\SchoolProfiles\IndexSecondarySchoolProfilesViewModel.cs" />
     <Compile Include="Areas\SchoolProfiles\ViewModels\SchoolProfiles\PupilsListViewModel.cs" />
     <Compile Include="Areas\SchoolProfiles\ViewModels\SchoolProfiles\TredningViewModel.cs" />
@@ -490,6 +494,9 @@
     <Content Include="Areas\SchoolProfiles\Views\IndexSchoolProfiles\IndexPrimarySchool.cshtml" />
     <Content Include="Areas\SchoolProfiles\Views\IndexSchoolProfiles\Pupilslist.cshtml" />
     <Content Include="Areas\SchoolProfiles\Views\IndexSchoolProfiles\Trending.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\IndexSchoolProfiles\IndexSpecialSchool.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\IndexSchoolProfiles\SchoolWebsites.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\IndexAberdeenProfile\IndexAberdeenCity.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\About.cshtml" />

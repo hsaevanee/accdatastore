@@ -9,10 +9,12 @@ using System.Web;
 
 namespace ACCDataStore.Web.Areas.SchoolProfiles.ViewModels.SchoolProfiles
 {
-    public class IndexPrimarySchoolProfilesViewModel : BaseSchoolProfilesViewModel
+    public class IndexAberdeenProfileViewModel : BaseSchoolProfilesViewModel
     {
-        public DataTable dataTablePIPS { get; set; }
-        public List<DataSeries> listDataSeriesPIPS { get; set; }
-        public List<PIPSObj> listPIPSPupils { get; set; }
+        public DataTable dataTableStagePrimary { get; set; }
+        public DataTable dataTableStageSecondary { get; set; }
+        public DataTable dataTableStageSpecial { get; set; }
+
+
     }
 }

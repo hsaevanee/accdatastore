@@ -2,7 +2,7 @@
 @using System.Data;
 @section Header {
     @*<link rel="stylesheet" href="~/Content/accdatastore/areas/nationality/views/nationality/nationality.css" type="text/css" />*@
-    <script src="~/Scripts/accdatastore/areas/schoolprofiles/views/IndexSchoolProfile/IndexSecondarySchool.js"></script>
+    <script src="~/Scripts/accdatastore/areas/schoolprofiles/views/IndexSchoolProfile/IndexSpecialSchool.js"></script>
     <!-- Bootstrap Multiselect Plugin -->
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -34,10 +34,10 @@
             <div class="col-md-12">
                 <div class="panel panel-primary text-center">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Please Select Secondary School</h3>
+                        <h3 class="panel-title">Please Select Special School</h3>
                     </div>
                     <div class="panel-body">
-                        @using (Html.BeginForm("GetSecondaryProfileData", "IndexSchoolProfiles", new { area = "SchoolProfiles", sSchoolType = "3" }))
+                        @using (Html.BeginForm("GetSpecialProfileData", "IndexSchoolProfiles", new { area = "SchoolProfiles", sSchoolType = "4" }))
                         {
                             <table class="table table-bordered">
                                 <tbody>
@@ -154,8 +154,10 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="panel panel-primary text-center">
-                        <h3 class="text-center">Pupil Census Information for @Model.selectedYear.academicyear</h3>
-                        <h3 class="text-center">@Model.profiletitle</h3>
+                        <div class="panel-heading">
+                            <h3 class="panel-title text-center">Pupil Census Information for @Model.selectedYear.academicyear</h3>
+                            <h3 class="panel-title text-center">@Model.profiletitle</h3>
+                        </div>
                     </div>
                 </div>
             </div>

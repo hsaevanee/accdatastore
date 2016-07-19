@@ -22,12 +22,15 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
 
         private IndexPrimarySchoolProfilesViewModel vmIndexPrimarySchoolProfilesModel;
         private IndexSecondarySchoolProfilesViewModel vmIndexSecondarySchoolProfilesModel;
+        private IndexSecondarySchoolProfilesViewModel vmIndexSpecialSchoolProfilesModel;
 
         public IndexSchoolProfilesController(IGenericRepository2nd rpGeneric2nd)
         {
             this.rpGeneric2nd = rpGeneric2nd; //connect to accdatastore database in MySQL
             this.vmIndexPrimarySchoolProfilesModel = new IndexPrimarySchoolProfilesViewModel();
             this.vmIndexSecondarySchoolProfilesModel = new IndexSecondarySchoolProfilesViewModel();
+            this.vmIndexSpecialSchoolProfilesModel = new IndexSecondarySchoolProfilesViewModel();
+
         }
 
         // GET: SchoolProfiles/IndexSchoolProfiles
@@ -35,6 +38,12 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         {
            // this.vmIndexPrimarySchoolProfilesModel.listAllPupils = GetListAllPupils(rpGeneric2nd);
             return View("Home");
+        }
+
+        public ActionResult SchoolWebsites()
+        {
+            // this.vmIndexPrimarySchoolProfilesModel.listAllPupils = GetListAllPupils(rpGeneric2nd);
+            return View("SchoolWebsites");
         }
 
         public ActionResult IndexPrimaryProfiles(string sSchoolType)
@@ -69,10 +78,28 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             return View("IndexSecondarySchool", vmIndexSecondarySchoolProfilesModel);
         }
 
+        public ActionResult IndexSpecialProfiles(string sSchoolType)
+        {
+
+            vmIndexSpecialSchoolProfilesModel.listSchoolname = GetListSchool(rpGeneric2nd, sSchoolType);
+            vmIndexSpecialSchoolProfilesModel.listSelectedSchoolname = vmIndexSpecialSchoolProfilesModel.listSchoolname.Where(x => x.seedcode.Equals("5245044")).ToList();
+            vmIndexSpecialSchoolProfilesModel.listYears = GetListYear();
+            vmIndexSpecialSchoolProfilesModel.DicEnglishLevel = GetDicEnglisheLevel(rpGeneric2nd);
+            vmIndexSpecialSchoolProfilesModel.DicEthnicBG = GetDicEhtnicBG(rpGeneric2nd);
+            vmIndexSpecialSchoolProfilesModel.DicNationalIdentity = GetDicNationalIdenity(rpGeneric2nd);
+            vmIndexSpecialSchoolProfilesModel.DicStage = GetDicStage(rpGeneric2nd, sSchoolType);
+            vmIndexSpecialSchoolProfilesModel.DicFreeMeal = GetDicFreeSchoolMeal();
+            vmIndexSpecialSchoolProfilesModel.DicLookedAfter = GetDicLookAfter();
+            Session["vmIndexSpecialSchoolProfilesModel"] = vmIndexSpecialSchoolProfilesModel;
+            return View("IndexSpecialSchool", vmIndexSpecialSchoolProfilesModel);
+        }
+
+
         public ActionResult GetPrimaryProfileData(string sSchoolType)
         {
             List<string> templistSelectedSchoolname = new List<string>();
             List<StudentObj> listAllPupils = new List<StudentObj>();
+            List<PIPSObj> listPIPSPupils = new List<PIPSObj>();
             List<School> listSelectedSchoolname = new List<School>();
             bool schoolIsSelected = false;
             bool yesrIsSelected = false;         
@@ -81,6 +108,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             vmIndexPrimarySchoolProfilesModel = Session["vmIndexPrimarySchoolProfilesModel"] as IndexPrimarySchoolProfilesViewModel;
             List<School> templistSchoolname = vmIndexPrimarySchoolProfilesModel.listSchoolname;
             List<Year> templistYears = vmIndexPrimarySchoolProfilesModel.listYears;
+
+
 
             if (Request["listSelectedSchoolname"] != null)
             {
@@ -101,37 +130,52 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             if (schoolIsSelected && yesrIsSelected)
             {
                 listAllPupils = GetListAllPupils(rpGeneric2nd, selectedYear, sSchoolType);
+                listPIPSPupils = GetPIPSPupils(rpGeneric2nd, selectedYear, listSelectedSchoolname);          
             }
+
+            //create profiletitle
+            string tempProfiletitle = "";
+            foreach (var item in listSelectedSchoolname)
+            {
+                tempProfiletitle = tempProfiletitle + " /"+ item.name;
+            
+            }
+            vmIndexPrimarySchoolProfilesModel.profiletitle = tempProfiletitle;
 
            //store selected school into view model
             vmIndexPrimarySchoolProfilesModel.listSelectedSchoolname = listSelectedSchoolname;
             vmIndexPrimarySchoolProfilesModel.selectedYear = selectedYear;
             vmIndexPrimarySchoolProfilesModel.listAllPupils = listAllPupils;
+            vmIndexPrimarySchoolProfilesModel.listPIPSPupils = listPIPSPupils;
             //setting english data and table
-            List<DataSeries> temp = GetDataSeries("englishlevel", listAllPupils, listSelectedSchoolname, selectedYear);
+            List<DataSeries> temp = GetDataSeries("englishlevel", listAllPupils, listSelectedSchoolname, selectedYear, sSchoolType);
             vmIndexPrimarySchoolProfilesModel.listDataSeriesEnglishLevel = temp;
             //vmIndexPrimarySchoolProfilesModel.englishLevelDataTable = GenerateTransposedTable(CreateDataTale(temp, vmIndexPrimarySchoolProfilesModel.DicEnglishLevel, "Level of English"));
             vmIndexPrimarySchoolProfilesModel.dataTableEnglishLevel = CreateDataTale(temp, vmIndexPrimarySchoolProfilesModel.DicEnglishLevel, "Level of English", "percentage");
             //setting ethnic data and table
-            temp = GetDataSeries("ethnicity", listAllPupils, listSelectedSchoolname, selectedYear);
+            temp = GetDataSeries("ethnicity", listAllPupils, listSelectedSchoolname, selectedYear, sSchoolType);
             vmIndexPrimarySchoolProfilesModel.listDataSeriesEthnicBackground = temp;
             vmIndexPrimarySchoolProfilesModel.dataTableEthnicBackground = CreateDataTale(temp, vmIndexPrimarySchoolProfilesModel.DicEthnicBG, "Ethnicity", "percentage");
             //setting Nationality data and table
-            temp = GetDataSeries("nationality", listAllPupils, listSelectedSchoolname, selectedYear);
+            temp = GetDataSeries("nationality", listAllPupils, listSelectedSchoolname, selectedYear, sSchoolType);
             vmIndexPrimarySchoolProfilesModel.listDataSeriesNationality = temp;
             vmIndexPrimarySchoolProfilesModel.dataTableNationality = CreateDataTale(temp, vmIndexPrimarySchoolProfilesModel.DicNationalIdentity, "Nationality", "percentage");
             //setting Stage data and table
-            temp = GetDataSeries("stage", listAllPupils, listSelectedSchoolname, selectedYear);
+            temp = GetDataSeries("stage", listAllPupils, listSelectedSchoolname, selectedYear, sSchoolType);
             vmIndexPrimarySchoolProfilesModel.listDataSeriesStage = temp;
-            vmIndexPrimarySchoolProfilesModel.dataTableStage = CreateDataTale(temp, vmIndexPrimarySchoolProfilesModel.DicStage, "Stage", "number");
+            vmIndexPrimarySchoolProfilesModel.dataTableStage = CreateDataTaleWithTotal(temp, vmIndexPrimarySchoolProfilesModel.DicStage, "Stage", "number");
             //setting FreeSchoolMeal data and table
-            temp = GetDataSeries("freemeal", listAllPupils, listSelectedSchoolname, selectedYear);
+            temp = GetDataSeries("freemeal", listAllPupils, listSelectedSchoolname, selectedYear, sSchoolType);
             vmIndexPrimarySchoolProfilesModel.listDataSeriesFreeMeal = temp;
             vmIndexPrimarySchoolProfilesModel.dataTableFreeSchoolMeal = CreateDataTale(temp, vmIndexPrimarySchoolProfilesModel.DicFreeMeal, "Free School Meal Entitlement", "percentage");
             //setting LookAfter data and table
-            temp = GetDataSeries("lookafter", listAllPupils, listSelectedSchoolname, selectedYear);
+            temp = GetDataSeries("lookafter", listAllPupils, listSelectedSchoolname, selectedYear, sSchoolType);
             vmIndexPrimarySchoolProfilesModel.listDataSeriesLookedAfter = temp;
-            vmIndexPrimarySchoolProfilesModel.dataTableLookedAfter = CreateDataTale(temp, vmIndexPrimarySchoolProfilesModel.DicLookedAfter, "Looked After Children", "percentage");
+            vmIndexPrimarySchoolProfilesModel.dataTableLookedAfter = CreateDataTaleWithTotal(temp, vmIndexPrimarySchoolProfilesModel.DicLookedAfter, "Looked After Children", "percentage");
+            //setting PIPS dataseries and datatable         
+            temp = GetPIPsDataSeries(listPIPSPupils,listSelectedSchoolname, selectedYear);
+            vmIndexPrimarySchoolProfilesModel.listDataSeriesPIPS = temp;
+            vmIndexPrimarySchoolProfilesModel.dataTablePIPS = CreatePIPSDataTale(temp);
 
             //vmIndexPrimarySchoolProfilesModel.jsondata = JsonConvert.SerializeObject(tempdt, Formatting.Indented); ;
             Session["vmIndexPrimarySchoolProfilesModel"] = vmIndexPrimarySchoolProfilesModel;
@@ -172,40 +216,132 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 listAllPupils = GetListAllPupils(rpGeneric2nd, selectedYear, sSchoolType);
             }
 
+            string tempProfiletitle = "";
+            foreach (var item in listSelectedSchoolname)
+            {
+                tempProfiletitle = tempProfiletitle + " /" + item.name;
+
+            }
+
+
+
+            vmIndexSecondarySchoolProfilesModel.profiletitle = tempProfiletitle;
+
             //store selected school into view model
             vmIndexSecondarySchoolProfilesModel.listSelectedSchoolname = listSelectedSchoolname;
             vmIndexSecondarySchoolProfilesModel.selectedYear = selectedYear;
             vmIndexSecondarySchoolProfilesModel.listAllPupils = listAllPupils;
             //setting english data and table
-            List<DataSeries> temp = GetDataSeries("englishlevel", listAllPupils, listSelectedSchoolname, selectedYear);
+            List<DataSeries> temp = GetDataSeries("englishlevel", listAllPupils, listSelectedSchoolname, selectedYear, sSchoolType);
             vmIndexSecondarySchoolProfilesModel.listDataSeriesEnglishLevel = temp;
             //vmIndexPrimarySchoolProfilesModel.englishLevelDataTable = GenerateTransposedTable(CreateDataTale(temp, vmIndexPrimarySchoolProfilesModel.DicEnglishLevel, "Level of English"));
             vmIndexSecondarySchoolProfilesModel.dataTableEnglishLevel = CreateDataTale(temp, vmIndexSecondarySchoolProfilesModel.DicEnglishLevel, "Level of English", "percentage");
             //setting ethnic data and table
-            temp = GetDataSeries("ethnicity", listAllPupils, listSelectedSchoolname, selectedYear);
+            temp = GetDataSeries("ethnicity", listAllPupils, listSelectedSchoolname, selectedYear, sSchoolType);
             vmIndexSecondarySchoolProfilesModel.listDataSeriesEthnicBackground = temp;
             vmIndexSecondarySchoolProfilesModel.dataTableEthnicBackground = CreateDataTale(temp, vmIndexSecondarySchoolProfilesModel.DicEthnicBG, "Ethnicity", "percentage");
             //setting Nationality data and table
-            temp = GetDataSeries("nationality", listAllPupils, listSelectedSchoolname, selectedYear);
+            temp = GetDataSeries("nationality", listAllPupils, listSelectedSchoolname, selectedYear, sSchoolType);
             vmIndexSecondarySchoolProfilesModel.listDataSeriesNationality = temp;
             vmIndexSecondarySchoolProfilesModel.dataTableNationality = CreateDataTale(temp, vmIndexSecondarySchoolProfilesModel.DicNationalIdentity, "Nationality", "percentage");
             //setting Stage data and table
-            temp = GetDataSeries("stage", listAllPupils, listSelectedSchoolname, selectedYear);
+            temp = GetDataSeries("stage", listAllPupils, listSelectedSchoolname, selectedYear, sSchoolType);
             vmIndexSecondarySchoolProfilesModel.listDataSeriesStage = temp;
-            vmIndexSecondarySchoolProfilesModel.dataTableStage = CreateDataTale(temp, vmIndexSecondarySchoolProfilesModel.DicStage, "Stage", "number");
+            vmIndexSecondarySchoolProfilesModel.dataTableStage = CreateDataTaleWithTotal(temp, vmIndexSecondarySchoolProfilesModel.DicStage, "Stage", "number");
             //setting FreeSchoolMeal data and table
-            temp = GetDataSeries("freemeal", listAllPupils, listSelectedSchoolname, selectedYear);
+            temp = GetDataSeries("freemeal", listAllPupils, listSelectedSchoolname, selectedYear, sSchoolType);
             vmIndexSecondarySchoolProfilesModel.listDataSeriesFreeMeal = temp;
             vmIndexSecondarySchoolProfilesModel.dataTableFreeSchoolMeal = CreateDataTale(temp, vmIndexSecondarySchoolProfilesModel.DicFreeMeal, "Free School Meal Entitlement", "percentage");
 
             //setting LookAfter data and table
-            temp = GetDataSeries("lookafter", listAllPupils, listSelectedSchoolname, selectedYear);
+            temp = GetDataSeries("lookafter", listAllPupils, listSelectedSchoolname, selectedYear, sSchoolType);
             vmIndexSecondarySchoolProfilesModel.listDataSeriesLookedAfter = temp;
-            vmIndexSecondarySchoolProfilesModel.dataTableLookedAfter = CreateDataTale(temp, vmIndexSecondarySchoolProfilesModel.DicLookedAfter, "Looked After Children", "percentage");
+            vmIndexSecondarySchoolProfilesModel.dataTableLookedAfter = CreateDataTaleWithTotal(temp, vmIndexSecondarySchoolProfilesModel.DicLookedAfter, "Looked After Children", "percentage");
 
             Session["vmIndexSecondarySchoolProfilesModel"] = vmIndexSecondarySchoolProfilesModel;
             return View("IndexSecondarySchool", vmIndexSecondarySchoolProfilesModel);
         }
+
+        public ActionResult GetSpecialProfileData(string sSchoolType)
+        {
+            List<string> templistSelectedSchoolname = new List<string>();
+            List<StudentObj> listAllPupils = new List<StudentObj>();
+            List<School> listSelectedSchoolname = new List<School>();
+            bool schoolIsSelected = false;
+            bool yesrIsSelected = false;
+            Year selectedYear = null;
+
+            vmIndexSpecialSchoolProfilesModel = Session["vmIndexSpecialSchoolProfilesModel"] as IndexSecondarySchoolProfilesViewModel;
+            List<School> templistSchoolname = vmIndexSpecialSchoolProfilesModel.listSchoolname;
+            List<Year> templistYears = vmIndexSpecialSchoolProfilesModel.listYears;
+
+            if (Request["listSelectedSchoolname"] != null)
+            {
+                schoolIsSelected = true;
+                //get CostCentreKey from dropdownlist in UI
+                templistSelectedSchoolname = Request["listSelectedSchoolname"].Split(',').ToList();
+                //select selected CostCentre from dropdownlist in UI
+                listSelectedSchoolname = templistSchoolname.Where(x => templistSelectedSchoolname.Any(y => y.Contains(x.seedcode))).ToList();
+            }
+
+            if (Request["selectedYear"] != null)
+            {
+                yesrIsSelected = true;
+                string year = Request["selectedYear"].ToString();
+                selectedYear = templistYears.Where(x => x.year.Contains(year)).FirstOrDefault();
+            }
+
+            if (schoolIsSelected && yesrIsSelected)
+            {
+                listAllPupils = GetListAllPupils(rpGeneric2nd, selectedYear, sSchoolType);
+            }
+
+            string tempProfiletitle = "";
+            foreach (var item in listSelectedSchoolname)
+            {
+                tempProfiletitle = tempProfiletitle + " /" + item.name;
+
+            }
+
+
+
+            vmIndexSpecialSchoolProfilesModel.profiletitle = tempProfiletitle;
+
+            //store selected school into view model
+            vmIndexSpecialSchoolProfilesModel.listSelectedSchoolname = listSelectedSchoolname;
+            vmIndexSpecialSchoolProfilesModel.selectedYear = selectedYear;
+            vmIndexSpecialSchoolProfilesModel.listAllPupils = listAllPupils;
+            //setting english data and table
+            List<DataSeries> temp = GetDataSeries("englishlevel", listAllPupils, listSelectedSchoolname, selectedYear, sSchoolType);
+            vmIndexSpecialSchoolProfilesModel.listDataSeriesEnglishLevel = temp;
+            //vmIndexPrimarySchoolProfilesModel.englishLevelDataTable = GenerateTransposedTable(CreateDataTale(temp, vmIndexPrimarySchoolProfilesModel.DicEnglishLevel, "Level of English"));
+            vmIndexSpecialSchoolProfilesModel.dataTableEnglishLevel = CreateDataTale(temp, vmIndexSpecialSchoolProfilesModel.DicEnglishLevel, "Level of English", "percentage");
+            //setting ethnic data and table
+            temp = GetDataSeries("ethnicity", listAllPupils, listSelectedSchoolname, selectedYear, sSchoolType);
+            vmIndexSpecialSchoolProfilesModel.listDataSeriesEthnicBackground = temp;
+            vmIndexSpecialSchoolProfilesModel.dataTableEthnicBackground = CreateDataTale(temp, vmIndexSpecialSchoolProfilesModel.DicEthnicBG, "Ethnicity", "percentage");
+            //setting Nationality data and table
+            temp = GetDataSeries("nationality", listAllPupils, listSelectedSchoolname, selectedYear, sSchoolType);
+            vmIndexSpecialSchoolProfilesModel.listDataSeriesNationality = temp;
+            vmIndexSpecialSchoolProfilesModel.dataTableNationality = CreateDataTale(temp, vmIndexSpecialSchoolProfilesModel.DicNationalIdentity, "Nationality", "percentage");
+            //setting Stage data and table
+            temp = GetDataSeries("stage", listAllPupils, listSelectedSchoolname, selectedYear, sSchoolType);
+            vmIndexSpecialSchoolProfilesModel.listDataSeriesStage = temp;
+            vmIndexSpecialSchoolProfilesModel.dataTableStage = CreateDataTaleWithTotal(temp, vmIndexSpecialSchoolProfilesModel.DicStage, "Stage", "number");
+            //setting FreeSchoolMeal data and table
+            temp = GetDataSeries("freemeal", listAllPupils, listSelectedSchoolname, selectedYear, sSchoolType);
+            vmIndexSpecialSchoolProfilesModel.listDataSeriesFreeMeal = temp;
+            vmIndexSpecialSchoolProfilesModel.dataTableFreeSchoolMeal = CreateDataTale(temp, vmIndexSpecialSchoolProfilesModel.DicFreeMeal, "Free School Meal Entitlement", "percentage");
+
+            //setting LookAfter data and table
+            temp = GetDataSeries("lookafter", listAllPupils, listSelectedSchoolname, selectedYear, sSchoolType);
+            vmIndexSpecialSchoolProfilesModel.listDataSeriesLookedAfter = temp;
+            vmIndexSpecialSchoolProfilesModel.dataTableLookedAfter = CreateDataTaleWithTotal(temp, vmIndexSpecialSchoolProfilesModel.DicLookedAfter, "Looked After Children", "percentage");
+
+            Session["vmIndexSpecialSchoolProfilesModel"] = vmIndexSpecialSchoolProfilesModel;
+            return View("IndexSecondarySchool", vmIndexSpecialSchoolProfilesModel);
+        }
+
 
         public ActionResult GetPrimaryListpupils(string datatitle, string Indexrow, string Indexcol)
         {
@@ -324,7 +460,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
 
             foreach (var item in vmTrendingModel.listYear) {
                 listAllPupils = GetListAllPupils(rpGeneric2nd, item, sSchoolType);
-                tempDataSeries = GetDataSeries(datatitle, listAllPupils, school, item);
+                tempDataSeries = GetDataSeries(datatitle, listAllPupils, school, item, sSchoolType);
                 listobject.Add(tempDataSeries);
             
             }
@@ -365,7 +501,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         {
             List<DataSeries> listobject = new List<DataSeries>();
             //get dataSeries for each School
-            List<DataSeries> temp = GetDataSeries(datatitle, listPupilData, listSelectedSchool, iyear);
+            List<DataSeries> temp = GetDataSeries(datatitle, listPupilData, listSelectedSchool, iyear, "2");
             //temp.Add(GetDataSeries(datatitle, listPupilData, listSelectedSchool, iyear);)
 
             return listobject;

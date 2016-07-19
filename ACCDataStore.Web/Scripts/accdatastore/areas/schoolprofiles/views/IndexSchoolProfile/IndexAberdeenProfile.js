@@ -1,6 +1,5 @@
 ﻿
 $(document).ready(function () {
-
     $('#FreeMealDatatable').DataTable({
         dom: 'Bfrtip',
         paging: false,
@@ -15,7 +14,6 @@ $(document).ready(function () {
             ]
         }
     });
-
 
     $('#LookedAfterDatatable').DataTable({
         dom: 'Bfrtip',
@@ -92,43 +90,14 @@ $(document).ready(function () {
     })
 
     //DrawTempGraph();
-    DrawEnglishLevelGraph();
+   // DrawEnglishLevelGraph();
     DrawNationlityGraph();
-
-
+    DrawEnglishLevelGraph();
+     
 });
 
-function DrawTempGraph() {
-    var options = {
-        chart: {
-            renderTo: 'TempGraphContainer',
-            type: 'spline'
-        },
-        series: [{}]
-    };
 
-    $.getJSON('jsonDataTable', function (data) {
-        options.series[0].data = data;
-        var chart = new Highcharts.Chart(options);
-    });
 
-}
-
-function requestData() {
-    $.ajax({
-        url: 'api/v1/dashboard/month_mention_graphic',
-        type: "GET",
-        dataType: "json",
-        data: { username: "demo" },
-        success: function (data) {
-            chart.addSeries({
-                name: "mentions",
-                data: data.month_mentions_graphic
-            });
-        },
-        cache: false
-    });
-}
 
 
 function DrawNationlityGraph() {
@@ -146,7 +115,7 @@ function DrawNationlityGraph() {
     var yAxis = {
         allowDecimals: false,
         title: {
-            text: 'Percentage (%)'
+            text: 'Units'
         }
     };
     var tooltip = {
@@ -183,14 +152,10 @@ function DrawEnglishLevelGraph() {
     var title = {
         text: 'Level of English'
     };
-    var subtitle = {
-        text: 'Graph excluded "English as a first-language" data',
-        x: -20
-    };
     var yAxis = {
         allowDecimals: false,
         title: {
-            text: 'Percentage (%)'
+            text: 'Units'
         }
     };
     var tooltip = {
@@ -210,18 +175,17 @@ function DrawEnglishLevelGraph() {
     json.yAxis = yAxis;
     json.credits = credits;
     json.tooltip = tooltip;
-    json.subtitle = subtitle;
 
     var chart = $('#EnglishLevelGraphContainer').highcharts(json, function(chart)
     {
         //remove English as a \"first-language\" data from graphs
-        //console.log(chart)
-        //var len = this.series.length
+        console.log(chart)
+        var len = this.series.length
         var newCategories = [];
         //remove point in dataseries
-        for (i = 0; i < this.series.length; i++) {
-            //var datalen = this.series[i].data.length
-            for (j = 0; j < this.series[i].data.length; j++) {
+        for (i = 0; i < len; i++) {
+            var datalen = this.series[i].data.length
+            for (j = 0; j < datalen; j++) {
                 if (this.series[i].data[j].name == "English as a \"first-language\"") {
                     removeindex = j;
                     this.series[i].data[j].remove();
@@ -229,14 +193,11 @@ function DrawEnglishLevelGraph() {
                 }
             }
         }
-
-       // create new catagories for label in X-line
+        // create new catagories for label in X-line
         for (j = 0; j < this.series[0].data.length; j++) {
             newCategories.push(this.series[0].data[j].name);
         }
-        this.xAxis[0].setCategories(newCategories, true); // set new x label
-        this.xAxis[0].isDirty = true;
-        this.redraw();
+        this.xAxis[0].setCategories(newCategories); // set net x label
     }
     );
 
