@@ -37,6 +37,7 @@
                         <h3 class="panel-title">Please Select Special School</h3>
                     </div>
                     <div class="panel-body">
+                        <p> <font color="red">* You can select up to 3 schools for comparison</font></p>
                         @using (Html.BeginForm("GetSpecialProfileData", "IndexSchoolProfiles", new { area = "SchoolProfiles", sSchoolType = "4" }))
                         {
                             <table class="table table-bordered">
@@ -47,8 +48,6 @@
                                         </td>
                                         <td class="text-left" colspan="2">
                                             @Html.DropDownListFor(x => x.listSelectedSchoolname, new MultiSelectList(Model.listSchoolname, "seedcode", "name"), new { Multiple = "multiple" })
-
-                                            * Maximum 3 Schools
                                         </td>
                                         @*<td class="text-center" width="20%"> * Maximum 3 Schools </td>*@
 
@@ -196,9 +195,10 @@
                                                 {
                                                     if (Model.dataTableStage.Columns.IndexOf(col) == 0)
                                                     {
+                                                        <td class="text-left">@row[col.ColumnName]</td>
 
 
-                                                        <td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "3", datatitle = "stage", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>
+                                                        @*<td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "3", datatitle = "stage", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>*@
                                                     }
                                                     else
                                                     {
@@ -264,8 +264,9 @@
                                                     if (Model.dataTableFreeSchoolMeal.Columns.IndexOf(col) == 0)
                                                     {
 
+                                                        <td class="text-left">@row[col.ColumnName]</td>
 
-                                                        <td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "2", datatitle = "stage", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>
+                                                        @*<td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "2", datatitle = "stage", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>*@
                                                     }
                                                     else
                                                     {
@@ -330,9 +331,10 @@
                                                 {
                                                     if (Model.dataTableLookedAfter.Columns.IndexOf(col) == 0)
                                                     {
+                                                        <td class="text-left">@row[col.ColumnName]</td>
 
 
-                                                        <td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "2", datatitle = "lookafter", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>
+                                                        @*<td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "2", datatitle = "lookafter", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>*@
                                                     }
                                                     else
                                                     {
@@ -394,9 +396,10 @@
                                             {
                                                 if (Model.dataTableEnglishLevel.Columns.IndexOf(col) == 0)
                                                 {
+                                                    <td class="text-left">@row[col.ColumnName]</td>
 
 
-                                                    <td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "3", datatitle = "englishlevel", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>
+                                                    @*<td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "3", datatitle = "englishlevel", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>*@
                                                 }
                                                 else
                                                 {
@@ -462,8 +465,9 @@
                                                 {
                                                     if (Model.dataTableEthnicBackground.Columns.IndexOf(col) == 0)
                                                     {
+                                                        <td class="text-left">@row[col.ColumnName]</td>
 
-                                                        <td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "3", datatitle = "ethnicity", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>
+                                                        @*<td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "3", datatitle = "ethnicity", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>*@
                                                     }
                                                     else
                                                     {
@@ -531,8 +535,9 @@
                                                 {
                                                     if (Model.dataTableNationality.Columns.IndexOf(col) == 0)
                                                     {
+                                                        <td class="text-left">@row[col.ColumnName]</td>
 
-                                                        <td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "3", datatitle = "nationality", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>
+                                                        @*<td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "3", datatitle = "nationality", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>*@
                                                     }
                                                     else
                                                     {

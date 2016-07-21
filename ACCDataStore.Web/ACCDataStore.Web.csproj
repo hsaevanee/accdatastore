@@ -340,6 +340,7 @@
     <Compile Include="Areas\PupilsPopulation\ViewModels\Pupils05\Pupils05Data.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\BaseSchoolProfileController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\IndexAberdeenProfileController.cs" />
+    <Compile Include="Areas\SchoolProfiles\Controllers\IndexPrimaryProfileController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\IndexSchoolProfilesController.cs" />
     <Compile Include="Areas\SchoolProfiles\SchoolProfilesAreaRegistration.cs" />
     <Compile Include="Areas\SchoolProfiles\ViewModels\SchoolProfiles\BaseSchoolProfilesViewModel.cs" />
@@ -491,7 +492,7 @@
     <Content Include="bower_components\angular\README.md" />
     <Content Include="Areas\PupilsPopulation\Views\IndexPupilsPopulation\Home.cshtml" />
     <Content Include="Areas\SchoolProfiles\Views\IndexSchoolProfiles\Home.cshtml" />
-    <Content Include="Areas\SchoolProfiles\Views\IndexSchoolProfiles\IndexPrimarySchool.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\IndexPrimaryProfile\IndexPrimarySchool.cshtml" />
     <Content Include="Areas\SchoolProfiles\Views\IndexSchoolProfiles\Pupilslist.cshtml" />
     <Content Include="Areas\SchoolProfiles\Views\IndexSchoolProfiles\Trending.cshtml" />
     <Content Include="Areas\SchoolProfiles\Views\IndexSchoolProfiles\IndexSpecialSchool.cshtml" />

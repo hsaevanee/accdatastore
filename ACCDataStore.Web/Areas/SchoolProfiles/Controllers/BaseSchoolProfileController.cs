@@ -157,7 +157,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         protected List<Year> GetListYear()
         {
             List<Year> temp = new List<Year>();
-            //temp.Add(new Year("2015"));
+            temp.Add(new Year("2015"));
             temp.Add(new Year("2014"));
             temp.Add(new Year("2013"));
             temp.Add(new Year("2012"));
@@ -195,9 +195,9 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 case "2014":
                     listResult = rpGeneric2nd.FindAll<SchStudent2014>().ToList<StudentObj>();
                     break;
-                //case "2015":
-                //    listResult = rpGeneric2nd.FindAll<SchStudent2015>().ToList<StudentObj>();
-                //    break;
+                case "2015":
+                    listResult = rpGeneric2nd.FindAll<SchStudent2015>().ToList<StudentObj>();
+                    break;
             }
                          
             List<StudentObj> listData = new List<StudentObj>();
@@ -228,42 +228,9 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
 
         }
 
-        protected List<PIPSObj> GetPIPSPupils(IGenericRepository2nd rpGeneric2nd, Year year, List<School> schools)
-        {
-            List<PIPSObj> listResult = new List<PIPSObj>();
-            switch (year.year)
-            {
-                case "2008":
-                    listResult = rpGeneric2nd.FindAll<PIPS2008>().ToList<PIPSObj>();
-                    break;
-                case "2009":
-                    listResult = rpGeneric2nd.FindAll<PIPS2009>().ToList<PIPSObj>();
-                    break;
-                case "2010":
-                    listResult = rpGeneric2nd.FindAll<PIPS2010>().ToList<PIPSObj>();
-                    break;
-                case "2011":
-                    listResult = rpGeneric2nd.FindAll<PIPS2011>().ToList<PIPSObj>();
-                    break;
-                case "2012":
-                    listResult = rpGeneric2nd.FindAll<PIPS2012>().ToList<PIPSObj>();
-                    break;
-                case "2013":
-                    listResult = rpGeneric2nd.FindAll<PIPS2013>().ToList<PIPSObj>();
-                    break;
-                case "2014":
-                    listResult = rpGeneric2nd.FindAll<PIPS2014>().ToList<PIPSObj>();
-                    break;
-                case "2015":
-                    listResult = rpGeneric2nd.FindAll<PIPS2015>().ToList<PIPSObj>();
-                    break;
-            }
 
-            return listResult;
-
-        }
         //create dataTable from list of DataSeries
-        protected DataTable CreateDataTale(List<DataSeries> listobject, Dictionary<string, string> dictionary, string tabletitle, string showtype)
+        protected DataTable CreateDataTable(List<DataSeries> listobject, Dictionary<string, string> dictionary, string tabletitle, string showtype)
         {
 
             DataTable dataTable = new DataTable();           
@@ -318,6 +285,36 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     //temprowdata.Add(temp.checkSumPercentage.ToString());
                     dataTable.Rows.Add(temprowdata.ToArray());
                 }
+
+            }
+            else if (showtype.Equals("no+%"))
+            {
+                //this case show count and percentage
+                dataTable.Columns.Add(tabletitle, typeof(string));
+                foreach (var key in dictionary)
+                {
+                    dataTable.Columns.Add(key.Value, typeof(string)); 
+                    dataTable.Columns.Add(key.Value + " (%)", typeof(string));
+                }
+                //dataTable.Columns.Add("Total", typeof(string));
+                //display percentage
+                foreach (var temp in listobject)
+                {
+                    temprowdata = new List<string>();
+                    temprowdata.Add(temp.school.name);
+                    foreach (var key in dictionary)
+                    {
+                        List<ObjectDetail> listtemp = temp.listdataitems;
+                        tempdataitem = listtemp.Where(x => x.itemcode.Equals(key.Key)).FirstOrDefault() == null ? "0" : listtemp.Where(x => x.itemcode.Equals(key.Key)).FirstOrDefault().count.ToString();
+                        temprowdata.Add(tempdataitem);
+                        tempdataitem = listtemp.Where(x => x.itemcode.Equals(key.Key)).FirstOrDefault() == null ? "0.00" : listtemp.Where(x => x.itemcode.Equals(key.Key)).FirstOrDefault().percentage.ToString("0.00");
+                        temprowdata.Add(tempdataitem);
+
+                    }
+                    //temprowdata.Add(temp.checkSumPercentage.ToString());
+                    dataTable.Rows.Add(temprowdata.ToArray());
+                }
+            
             
             }
 
@@ -361,7 +358,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 }
 
             }
-            else {
+            else if (showtype.Equals("percentage"))
+            {
                 dataTable.Columns.Add(tabletitle, typeof(string));
                 foreach (var key in dictionary)
                 {
@@ -389,11 +387,47 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 }
             
             }
+            else if (showtype.Equals("no+%"))
+            {
+                dataTable.Columns.Add(tabletitle, typeof(string));
+                foreach (var key in dictionary)
+                {
+                    dataTable.Columns.Add(key.Value, typeof(string));
+                    dataTable.Columns.Add(key.Value+ " (%)", typeof(string));
+                }
+                dataTable.Columns.Add("Total", typeof(string));
+                dataTable.Columns.Add("Total(%)", typeof(string));
+                //display percentage
+
+                double sum = 0;
+                double sumP = 0;
+                foreach (var temp in listobject)
+                {
+                    temprowdata = new List<string>();
+                    temprowdata.Add(temp.school.name);
+                    sum = 0;
+                    sumP = 0;
+                    foreach (var key in dictionary)
+                    {
+                        List<ObjectDetail> listtemp = temp.listdataitems;
+                        tempdataitem = listtemp.Where(x => x.itemcode.Equals(key.Key)).FirstOrDefault() == null ? "0.00" : listtemp.Where(x => x.itemcode.Equals(key.Key)).FirstOrDefault().count.ToString("0.00");
+                        temprowdata.Add(tempdataitem);
+                        sum = sum + Double.Parse(tempdataitem);
+                        tempdataitem = listtemp.Where(x => x.itemcode.Equals(key.Key)).FirstOrDefault() == null ? "0.00" : listtemp.Where(x => x.itemcode.Equals(key.Key)).FirstOrDefault().percentage.ToString("0.00");
+                        temprowdata.Add(tempdataitem);
+                        sumP = sumP + Double.Parse(tempdataitem);
+                    }
+                    temprowdata.Add(sum.ToString("0.00"));
+                    temprowdata.Add(sumP.ToString("0.00"));
+                    dataTable.Rows.Add(temprowdata.ToArray());
+                }
+
+            }
             return dataTable;
         }
         
         //data table for trending page
-        protected DataTable CreateDataTale(List<List<DataSeries>> listobject, Dictionary<string, string> dictionary, string tabletitle, string showtype) 
+        protected DataTable CreateDataTable(List<List<DataSeries>> listobject, Dictionary<string, string> dictionary, string tabletitle, string showtype) 
         {
 
             DataTable dataTable = new DataTable();
@@ -596,48 +630,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             return listobject;
         }
 
-        protected List<DataSeries> GetPIPsDataSeries(List<PIPSObj> listPupilData, List<School> listSelectedSchool,Year iyear)
-        {
-            List<PIPSObj> listtempPupilData = new List<PIPSObj>();
-            List<PIPSObjDetail> listResult = new List<PIPSObjDetail>();
-            List<DataSeries> listobject = new List<DataSeries>();
-            //calculate individual school
-
-            foreach (School item in listSelectedSchool)
-            {
-                //select data for each school
-                listtempPupilData = listPupilData.Where(x => x.DfES.ToString().Equals(item.seedcode)).ToList();
-                //calculate School Start P1
-                listResult = new List<PIPSObjDetail>();
-                listResult.Add(new PIPSObjDetail { dataName = "Reading", average = listtempPupilData.Where(x => x.Szr>0).Select(r => r.Szr).Average() });
-                listResult.Add(new PIPSObjDetail { dataName = "Mathematics", average = listtempPupilData.Where(x => x.Szm > 0).Select(r => r.Szm).DefaultIfEmpty(0).Average() });
-                listResult.Add(new PIPSObjDetail { dataName = "Phonics", average = listtempPupilData.Where(x => x.Szp > 0).Select(r => r.Szp).Average() });
-                listResult.Add(new PIPSObjDetail { dataName = "Total", average = listtempPupilData.Where(x => x.Szt > 0).Select(r => r.Szt).Average() });
-                listobject.Add(new DataSeries { dataSeriesNames = "Start P1", school = item, year = iyear, listPIPSdataitems = listResult });
-                listResult = new List<PIPSObjDetail>();
-                listResult.Add(new PIPSObjDetail { dataName = "Reading", average = listtempPupilData.Where(x => x.Ezr > 0).Select(r => r.Ezr).Average() });
-                listResult.Add(new PIPSObjDetail { dataName = "Mathematics", average = listtempPupilData.Where(x => x.Ezm > 0).Select(r => r.Ezm).Average() });
-                listResult.Add(new PIPSObjDetail { dataName = "Phonics", average = listtempPupilData.Where(x => x.Ezp > 0).Select(r => r.Ezp).Average() });
-                listResult.Add(new PIPSObjDetail { dataName = "Total", average = listtempPupilData.Where(x => x.Ezt > 0).Select(r => r.Ezt).Average() });
-                listobject.Add(new DataSeries { dataSeriesNames = "End P1" , school = item, year = iyear, listPIPSdataitems = listResult });
-            }
-            
-            //calculate for aberdeen city
-            listResult = new List<PIPSObjDetail>();
-            listResult.Add(new PIPSObjDetail { dataName = "Reading", average = listPupilData.Where(x => x.Szr > 0).Select(r => r.Szr).Average() });
-            listResult.Add(new PIPSObjDetail { dataName = "Mathematics", average = listPupilData.Where(x => x.Szm > 0).Select(r => r.Szm).Average() });
-            listResult.Add(new PIPSObjDetail { dataName = "Phonics", average = listPupilData.Where(x => x.Szp > 0).Select(r => r.Szp).Average() });
-            listResult.Add(new PIPSObjDetail { dataName = "Total", average = listPupilData.Where(x => x.Szt > 0).Select(r => r.Szt).Average() });
-            listobject.Add(new DataSeries { dataSeriesNames = "Start P1", school = new School("Aberdeen City", "Aberdeen City"), year = iyear, listPIPSdataitems = listResult });
-            listResult = new List<PIPSObjDetail>();
-            listResult.Add(new PIPSObjDetail { dataName = "Reading", average = listPupilData.Where(x => x.Ezr > 0).Select(r => r.Ezr).Average() });
-            listResult.Add(new PIPSObjDetail { dataName = "Mathematics", average = listPupilData.Where(x => x.Ezm > 0).Select(r => r.Ezm).Average() });
-            listResult.Add(new PIPSObjDetail { dataName = "Phonics", average = listPupilData.Where(x => x.Ezp > 0).Select(r => r.Ezp).Average() });
-            listResult.Add(new PIPSObjDetail { dataName = "Total", average = listPupilData.Where(x => x.Ezt > 0).Select(r => r.Ezt).Average() });
-            listobject.Add(new DataSeries { dataSeriesNames = "End P1", school = new School("Aberdeen City", "Aberdeen City"), year = iyear, listPIPSdataitems = listResult });
-
-            return listobject;
-        }
+        
 
         protected DataSeries GetDataSeriesBySchool(string datatitle, List<StudentObj> listPupilData, School school, Year iyear)
         {
@@ -749,36 +742,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             return dataobj;
         }
 
-        protected DataTable CreatePIPSDataTale(List<DataSeries> listobject)
-        {
-            DataTable dataTable = new DataTable();
-            List<string> temprowdata = new List<string>();
-
-            //create column names
-            dataTable.Columns.Add("P1", typeof(string));
-
-            if (listobject != null && listobject[0].listPIPSdataitems.Count() > 0) {
-                foreach (var item in listobject[0].listPIPSdataitems)
-                {
-                    dataTable.Columns.Add(item.dataName, typeof(string));
-                }
-
-            }
-
-
-            //adding row data
-            foreach (var item in listobject)
-            {
-                temprowdata = new List<string>();
-                temprowdata.Add(item.school.name + " "+ item.dataSeriesNames);
-                foreach (var temp in item.listPIPSdataitems) {
-                    temprowdata.Add(temp.average.ToString("0.00"));           
-                }
-                dataTable.Rows.Add(temprowdata.ToArray());
-            }
-
-            return dataTable;
-        }
+       
         private DataTable GenerateTransposedTable(DataTable inputTable)
         {
             DataTable outputTable = new DataTable();

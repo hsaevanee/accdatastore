@@ -196,9 +196,10 @@ function DrawEnglishLevelGraph() {
     var tooltip = {
         formatter: function () {
             return '<b>' + this.series.name + '</b><br/>' +
-               this.point.y + ' ' + this.point.name.toLowerCase();
+               this.point.y + ' ' ;
         }
     };
+
     var credits = {
         enabled: false
     };
@@ -212,33 +213,7 @@ function DrawEnglishLevelGraph() {
     json.tooltip = tooltip;
     json.subtitle = subtitle;
 
-    var chart = $('#EnglishLevelGraphContainer').highcharts(json, function(chart)
-    {
-        //remove English as a \"first-language\" data from graphs
-        //console.log(chart)
-        //var len = this.series.length
-        var newCategories = [];
-        //remove point in dataseries
-        for (i = 0; i < this.series.length; i++) {
-            //var datalen = this.series[i].data.length
-            for (j = 0; j < this.series[i].data.length; j++) {
-                if (this.series[i].data[j].name == "English as a \"first-language\"") {
-                    removeindex = j;
-                    this.series[i].data[j].remove();
-                    break
-                }
-            }
-        }
-
-       // create new catagories for label in X-line
-        for (j = 0; j < this.series[0].data.length; j++) {
-            newCategories.push(this.series[0].data[j].name);
-        }
-        this.xAxis[0].setCategories(newCategories, true); // set new x label
-        this.xAxis[0].isDirty = true;
-        this.redraw();
-    }
-    );
+    var chart = $('#EnglishLevelGraphContainer').highcharts(json);
 
 }
 

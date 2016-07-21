@@ -80,34 +80,34 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             List<DataSeries> temp = GetDataSeriesForAberdeenCity("englishlevel", listAllPupils, listSchoolType, selectedYear);
             vmIndexAberdeenCityProfilesModel.listDataSeriesEnglishLevel = temp;
             //vmIndexPrimarySchoolProfilesModel.englishLevelDataTable = GenerateTransposedTable(CreateDataTale(temp, vmIndexPrimarySchoolProfilesModel.DicEnglishLevel, "Level of English"));
-            vmIndexAberdeenCityProfilesModel.dataTableEnglishLevel = CreateDataTale(temp, vmIndexAberdeenCityProfilesModel.DicEnglishLevel, "Level of English", "percentage");
+            vmIndexAberdeenCityProfilesModel.dataTableEnglishLevel = CreateDataTable(temp, vmIndexAberdeenCityProfilesModel.DicEnglishLevel, "Level of English", "percentage");
             //setting ethnic data and table
             temp = GetDataSeriesForAberdeenCity("ethnicity", listAllPupils, listSchoolType, selectedYear);
             vmIndexAberdeenCityProfilesModel.listDataSeriesEthnicBackground = temp;
-            vmIndexAberdeenCityProfilesModel.dataTableEthnicBackground = CreateDataTale(temp, vmIndexAberdeenCityProfilesModel.DicEthnicBG, "Ethnicity", "percentage");
+            vmIndexAberdeenCityProfilesModel.dataTableEthnicBackground = CreateDataTable(temp, vmIndexAberdeenCityProfilesModel.DicEthnicBG, "Ethnicity", "percentage");
             //setting Nationality data and table
             temp = GetDataSeriesForAberdeenCity("nationality", listAllPupils, listSchoolType, selectedYear);
             vmIndexAberdeenCityProfilesModel.listDataSeriesNationality = temp;
-            vmIndexAberdeenCityProfilesModel.dataTableNationality = CreateDataTale(temp, vmIndexAberdeenCityProfilesModel.DicNationalIdentity, "Nationality", "percentage");
+            vmIndexAberdeenCityProfilesModel.dataTableNationality = CreateDataTable(temp, vmIndexAberdeenCityProfilesModel.DicNationalIdentity, "Nationality", "percentage");
             //setting Stage data and table
             temp = GetDataSeriesForAberdeenCity("stage", listAllPupils, listSchoolType, selectedYear);
             vmIndexAberdeenCityProfilesModel.listDataSeriesStage = temp;
             vmIndexAberdeenCityProfilesModel.dataTableStage = CreateDataTaleWithCheckSumTotal(temp, "School Roll", "number");
 
-            //vmIndexAberdeenCityProfilesModel.dataTableStagePrimary = CreateDataTaleWithTotal(temp.Where(x =>x.school.schooltype.Equals("2")).ToList(), GetDicStage(rpGeneric2nd,"2"), "Stage", "number");
-            //vmIndexAberdeenCityProfilesModel.dataTableStageSecondary = CreateDataTaleWithTotal(temp.Where(x => x.school.schooltype.Equals("3")).ToList(), GetDicStage(rpGeneric2nd, "3"), "Stage", "number");
-            //vmIndexAberdeenCityProfilesModel.dataTableStageSpecial = CreateDataTaleWithTotal(temp.Where(x => x.school.schooltype.Equals("4")).ToList(), GetDicStage(rpGeneric2nd, "4"), "Stage", "number");
+            vmIndexAberdeenCityProfilesModel.dataTableStagePrimary = CreateDataTaleWithTotal(temp.Where(x => x.school.schooltype.Equals("2")).ToList(), GetDicStage(rpGeneric2nd, "2"), "Stage", "number");
+            vmIndexAberdeenCityProfilesModel.dataTableStageSecondary = CreateDataTaleWithTotal(temp.Where(x => x.school.schooltype.Equals("3")).ToList(), GetDicStage(rpGeneric2nd, "3"), "Stage", "number");
+            vmIndexAberdeenCityProfilesModel.dataTableStageSpecial = CreateDataTaleWithTotal(temp.Where(x => x.school.schooltype.Equals("4")).ToList(), GetDicStage(rpGeneric2nd, "4"), "Stage", "number");
 
             //vmIndexAberdeenCityProfilesModel.dataTableStage = CreateDataTaleWithTotal(temp, vmIndexAberdeenCityProfilesModel.DicStage, "Stage", "number");
             //setting FreeSchoolMeal data and table
             temp = GetDataSeriesForAberdeenCity("freemeal", listAllPupils, listSchoolType, selectedYear);
             vmIndexAberdeenCityProfilesModel.listDataSeriesFreeMeal = temp;
-            vmIndexAberdeenCityProfilesModel.dataTableFreeSchoolMeal = CreateDataTale(temp, vmIndexAberdeenCityProfilesModel.DicFreeMeal, "Free School Meal Entitlement", "percentage");
+            vmIndexAberdeenCityProfilesModel.dataTableFreeSchoolMeal = CreateDataTable(temp, vmIndexAberdeenCityProfilesModel.DicFreeMeal, "Free School Meal Entitlement", "percentage");
 
             //setting LookAfter data and table
             temp = GetDataSeriesForAberdeenCity("lookafter", listAllPupils, listSchoolType, selectedYear);
             vmIndexAberdeenCityProfilesModel.listDataSeriesLookedAfter = temp;
-            vmIndexAberdeenCityProfilesModel.dataTableLookedAfter = CreateDataTaleWithTotal(temp, vmIndexAberdeenCityProfilesModel.DicLookedAfter, "Looked After Children", "percentage");
+            vmIndexAberdeenCityProfilesModel.dataTableLookedAfter = CreateDataTaleWithTotal(temp, vmIndexAberdeenCityProfilesModel.DicLookedAfter, "Looked After Children", "no+%");
 
             Session["vmIndexSecondarySchoolProfilesModel"] = vmIndexAberdeenCityProfilesModel;
             return View("IndexAberdeenCity", vmIndexAberdeenCityProfilesModel);
@@ -227,7 +227,6 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 dataTable.Columns.Add(tabletitle, typeof(string));
                 dataTable.Columns.Add("Total", typeof(string));
 
-                int sum = 0;
                 //display number
                 foreach (var temp in listobject)
                 {
@@ -243,7 +242,6 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 dataTable.Columns.Add(tabletitle, typeof(string));
                 dataTable.Columns.Add("Total", typeof(string));
 
-                int sum = 0;
                 //display number
                 foreach (var temp in listobject)
                 {

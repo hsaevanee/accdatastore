@@ -86,6 +86,15 @@
     <Compile Include="RightsCode.cs" />
     <Compile Include="Mapping\MySQL\RightsCodeMap.cs" />
     <Compile Include="Mapping\MySQL\RightsMap.cs" />
+    <Compile Include="SchoolProfiles\InCAS\InCAS2015.cs" />
+    <Compile Include="SchoolProfiles\InCAS\InCAS2014.cs" />
+    <Compile Include="SchoolProfiles\InCAS\InCAS2013.cs" />
+    <Compile Include="SchoolProfiles\InCAS\InCAS2012.cs" />
+    <Compile Include="SchoolProfiles\InCAS\InCASObj.cs" />
+    <Compile Include="SchoolProfiles\Mapping\InCAS\InCAS2015Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\InCAS\InCAS2014Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\InCAS\InCAS2013Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\InCAS\InCAS2012Map.cs" />
     <Compile Include="SchoolProfiles\Mapping\PIPS2010Map.cs" />
     <Compile Include="SchoolProfiles\Mapping\PIPS2011Map.cs" />
     <Compile Include="SchoolProfiles\Mapping\PIPS2013Map.cs" />
@@ -99,6 +108,7 @@
     <Compile Include="SchoolProfiles\Mapping\SchStudent2011Map.cs" />
     <Compile Include="SchoolProfiles\Mapping\SchStudent2012Map.cs" />
     <Compile Include="SchoolProfiles\Mapping\SchStudent2008Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\SchStudent2015Map.cs" />
     <Compile Include="SchoolProfiles\Mapping\SchStudent2014Map.cs" />
     <Compile Include="SchoolProfiles\Mapping\SchStudent2013Map.cs" />
     <Compile Include="SchoolProfiles\NationalIdentity.cs" />
@@ -119,6 +129,7 @@
     <Compile Include="SchoolProfiles\SchStudent2008.cs" />
     <Compile Include="SchoolProfiles\SchStudent2011.cs" />
     <Compile Include="SchoolProfiles\SchStudent2012.cs" />
+    <Compile Include="SchoolProfiles\SchStudent2015.cs" />
     <Compile Include="SchoolProfiles\SchStudent2014.cs" />
     <Compile Include="SchoolProfiles\SchStudent2013.cs" />
     <Compile Include="SchoolProfiles\StudentObj.cs" />
