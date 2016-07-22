@@ -68,6 +68,7 @@
 
         <!-- Initialize the plugin: -->
         <script type="text/javascript">
+            var year = '@Model.selectedYear.academicyear';
             $(document).ready(function () {
                 var selectid = function () { return @Html.Raw(Json.Encode(Model.listSelectedSchoolname.Select(x => x.seedcode).ToList())); }();
 

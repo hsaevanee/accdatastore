@@ -60,6 +60,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             vmIndexSecondarySchoolProfilesModel.DicStage = GetDicStage(rpGeneric2nd, sSchoolType);
             vmIndexSecondarySchoolProfilesModel.DicFreeMeal = GetDicFreeSchoolMeal();
             vmIndexSecondarySchoolProfilesModel.DicLookedAfter = GetDicLookAfter();
+            vmIndexSecondarySchoolProfilesModel.selectedYear = new Year("2015");
             Session["vmIndexSecondarySchoolProfilesModel"] = vmIndexSecondarySchoolProfilesModel;
             return View("IndexSecondarySchool", vmIndexSecondarySchoolProfilesModel);
         }
@@ -76,6 +77,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             vmIndexSpecialSchoolProfilesModel.DicStage = GetDicStage(rpGeneric2nd, sSchoolType);
             vmIndexSpecialSchoolProfilesModel.DicFreeMeal = GetDicFreeSchoolMeal();
             vmIndexSpecialSchoolProfilesModel.DicLookedAfter = GetDicLookAfter();
+            vmIndexSpecialSchoolProfilesModel.selectedYear = new Year("2015");
             Session["vmIndexSpecialSchoolProfilesModel"] = vmIndexSpecialSchoolProfilesModel;
             return View("IndexSpecialSchool", vmIndexSpecialSchoolProfilesModel);
         }

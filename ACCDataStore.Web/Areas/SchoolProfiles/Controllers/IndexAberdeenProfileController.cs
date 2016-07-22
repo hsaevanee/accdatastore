@@ -40,7 +40,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             //vmIndexAberdeenCityProfilesModel.DicStage = GetDicStage(rpGeneric2nd, sSchoolType);
             vmIndexAberdeenCityProfilesModel.DicFreeMeal = GetDicFreeSchoolMeal();
             vmIndexAberdeenCityProfilesModel.DicLookedAfter = GetDicLookAfter();
-
+            vmIndexAberdeenCityProfilesModel.selectedYear = new Year("2015");
             Session["vmIndexAberdeenCityProfilesModel"] = vmIndexAberdeenCityProfilesModel;
             return View("IndexAberdeenCity", vmIndexAberdeenCityProfilesModel);
         }

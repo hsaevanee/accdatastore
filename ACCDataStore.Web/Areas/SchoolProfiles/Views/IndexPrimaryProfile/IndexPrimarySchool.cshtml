@@ -33,6 +33,9 @@
 
         <!-- Initialize the plugin: -->
 <script>
+
+    var year = '@Model.selectedYear.academicyear';
+
     $(document).ready(function () {
 
         var selectid = function () { return @Html.Raw(Json.Encode(Model.listSelectedSchoolname.Select(x => x.seedcode).ToList())); }();
@@ -178,7 +181,7 @@
                             <div class="panel-body">
                                 <div class="table-responsive">
                                     <p></p>
-                                    <table id="StageDatatable" class="table table-bordered table-hover">
+                                    <table id="PIPSDatatable" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
                                                 @foreach (DataColumn col in Model.dataTablePIPS.Columns)
@@ -231,7 +234,7 @@
                 </div>
         }
         
-        @if (Model.dataTableInCAS != null && Model.dataTableInCAS.Rows.Count > 0)
+        @if (Model.dataTableInCASP2 != null && Model.dataTableInCASP2.Rows.Count > 0)
         {
             <hr />
             <div class="row">
@@ -254,12 +257,12 @@
                         <div class="panel-body">
                             <div class="table-responsive">
                                 <p></p>
-                                <table id="StageDatatable" class="table table-bordered table-hover">
+                                <table id="InCASP2Datatable" class="table table-bordered table-hover displayDTTableV">
                                     <thead>
                                         <tr>
-                                            @foreach (DataColumn col in Model.dataTableInCAS.Columns)
+                                            @foreach (DataColumn col in Model.dataTableInCASP2.Columns)
                                             {
-                                                if (Model.dataTableInCAS.Columns.IndexOf(col) == 0)
+                                                if (Model.dataTableInCASP2.Columns.IndexOf(col) == 0)
                                                 {
 
                                                     <th class="text-center">@col.ColumnName</th>
@@ -272,12 +275,110 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (DataRow row in Model.dataTableInCAS.Rows)
+                                        @foreach (DataRow row in Model.dataTableInCASP2.Rows)
                                         {
                                             <tr>
-                                                @foreach (DataColumn col in Model.dataTableInCAS.Columns)
+                                                @foreach (DataColumn col in Model.dataTableInCASP2.Columns)
                                                 {
-                                                    if (Model.dataTableInCAS.Columns.IndexOf(col) == 0)
+                                                    if (Model.dataTableInCASP2.Columns.IndexOf(col) == 0)
+                                                    {
+                                                        <td class="text-left">@row[col.ColumnName]</td>
+
+
+                                                        //<td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "2", datatitle = "pips", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>
+                                                            @row[col.ColumnName]
+                                                            @*<input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="Pupils" onclick="location.href='@Url.Action("GetPrimaryListpupils", "IndexSchoolProfiles", new { area = "SchoolProfiles", datatitle = "stage", Indexrow = Model.DataTableStage.Rows.IndexOf(row), Indexcol = Model.DataTableStage.Columns.IndexOf(col.ColumnName) })'" />*@
+                                                        </td>
+                                                    }
+                                                    @*<td>Model.ethnicityData.Rows.IndexOf(row)</td>*@
+                                                    @*<td>@Model.ethnicityData.Columns.IndexOf(col)</td>*@
+
+                                                }
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="table-responsive">
+                                <p></p>
+                                <table id="InCASP4Datatable" class="table table-bordered table-hover displayDTTableV">
+                                    <thead>
+                                        <tr>
+                                            @foreach (DataColumn col in Model.dataTableInCASP4.Columns)
+                                            {
+                                                if (Model.dataTableInCASP4.Columns.IndexOf(col) == 0)
+                                                {
+
+                                                    <th class="text-center">@col.ColumnName</th>
+                                                }
+                                                else
+                                                {
+                                                    <th class="text-center">@col.ColumnName</th>
+                                                }
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (DataRow row in Model.dataTableInCASP4.Rows)
+                                        {
+                                            <tr>
+                                                @foreach (DataColumn col in Model.dataTableInCASP4.Columns)
+                                                {
+                                                    if (Model.dataTableInCASP4.Columns.IndexOf(col) == 0)
+                                                    {
+                                                        <td class="text-left">@row[col.ColumnName]</td>
+
+
+                                                        //<td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "2", datatitle = "pips", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>
+                                                            @row[col.ColumnName]
+                                                            @*<input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="Pupils" onclick="location.href='@Url.Action("GetPrimaryListpupils", "IndexSchoolProfiles", new { area = "SchoolProfiles", datatitle = "stage", Indexrow = Model.DataTableStage.Rows.IndexOf(row), Indexcol = Model.DataTableStage.Columns.IndexOf(col.ColumnName) })'" />*@
+                                                        </td>
+                                                    }
+                                                    @*<td>Model.ethnicityData.Rows.IndexOf(row)</td>*@
+                                                    @*<td>@Model.ethnicityData.Columns.IndexOf(col)</td>*@
+
+                                                }
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="table-responsive">
+                                <p></p>
+                                <table id="InCASP6Datatable" class="table table-bordered table-hover displayDTTableV">
+                                    <thead>
+                                        <tr>
+                                            @foreach (DataColumn col in Model.dataTableInCASP6.Columns)
+                                            {
+                                                if (Model.dataTableInCASP6.Columns.IndexOf(col) == 0)
+                                                {
+
+                                                    <th class="text-center">@col.ColumnName</th>
+                                                }
+                                                else
+                                                {
+                                                    <th class="text-center">@col.ColumnName</th>
+                                                }
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (DataRow row in Model.dataTableInCASP6.Rows)
+                                        {
+                                            <tr>
+                                                @foreach (DataColumn col in Model.dataTableInCASP6.Columns)
+                                                {
+                                                    if (Model.dataTableInCASP6.Columns.IndexOf(col) == 0)
                                                     {
                                                         <td class="text-left">@row[col.ColumnName]</td>
 

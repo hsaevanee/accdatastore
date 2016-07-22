@@ -17,8 +17,13 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.ViewModels.SchoolProfiles
         public List<DataSeries> listDataSeriesPIPS { get; set; }
         public List<PIPSObj> listPIPSPupils { get; set; }
         // for InCAS data
-        public DataTable dataTableInCAS { get; set; }
-        public List<DataSeries> listDataSeriesInCAS{ get; set; }
+        public DataTable dataTableInCASP2 { get; set; }
+        public List<DataSeries> listDataSeriesInCASP2{ get; set; }
+        public DataTable dataTableInCASP4 { get; set; }
+        public List<DataSeries> listDataSeriesInCASP4 { get; set; }
+        public DataTable dataTableInCASP6 { get; set; }
+        public List<DataSeries> listDataSeriesInCASP6 { get; set; }
+
         public List<InCASObj> listInCASPupils { get; set; }
     }
 }

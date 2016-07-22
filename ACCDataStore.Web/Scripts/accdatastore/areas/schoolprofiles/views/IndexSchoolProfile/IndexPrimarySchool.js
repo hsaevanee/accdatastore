@@ -11,11 +11,62 @@ $(document).ready(function () {
         }],
         buttons: {
             buttons: [
-                'copyHtml5', 'excelHtml5', 'csvHtml5', { extend: 'pdfHtml5', orientation: 'portrait' }, 'print',
+                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                    extend: 'pdfHtml5',
+                    orientation: 'portrait',
+                    exportOptions: {
+                        modifier: {
+                            page: 'current'
+                        }
+                    },
+                    header: true,
+                    title: 'Free School Meal Entitlement ' + year
+                }, 'print',
             ]
         }
     });
 
+    $('#PIPSDatatable').DataTable({
+        dom: 'Bfrtip',
+        paging: false,
+        "order": [],
+        "columnDefs": [{
+            "targets": 'no-sort',
+            "orderable": false,
+        }],
+        buttons: {
+            buttons: [
+                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                    extend: 'pdfHtml5',
+                    orientation: 'portrait',
+                    exportOptions: {
+                        modifier: {
+                            page: 'current'
+                        }
+                    },
+                    header: true,
+                    title: 'PIPS Baseline P1 for ' + year
+                }, 'print',
+            ]
+        }
+    });
+
+    $('table.displayDTTableV').DataTable({
+        dom: 'Bfrtip',
+        "scrollY": "200px",
+        "scrollCollapse": true,
+        "paging": false,
+        "order": [],
+        "columnDefs": [{
+            "targets": 'no-sort',
+            "orderable": false,
+        }],
+        buttons: {
+            buttons: [
+                'copyHtml5', 'excelHtml5', 'csvHtml5', { extend: 'pdfHtml5', orientation: 'portrait' }, 'print',
+            ]
+        }
+    });
 
     $('#LookedAfterDatatable').DataTable({
         dom: 'Bfrtip',
@@ -27,7 +78,17 @@ $(document).ready(function () {
         }],
         buttons: {
             buttons: [
-                'copyHtml5', 'excelHtml5', 'csvHtml5', { extend: 'pdfHtml5', orientation: 'portrait' }, 'print',
+                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                    extend: 'pdfHtml5',
+                    orientation: 'portrait',
+                    exportOptions: {
+                        modifier: {
+                            page: 'current'
+                        }
+                    },
+                    header: true,
+                    title: 'Looked After Children ' + year
+                }, 'print',
             ]
         }
     });
@@ -42,7 +103,17 @@ $(document).ready(function () {
         }],
         buttons: {
             buttons: [
-                'copyHtml5', 'excelHtml5', 'csvHtml5', { extend: 'pdfHtml5', orientation: 'portrait' }, 'print',
+                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                    extend: 'pdfHtml5',
+                    orientation: 'portrait',
+                    exportOptions: {
+                        modifier: {
+                            page: 'current'
+                        }
+                    },
+                    header: true,
+                    title: 'School Roll Year Groups ' + year
+                }, 'print',
             ]
         }
     });
@@ -56,9 +127,20 @@ $(document).ready(function () {
             "orderable": false,
         }],
         buttons: {
-        buttons: [
-            'copyHtml5', 'excelHtml5', 'csvHtml5', { extend: 'pdfHtml5', orientation: 'landscape' }, 'print',
-        ]}
+            buttons: [
+                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                    extend: 'pdfHtml5',
+                    orientation: 'landscape',
+                    exportOptions: {
+                        modifier: {
+                            page: 'current'
+                        }
+                    },
+                    header: true,
+                    title: 'Ethnicity for ' + year
+                }, 'print',
+            ]
+        }
     });
 
     $('#Nationalitydatatable').DataTable({
@@ -71,7 +153,17 @@ $(document).ready(function () {
         }],
         buttons: {
             buttons: [
-                'copyHtml5', 'excelHtml5', 'csvHtml5', { extend: 'pdfHtml5', orientation: 'landscape' }, 'print',
+                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                    extend: 'pdfHtml5',
+                    orientation: 'portrait',
+                    exportOptions: {
+                        modifier: {
+                            page: 'current'
+                        }
+                    },
+                    header: true,
+                    title: 'Nationality for ' + year
+                }, 'print',
             ]
         }
     });
@@ -86,7 +178,17 @@ $(document).ready(function () {
         }],
         buttons: {
             buttons: [
-                'copyHtml5', 'excelHtml5', 'csvHtml5', { extend: 'pdfHtml5', orientation: 'landscape' }, 'print',
+                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                    extend: 'pdfHtml5',
+                    orientation: 'landscape',
+                    exportOptions: {
+                        modifier: {
+                            page: 'current'
+                        }
+                    },
+                    header: true,
+                    title: 'English Level for ' + year
+                }, 'print',
             ]
         }
     })

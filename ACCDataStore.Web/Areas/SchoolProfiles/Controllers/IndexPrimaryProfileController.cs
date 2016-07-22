@@ -40,6 +40,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             vmIndexPrimarySchoolProfilesModel.DicStage = GetDicStage(rpGeneric2nd, sSchoolType);
             vmIndexPrimarySchoolProfilesModel.DicFreeMeal = GetDicFreeSchoolMeal();
             vmIndexPrimarySchoolProfilesModel.DicLookedAfter = GetDicLookAfter();
+            vmIndexPrimarySchoolProfilesModel.selectedYear = new Year("2015");
             Session["vmIndexPrimarySchoolProfilesModel"] = vmIndexPrimarySchoolProfilesModel;
             return View("IndexPrimarySchool", vmIndexPrimarySchoolProfilesModel);
         }
@@ -141,12 +142,20 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             //setting PIPS dataseries and datatable         
             temp = GetPIPsDataSeries(listPIPSPupils, listSelectedSchoolname, selectedYear);
             vmIndexPrimarySchoolProfilesModel.listDataSeriesPIPS = temp;
-            vmIndexPrimarySchoolProfilesModel.dataTablePIPS = CreatePIPSDataTale(temp);
+            vmIndexPrimarySchoolProfilesModel.dataTablePIPS = CreatePIPSDataTable(temp, "P1");
 
             //setting InCAS dataseries and datatable         
-            temp = GetInCASDataSeries(listInCASPupils, listSelectedSchoolname, selectedYear);
-            vmIndexPrimarySchoolProfilesModel.listDataSeriesInCAS = temp;
-            vmIndexPrimarySchoolProfilesModel.dataTableInCAS = CreatePIPSDataTale(temp);
+            temp = GetInCASDataSeries(listInCASPupils, listSelectedSchoolname, selectedYear, "1");
+            vmIndexPrimarySchoolProfilesModel.listDataSeriesInCASP2 = temp;
+            vmIndexPrimarySchoolProfilesModel.dataTableInCASP2 = CreatePIPSDataTable(temp, "P2");
+
+            temp = GetInCASDataSeries(listInCASPupils, listSelectedSchoolname, selectedYear, "3");
+            vmIndexPrimarySchoolProfilesModel.listDataSeriesInCASP4 = temp;
+            vmIndexPrimarySchoolProfilesModel.dataTableInCASP4 = CreatePIPSDataTable(temp, "P4");
+
+            temp = GetInCASDataSeries(listInCASPupils, listSelectedSchoolname, selectedYear, "5");
+            vmIndexPrimarySchoolProfilesModel.listDataSeriesInCASP6 = temp;
+            vmIndexPrimarySchoolProfilesModel.dataTableInCASP6 = CreatePIPSDataTable(temp, "P6");
 
 
             //vmIndexPrimarySchoolProfilesModel.jsondata = JsonConvert.SerializeObject(tempdt, Formatting.Indented); ;
@@ -232,13 +241,13 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
 
         }
 
-        protected DataTable CreatePIPSDataTale(List<DataSeries> listobject)
+        protected DataTable CreatePIPSDataTable(List<DataSeries> listobject, string firstColName)
         {
             DataTable dataTable = new DataTable();
             List<string> temprowdata = new List<string>();
 
             //create column names
-            dataTable.Columns.Add("P1", typeof(string));
+            dataTable.Columns.Add(firstColName, typeof(string));
 
             if (listobject != null && listobject[0].listPIPSdataitems.Count() > 0)
             {
@@ -300,13 +309,16 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
 
         }
 
-        protected List<DataSeries> GetInCASDataSeries(List<InCASObj> listPupilData, List<School> listSelectedSchool, Year iyear)
+        protected List<DataSeries> GetInCASDataSeries(List<InCASObj> listPupilData, List<School> listSelectedSchool, Year iyear, string YearGroup)
         {
             List<InCASObj> listtempPupilData = new List<InCASObj>();
             List<PIPSObjDetail> listResult = new List<PIPSObjDetail>();
             List<DataSeries> listobject = new List<DataSeries>();
-            //calculate individual school
+            
+            //select list of pupils by yeargroup
+            listPupilData = listPupilData.Where(x => x.YearGroup.Equals(YearGroup)).ToList();
 
+            //calculate individual school
             foreach (School item in listSelectedSchool)
             {
                 //select data for each school

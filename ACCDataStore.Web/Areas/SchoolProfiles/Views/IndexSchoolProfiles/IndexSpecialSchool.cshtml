@@ -69,6 +69,7 @@
 
         <!-- Initialize the plugin: -->
         <script type="text/javascript">
+            var year = '@Model.selectedYear.academicyear';
             $(document).ready(function () {
 
                 //var selectid = @Html.Raw(Json.Encode(Model.listSelectedSchoolname.Select(x=>x.seedcode).ToList()));
@@ -145,7 +146,7 @@
                 $('#listSelectedSchoolname').multiselect('refresh');
 
             });
-        </script>
+</script>
 
         @if (Model.dataTableStage != null && Model.dataTableStage.Rows.Count > 0)
         {

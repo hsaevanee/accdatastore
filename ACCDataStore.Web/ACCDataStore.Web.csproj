@@ -226,13 +226,17 @@
     <Content Include="Images\AchievementLogo.png" />
     <Content Include="Images\bruce_scharlau.JPG" />
     <Content Include="Images\Do_Coyle.jpg" />
+    <Content Include="Images\forecast.jpg" />
     <Content Include="Images\Ian_Heywood.jpg" />
     <Content Include="Images\insight_logo.jpg" />
     <Content Include="Images\Jan2.png" />
     <Content Include="Images\Kevin.jpeg" />
     <Content Include="Images\Pamela_Bain.jpeg" />
+    <Content Include="Images\pupils.jpg" />
+    <Content Include="Images\schoolprofile.png" />
     <Content Include="Images\Skilldevelopmentlogo.png" />
     <Content Include="Images\spinner.gif" />
+    <Content Include="Images\WIP.jpg" />
     <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\accdatastore\areas\authorisation\Login.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\HeatMapIndex.js" />
