@@ -1,5 +1,6 @@
 ﻿using ACCDataStore.Entity;
 using ACCDataStore.Entity.SchoolProfiles;
+using ACCDataStore.Entity.SchoolProfiles.Census;
 using ACCDataStore.Repository;
 using ACCDataStore.Web.Areas.SchoolProfiles.ViewModels.SchoolProfiles;
 using Common.Logging;
@@ -50,6 +51,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         {
             List<string> templistSelectedSchoolname = new List<string>();
             List<StudentObj> listAllPupils = new List<StudentObj>();
+            List<AaeAttendanceObj> listAaeAttendancelists = new List<AaeAttendanceObj>();
             List<School> listSchoolType = GetSchoolType();
             bool yesrIsSelected = false;
             Year selectedYear = null;
@@ -68,6 +70,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             if (yesrIsSelected)
             {
                 listAllPupils = GetListAllPupils(rpGeneric2nd, selectedYear, sSchoolType);
+                listAaeAttendancelists = GetAaeAttendanceLists(rpGeneric2nd, sSchoolType, selectedYear, new List<School>(), listAllPupils);
+
             }
 
             vmIndexAberdeenCityProfilesModel.profiletitle = "Aberdeen City";
@@ -108,6 +112,11 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             temp = GetDataSeriesForAberdeenCity("lookafter", listAllPupils, listSchoolType, selectedYear);
             vmIndexAberdeenCityProfilesModel.listDataSeriesLookedAfter = temp;
             vmIndexAberdeenCityProfilesModel.dataTableLookedAfter = CreateDataTaleWithTotal(temp, vmIndexAberdeenCityProfilesModel.DicLookedAfter, "Looked After Children", "no+%");
+            //Attendance
+
+            temp = GetAttendanceDataSeriesForAberdeenCity("attendance", listAaeAttendancelists, listSchoolType, selectedYear);
+            vmIndexAberdeenCityProfilesModel.listDataSeriesAttendance = temp;
+            vmIndexAberdeenCityProfilesModel.dataTableAttendance = CreateDataTable(temp, "School Attendance", "percentage");
 
             Session["vmIndexSecondarySchoolProfilesModel"] = vmIndexAberdeenCityProfilesModel;
             return View("IndexAberdeenCity", vmIndexAberdeenCityProfilesModel);
@@ -213,6 +222,71 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 listobject.Add(new DataSeries { dataSeriesNames = datatitle, school = item, year = iyear, listdataitems = listResultwithPercentage, checkSumPercentage = (double)listResultwithPercentage.Select(r => r.percentage).Sum(), checkSumCount = (int)listResultwithPercentage.Select(r => r.count).Sum() });
             }
             
+            return listobject;
+        }
+
+        protected List<DataSeries> GetAttendanceDataSeriesForAberdeenCity(string datatitle, List<AaeAttendanceObj> listPupilData, List<School> schooltype, Year iyear)
+        {
+            List<DataSeries> listobject = new List<DataSeries>();
+            List<AaeAttendanceObj> listtempPupilData = new List<AaeAttendanceObj>();
+            //var listResultwithPercentage = null;
+            double sum = 0, sumUnauthorisedAb = 0, sumAuthorised = 0, sumAttendance = 0, sumAbExclusion = 0;
+            List<ObjectDetail> listResultwithPercentage = new List<ObjectDetail>();
+            //calculate individual schooltype
+            foreach (School item in schooltype)
+            {
+
+                switch (item.schooltype)
+                {
+                    case "2": //select only primary pupils
+                        listtempPupilData = listPupilData.Where(x => (x.StudentStage.StartsWith("P"))).ToList();
+                        break;
+                    case "3":
+                        //select only secondary pupils
+                        listtempPupilData = listPupilData.Where(x => (x.StudentStage.StartsWith("S"))).ToList();
+                        listtempPupilData = listtempPupilData.Where(x => !x.StudentStage.Equals("SP")).ToList();
+                        break;
+                    case "4":
+                        //select only special pupils
+                        listtempPupilData = listPupilData.Where(x => (x.StudentStage.Equals("SP"))).ToList();
+                        break;
+                    case "5":
+                        //select only special pupils
+                        listtempPupilData = listPupilData.ToList();
+                        break;
+                }
+
+                listResultwithPercentage = new List<ObjectDetail>();
+                sum = 0;
+                sumUnauthorisedAb = 0;
+                sumAuthorised = 0;
+                sumAttendance = 0;
+                sumAbExclusion = 0;
+
+                switch (datatitle)
+                {
+                    case "attendance":
+                        sumAttendance = (double)listtempPupilData.Where(x => x.AttendanceCode.StartsWith("10")).Select(r => r.Total).Sum();
+
+                        sum = (double)listtempPupilData.Where(x => x.AttendanceCode.StartsWith("01")).Select(r => r.Total).Sum() - listtempPupilData.Where(x => x.AttendanceCode.Equals("02")).Select(r => r.Total).Sum();
+                        // including code 30/31/32/33
+                        sumUnauthorisedAb = (double)listtempPupilData.Where(x => x.AttendanceCode.StartsWith("3")).Select(r => r.Total).Sum();
+                        // including code 11-13/20-24
+                        sumAuthorised = (double)listtempPupilData.Where(x => x.AttendanceCode.Equals("11")).Select(r => r.Total).Sum() + listtempPupilData.Where(x => x.AttendanceCode.Equals("12")).Select(r => r.Total).Sum() + listtempPupilData.Where(x => x.AttendanceCode.Equals("13")).Select(r => r.Total).Sum() + listtempPupilData.Where(x => x.AttendanceCode.StartsWith("2")).Select(r => r.Total).Sum();
+                        sumAbExclusion = (double)listtempPupilData.Where(x => x.AttendanceCode.Equals("40")).Select(r => r.Total).Sum();
+
+                        listResultwithPercentage.Add(new ObjectDetail { itemcode = "Attendance", count = (int)sumAttendance, percentage = sum != 0 ? (sumAttendance / sum) * 100 : 0 });
+                        listResultwithPercentage.Add(new ObjectDetail { itemcode = "Authorised Absence", count = (int)sumAuthorised, percentage = sum != 0 ? (sumAuthorised / sum) * 100 : 0 });
+                        listResultwithPercentage.Add(new ObjectDetail { itemcode = "Unauthorised Absence", count = (int)sumUnauthorisedAb, percentage = sum != 0 ? (sumUnauthorisedAb / sum) * 100 : 0 });
+                        listResultwithPercentage.Add(new ObjectDetail { itemcode = "Absense due to exclusion", count = (int)sumAbExclusion, percentage = sum != 0 ? (sumAbExclusion / sum) * 100 : 0 });
+                        listResultwithPercentage.Add(new ObjectDetail { itemcode = "Total Absence", count = (int)(sumAuthorised + sumUnauthorisedAb), percentage = sum != 0 ? (sumAuthorised + sumUnauthorisedAb) / sum * 100 : 0 });
+
+                        break;
+                }
+
+                listobject.Add(new DataSeries { dataSeriesNames = datatitle, school = item, year = iyear, listdataitems = listResultwithPercentage, checkSumPercentage = (double)listResultwithPercentage.Select(r => r.percentage).Sum(), checkSumCount = (int)listResultwithPercentage.Select(r => r.count).Sum() });
+            }
+
             return listobject;
         }
 

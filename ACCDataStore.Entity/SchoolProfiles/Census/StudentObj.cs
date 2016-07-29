@@ -62,4 +62,36 @@ namespace ACCDataStore.Entity.SchoolProfiles
         public virtual string MainHomeLanguage { get; set; }
         public virtual string LevelOfEnglish { get; set; }
     }
+
+    public class SchStudent2008 : StudentObj
+    {
+    }
+
+    public class SchStudent2009: StudentObj
+    {
+    }
+
+    public class SchStudent2010 : StudentObj
+    {
+    }
+
+    public class SchStudent2011 : StudentObj
+    {
+    }
+
+    public class SchStudent2012 : StudentObj
+    {
+    }
+
+    public class SchStudent2013 : StudentObj
+    {
+    }
+
+    public class SchStudent2014 : StudentObj
+    {
+    }
+
+    public class SchStudent2015 : StudentObj
+    {
+    }
 }

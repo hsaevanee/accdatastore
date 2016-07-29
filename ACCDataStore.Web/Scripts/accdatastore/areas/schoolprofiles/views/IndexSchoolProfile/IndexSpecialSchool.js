@@ -233,30 +233,32 @@ function DrawEnglishLevelGraph() {
     json.credits = credits;
     json.tooltip = tooltip;
 
-    var chart = $('#EnglishLevelGraphContainer').highcharts(json, function(chart)
-    {
-        //remove English as a \"first-language\" data from graphs
-        console.log(chart)
-        var len = this.series.length
-        var newCategories = [];
-        //remove point in dataseries
-        for (i = 0; i < len; i++) {
-            var datalen = this.series[i].data.length
-            for (j = 0; j < datalen; j++) {
-                if (this.series[i].data[j].name == "English as a \"first-language\"") {
-                    removeindex = j;
-                    this.series[i].data[j].remove();
-                    break
-                }
-            }
-        }
-        // create new catagories for label in X-line
-        for (j = 0; j < this.series[0].data.length; j++) {
-            newCategories.push(this.series[0].data[j].name);
-        }
-        this.xAxis[0].setCategories(newCategories); // set net x label
-    }
-    );
+    var chart = $('#EnglishLevelGraphContainer').highcharts(json);
+
+    //var chart = $('#EnglishLevelGraphContainer').highcharts(json, function(chart)
+    //{
+    //    //remove English as a \"first-language\" data from graphs
+    //    console.log(chart)
+    //    var len = this.series.length
+    //    var newCategories = [];
+    //    //remove point in dataseries
+    //    for (i = 0; i < len; i++) {
+    //        var datalen = this.series[i].data.length
+    //        for (j = 0; j < datalen; j++) {
+    //            if (this.series[i].data[j].name == "English as a \"first-language\"") {
+    //                removeindex = j;
+    //                this.series[i].data[j].remove();
+    //                break
+    //            }
+    //        }
+    //    }
+    //    // create new catagories for label in X-line
+    //    for (j = 0; j < this.series[0].data.length; j++) {
+    //        newCategories.push(this.series[0].data[j].name);
+    //    }
+    //    this.xAxis[0].setCategories(newCategories); // set net x label
+    //}
+    //);
 
 }
 

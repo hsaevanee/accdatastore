@@ -39,4 +39,17 @@ namespace ACCDataStore.Entity.SchoolProfiles.InCAS
         public virtual double Standardised_GenMaths { get; set; }
 
     }
+
+    public class InCAS2012 : InCASObj
+    {
+    }
+    public class InCAS2013 : InCASObj
+    {
+    }
+    public class InCAS2014 : InCASObj
+    {
+    }
+    public class InCAS2015 : InCASObj
+    {
+    }
 }

@@ -148,19 +148,83 @@
             });
 </script>
 
-        @if (Model.dataTableStage != null && Model.dataTableStage.Rows.Count > 0)
+        @if (Model.dataTableAttendance != null && Model.dataTableAttendance.Rows.Count > 0)
         {
-            <hr />
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <h3 class="text-center">@Model.profiletitle</h3>
+                        <h3 class="text-center">Pupil Census Information for @Model.selectedYear.academicyear</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- Content Row -->
             <div class="row">
                 <div class="col-md-12">
                     <div class="panel panel-primary text-center">
                         <div class="panel-heading">
-                            <h3 class="panel-title text-center">Pupil Census Information for @Model.selectedYear.academicyear</h3>
-                            <h3 class="panel-title text-center">@Model.profiletitle</h3>
+                            <h4 class="panel-title"> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Nationality/Index/">Attendance</a></h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <p>% of Attendance </p>
+                                <table id="FreeMealDatatable" class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            @foreach (DataColumn col in Model.dataTableAttendance.Columns)
+                                            {
+                                                if (Model.dataTableAttendance.Columns.IndexOf(col) == 0)
+                                                {
+
+                                                    <th class="text-center">@col.ColumnName</th>
+                                                }
+                                                else
+                                                {
+                                                    <th class="text-center">@col.ColumnName</th>
+                                                }
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (DataRow row in Model.dataTableAttendance.Rows)
+                                        {
+                                            <tr>
+                                                @foreach (DataColumn col in Model.dataTableAttendance.Columns)
+                                                {
+                                                    if (Model.dataTableAttendance.Columns.IndexOf(col) == 0)
+                                                    {
+
+                                                        <td class="text-left">@row[col.ColumnName]</td>
+
+                                                        @*<td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "2", datatitle = "stage", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>*@
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>
+                                                            @row[col.ColumnName]
+                                                            @*<input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="Pupils" onclick="location.href='@Url.Action("GetPrimaryListpupils", "IndexSchoolProfiles", new { area = "SchoolProfiles", datatitle = "stage", Indexrow = Model.DataTableStage.Rows.IndexOf(row), Indexcol = Model.DataTableStage.Columns.IndexOf(col.ColumnName) })'" />*@
+                                                        </td>
+                                                    }
+                                                    @*<td>Model.ethnicityData.Rows.IndexOf(row)</td>*@
+                                                    @*<td>@Model.ethnicityData.Columns.IndexOf(col)</td>*@
+
+                                                }
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                                <p class="text-right"><a href="http://www.gov.scot/Topics/Statistics/Browse/School-Education/AttendanceAbsenceDatasets/atttab2015">Attendance and Absence in Scottish Schools 2014/15: Scottish Government Publication</a></p>
+                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
+        }
+        @if (Model.dataTableStage != null && Model.dataTableStage.Rows.Count > 0)
+        {
+            <hr />
             <!-- Content Row -->
             <div class="row">
                 <div class="col-md-12">

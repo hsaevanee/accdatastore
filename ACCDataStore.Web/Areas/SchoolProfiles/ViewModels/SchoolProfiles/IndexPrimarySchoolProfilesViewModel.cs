@@ -25,5 +25,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.ViewModels.SchoolProfiles
         public List<DataSeries> listDataSeriesInCASP6 { get; set; }
 
         public List<InCASObj> listInCASPupils { get; set; }
+
+        public bool? showTableInCAS = null;
     }
 }

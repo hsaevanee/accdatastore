@@ -1,5 +1,6 @@
 ﻿using ACCDataStore.Entity;
 using ACCDataStore.Entity.SchoolProfiles;
+using ACCDataStore.Entity.SchoolProfiles.Census;
 using ACCDataStore.Entity.SchoolProfiles.InCAS;
 using ACCDataStore.Repository;
 using ACCDataStore.Web.Areas.SchoolProfiles.ViewModels.SchoolProfiles;
@@ -40,7 +41,9 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             vmIndexPrimarySchoolProfilesModel.DicStage = GetDicStage(rpGeneric2nd, sSchoolType);
             vmIndexPrimarySchoolProfilesModel.DicFreeMeal = GetDicFreeSchoolMeal();
             vmIndexPrimarySchoolProfilesModel.DicLookedAfter = GetDicLookAfter();
+            //vmIndexPrimarySchoolProfilesModel.DicAttendance = GetDicAttendance(rpGeneric2nd);
             vmIndexPrimarySchoolProfilesModel.selectedYear = new Year("2015");
+            vmIndexPrimarySchoolProfilesModel.showTableInCAS = null;
             Session["vmIndexPrimarySchoolProfilesModel"] = vmIndexPrimarySchoolProfilesModel;
             return View("IndexPrimarySchool", vmIndexPrimarySchoolProfilesModel);
         }
@@ -56,6 +59,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             List<StudentObj> listAllPupils = new List<StudentObj>();
             List<PIPSObj> listPIPSPupils = new List<PIPSObj>();
             List<InCASObj> listInCASPupils = new List<InCASObj>();
+            List<AaeAttendanceObj> listAaeAttendancelists = new List<AaeAttendanceObj>();
 
             List<School> listSelectedSchoolname = new List<School>();
             bool schoolIsSelected = false;
@@ -89,6 +93,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 listAllPupils = GetListAllPupils(rpGeneric2nd, selectedYear, sSchoolType);
                 listPIPSPupils = GetPIPSPupils(rpGeneric2nd, selectedYear, listSelectedSchoolname);
                 listInCASPupils = GetInCASPupils(rpGeneric2nd, selectedYear, listSelectedSchoolname);
+                listAaeAttendancelists = GetAaeAttendanceLists(rpGeneric2nd, sSchoolType, selectedYear, listSelectedSchoolname, listAllPupils);
+
             }
 
             //create profiletitle
@@ -144,19 +150,26 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             vmIndexPrimarySchoolProfilesModel.listDataSeriesPIPS = temp;
             vmIndexPrimarySchoolProfilesModel.dataTablePIPS = CreatePIPSDataTable(temp, "P1");
 
-            //setting InCAS dataseries and datatable         
-            temp = GetInCASDataSeries(listInCASPupils, listSelectedSchoolname, selectedYear, "1");
+            //setting InCAS dataseries and datatable     
+
+            vmIndexPrimarySchoolProfilesModel.showTableInCAS = listInCASPupils.Count == 0 ? false : true;
+            temp = listInCASPupils.Count == 0? new List<DataSeries>() : GetInCASDataSeries(listInCASPupils, listSelectedSchoolname, selectedYear, "1");
             vmIndexPrimarySchoolProfilesModel.listDataSeriesInCASP2 = temp;
-            vmIndexPrimarySchoolProfilesModel.dataTableInCASP2 = CreatePIPSDataTable(temp, "P2");
+            vmIndexPrimarySchoolProfilesModel.dataTableInCASP2 = temp.Count == 0? null: CreatePIPSDataTable(temp, "P2");
 
-            temp = GetInCASDataSeries(listInCASPupils, listSelectedSchoolname, selectedYear, "3");
+            temp = listInCASPupils.Count == 0 ? new List<DataSeries>() : GetInCASDataSeries(listInCASPupils, listSelectedSchoolname, selectedYear, "3");
             vmIndexPrimarySchoolProfilesModel.listDataSeriesInCASP4 = temp;
-            vmIndexPrimarySchoolProfilesModel.dataTableInCASP4 = CreatePIPSDataTable(temp, "P4");
+            vmIndexPrimarySchoolProfilesModel.dataTableInCASP4 = temp.Count == 0 ? null : CreatePIPSDataTable(temp, "P4");
 
-            temp = GetInCASDataSeries(listInCASPupils, listSelectedSchoolname, selectedYear, "5");
+            temp = listInCASPupils.Count == 0 ? new List<DataSeries>() : GetInCASDataSeries(listInCASPupils, listSelectedSchoolname, selectedYear, "5");
             vmIndexPrimarySchoolProfilesModel.listDataSeriesInCASP6 = temp;
-            vmIndexPrimarySchoolProfilesModel.dataTableInCASP6 = CreatePIPSDataTable(temp, "P6");
+            vmIndexPrimarySchoolProfilesModel.dataTableInCASP6 = temp.Count == 0 ? null : CreatePIPSDataTable(temp, "P6");
 
+            //Attendance
+
+            temp = GetAaeAttendanceDataSeries("attendance", listAaeAttendancelists, listSelectedSchoolname, selectedYear, sSchoolType);
+            vmIndexPrimarySchoolProfilesModel.listDataSeriesAttendance = temp;
+            vmIndexPrimarySchoolProfilesModel.dataTableAttendance = CreateDataTable(temp, "School Attendance", "percentage");
 
             //vmIndexPrimarySchoolProfilesModel.jsondata = JsonConvert.SerializeObject(tempdt, Formatting.Indented); ;
             Session["vmIndexPrimarySchoolProfilesModel"] = vmIndexPrimarySchoolProfilesModel;
@@ -249,27 +262,37 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             //create column names
             dataTable.Columns.Add(firstColName, typeof(string));
 
-            if (listobject != null && listobject[0].listPIPSdataitems.Count() > 0)
+            if (listobject.Count == 0)
             {
-                foreach (var item in listobject[0].listPIPSdataitems)
-                {
-                    dataTable.Columns.Add(item.dataName, typeof(string));
-                }
+                dataTable.Rows.Add("Data is not available");
+            }
+            else {
 
+                //if (listobject != null && listobject[0].listPIPSdataitems.Count() > 0)
+                //{
+                    foreach (var item in listobject[0].listPIPSdataitems)
+                    {
+                        dataTable.Columns.Add(item.dataName, typeof(string));
+                    }
+
+                //}
+
+
+                //adding row data
+                foreach (var item in listobject)
+                {
+                    temprowdata = new List<string>();
+                    temprowdata.Add(item.school.name + " " + item.dataSeriesNames);
+                    foreach (var temp in item.listPIPSdataitems)
+                    {
+                        temprowdata.Add( Double.IsNaN(temp.average)? "na" : temp.average.ToString("0.00"));
+                    }
+                    dataTable.Rows.Add(temprowdata.ToArray());
+                }
+            
             }
 
-
-            //adding row data
-            foreach (var item in listobject)
-            {
-                temprowdata = new List<string>();
-                temprowdata.Add(item.school.name + " " + item.dataSeriesNames);
-                foreach (var temp in item.listPIPSdataitems)
-                {
-                    temprowdata.Add(temp.average.ToString("0.00"));
-                }
-                dataTable.Rows.Add(temprowdata.ToArray());
-            }
+            
 
             return dataTable;
         }
@@ -399,5 +422,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
 
             return listobject;
         }
+
+
+        
     }
 }

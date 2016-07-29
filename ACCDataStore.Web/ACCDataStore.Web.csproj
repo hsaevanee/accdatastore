@@ -257,6 +257,7 @@
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\IndexSecondarySchool.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\IndexPrimarySchool.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\IndexSchoolProfile.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\MapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\Trending.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Language\LevelOfEnglish.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Language\MapIndex.js" />
@@ -344,6 +345,7 @@
     <Compile Include="Areas\PupilsPopulation\ViewModels\Pupils05\Pupils05Data.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\BaseSchoolProfileController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\IndexAberdeenProfileController.cs" />
+    <Compile Include="Areas\SchoolProfiles\Controllers\IndexInteractiveMapController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\IndexPrimaryProfileController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\IndexSchoolProfilesController.cs" />
     <Compile Include="Areas\SchoolProfiles\SchoolProfilesAreaRegistration.cs" />
@@ -502,6 +504,7 @@
     <Content Include="Areas\SchoolProfiles\Views\IndexSchoolProfiles\IndexSpecialSchool.cshtml" />
     <Content Include="Areas\SchoolProfiles\Views\IndexSchoolProfiles\SchoolWebsites.cshtml" />
     <Content Include="Areas\SchoolProfiles\Views\IndexAberdeenProfile\IndexAberdeenCity.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\IndexInteractiveMap\MapIndex.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\About.cshtml" />

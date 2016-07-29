@@ -11,6 +11,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
+using ACCDataStore.Entity.SchoolProfiles.Census;
 
 namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
 {
@@ -90,6 +91,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             List<string> templistSelectedSchoolname = new List<string>();
             List<StudentObj> listAllPupils = new List<StudentObj>();
             List<School> listSelectedSchoolname = new List<School>();
+            List<AaeAttendanceObj> listAaeAttendancelists = new List<AaeAttendanceObj>();
             bool schoolIsSelected = false;
             bool yesrIsSelected = false;
             Year selectedYear = null;
@@ -117,6 +119,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             if (schoolIsSelected && yesrIsSelected)
             {
                 listAllPupils = GetListAllPupils(rpGeneric2nd, selectedYear, sSchoolType);
+                listAaeAttendancelists = GetAaeAttendanceLists(rpGeneric2nd, sSchoolType, selectedYear, listSelectedSchoolname, listAllPupils);
+
             }
 
             string tempProfiletitle = "";
@@ -169,6 +173,11 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             temp = GetDataSeries("lookafter", listAllPupils, listSelectedSchoolname, selectedYear, sSchoolType);
             vmIndexSecondarySchoolProfilesModel.listDataSeriesLookedAfter = temp;
             vmIndexSecondarySchoolProfilesModel.dataTableLookedAfter = CreateDataTaleWithTotal(temp, vmIndexSecondarySchoolProfilesModel.DicLookedAfter, "Looked After Children", "no+%");
+            //Attendance
+
+            temp = GetAaeAttendanceDataSeries("attendance", listAaeAttendancelists, listSelectedSchoolname, selectedYear, sSchoolType);
+            vmIndexSecondarySchoolProfilesModel.listDataSeriesAttendance = temp;
+            vmIndexSecondarySchoolProfilesModel.dataTableAttendance = CreateDataTable(temp, "School Attendance", "percentage");
 
             Session["vmIndexSecondarySchoolProfilesModel"] = vmIndexSecondarySchoolProfilesModel;
             return View("IndexSecondarySchool", vmIndexSecondarySchoolProfilesModel);
@@ -179,6 +188,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             List<string> templistSelectedSchoolname = new List<string>();
             List<StudentObj> listAllPupils = new List<StudentObj>();
             List<School> listSelectedSchoolname = new List<School>();
+            List<AaeAttendanceObj> listAaeAttendancelists = new List<AaeAttendanceObj>();
+
             bool schoolIsSelected = false;
             bool yesrIsSelected = false;
             Year selectedYear = null;
@@ -206,6 +217,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             if (schoolIsSelected && yesrIsSelected)
             {
                 listAllPupils = GetListAllPupils(rpGeneric2nd, selectedYear, sSchoolType);
+                listAaeAttendancelists = GetAaeAttendanceLists(rpGeneric2nd, sSchoolType, selectedYear, listSelectedSchoolname, listAllPupils);
+
             }
 
             string tempProfiletitle = "";
@@ -258,6 +271,12 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             temp = GetDataSeries("lookafter", listAllPupils, listSelectedSchoolname, selectedYear, sSchoolType);
             vmIndexSpecialSchoolProfilesModel.listDataSeriesLookedAfter = temp;
             vmIndexSpecialSchoolProfilesModel.dataTableLookedAfter = CreateDataTaleWithTotal(temp, vmIndexSpecialSchoolProfilesModel.DicLookedAfter, "Looked After Children", "no+%");
+
+            //Attendance
+
+            temp = GetAaeAttendanceDataSeries("attendance", listAaeAttendancelists, listSelectedSchoolname, selectedYear, sSchoolType);
+            vmIndexSpecialSchoolProfilesModel.listDataSeriesAttendance = temp;
+            vmIndexSpecialSchoolProfilesModel.dataTableAttendance = CreateDataTable(temp, "School Attendance", "percentage");
 
             Session["vmIndexSpecialSchoolProfilesModel"] = vmIndexSpecialSchoolProfilesModel;
             return View("IndexSecondarySchool", vmIndexSpecialSchoolProfilesModel);
