@@ -60,7 +60,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             List<PIPSObj> listPIPSPupils = new List<PIPSObj>();
             List<InCASObj> listInCASPupils = new List<InCASObj>();
             List<AaeAttendanceObj> listAaeAttendancelists = new List<AaeAttendanceObj>();
-
+            List<ExclusionStudentObj> listExclusionPupils = new List<ExclusionStudentObj>();
             List<School> listSelectedSchoolname = new List<School>();
             bool schoolIsSelected = false;
             bool yesrIsSelected = false;
@@ -94,7 +94,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 listPIPSPupils = GetPIPSPupils(rpGeneric2nd, selectedYear, listSelectedSchoolname);
                 listInCASPupils = GetInCASPupils(rpGeneric2nd, selectedYear, listSelectedSchoolname);
                 listAaeAttendancelists = GetAaeAttendanceLists(rpGeneric2nd, sSchoolType, selectedYear, listSelectedSchoolname, listAllPupils);
-
+                listExclusionPupils = GetListExclusionPupils(rpGeneric2nd, selectedYear, sSchoolType);
             }
 
             //create profiletitle
@@ -166,10 +166,16 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             vmIndexPrimarySchoolProfilesModel.dataTableInCASP6 = temp.Count == 0 ? null : CreatePIPSDataTable(temp, "P6");
 
             //Attendance
-
-            temp = GetAaeAttendanceDataSeries("attendance", listAaeAttendancelists, listSelectedSchoolname, selectedYear, sSchoolType);
+            vmIndexPrimarySchoolProfilesModel.showTableAttendance = listAaeAttendancelists.Count == 0 ? false : true;
+            temp = listAaeAttendancelists.Count == 0 ? new List<DataSeries>() : GetAaeAttendanceDataSeries("attendance", listAaeAttendancelists, listSelectedSchoolname, selectedYear, sSchoolType);
             vmIndexPrimarySchoolProfilesModel.listDataSeriesAttendance = temp;
-            vmIndexPrimarySchoolProfilesModel.dataTableAttendance = CreateDataTable(temp, "School Attendance", "percentage");
+            vmIndexPrimarySchoolProfilesModel.dataTableAttendance = temp.Count == 0 ? null : CreateDataTable(temp, "School Attendance", "percentage");
+
+            //Exclusion
+            vmIndexPrimarySchoolProfilesModel.showTableExclusion = listExclusionPupils.Count == 0 ? false : true;
+            temp = listExclusionPupils.Count == 0 ? new List<DataSeries>() : GetExclusionDataSeries("exclusion", listExclusionPupils, listSelectedSchoolname, selectedYear, sSchoolType);
+            vmIndexPrimarySchoolProfilesModel.listDataSeriesExclusion = temp;
+            vmIndexPrimarySchoolProfilesModel.dataTableExclusion = temp.Count == 0 ? null : CreateDataTable(temp, "Exclusions-Annual", "number");
 
             //vmIndexPrimarySchoolProfilesModel.jsondata = JsonConvert.SerializeObject(tempdt, Formatting.Indented); ;
             Session["vmIndexPrimarySchoolProfilesModel"] = vmIndexPrimarySchoolProfilesModel;
@@ -189,32 +195,32 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 listtempPupilData = listPupilData.Where(x => x.DfES.ToString().Equals(item.seedcode)).ToList();
                 //calculate School Start P1
                 listResult = new List<PIPSObjDetail>();
-                listResult.Add(new PIPSObjDetail { dataName = "Reading", average = listtempPupilData.Where(x => x.Szr != 0).Select(r => r.Szr).Average() });
-                listResult.Add(new PIPSObjDetail { dataName = "Mathematics", average = listtempPupilData.Where(x => x.Szm != 0).Select(r => r.Szm).DefaultIfEmpty(0).Average() });
-                listResult.Add(new PIPSObjDetail { dataName = "Phonics", average = listtempPupilData.Where(x => x.Szp != 0).Select(r => r.Szp).Average() });
-                listResult.Add(new PIPSObjDetail { dataName = "Total", average = listtempPupilData.Where(x => x.Szt != 0).Select(r => r.Szt).Average() });
+                listResult.Add(new PIPSObjDetail { dataName = "Reading", average = listtempPupilData.Where(x => x.Szr.HasValue==true).Select(r => r.Szr).Average() });
+                listResult.Add(new PIPSObjDetail { dataName = "Mathematics", average = listtempPupilData.Where(x => x.Szm.HasValue == true).Select(r => r.Szm).Average() });
+                listResult.Add(new PIPSObjDetail { dataName = "Phonics", average = listtempPupilData.Where(x => x.Szp.HasValue == true).Select(r => r.Szp).Average() });
+                listResult.Add(new PIPSObjDetail { dataName = "Total", average = listtempPupilData.Where(x => x.Szt.HasValue == true).Select(r => r.Szt).Average() });
                 listobject.Add(new DataSeries { dataSeriesNames = "Start P1", school = item, year = iyear, listPIPSdataitems = listResult });
                 listResult = new List<PIPSObjDetail>();
                 //calculate School End P1
-                listResult.Add(new PIPSObjDetail { dataName = "Reading", average = listtempPupilData.Where(x => x.Ezr != 0).Select(r => r.Ezr).Average() });
-                listResult.Add(new PIPSObjDetail { dataName = "Mathematics", average = listtempPupilData.Where(x => x.Ezm != 0).Select(r => r.Ezm).Average() });
-                listResult.Add(new PIPSObjDetail { dataName = "Phonics", average = listtempPupilData.Where(x => x.Ezp != 0).Select(r => r.Ezp).Average() });
-                listResult.Add(new PIPSObjDetail { dataName = "Total", average = listtempPupilData.Where(x => x.Ezt != 0).Select(r => r.Ezt).Average() });
+                listResult.Add(new PIPSObjDetail { dataName = "Reading", average = listtempPupilData.Where(x => x.Ezr.HasValue == true).Select(r => r.Ezr).Average() });
+                listResult.Add(new PIPSObjDetail { dataName = "Mathematics", average = listtempPupilData.Where(x => x.Ezm.HasValue == true).Select(r => r.Ezm).Average() });
+                listResult.Add(new PIPSObjDetail { dataName = "Phonics", average = listtempPupilData.Where(x => x.Ezp.HasValue == true).Select(r => r.Ezp).Average() });
+                listResult.Add(new PIPSObjDetail { dataName = "Total", average = listtempPupilData.Where(x => x.Ezt.HasValue == true).Select(r => r.Ezt).Average() });
                 listobject.Add(new DataSeries { dataSeriesNames = "End P1", school = item, year = iyear, listPIPSdataitems = listResult });
             }
 
             //calculate for aberdeen city
             listResult = new List<PIPSObjDetail>();
-            listResult.Add(new PIPSObjDetail { dataName = "Reading", average = listPupilData.Where(x => x.Szr > 0).Select(r => r.Szr).Average() });
-            listResult.Add(new PIPSObjDetail { dataName = "Mathematics", average = listPupilData.Where(x => x.Szm > 0).Select(r => r.Szm).Average() });
-            listResult.Add(new PIPSObjDetail { dataName = "Phonics", average = listPupilData.Where(x => x.Szp > 0).Select(r => r.Szp).Average() });
-            listResult.Add(new PIPSObjDetail { dataName = "Total", average = listPupilData.Where(x => x.Szt > 0).Select(r => r.Szt).Average() });
+            listResult.Add(new PIPSObjDetail { dataName = "Reading", average = listPupilData.Where(x => x.Szr.HasValue == true).Select(r => r.Szr).Average() });
+            listResult.Add(new PIPSObjDetail { dataName = "Mathematics", average = listPupilData.Where(x => x.Szm.HasValue == true).Select(r => r.Szm).Average() });
+            listResult.Add(new PIPSObjDetail { dataName = "Phonics", average = listPupilData.Where(x => x.Szp.HasValue == true).Select(r => r.Szp).Average() });
+            listResult.Add(new PIPSObjDetail { dataName = "Total", average = listPupilData.Where(x => x.Szt.HasValue == true).Select(r => r.Szt).Average() });
             listobject.Add(new DataSeries { dataSeriesNames = "Start P1", school = new School("Aberdeen City", "Aberdeen City"), year = iyear, listPIPSdataitems = listResult });
             listResult = new List<PIPSObjDetail>();
-            listResult.Add(new PIPSObjDetail { dataName = "Reading", average = listPupilData.Where(x => x.Ezr > 0).Select(r => r.Ezr).Average() });
-            listResult.Add(new PIPSObjDetail { dataName = "Mathematics", average = listPupilData.Where(x => x.Ezm > 0).Select(r => r.Ezm).Average() });
-            listResult.Add(new PIPSObjDetail { dataName = "Phonics", average = listPupilData.Where(x => x.Ezp > 0).Select(r => r.Ezp).Average() });
-            listResult.Add(new PIPSObjDetail { dataName = "Total", average = listPupilData.Where(x => x.Ezt > 0).Select(r => r.Ezt).Average() });
+            listResult.Add(new PIPSObjDetail { dataName = "Reading", average = listPupilData.Where(x => x.Ezr.HasValue == true).Select(r => r.Ezr).Average() });
+            listResult.Add(new PIPSObjDetail { dataName = "Mathematics", average = listPupilData.Where(x => x.Ezm.HasValue == true).Select(r => r.Ezm).Average() });
+            listResult.Add(new PIPSObjDetail { dataName = "Phonics", average = listPupilData.Where(x => x.Ezp.HasValue == true).Select(r => r.Ezp).Average() });
+            listResult.Add(new PIPSObjDetail { dataName = "Total", average = listPupilData.Where(x => x.Ezt.HasValue == true).Select(r => r.Ezt).Average() });
             listobject.Add(new DataSeries { dataSeriesNames = "End P1", school = new School("Aberdeen City", "Aberdeen City"), year = iyear, listPIPSdataitems = listResult });
 
             return listobject;
@@ -285,7 +291,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     temprowdata.Add(item.school.name + " " + item.dataSeriesNames);
                     foreach (var temp in item.listPIPSdataitems)
                     {
-                        temprowdata.Add( Double.IsNaN(temp.average)? "na" : temp.average.ToString("0.00"));
+                        //temprowdata.Add("na" );
+                        temprowdata.Add((temp.average.HasValue && !Double.IsNaN(temp.average.Value)) == false ? "na" : temp.average.Value.ToString("0.00"));
                     }
                     dataTable.Rows.Add(temprowdata.ToArray());
                 }
@@ -348,76 +355,82 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 listtempPupilData = listPupilData.Where(x => x.SchoolId.ToString().Equals(item.seedcode)).ToList();
                 //calculate Develop Ability
                 listResult = new List<PIPSObjDetail>();
-                listResult.Add(new PIPSObjDetail { dataName = "AgeAtTest_DevAbil", average = listtempPupilData.Where(x => x.AgeAtTest_DevAbil != 0).Select(r => r.AgeAtTest_DevAbil).Average() });
-                listResult.Add(new PIPSObjDetail { dataName = "AgeEquiv_DevAbil", average = listtempPupilData.Where(x => x.AgeEquiv_DevAbil != 0).Select(r => r.AgeEquiv_DevAbil).Average() });
-                listResult.Add(new PIPSObjDetail { dataName = "AgeDiff_DevAbil", average = listtempPupilData.Where(x => x.AgeDiff_DevAbil != 0).Select(r => r.AgeDiff_DevAbil).Average() });
-                listResult.Add(new PIPSObjDetail { dataName = "Standardised_DevAbil", average = listtempPupilData.Where(x => x.Standardised_DevAbil != 0).Select(r => r.Standardised_DevAbil).Average() });
+                listResult.Add(new PIPSObjDetail { dataName = "AgeAtTest_DevAbil", average = listtempPupilData.Where(x => x.AgeAtTest_DevAbil.HasValue == true).Select(r => r.AgeAtTest_DevAbil).Average() });
+               // listResult.Add(new PIPSObjDetail { dataName = "AgeAtTest_DevAbil", average = listtempPupilData.Where(x => x.AgeAtTest_DevAbil != 0).Select(r => r.AgeAtTest_DevAbil).Average() });
+                listResult.Add(new PIPSObjDetail { dataName = "AgeEquiv_DevAbil", average = listtempPupilData.Where(x => x.AgeEquiv_DevAbil.HasValue == true).Select(r => r.AgeEquiv_DevAbil).Average() });
+                listResult.Add(new PIPSObjDetail { dataName = "AgeDiff_DevAbil", average = listtempPupilData.Where(x => x.AgeDiff_DevAbil.HasValue == true).Select(r => r.AgeDiff_DevAbil).Average() });
+                listResult.Add(new PIPSObjDetail { dataName = "Standardised_DevAbil", average = listtempPupilData.Where(x => x.Standardised_DevAbil.HasValue == true).Select(r => r.AgeDiff_DevAbil).Average() });
                 listobject.Add(new DataSeries { dataSeriesNames = "Develop Ability", school = item, year = iyear, listPIPSdataitems = listResult });
                 //calculate reading
                 listResult = new List<PIPSObjDetail>();
-                listResult.Add(new PIPSObjDetail { dataName = "AgeAtTest_Reading", average = listtempPupilData.Where(x => x.AgeAtTest_Reading != 0).Select(r => r.AgeAtTest_Reading).Average() });
-                listResult.Add(new PIPSObjDetail { dataName = "AgeEquiv_Reading", average = listtempPupilData.Where(x => x.AgeEquiv_Reading != 0).Select(r => r.AgeEquiv_Reading).Average() });
-                listResult.Add(new PIPSObjDetail { dataName = "AgeDiff_Reading", average = listtempPupilData.Where(x => x.AgeDiff_Reading != 0).Select(r => r.AgeDiff_Reading).Average() });
-                listResult.Add(new PIPSObjDetail { dataName = "Standardised_Reading", average = listtempPupilData.Where(x => x.Standardised_Reading != 0).Select(r => r.Standardised_Reading).Average() });
+                listResult.Add(new PIPSObjDetail { dataName = "AgeAtTest_Reading", average = listtempPupilData.Where(x => x.AgeAtTest_Reading.HasValue == true).Select(r => r.AgeAtTest_Reading).Average() });
+                listResult.Add(new PIPSObjDetail { dataName = "AgeEquiv_Reading", average = listtempPupilData.Where(x => x.AgeEquiv_Reading.HasValue == true).Select(r => r.AgeEquiv_Reading).Average() });
+                listResult.Add(new PIPSObjDetail { dataName = "AgeDiff_Reading", average = listtempPupilData.Where(x => x.AgeDiff_Reading.HasValue == true).Select(r => r.AgeDiff_Reading).Average() });
+                listResult.Add(new PIPSObjDetail { dataName = "Standardised_Reading", average = listtempPupilData.Where(x => x.Standardised_Reading.HasValue == true).Select(r => r.Standardised_Reading).Average() });
                 listobject.Add(new DataSeries { dataSeriesNames = "Reading", school = item, year = iyear, listPIPSdataitems = listResult });
                 //calculate Spelling
                 listResult = new List<PIPSObjDetail>();
-                listResult.Add(new PIPSObjDetail { dataName = "AgeAtTest_Spelling", average = listtempPupilData.Where(x => x.AgeAtTest_Spelling != 0).Select(r => r.AgeAtTest_Spelling).Average() });
-                listResult.Add(new PIPSObjDetail { dataName = "AgeEquiv_Spelling", average = listtempPupilData.Where(x => x.AgeEquiv_Spelling != 0).Select(r => r.AgeEquiv_Spelling).Average() });
-                listResult.Add(new PIPSObjDetail { dataName = "AgeDiff_Spelling", average = listtempPupilData.Where(x => x.AgeDiff_Spelling != 0).Select(r => r.AgeDiff_Spelling).Average() });
+                listResult.Add(new PIPSObjDetail { dataName = "AgeAtTest_Spelling", average = listtempPupilData.Where(x => x.AgeAtTest_Spelling.HasValue == true).Select(r => r.AgeAtTest_Spelling).Average() });
+                listResult.Add(new PIPSObjDetail { dataName = "AgeEquiv_Spelling", average = listtempPupilData.Where(x => x.AgeEquiv_Spelling.HasValue == true).Select(r => r.AgeEquiv_Spelling).Average() });
+                listResult.Add(new PIPSObjDetail { dataName = "AgeDiff_Spelling", average = listtempPupilData.Where(x => x.AgeDiff_Spelling.HasValue == true).Select(r => r.AgeDiff_Spelling).Average() });
                 listResult.Add(new PIPSObjDetail { dataName = "Standardised_Reading", average = double.NaN });
                 listobject.Add(new DataSeries { dataSeriesNames = "Spelling", school = item, year = iyear, listPIPSdataitems = listResult });
                 //calculate General Math
                 listResult = new List<PIPSObjDetail>();
-                listResult.Add(new PIPSObjDetail { dataName = "AgeAtTest_GenMaths", average = listtempPupilData.Where(x => x.AgeAtTest_GenMaths != 0).Select(r => r.AgeAtTest_GenMaths).Average() });
-                listResult.Add(new PIPSObjDetail { dataName = "AgeEquiv_GenMaths", average = listtempPupilData.Where(x => x.AgeEquiv_GenMaths != 0).Select(r => r.AgeEquiv_GenMaths).Average() });
-                listResult.Add(new PIPSObjDetail { dataName = "AgeDiff_GenMaths", average = listtempPupilData.Where(x => x.AgeDiff_GenMaths != 0).Select(r => r.AgeDiff_GenMaths).Average() });
-                listResult.Add(new PIPSObjDetail { dataName = "Standardised_GenMaths", average = listtempPupilData.Where(x => x.Standardised_GenMaths != 0).Select(r => r.Standardised_GenMaths).Average() });
+                listResult.Add(new PIPSObjDetail { dataName = "AgeAtTest_GenMaths", average = listtempPupilData.Where(x => x.AgeAtTest_GenMaths.HasValue == true).Select(r => r.AgeAtTest_GenMaths).Average() });
+                listResult.Add(new PIPSObjDetail { dataName = "AgeEquiv_GenMaths", average = listtempPupilData.Where(x => x.AgeEquiv_GenMaths.HasValue == true).Select(r => r.AgeEquiv_GenMaths).Average() });
+                listResult.Add(new PIPSObjDetail { dataName = "AgeDiff_GenMaths", average = listtempPupilData.Where(x => x.AgeDiff_GenMaths.HasValue == true).Select(r => r.AgeDiff_GenMaths).Average() });
+                listResult.Add(new PIPSObjDetail { dataName = "Standardised_GenMaths", average = listtempPupilData.Where(x => x.Standardised_GenMaths.HasValue == true).Select(r => r.Standardised_GenMaths).Average() });
                 listobject.Add(new DataSeries { dataSeriesNames = "General Maths", school = item, year = iyear, listPIPSdataitems = listResult });
                 //calculate Mental Arithmetics
                 listResult = new List<PIPSObjDetail>();
-                listResult.Add(new PIPSObjDetail { dataName = "AgeAtTest_MentArith", average = listtempPupilData.Where(x => x.AgeAtTest_MentArith != 0).Select(r => r.AgeAtTest_MentArith).Average() });
-                listResult.Add(new PIPSObjDetail { dataName = "AgeEquiv_MentArith", average = listtempPupilData.Where(x => x.AgeEquiv_MentArith != 0).Select(r => r.AgeEquiv_MentArith).Average() });
-                listResult.Add(new PIPSObjDetail { dataName = "AgeDiff_MentArith", average = listtempPupilData.Where(x => x.AgeDiff_MentArith != 0).Select(r => r.AgeDiff_MentArith).Average() });
-                listResult.Add(new PIPSObjDetail { dataName = "Standardised_MentArith", average = listtempPupilData.Where(x => x.Standardised_MentArith != 0).Select(r => r.Standardised_MentArith).Average() });
+                listResult.Add(new PIPSObjDetail { dataName = "AgeAtTest_MentArith", average = listtempPupilData.Where(x => x.AgeAtTest_MentArith.HasValue == true).Select(r => r.AgeAtTest_MentArith).Average() });
+                listResult.Add(new PIPSObjDetail { dataName = "AgeEquiv_MentArith", average = listtempPupilData.Where(x => x.AgeEquiv_MentArith.HasValue == true).Select(r => r.AgeEquiv_MentArith).Average() });
+                listResult.Add(new PIPSObjDetail { dataName = "AgeDiff_MentArith", average = listtempPupilData.Where(x => x.AgeDiff_MentArith.HasValue == true).Select(r => r.AgeDiff_MentArith).Average() });
+                listResult.Add(new PIPSObjDetail { dataName = "Standardised_MentArith", average = listtempPupilData.Where(x => x.Standardised_MentArith.HasValue == true).Select(r => r.Standardised_MentArith).Average() });
                 listobject.Add(new DataSeries { dataSeriesNames = "Mental Arithmetics", school = item, year = iyear, listPIPSdataitems = listResult });
 
             }
 
             //calculate for aberdeen city
             listResult = new List<PIPSObjDetail>();
-            listResult.Add(new PIPSObjDetail { dataName = "AgeAtTest_DevAbil", average = listPupilData.Where(x => x.AgeAtTest_DevAbil != 0).Select(r => r.AgeAtTest_DevAbil).Average() });
-            listResult.Add(new PIPSObjDetail { dataName = "AgeEquiv_DevAbil", average = listPupilData.Where(x => x.AgeEquiv_DevAbil != 0).Select(r => r.AgeEquiv_DevAbil).Average() });
-            listResult.Add(new PIPSObjDetail { dataName = "AgeDiff_DevAbil", average = listPupilData.Where(x => x.AgeDiff_DevAbil != 0).Select(r => r.AgeDiff_DevAbil).Average() });
-            listResult.Add(new PIPSObjDetail { dataName = "Standardised_DevAbil", average = listPupilData.Where(x => x.Standardised_DevAbil != 0).Select(r => r.Standardised_DevAbil).Average() });
+            listResult.Add(new PIPSObjDetail { dataName = "AgeAtTest_DevAbil", average = listPupilData.Where(x => x.AgeAtTest_DevAbil.HasValue == true).Select(r => r.AgeAtTest_DevAbil).Average() });
+            listResult.Add(new PIPSObjDetail { dataName = "AgeEquiv_DevAbil", average = listPupilData.Where(x => x.AgeEquiv_DevAbil.HasValue == true).Select(r => r.AgeEquiv_DevAbil).Average() });
+            listResult.Add(new PIPSObjDetail { dataName = "AgeDiff_DevAbil", average = listPupilData.Where(x => x.AgeDiff_DevAbil.HasValue == true).Select(r => r.AgeDiff_DevAbil).Average() });
+            listResult.Add(new PIPSObjDetail { dataName = "Standardised_DevAbil", average = listPupilData.Where(x => x.Standardised_DevAbil.HasValue == true).Select(r => r.Standardised_DevAbil).Average() });
+
+            //listResult.Add(new PIPSObjDetail { dataName = "AgeAtTest_DevAbil", average = listPupilData.Where(x => x.AgeAtTest_DevAbil != 0).Select(r => r.AgeAtTest_DevAbil).Average() });
+            //listResult.Add(new PIPSObjDetail { dataName = "AgeEquiv_DevAbil", average = listPupilData.Where(x => x.AgeEquiv_DevAbil != 0).Select(r => r.AgeEquiv_DevAbil).Average() });
+            //listResult.Add(new PIPSObjDetail { dataName = "AgeDiff_DevAbil", average = listPupilData.Where(x => x.AgeDiff_DevAbil != 0).Select(r => r.AgeDiff_DevAbil).Average() });
+            //listResult.Add(new PIPSObjDetail { dataName = "Standardised_DevAbil", average = listPupilData.Where(x => x.Standardised_DevAbil != 0).Select(r => r.Standardised_DevAbil).Average() });
             listobject.Add(new DataSeries { dataSeriesNames = "Develop Ability", school = new School("Aberdeen City", "Aberdeen City"), year = iyear, listPIPSdataitems = listResult });
             //calculate reading
             listResult = new List<PIPSObjDetail>();
-            listResult.Add(new PIPSObjDetail { dataName = "AgeAtTest_Reading", average = listPupilData.Where(x => x.AgeAtTest_Reading != 0).Select(r => r.AgeAtTest_Reading).Average() });
-            listResult.Add(new PIPSObjDetail { dataName = "AgeEquiv_Reading", average = listPupilData.Where(x => x.AgeEquiv_Reading != 0).Select(r => r.AgeEquiv_Reading).Average() });
-            listResult.Add(new PIPSObjDetail { dataName = "AgeDiff_Reading", average = listPupilData.Where(x => x.AgeDiff_Reading != 0).Select(r => r.AgeDiff_Reading).Average() });
-            listResult.Add(new PIPSObjDetail { dataName = "Standardised_Reading", average = listPupilData.Where(x => x.Standardised_Reading != 0).Select(r => r.Standardised_Reading).Average() });
+            listResult.Add(new PIPSObjDetail { dataName = "AgeAtTest_Reading", average = listPupilData.Where(x => x.AgeAtTest_Reading.HasValue == true).Select(r => r.AgeAtTest_Reading).Average() });
+            listResult.Add(new PIPSObjDetail { dataName = "AgeEquiv_Reading", average = listPupilData.Where(x => x.AgeEquiv_Reading.HasValue == true).Select(r => r.AgeEquiv_Reading).Average() });
+            listResult.Add(new PIPSObjDetail { dataName = "AgeDiff_Reading", average = listPupilData.Where(x => x.AgeDiff_Reading.HasValue == true).Select(r => r.AgeDiff_Reading).Average() });
+            listResult.Add(new PIPSObjDetail { dataName = "Standardised_Reading", average = listPupilData.Where(x => x.Standardised_Reading.HasValue == true).Select(r => r.Standardised_Reading).Average() });
             listobject.Add(new DataSeries { dataSeriesNames = "Reading", school = new School("Aberdeen City", "Aberdeen City"), year = iyear, listPIPSdataitems = listResult });
             //calculate Spelling
             listResult = new List<PIPSObjDetail>();
-            listResult.Add(new PIPSObjDetail { dataName = "AgeAtTest_Spelling", average = listPupilData.Where(x => x.AgeAtTest_Spelling != 0).Select(r => r.AgeAtTest_Spelling).Average() });
-            listResult.Add(new PIPSObjDetail { dataName = "AgeEquiv_Spelling", average = listPupilData.Where(x => x.AgeEquiv_Spelling != 0).Select(r => r.AgeEquiv_Spelling).Average() });
-            listResult.Add(new PIPSObjDetail { dataName = "AgeDiff_Spelling", average = listPupilData.Where(x => x.AgeDiff_Spelling != 0).Select(r => r.AgeDiff_Spelling).Average() });
+            listResult.Add(new PIPSObjDetail { dataName = "AgeAtTest_Spelling", average = listPupilData.Where(x => x.AgeAtTest_Spelling.HasValue == true).Select(r => r.AgeAtTest_Spelling).Average() });
+            listResult.Add(new PIPSObjDetail { dataName = "AgeEquiv_Spelling", average = listPupilData.Where(x => x.AgeEquiv_Spelling.HasValue == true).Select(r => r.AgeEquiv_Spelling).Average() });
+            listResult.Add(new PIPSObjDetail { dataName = "AgeDiff_Spelling", average = listPupilData.Where(x => x.AgeDiff_Spelling.HasValue == true).Select(r => r.AgeDiff_Spelling).Average() });
             listResult.Add(new PIPSObjDetail { dataName = "Standardised_Reading", average = double.NaN });
             listobject.Add(new DataSeries { dataSeriesNames = "Spelling", school = new School("Aberdeen City", "Aberdeen City"), year = iyear, listPIPSdataitems = listResult });
             //calculate General Math
             listResult = new List<PIPSObjDetail>();
-            listResult.Add(new PIPSObjDetail { dataName = "AgeAtTest_GenMaths", average = listPupilData.Where(x => x.AgeAtTest_GenMaths != 0).Select(r => r.AgeAtTest_GenMaths).Average() });
-            listResult.Add(new PIPSObjDetail { dataName = "AgeEquiv_GenMaths", average = listPupilData.Where(x => x.AgeEquiv_GenMaths != 0).Select(r => r.AgeEquiv_GenMaths).Average() });
-            listResult.Add(new PIPSObjDetail { dataName = "AgeDiff_GenMaths", average = listPupilData.Where(x => x.AgeDiff_GenMaths != 0).Select(r => r.AgeDiff_GenMaths).Average() });
-            listResult.Add(new PIPSObjDetail { dataName = "Standardised_GenMaths", average = listPupilData.Where(x => x.Standardised_GenMaths != 0).Select(r => r.Standardised_GenMaths).Average() });
+            listResult.Add(new PIPSObjDetail { dataName = "AgeAtTest_GenMaths", average = listPupilData.Where(x => x.AgeAtTest_GenMaths.HasValue == true).Select(r => r.AgeAtTest_GenMaths).Average() });
+            listResult.Add(new PIPSObjDetail { dataName = "AgeEquiv_GenMaths", average = listPupilData.Where(x => x.AgeEquiv_GenMaths.HasValue == true).Select(r => r.AgeEquiv_GenMaths).Average() });
+            listResult.Add(new PIPSObjDetail { dataName = "AgeDiff_GenMaths", average = listPupilData.Where(x => x.AgeDiff_GenMaths.HasValue == true).Select(r => r.AgeDiff_GenMaths).Average() });
+            listResult.Add(new PIPSObjDetail { dataName = "Standardised_GenMaths", average = listPupilData.Where(x => x.Standardised_GenMaths.HasValue == true).Select(r => r.Standardised_GenMaths).Average() });
             listobject.Add(new DataSeries { dataSeriesNames = "General Maths", school = new School("Aberdeen City", "Aberdeen City"), year = iyear, listPIPSdataitems = listResult });
             //calculate Mental Arithmetics
             listResult = new List<PIPSObjDetail>();
-            listResult.Add(new PIPSObjDetail { dataName = "AgeAtTest_MentArith", average = listPupilData.Where(x => x.AgeAtTest_MentArith != 0).Select(r => r.AgeAtTest_MentArith).Average() });
-            listResult.Add(new PIPSObjDetail { dataName = "AgeEquiv_MentArith", average = listPupilData.Where(x => x.AgeEquiv_MentArith != 0).Select(r => r.AgeEquiv_MentArith).Average() });
-            listResult.Add(new PIPSObjDetail { dataName = "AgeDiff_MentArith", average = listPupilData.Where(x => x.AgeDiff_MentArith != 0).Select(r => r.AgeDiff_MentArith).Average() });
-            listResult.Add(new PIPSObjDetail { dataName = "Standardised_MentArith", average = listPupilData.Where(x => x.Standardised_MentArith != 0).Select(r => r.Standardised_MentArith).Average() });
+            listResult.Add(new PIPSObjDetail { dataName = "AgeAtTest_MentArith", average = listPupilData.Where(x => x.AgeAtTest_MentArith.HasValue == true).Select(r => r.AgeAtTest_MentArith).Average() });
+            listResult.Add(new PIPSObjDetail { dataName = "AgeEquiv_MentArith", average = listPupilData.Where(x => x.AgeEquiv_MentArith.HasValue == true).Select(r => r.AgeEquiv_MentArith).Average() });
+            listResult.Add(new PIPSObjDetail { dataName = "AgeDiff_MentArith", average = listPupilData.Where(x => x.AgeDiff_MentArith.HasValue == true).Select(r => r.AgeDiff_MentArith).Average() });
+            listResult.Add(new PIPSObjDetail { dataName = "Standardised_MentArith", average = listPupilData.Where(x => x.Standardised_MentArith.HasValue == true).Select(r => r.Standardised_MentArith).Average() });
             listobject.Add(new DataSeries { dataSeriesNames = "Mental Arithmetics", school = new School("Aberdeen City", "Aberdeen City"), year = iyear, listPIPSdataitems = listResult });
 
             return listobject;

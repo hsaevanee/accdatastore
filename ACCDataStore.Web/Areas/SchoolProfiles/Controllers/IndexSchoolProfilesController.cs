@@ -62,6 +62,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             vmIndexSecondarySchoolProfilesModel.DicFreeMeal = GetDicFreeSchoolMeal();
             vmIndexSecondarySchoolProfilesModel.DicLookedAfter = GetDicLookAfter();
             vmIndexSecondarySchoolProfilesModel.selectedYear = new Year("2015");
+            vmIndexSecondarySchoolProfilesModel.showTableAttendance = null;
+            vmIndexSecondarySchoolProfilesModel.showTableExclusion = null;
             Session["vmIndexSecondarySchoolProfilesModel"] = vmIndexSecondarySchoolProfilesModel;
             return View("IndexSecondarySchool", vmIndexSecondarySchoolProfilesModel);
         }
@@ -79,6 +81,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             vmIndexSpecialSchoolProfilesModel.DicFreeMeal = GetDicFreeSchoolMeal();
             vmIndexSpecialSchoolProfilesModel.DicLookedAfter = GetDicLookAfter();
             vmIndexSpecialSchoolProfilesModel.selectedYear = new Year("2015");
+            vmIndexSpecialSchoolProfilesModel.showTableAttendance = null;
+            vmIndexSpecialSchoolProfilesModel.showTableExclusion = null;
             Session["vmIndexSpecialSchoolProfilesModel"] = vmIndexSpecialSchoolProfilesModel;
             return View("IndexSpecialSchool", vmIndexSpecialSchoolProfilesModel);
         }
@@ -92,6 +96,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             List<StudentObj> listAllPupils = new List<StudentObj>();
             List<School> listSelectedSchoolname = new List<School>();
             List<AaeAttendanceObj> listAaeAttendancelists = new List<AaeAttendanceObj>();
+            List<ExclusionStudentObj> listExclusionPupils = new List<ExclusionStudentObj>();
+
             bool schoolIsSelected = false;
             bool yesrIsSelected = false;
             Year selectedYear = null;
@@ -120,6 +126,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             {
                 listAllPupils = GetListAllPupils(rpGeneric2nd, selectedYear, sSchoolType);
                 listAaeAttendancelists = GetAaeAttendanceLists(rpGeneric2nd, sSchoolType, selectedYear, listSelectedSchoolname, listAllPupils);
+                listExclusionPupils = GetListExclusionPupils(rpGeneric2nd, selectedYear, sSchoolType);
 
             }
 
@@ -174,10 +181,16 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             vmIndexSecondarySchoolProfilesModel.listDataSeriesLookedAfter = temp;
             vmIndexSecondarySchoolProfilesModel.dataTableLookedAfter = CreateDataTaleWithTotal(temp, vmIndexSecondarySchoolProfilesModel.DicLookedAfter, "Looked After Children", "no+%");
             //Attendance
-
-            temp = GetAaeAttendanceDataSeries("attendance", listAaeAttendancelists, listSelectedSchoolname, selectedYear, sSchoolType);
+            vmIndexSecondarySchoolProfilesModel.showTableAttendance = listAaeAttendancelists.Count == 0 ? false : true;
+            temp = listAaeAttendancelists.Count == 0 ? new List<DataSeries>() : GetAaeAttendanceDataSeries("attendance", listAaeAttendancelists, listSelectedSchoolname, selectedYear, sSchoolType);
             vmIndexSecondarySchoolProfilesModel.listDataSeriesAttendance = temp;
-            vmIndexSecondarySchoolProfilesModel.dataTableAttendance = CreateDataTable(temp, "School Attendance", "percentage");
+            vmIndexSecondarySchoolProfilesModel.dataTableAttendance = temp.Count == 0 ? null : CreateDataTable(temp, "School Attendance", "percentage");
+
+            //Exclusion
+            vmIndexSecondarySchoolProfilesModel.showTableExclusion = listExclusionPupils.Count == 0 ? false : true;
+            temp = listExclusionPupils.Count == 0 ? new List<DataSeries>() : GetExclusionDataSeries("exclusion", listExclusionPupils, listSelectedSchoolname, selectedYear, sSchoolType);
+            vmIndexSecondarySchoolProfilesModel.listDataSeriesExclusion = temp;
+            vmIndexSecondarySchoolProfilesModel.dataTableExclusion = temp.Count == 0 ? null : CreateDataTable(temp, "Exclusions-Annual", "number");
 
             Session["vmIndexSecondarySchoolProfilesModel"] = vmIndexSecondarySchoolProfilesModel;
             return View("IndexSecondarySchool", vmIndexSecondarySchoolProfilesModel);
@@ -189,6 +202,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             List<StudentObj> listAllPupils = new List<StudentObj>();
             List<School> listSelectedSchoolname = new List<School>();
             List<AaeAttendanceObj> listAaeAttendancelists = new List<AaeAttendanceObj>();
+            List<ExclusionStudentObj> listExclusionPupils = new List<ExclusionStudentObj>();
 
             bool schoolIsSelected = false;
             bool yesrIsSelected = false;
@@ -218,6 +232,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             {
                 listAllPupils = GetListAllPupils(rpGeneric2nd, selectedYear, sSchoolType);
                 listAaeAttendancelists = GetAaeAttendanceLists(rpGeneric2nd, sSchoolType, selectedYear, listSelectedSchoolname, listAllPupils);
+                listExclusionPupils = GetListExclusionPupils(rpGeneric2nd, selectedYear, sSchoolType);
 
             }
 
@@ -273,13 +288,20 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             vmIndexSpecialSchoolProfilesModel.dataTableLookedAfter = CreateDataTaleWithTotal(temp, vmIndexSpecialSchoolProfilesModel.DicLookedAfter, "Looked After Children", "no+%");
 
             //Attendance
-
-            temp = GetAaeAttendanceDataSeries("attendance", listAaeAttendancelists, listSelectedSchoolname, selectedYear, sSchoolType);
+            vmIndexSpecialSchoolProfilesModel.showTableAttendance = listAaeAttendancelists.Count == 0 ? false : true;
+            temp = listAaeAttendancelists.Count == 0 ? new List<DataSeries>() : GetAaeAttendanceDataSeries("attendance", listAaeAttendancelists, listSelectedSchoolname, selectedYear, sSchoolType);
             vmIndexSpecialSchoolProfilesModel.listDataSeriesAttendance = temp;
-            vmIndexSpecialSchoolProfilesModel.dataTableAttendance = CreateDataTable(temp, "School Attendance", "percentage");
+            vmIndexSpecialSchoolProfilesModel.dataTableAttendance = temp.Count == 0 ? null : CreateDataTable(temp, "School Attendance", "percentage");
+
+            //Exclusion
+            vmIndexSpecialSchoolProfilesModel.showTableExclusion = listExclusionPupils.Count == 0 ? false : true;
+            temp = listExclusionPupils.Count == 0 ? new List<DataSeries>() : GetExclusionDataSeries("exclusion", listExclusionPupils, listSelectedSchoolname, selectedYear, sSchoolType);
+            vmIndexSpecialSchoolProfilesModel.listDataSeriesExclusion = temp;
+            vmIndexSpecialSchoolProfilesModel.dataTableExclusion = temp.Count == 0 ? null : CreateDataTable(temp, "Exclusions-Annual", "number");
+
 
             Session["vmIndexSpecialSchoolProfilesModel"] = vmIndexSpecialSchoolProfilesModel;
-            return View("IndexSecondarySchool", vmIndexSpecialSchoolProfilesModel);
+            return View("IndexSpecialSchool", vmIndexSpecialSchoolProfilesModel);
         }
 
 

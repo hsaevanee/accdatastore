@@ -1,5 +1,56 @@
 ﻿
 $(document).ready(function () {
+
+    $('#AttendanceDatatable').DataTable({
+        dom: 'Bfrtip',
+        paging: false,
+        "order": [],
+        "columnDefs": [{
+            "targets": 'no-sort',
+            "orderable": false,
+        }],
+        buttons: {
+            buttons: [
+                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                    extend: 'pdfHtml5',
+                    orientation: 'portrait',
+                    exportOptions: {
+                        modifier: {
+                            page: 'current'
+                        }
+                    },
+                    header: true,
+                    title: 'Attendance ' + year
+                }, 'print',
+            ]
+        }
+    });
+
+
+    $('#ExclusionDatatable').DataTable({
+        dom: 'Bfrtip',
+        paging: false,
+        "order": [],
+        "columnDefs": [{
+            "targets": 'no-sort',
+            "orderable": false,
+        }],
+        buttons: {
+            buttons: [
+                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                    extend: 'pdfHtml5',
+                    orientation: 'portrait',
+                    exportOptions: {
+                        modifier: {
+                            page: 'current'
+                        }
+                    },
+                    header: true,
+                    title: 'Exclusions-Annual ' + year
+                }, 'print',
+            ]
+        }
+    });
     $('#FreeMealDatatable').DataTable({
         dom: 'Bfrtip',
         paging: false,

@@ -22,6 +22,13 @@
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/data.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
+            <!-- Initialize the plugin: -->
+<script type="text/javascript">
+    var year = '@Model.selectedYear.academicyear';
+    var selectid = function () { return @Html.Raw(Json.Encode(Model.listSelectedSchoolname.Select(x => x.seedcode).ToList())); }();
+</script>
+<script src="~/Scripts/accdatastore/areas/schoolprofiles/views/IndexSchoolProfile/LoadMutiselect.js"></script>
+
 }
 @{
     ViewBag.Title = "Index";
@@ -67,161 +74,199 @@
             </div>
         </div>
 
-        <!-- Initialize the plugin: -->
-        <script type="text/javascript">
-            var year = '@Model.selectedYear.academicyear';
-            $(document).ready(function () {
 
-                //var selectid = @Html.Raw(Json.Encode(Model.listSelectedSchoolname.Select(x=>x.seedcode).ToList()));
-
-                var selectid = function () { return @Html.Raw(Json.Encode(Model.listSelectedSchoolname.Select(x => x.seedcode).ToList())); }();
-                // alert(selectid22.length)
-
-                $('#listSelectedSchoolname').multiselect({
-                    buttonWidth: '80%',
-                    nonSelectedText: '--- Please Select School ---',
-                    maxHeight: 200,
-                    enableFiltering: true,
-                    numberDisplayed: 3,
-                    onDropdownShow: function (event) {
-                        var selectedOptions = $('#listSelectedSchoolname option:selected');
-                        if (selectedOptions.length == 0) {
-                            $('#buttonGetData').prop('disabled', true);
-                        } else if (selectedOptions.length >= 3) {
-                            // Disable all other checkboxes.
-                            var nonSelectedOptions = $('#listSelectedSchoolname option').filter(function () {
-                                return !$(this).is(':selected');
-                            });
-
-                            var dropdown = $('listSelectedSchoolname').siblings('.multiselect-container');
-                            nonSelectedOptions.each(function () {
-                                var input = $('input[value="' + $(this).val() + '"]');
-                                input.prop('disabled', true);
-                                input.parent('li').addClass('disabled');
-                            });
-                        }
-                        else {
-                            // Enable all checkboxes.
-                            var dropdown = $('#listSelectedSchoolname').siblings('.multiselect-container');
-                            $('#listSelectedSchoolname option').each(function () {
-                                var input = $('input[value="' + $(this).val() + '"]');
-                                input.prop('disabled', false);
-                                input.parent('li').addClass('disabled');
-                            });
-                            $('#buttonGetData').prop('disabled', false);
-                        }
-                    },
-                    onChange: function (option, checked) {
-                        // Get selected options.
-                        var selectedOptions = $('#listSelectedSchoolname option:selected');
-                        if (selectedOptions.length == 0) {
-                            $('#buttonGetData').prop('disabled', true);
-                        } else if (selectedOptions.length >= 3) {
-                            // Disable all other checkboxes.
-                            var nonSelectedOptions = $('#listSelectedSchoolname option').filter(function () {
-                                return !$(this).is(':selected');
-                            });
-
-                            var dropdown = $('listSelectedSchoolname').siblings('.multiselect-container');
-                            nonSelectedOptions.each(function () {
-                                var input = $('input[value="' + $(this).val() + '"]');
-                                input.prop('disabled', true);
-                                input.parent('li').addClass('disabled');
-                            });
-                        }
-                        else {
-                            // Enable all checkboxes.
-                            var dropdown = $('#listSelectedSchoolname').siblings('.multiselect-container');
-                            $('#listSelectedSchoolname option').each(function () {
-                                var input = $('input[value="' + $(this).val() + '"]');
-                                input.prop('disabled', false);
-                                input.parent('li').addClass('disabled');
-                            });
-                            $('#buttonGetData').prop('disabled', false);
-                        }
-                    }
-                });
-                $('#listSelectedSchoolname').multiselect('select', selectid);
-
-                $('#listSelectedSchoolname').multiselect('refresh');
-
-            });
-</script>
-
-        @if (Model.dataTableAttendance != null && Model.dataTableAttendance.Rows.Count > 0)
+        
+        @if (Model.showTableAttendance.HasValue)
         {
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="panel panel-primary text-center">
-                        <h3 class="text-center">@Model.profiletitle</h3>
-                        <h3 class="text-center">Pupil Census Information for @Model.selectedYear.academicyear</h3>
+            if (Model.showTableAttendance.Value == true && Model.dataTableAttendance.Rows.Count > 0)
+            {
+                <hr>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <h3 class="text-center">@Model.profiletitle</h3>
+                            <h3 class="text-center">Pupil Census Information for @Model.selectedYear.academicyear</h3>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- Content Row -->
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="panel panel-primary text-center">
-                        <div class="panel-heading">
-                            <h4 class="panel-title"> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Nationality/Index/">Attendance</a></h4>
-                        </div>
-                        <div class="panel-body">
-                            <div class="table-responsive">
-                                <p>% of Attendance </p>
-                                <table id="FreeMealDatatable" class="table table-bordered table-hover">
-                                    <thead>
-                                        <tr>
-                                            @foreach (DataColumn col in Model.dataTableAttendance.Columns)
-                                            {
-                                                if (Model.dataTableAttendance.Columns.IndexOf(col) == 0)
-                                                {
-
-                                                    <th class="text-center">@col.ColumnName</th>
-                                                }
-                                                else
-                                                {
-                                                    <th class="text-center">@col.ColumnName</th>
-                                                }
-                                            }
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (DataRow row in Model.dataTableAttendance.Rows)
-                                        {
+                <!-- Content Row -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Nationality/Index/">Attendance</a></h4>
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <p>% of Attendance </p>
+                                    <table id="AttendanceDatatable" class="table table-bordered table-hover">
+                                        <thead>
                                             <tr>
                                                 @foreach (DataColumn col in Model.dataTableAttendance.Columns)
                                                 {
                                                     if (Model.dataTableAttendance.Columns.IndexOf(col) == 0)
                                                     {
 
-                                                        <td class="text-left">@row[col.ColumnName]</td>
-
-                                                        @*<td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "2", datatitle = "stage", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>*@
+                                                        <th class="text-center">@col.ColumnName</th>
                                                     }
                                                     else
                                                     {
-                                                        <td>
-                                                            @row[col.ColumnName]
-                                                            @*<input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="Pupils" onclick="location.href='@Url.Action("GetPrimaryListpupils", "IndexSchoolProfiles", new { area = "SchoolProfiles", datatitle = "stage", Indexrow = Model.DataTableStage.Rows.IndexOf(row), Indexcol = Model.DataTableStage.Columns.IndexOf(col.ColumnName) })'" />*@
-                                                        </td>
+                                                        <th class="text-center">@col.ColumnName</th>
                                                     }
-                                                    @*<td>Model.ethnicityData.Rows.IndexOf(row)</td>*@
-                                                    @*<td>@Model.ethnicityData.Columns.IndexOf(col)</td>*@
-
                                                 }
                                             </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                                <p class="text-right"><a href="http://www.gov.scot/Topics/Statistics/Browse/School-Education/AttendanceAbsenceDatasets/atttab2015">Attendance and Absence in Scottish Schools 2014/15: Scottish Government Publication</a></p>
-                            </div>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (DataRow row in Model.dataTableAttendance.Rows)
+                                            {
+                                                <tr>
+                                                    @foreach (DataColumn col in Model.dataTableAttendance.Columns)
+                                                    {
+                                                        if (Model.dataTableAttendance.Columns.IndexOf(col) == 0)
+                                                        {
 
+                                                            <td class="text-left">@row[col.ColumnName]</td>
+
+                                                            @*<td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "2", datatitle = "stage", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>*@
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>
+                                                                @row[col.ColumnName]
+                                                                @*<input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="Pupils" onclick="location.href='@Url.Action("GetPrimaryListpupils", "IndexSchoolProfiles", new { area = "SchoolProfiles", datatitle = "stage", Indexrow = Model.DataTableStage.Rows.IndexOf(row), Indexcol = Model.DataTableStage.Columns.IndexOf(col.ColumnName) })'" />*@
+                                                            </td>
+                                                        }
+                                                        @*<td>Model.ethnicityData.Rows.IndexOf(row)</td>*@
+                                                        @*<td>@Model.ethnicityData.Columns.IndexOf(col)</td>*@
+
+                                                    }
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                    <p class="text-right"><a href="http://www.gov.scot/Topics/Statistics/Browse/School-Education/AttendanceAbsenceDatasets/atttab2015">Attendance and Absence in Scottish Schools 2014/15: Scottish Government Publication</a></p>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            }
+            else
+            {
+                <hr>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <h3 class="text-center">@Model.profiletitle</h3>
+                            <h3 class="text-center">Pupil Census Information for @Model.selectedYear.academicyear</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Nationality/Index/">Attendance</a></h4>
+                            </div>
+                            <div class="panel-body">
+                                <h4 class="panel-title"> Data is not available </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
         }
+
+        @if (Model.showTableExclusion.HasValue)
+        {
+            if (Model.showTableExclusion.Value == true && Model.dataTableExclusion.Rows.Count > 0)
+            {
+                <hr>
+                <!-- Content Row -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Nationality/Index/">Exclusions-Annual</a></h4>
+                            </div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <p> Pupil Numbers</p>
+                                    <table id="ExclusionDatatable" class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                @foreach (DataColumn col in Model.dataTableExclusion.Columns)
+                                                {
+                                                    if (Model.dataTableExclusion.Columns.IndexOf(col) == 0)
+                                                    {
+
+                                                        <th class="text-center">@col.ColumnName</th>
+                                                    }
+                                                    else
+                                                    {
+                                                        <th class="text-center">@col.ColumnName</th>
+                                                    }
+                                                }
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (DataRow row in Model.dataTableExclusion.Rows)
+                                            {
+                                                <tr>
+                                                    @foreach (DataColumn col in Model.dataTableExclusion.Columns)
+                                                    {
+                                                        if (Model.dataTableExclusion.Columns.IndexOf(col) == 0)
+                                                        {
+                                                            <td class="text-left">@row[col.ColumnName]</td>
+
+
+                                                            @*<td class="text-left"><a href="@Url.Action("GetTrendData", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "2", datatitle = "stage", sSchoolName = row[col.ColumnName] }, null)">@row[col.ColumnName]</a></td>*@
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>
+                                                                @row[col.ColumnName]
+                                                                @*<input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="Pupils" onclick="location.href='@Url.Action("GetPrimaryListpupils", "IndexSchoolProfiles", new { area = "SchoolProfiles", datatitle = "stage", Indexrow = Model.DataTableStage.Rows.IndexOf(row), Indexcol = Model.DataTableStage.Columns.IndexOf(col.ColumnName) })'" />*@
+                                                            </td>
+                                                        }
+                                                        @*<td>Model.ethnicityData.Rows.IndexOf(row)</td>*@
+                                                        @*<td>@Model.ethnicityData.Columns.IndexOf(col)</td>*@
+
+                                                    }
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                    <p class="text-right"><a href="http://www.gov.scot/Topics/Statistics/Browse/School-Education/exclusiondatasets/exclusionsdataset2015">Exclusions from Schools 2014/15: Scottish Government Publication</a></p>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <hr />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-primary text-center">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"> <a onclick="goToCreateURL(this)" href="@Url.Content("~")SchoolProfile/Nationality/Index/">Exclusions-Annual</a></h4>
+                            </div>
+                            <div class="panel-body">
+                                <h4 class="panel-title"> Data is not available </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        }
+        
         @if (Model.dataTableStage != null && Model.dataTableStage.Rows.Count > 0)
         {
             <hr />

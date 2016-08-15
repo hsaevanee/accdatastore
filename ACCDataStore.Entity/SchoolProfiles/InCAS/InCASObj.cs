@@ -18,25 +18,25 @@ namespace ACCDataStore.Entity.SchoolProfiles.InCAS
         public virtual string LastName { get; set; }
         public virtual DateTime DateOfBirth { get; set; }
         public virtual string Gender { get; set; }
-        public virtual double AgeAtTest_DevAbil { get; set; }
-        public virtual double AgeEquiv_DevAbil { get; set; }
-        public virtual double AgeDiff_DevAbil { get; set; }
-        public virtual double Standardised_DevAbil { get; set; }
-        public virtual double AgeAtTest_Reading { get; set; }
-        public virtual double AgeEquiv_Reading { get; set; }
-        public virtual double AgeDiff_Reading { get; set; }
-        public virtual double Standardised_Reading { get; set; }
-        public virtual double AgeAtTest_Spelling { get; set; }
-        public virtual double AgeEquiv_Spelling { get; set; }
-        public virtual double AgeDiff_Spelling { get; set; }
-        public virtual double AgeAtTest_MentArith { get; set; }
-        public virtual double AgeEquiv_MentArith { get; set; }
-        public virtual double AgeDiff_MentArith { get; set; }
-        public virtual double Standardised_MentArith { get; set; }
-        public virtual double AgeAtTest_GenMaths { get; set; }
-        public virtual double AgeEquiv_GenMaths { get; set; }
-        public virtual double AgeDiff_GenMaths { get; set; }
-        public virtual double Standardised_GenMaths { get; set; }
+        public virtual double? AgeAtTest_DevAbil { get; set; }
+        public virtual double? AgeEquiv_DevAbil { get; set; }
+        public virtual double? AgeDiff_DevAbil { get; set; }
+        public virtual double? Standardised_DevAbil { get; set; }
+        public virtual double? AgeAtTest_Reading { get; set; }
+        public virtual double? AgeEquiv_Reading { get; set; }
+        public virtual double? AgeDiff_Reading { get; set; }
+        public virtual double? Standardised_Reading { get; set; }
+        public virtual double? AgeAtTest_Spelling { get; set; }
+        public virtual double? AgeEquiv_Spelling { get; set; }
+        public virtual double? AgeDiff_Spelling { get; set; }
+        public virtual double? AgeAtTest_MentArith { get; set; }
+        public virtual double? AgeEquiv_MentArith { get; set; }
+        public virtual double? AgeDiff_MentArith { get; set; }
+        public virtual double? Standardised_MentArith { get; set; }
+        public virtual double? AgeAtTest_GenMaths { get; set; }
+        public virtual double? AgeEquiv_GenMaths { get; set; }
+        public virtual double? AgeDiff_GenMaths { get; set; }
+        public virtual double? Standardised_GenMaths { get; set; }
 
     }
 

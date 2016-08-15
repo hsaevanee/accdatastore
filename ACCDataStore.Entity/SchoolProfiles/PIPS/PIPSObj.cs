@@ -24,20 +24,20 @@ namespace ACCDataStore.Entity.SchoolProfiles
         public virtual int Srr { get; set; }
         public virtual int Srp { get; set; }
         public virtual int Srt { get; set; }
-        public virtual double Szm { get; set; }
-        public virtual double Szr { get; set; }
-        public virtual double Szp { get; set; }
-        public virtual double Szt { get; set; }
+        public virtual double? Szm { get; set; }
+        public virtual double? Szr { get; set; }
+        public virtual double? Szp { get; set; }
+        public virtual double? Szt { get; set; }
         public virtual DateTime Eassdate { get; set; }
         public virtual int EisCD { get; set; }
         public virtual int Erm { get; set; }
         public virtual int Err { get; set; }
         public virtual int Erp { get; set; }
         public virtual int Ert { get; set; }
-        public virtual double Ezm { get; set; }
-        public virtual double Ezr { get; set; }
-        public virtual double Ezp { get; set; }
-        public virtual double Ezt { get; set; }
+        public virtual double? Ezm { get; set; }
+        public virtual double? Ezr { get; set; }
+        public virtual double? Ezp { get; set; }
+        public virtual double? Ezt { get; set; }
         public virtual int mGrade { get; set; }
         public virtual int rGrade { get; set; }
         public virtual double mResid { get; set; }

@@ -61,8 +61,8 @@
     <Compile Include="ChartData.cs" />
     <Compile Include="Mapping\MSAccess\SchoolProfiles\EnglishLevelMap.cs" />
     <Compile Include="Mapping\MSAccess\SchoolProfiles\NationalIdentityMap.cs" />
-    <Compile Include="SchoolProfiles\Census\AaeAttendanceObjT.cs" />
     <Compile Include="SchoolProfiles\Census\AaeAttendanceObj.cs" />
+    <Compile Include="SchoolProfiles\Census\ExclusionStudentObj.cs" />
     <Compile Include="SchoolProfiles\DataSeries.cs" />
     <Compile Include="SchoolProfiles\EnglishLevel.cs" />
     <Compile Include="SchoolProfiles\EthnicBackground.cs" />
@@ -90,6 +90,7 @@
     <Compile Include="Mapping\MySQL\RightsMap.cs" />
     <Compile Include="SchoolProfiles\InCAS\InCASObj.cs" />
     <Compile Include="SchoolProfiles\Mapping\Census\AaaeAttendance2007Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\Census\SchStudent2008Map.cs" />
     <Compile Include="SchoolProfiles\Mapping\InCAS\InCAS2015Map.cs" />
     <Compile Include="SchoolProfiles\Mapping\InCAS\InCAS2014Map.cs" />
     <Compile Include="SchoolProfiles\Mapping\InCAS\InCAS2013Map.cs" />
@@ -106,7 +107,7 @@
     <Compile Include="SchoolProfiles\Mapping\Census\SchStudent2010Map.cs" />
     <Compile Include="SchoolProfiles\Mapping\Census\SchStudent2011Map.cs" />
     <Compile Include="SchoolProfiles\Mapping\Census\SchStudent2012Map.cs" />
-    <Compile Include="SchoolProfiles\Mapping\Census\SchStudent2008Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\Census\ExclusionStudent2008Map.cs" />
     <Compile Include="SchoolProfiles\Mapping\Census\SchStudent2015Map.cs" />
     <Compile Include="SchoolProfiles\Mapping\Census\SchStudent2014Map.cs" />
     <Compile Include="SchoolProfiles\Mapping\Census\SchStudent2013Map.cs" />
@@ -152,6 +153,10 @@
     <Compile Include="SchoolProfile\StudentSIMD.cs" />
     <Compile Include="SchoolProfile\WiderAchievementObj.cs" />
     <Compile Include="SchoolRollForecast\SchoolRollForecastObj.cs" />
+    <Compile Include="ScrumHub\ScrumCourseMap.cs" />
+    <Compile Include="ScrumHub\ScrumCourseModel.cs" />
+    <Compile Include="ScrumHub\ScrumHubMap.cs" />
+    <Compile Include="ScrumHub\ScrumHubModel.cs" />
     <Compile Include="Users.cs" />
     <Compile Include="Year.cs" />
   </ItemGroup>

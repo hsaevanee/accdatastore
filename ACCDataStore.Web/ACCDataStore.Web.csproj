@@ -257,6 +257,7 @@
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\IndexSecondarySchool.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\IndexPrimarySchool.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\IndexSchoolProfile.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\LoadMutiselect.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\MapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\Trending.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Language\LevelOfEnglish.js" />
@@ -284,6 +285,7 @@
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\StudentStage\StudentStage.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\WiderAchievement\IndexWiderAchievement.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\WiderAchievement\MapIndex.js" />
+    <Content Include="Scripts\accdatastore\areas\ScrumHub\Views\scrum_charts.js" />
     <Content Include="Scripts\accdatastore\areas\widerAchievement\IndexWiderAchievement.js" />
     <Content Include="Scripts\accdatastore\areas\widerAchievement\MapIndex.js" />
     <Content Include="Scripts\accdatastore\views\DZGlasgow.js" />
@@ -380,6 +382,10 @@
     <Compile Include="Areas\SchoolRollForecast\Controllers\IndexSchoolRollForecastController.cs" />
     <Compile Include="Areas\SchoolRollForecast\SchoolRollForecastAreaRegistration.cs" />
     <Compile Include="Areas\SchoolRollForecast\ViewModels\SchoolRollForecastViewModel.cs" />
+    <Compile Include="Areas\ScrumHub\Controllers\ScrumHubController.cs" />
+    <Compile Include="Areas\ScrumHub\Models\ScrumViewModel.cs" />
+    <Compile Include="Areas\ScrumHub\Models\UserCourses.cs" />
+    <Compile Include="Areas\ScrumHub\ScrumHubAreaRegistration.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\IndexController.cs" />
     <Compile Include="Global.asax.cs">
@@ -505,6 +511,10 @@
     <Content Include="Areas\SchoolProfiles\Views\IndexSchoolProfiles\SchoolWebsites.cshtml" />
     <Content Include="Areas\SchoolProfiles\Views\IndexAberdeenProfile\IndexAberdeenCity.cshtml" />
     <Content Include="Areas\SchoolProfiles\Views\IndexInteractiveMap\MapIndex.cshtml" />
+    <Content Include="Areas\ScrumHub\Views\web.config" />
+    <Content Include="Areas\ScrumHub\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\ScrumHub\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\ScrumHub\Views\ScrumHub\ScrumIndex.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\About.cshtml" />

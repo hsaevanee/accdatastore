@@ -1,5 +1,56 @@
 ﻿
 $(document).ready(function () {
+    $('#AttendanceDatatable').DataTable({
+        dom: 'Bfrtip',
+        paging: false,
+        "order": [],
+        "columnDefs": [{
+            "targets": 'no-sort',
+            "orderable": false,
+        }],
+        buttons: {
+            buttons: [
+                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                    extend: 'pdfHtml5',
+                    orientation: 'portrait',
+                    exportOptions: {
+                        modifier: {
+                            page: 'current'
+                        }
+                    },
+                    header: true,
+                    title: 'Free School Meal Entitlement ' + year
+                }, 'print',
+            ]
+        }
+    });
+
+
+    $('#ExclusionDatatable').DataTable({
+        dom: 'Bfrtip',
+        paging: false,
+        "order": [],
+        "columnDefs": [{
+            "targets": 'no-sort',
+            "orderable": false,
+        }],
+        buttons: {
+            buttons: [
+                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                    extend: 'pdfHtml5',
+                    orientation: 'portrait',
+                    exportOptions: {
+                        modifier: {
+                            page: 'current'
+                        }
+                    },
+                    header: true,
+                    title: 'Free School Meal Entitlement ' + year
+                }, 'print',
+            ]
+        }
+    });
+
     $('#FreeMealDatatable').DataTable({
         dom: 'Bfrtip',
         paging: false,

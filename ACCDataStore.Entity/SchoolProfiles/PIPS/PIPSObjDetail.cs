@@ -10,7 +10,7 @@ namespace ACCDataStore.Entity.SchoolProfiles
     {
         public List<PIPSObj> liststudents;
         public string dataName;
-        public double average; // Code 
+        public double? average; // Code 
 
     }
 }
