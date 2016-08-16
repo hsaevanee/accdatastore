@@ -23,15 +23,16 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
     {
         private static ILog log = LogManager.GetLogger(typeof(IndexDatahubController));
 
-        private readonly IGenericRepository rpGeneric;
+        private readonly IGenericRepository2nd rpGeneric2nd;
 
         private School schoolSelection;
 
-        public IndexDatahubController(IGenericRepository rpGeneric)
+        public IndexDatahubController(IGenericRepository2nd rpGeneric2nd)
         {
-            this.rpGeneric = rpGeneric;
+            this.rpGeneric2nd = rpGeneric2nd;
             this.schoolSelection = new School("", "");
         }
+
 
         public ActionResult IndexHome()
         {
@@ -51,17 +52,17 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             var vmDatahubViewModel = new DatahubViewModel();
             var datahubAbdcitydata = new DatahubData();
 
-            vmDatahubViewModel.AberdeencityData = CreatDatahubdata(GetDatahubdatabySchoolcode(rpGeneric, "100"), "100");
+
+            vmDatahubViewModel.AberdeencityData = CreatDatahubdata(GetDatahubdatabySchoolcode(rpGeneric2nd, "100"), "100");
             vmDatahubViewModel.ListSchoolNameData = GetListSchoolname();
-            vmDatahubViewModel.ListNeighbourhoodsName = GetListNeighbourhoodsname(rpGeneric);
+            vmDatahubViewModel.ListNeighbourhoodsName = GetListNeighbourhoodsname(rpGeneric2nd);
 
             if (schoolsubmitButton != null) { 
                 var sSchoolcode = Request["selectedschoolcode"];
                 if (sSchoolcode != null) {
-                    vmDatahubViewModel.SchoolData = CreatDatahubdata(GetDatahubdatabySchoolcode(rpGeneric, sSchoolcode), sSchoolcode); 
+                    vmDatahubViewModel.SchoolData = CreatDatahubdata(GetDatahubdatabySchoolcode(rpGeneric2nd, sSchoolcode), sSchoolcode); 
                     vmDatahubViewModel.selectedschoolcode = sSchoolcode;
                     Session["chartSelectedSchool"] = GetListSchoolname().Where(x => x.seedcode.Equals(sSchoolcode)).FirstOrDefault();
-                    //this.schoolSelection = GetListSchoolname().Where(x => x.seedcode.Equals(sSchoolcode)).FirstOrDefault();
                     vmDatahubViewModel.selectedschool = vmDatahubViewModel.ListSchoolNameData.Where(x => x.seedcode.Equals(sSchoolcode)).FirstOrDefault();
                     vmDatahubViewModel.seachby= "School";
                     vmDatahubViewModel.searchcode = sSchoolcode;   
@@ -72,7 +73,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 var sNeighbourhoods = Request["selectedneighbourhoods"];
                 if (sNeighbourhoods != null)
                 {
-                    vmDatahubViewModel.SchoolData = CreatDatahubdata(GetDatahubdatabyNeighbourhoods(rpGeneric, sNeighbourhoods), sNeighbourhoods);
+                    vmDatahubViewModel.SchoolData = CreatDatahubdata(GetDatahubdatabyNeighbourhoods(rpGeneric2nd, sNeighbourhoods), sNeighbourhoods);
                     vmDatahubViewModel.selectedneighbourhoods = sNeighbourhoods;
                     vmDatahubViewModel.selectedschool = vmDatahubViewModel.ListNeighbourhoodsName.Where(x => x.seedcode.Equals(sNeighbourhoods)).FirstOrDefault();
                     vmDatahubViewModel.seachby = "Neighbourhood";
@@ -83,42 +84,17 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
             return View("index2", vmDatahubViewModel);
         }
-        //[HttpGet]
-        public JsonResult MainPieChartData()
+
+        protected List<DatahubDataObj> Getlistpupil(IGenericRepository2nd rpGeneric2nd)
         {
-            this.schoolSelection = Session["chartSelectedSchool"] as School;
-            List<DatahubDataObj> allStudentData = this.rpGeneric.FindAll<DatahubDataObj>().ToList();
-            MainChartData combinedData = new MainChartData();
-            object pieChartTotals = new {
-                female15 = (allStudentData.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 15)).ToList<DatahubDataObj>().Count(),
-                male15 = (allStudentData.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 15)).ToList<DatahubDataObj>().Count(),
-                female16 = (allStudentData.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 16)).ToList<DatahubDataObj>().Count(),
-                male16 = (allStudentData.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 16)).ToList<DatahubDataObj>().Count(),
-                female17 = (allStudentData.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 17)).ToList<DatahubDataObj>().Count(),
-                male17 = (allStudentData.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 17)).ToList<DatahubDataObj>().Count(),
-                female18 = (allStudentData.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 18)).ToList<DatahubDataObj>().Count(),
-                male18 = (allStudentData.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 18)).ToList<DatahubDataObj>().Count(),
-                female19 = (allStudentData.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 19)).ToList<DatahubDataObj>().Count(),
-                male19 = (allStudentData.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 19)).ToList<DatahubDataObj>().Count(),
-            };
-            combinedData.totals = pieChartTotals;
-            if (this.schoolSelection != null)
-            {
-                object selectedChart = new {
-                    female15 = (allStudentData.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 15)).ToList<DatahubDataObj>().Count(),
-                    male15 = (allStudentData.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 15)).ToList<DatahubDataObj>().Count(),
-                    female16 = (allStudentData.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 16)).ToList<DatahubDataObj>().Count(),
-                    male16 = (allStudentData.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 16)).ToList<DatahubDataObj>().Count(),
-                    female17 = (allStudentData.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 17)).ToList<DatahubDataObj>().Count(),
-                    male17 = (allStudentData.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 17)).ToList<DatahubDataObj>().Count(),
-                    female18 = (allStudentData.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 18)).ToList<DatahubDataObj>().Count(),
-                    male18 = (allStudentData.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 18)).ToList<DatahubDataObj>().Count(),
-                    female19 = (allStudentData.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 19)).ToList<DatahubDataObj>().Count(),
-                    male19 = (allStudentData.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 19)).ToList<DatahubDataObj>().Count(),
-                };
-                combinedData.selected = selectedChart;
-            }
-            return Json(combinedData, JsonRequestBehavior.AllowGet);
+    
+                List<DatahubDataObj> listdata = this.rpGeneric2nd.FindAll<DatahubDataObj>().ToList() ;
+                List<DatahubDataObj> pupilsmoveoutScotland = listdata.Where(x => x.Current_Status.ToLower().Equals("moved outwith scotland")).ToList();
+
+                List<DatahubDataObj> listResult = listdata.Except(pupilsmoveoutScotland).ToList();
+
+
+                return listResult;
         }
 
         protected IList<School> GetListSchoolname()
@@ -143,10 +119,10 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
         }
 
-        protected IList<School> GetListNeighbourhoodsname(IGenericRepository rpGeneric)
+        protected IList<School> GetListNeighbourhoodsname(IGenericRepository2nd rpGeneric2nd)
         {
             List<School> temp = new List<School>();
-            var listneighbourhoods = rpGeneric.FindSingleColumnByNativeSQL("Select distinct Neighbourhood from Neighbourhood_Postcodes1");
+            var listneighbourhoods = this.rpGeneric2nd.FindSingleColumnByNativeSQL("Select distinct Neighbourhood from Neighbourhood_Postcodes1");
             if (listneighbourhoods != null)
             {
                 foreach (var item in listneighbourhoods)
@@ -161,9 +137,10 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             return temp;
 
         }
-        protected List<DatahubDataObj> GetDatahubdatabySchoolcode(IGenericRepository rpGeneric, string seedcode)
+        protected List<DatahubDataObj> GetDatahubdatabySchoolcode(IGenericRepository2nd rpGeneric2nd, string seedcode)
         {
-            List<DatahubDataObj> listdata = this.rpGeneric.FindAll<ACCDataStore.Entity.DatahubProfile.DatahubDataObj>().ToList() ;
+            //List<DatahubDataObj> listdata = this.rpGeneric.FindAll<ACCDataStore.Entity.DatahubProfile.DatahubDataObj>().ToList() ;
+            List<DatahubDataObj> listdata = Getlistpupil(rpGeneric2nd);
 
             if (seedcode!= null && !seedcode.Equals("100"))
             {
@@ -173,10 +150,11 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             return listdata;
         }
 
-        protected List<DatahubDataObj> GetDatahubdatabyZonecode(IGenericRepository rpGeneric, string zonecode)
+        protected List<DatahubDataObj> GetDatahubdatabyZonecode(IGenericRepository2nd rpGeneric2nd, string zonecode)
         {
-            var listpupilsdata = this.rpGeneric.FindAll<ACCDataStore.Entity.DatahubProfile.DatahubDataObj>();
-            var listneighbourhooddata = this.rpGeneric.FindAll<ACCDataStore.Entity.DatahubProfile.NeighbourhoodObj>();
+            //var listpupilsdata = this.rpGeneric.FindAll<ACCDataStore.Entity.DatahubProfile.DatahubDataObj>();
+            List<DatahubDataObj> listpupilsdata = Getlistpupil(rpGeneric2nd);
+            var listneighbourhooddata = this.rpGeneric2nd.FindAll<ACCDataStore.Entity.DatahubProfile.NeighbourhoodObj>();
             var listdata = new List<DatahubDataObj>();
             if (zonecode != null)
             {
@@ -185,10 +163,12 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             return listdata;
         }
 
-        protected List<DatahubDataObj> GetDatahubdatabyNeighbourhoods(IGenericRepository rpGeneric, string neighbourhood)
+        protected List<DatahubDataObj> GetDatahubdatabyNeighbourhoods(IGenericRepository2nd rpGeneric2nd, string neighbourhood)
         {
-            var listpupilsdata = this.rpGeneric.FindAll<ACCDataStore.Entity.DatahubProfile.DatahubDataObj>();
-            var listneighbourhooddata = this.rpGeneric.FindAll<ACCDataStore.Entity.DatahubProfile.NeighbourhoodObj>();
+            //var listpupilsdata = this.rpGeneric.FindAll<ACCDataStore.Entity.DatahubProfile.DatahubDataObj>();
+            List<DatahubDataObj> listpupilsdata = Getlistpupil(rpGeneric2nd);
+
+            var listneighbourhooddata = this.rpGeneric2nd.FindAll<ACCDataStore.Entity.DatahubProfile.NeighbourhoodObj>();
             var listdata = new List<DatahubDataObj>();
             if (neighbourhood != null)
             {
@@ -213,7 +193,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             // Current positive
             datahubdata.schoolpupils = listdata.Count(x => x.Current_Status.ToLower().Equals("school pupil"));
             datahubdata.schoolpupilsintransition = listdata.Count(x => x.Current_Status.ToLower().Equals("school pupil - in transition"));
-            datahubdata.schoolpupilsmovedoutinscotland = listdata.Count(x => x.Current_Status.ToLower().Equals("moved outwith scotland"));
+            //datahubdata.schoolpupilsmovedoutinscotland = listdata.Count(x => x.Current_Status.ToLower().Equals("moved outwith scotland"));
             datahubdata.pupilsinAtivityAgreement = listdata.Count(x => x.Current_Status.ToLower().Equals("activity agreement"));
             datahubdata.pupilsinEmployFundSt2 = listdata.Count(x => x.Current_Status.ToLower().Equals("employability fund stage 2"));
             datahubdata.pupilsinEmployFundSt3 = listdata.Count(x => x.Current_Status.ToLower().Equals("employability fund stage 3"));
@@ -239,7 +219,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             datahubdata.pupilsinUnavailableillHealth = listdata.Count(x => x.Current_Status.ToLower().Equals("unavailable - ill health"));
             datahubdata.pupilsinUnemployed = listdata.Count(x => x.Current_Status.ToLower().Equals("unemployed"));
             datahubdata.pupilsinUnknown = listdata.Count(x => x.Current_Status.ToLower().Equals("unknown"));
-            datahubdata.allpupilsexcludemovedoutscotland = datahubdata.allpupils - datahubdata.schoolpupilsmovedoutinscotland;
+
 
             return datahubdata;
         }
@@ -301,16 +281,16 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             }
         }
 
-        protected IList<DatahubData> GetDatahubdataAllZonecode(IGenericRepository rpGeneric)
+        protected IList<DatahubData> GetDatahubdataAllZonecode(IGenericRepository2nd rpGeneric2nd)
         {
             List<DatahubData> listdatahubdata = new List<DatahubData>();
             
             var datahubdata = new DatahubData();
 
-            var listzonecode = rpGeneric.FindSingleColumnByNativeSQL("Select distinct Datazone from Neighbourhood_Postcodes1 t1 INNER JOIN Datahubdata t2 on  t1.CSS_Postcode = t2.CSS_Postcode ");
+            var listzonecode = this.rpGeneric2nd.FindSingleColumnByNativeSQL("Select distinct Datazone from Neighbourhood_Postcodes1 t1 INNER JOIN Datahubdata t2 on  t1.CSS_Postcode = t2.CSS_Postcode ");
 
-            var listpupilsdata = this.rpGeneric.FindAll<ACCDataStore.Entity.DatahubProfile.DatahubDataObj>();
-            var listneighbourhooddata = this.rpGeneric.FindAll<ACCDataStore.Entity.DatahubProfile.NeighbourhoodObj>();
+            var listpupilsdata = this.rpGeneric2nd.FindAll<ACCDataStore.Entity.DatahubProfile.DatahubDataObj>();
+            var listneighbourhooddata = this.rpGeneric2nd.FindAll<ACCDataStore.Entity.DatahubProfile.NeighbourhoodObj>();
             var listdata = new List<DatahubDataObj>();
 
             if (listzonecode != null)
@@ -342,7 +322,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             var vmDatahubViewModel = new DatahubViewModel();
             vmDatahubViewModel.ListDatasets = new List<string>() { "Participating","Not-Participating", "Unconfirmed" };
 
-            Session["Listdatahubdataforheatmap"] = GetDatahubdataAllZonecode(this.rpGeneric);
+            Session["Listdatahubdataforheatmap"] = GetDatahubdataAllZonecode(this.rpGeneric2nd);
 
             return View("HeatMapIndex", vmDatahubViewModel);
         }
@@ -369,24 +349,24 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 if (keyname.ToLower().Equals("school"))
                 {
                      //Schooldata = GetDatahubdatabySchoolcode(rpGeneric, keyvalue);
-                     Schooldata = CreatDatahubdata(GetDatahubdatabySchoolcode(rpGeneric, keyvalue), keyvalue);
+                     Schooldata = CreatDatahubdata(GetDatahubdatabySchoolcode(rpGeneric2nd, keyvalue), keyvalue);
                      schname = selectedschool == null ? "" : selectedschool.name;
                 }
                 else if (keyname.ToLower().Equals("zonecode"))
                 {
                      //Schooldata = GetDatahubdatabyZonecode(rpGeneric, keyvalue);
-                     Schooldata = CreatDatahubdata(GetDatahubdatabyZonecode(rpGeneric, keyvalue), keyvalue);
+                     Schooldata = CreatDatahubdata(GetDatahubdatabyZonecode(rpGeneric2nd, keyvalue), keyvalue);
                      schname = keyvalue;
                 
                 }
                 else if (keyname.ToLower().Equals("neighbourhood"))
                 {
                     //Schooldata = GetDatahubdatabyNeighbourhoods(rpGeneric, keyvalue);
-                    Schooldata = CreatDatahubdata(GetDatahubdatabyNeighbourhoods(rpGeneric, keyvalue), keyvalue);
+                    Schooldata = CreatDatahubdata(GetDatahubdatabyNeighbourhoods(rpGeneric2nd, keyvalue), keyvalue);
                     schname = keyvalue;
 
                 }
-                var Abddata = CreatDatahubdata(GetDatahubdatabySchoolcode(rpGeneric, "100"), "100");
+                var Abddata = CreatDatahubdata(GetDatahubdatabySchoolcode(rpGeneric2nd, "100"), "100");
                 
                 object data = new object();
 
@@ -451,7 +431,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
             if (searchby.ToLower().Equals("school")) {
 
-                listdata = GetDatahubdatabySchoolcode(rpGeneric, code);
+                listdata = GetDatahubdatabySchoolcode(rpGeneric2nd, code);
 
                 IList<School> temp = GetListSchoolname();
                 School selectedschool = temp.Where(x => x.seedcode.Equals(code)).FirstOrDefault();
@@ -462,8 +442,8 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             else if (searchby.ToLower().Equals("neighbourhood"))
             {
 
-                listdata = GetDatahubdatabyNeighbourhoods(rpGeneric, code);
-                IList<School> temp = GetListNeighbourhoodsname(rpGeneric);
+                listdata = GetDatahubdatabyNeighbourhoods(rpGeneric2nd, code);
+                IList<School> temp = GetListNeighbourhoodsname(rpGeneric2nd);
                 School selectedschool = temp.Where(x => x.seedcode.Equals(code)).FirstOrDefault();
 
                 vmListpupilsViewModel.selectedschool = selectedschool;
@@ -471,7 +451,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             else if (searchby.ToLower().Equals("zonecode"))
             {
 
-                listdata = GetDatahubdatabyZonecode(rpGeneric, code);
+                listdata = GetDatahubdatabyZonecode(rpGeneric2nd, code);
                 School selectedschool = new School(code,code);
 
                 vmListpupilsViewModel.selectedschool = selectedschool;
@@ -488,6 +468,10 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 case "females":
                     listdata = (from a in listdata where a.Gender.ToLower().Equals("female") select a).ToList();
                     vmListpupilsViewModel.levercategory = "Females ";
+                    break;
+                case "pupils15":
+                    listdata = (from a in listdata where a.Age == 15 select a).ToList();
+                    vmListpupilsViewModel.levercategory = "Pupils 15 ";
                     break;
                 case "pupils16":
                     listdata = (from a in listdata where a.Age==16 select a).ToList();
@@ -637,7 +621,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             if (searchsubmitButton.ToLower().Equals("search") && (!sForname.Equals("") || !sSurename.Equals("")))
             {
 
-                var listdata = this.rpGeneric.FindAll<ACCDataStore.Entity.DatahubProfile.DatahubDataObj>();
+                var listdata = this.rpGeneric2nd.FindAll<ACCDataStore.Entity.DatahubProfile.DatahubDataObj>();
                 List<DatahubDataObj> tempobj = listdata.Where(x => x.Forename.ToLower().Contains(sForname) && x.Surname.ToLower().Contains(sSurename)).ToList();
                 vmListpupilsViewModel.Listpupils = tempobj;
             }
@@ -718,6 +702,49 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             {
                 return ThrowJSONError(ex);
             }
+        }
+
+        public JsonResult MainPieChartData()
+        {
+            this.schoolSelection = Session["chartSelectedSchool"] as School;
+            //List<DatahubDataObj> allStudentData = this.rpGeneric2nd.FindAll<DatahubDataObj>().ToList();
+            List<DatahubDataObj> allStudentData = Getlistpupil(this.rpGeneric2nd);
+            MainChartData combinedData = new MainChartData();
+            object pieChartTotals = new
+            {
+                title = "Overall",
+                female15 = (allStudentData.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 15)).ToList<DatahubDataObj>().Count(),
+                male15 = (allStudentData.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 15)).ToList<DatahubDataObj>().Count(),
+                female16 = (allStudentData.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 16)).ToList<DatahubDataObj>().Count(),
+                male16 = (allStudentData.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 16)).ToList<DatahubDataObj>().Count(),
+                female17 = (allStudentData.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 17)).ToList<DatahubDataObj>().Count(),
+                male17 = (allStudentData.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 17)).ToList<DatahubDataObj>().Count(),
+                female18 = (allStudentData.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 18)).ToList<DatahubDataObj>().Count(),
+                male18 = (allStudentData.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 18)).ToList<DatahubDataObj>().Count(),
+                female19 = (allStudentData.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 19)).ToList<DatahubDataObj>().Count(),
+                male19 = (allStudentData.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 19)).ToList<DatahubDataObj>().Count(),
+            };
+            combinedData.totals = pieChartTotals;
+            if (this.schoolSelection != null)
+            {
+                List<DatahubDataObj> refined = allStudentData.Except(allStudentData.Where(z => z.School_Name == null)).ToList().Where(z => z.School_Name.Equals(this.schoolSelection.name)).ToList();
+                object selectedChart = new
+                {
+                    title = this.schoolSelection.name,
+                    female15 = (refined.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 15)).ToList<DatahubDataObj>().Count(),
+                    male15 = (refined.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 15)).ToList<DatahubDataObj>().Count(),
+                    female16 = (refined.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 16)).ToList<DatahubDataObj>().Count(),
+                    male16 = (refined.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 16)).ToList<DatahubDataObj>().Count(),
+                    female17 = (refined.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 17)).ToList<DatahubDataObj>().Count(),
+                    male17 = (refined.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 17)).ToList<DatahubDataObj>().Count(),
+                    female18 = (refined.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 18)).ToList<DatahubDataObj>().Count(),
+                    male18 = (refined.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 18)).ToList<DatahubDataObj>().Count(),
+                    female19 = (refined.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 19)).ToList<DatahubDataObj>().Count(),
+                    male19 = (refined.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 19)).ToList<DatahubDataObj>().Count(),
+                };
+                combinedData.selected = selectedChart;
+            }
+            return Json(combinedData, JsonRequestBehavior.AllowGet);
         }
 
     }

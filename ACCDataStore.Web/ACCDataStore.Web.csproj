@@ -169,7 +169,6 @@
     <Content Include="bower_components\angular\index.js" />
     <Content Include="Config\GeneralSettings.xml" />
     <Content Include="Content\accdatastore\areas\DatahubProfile\views\datahub\datahub.css" />
-    <Content Include="Content\accdatastore\areas\DatahubProfile\views\datahub\infohub-index.css" />
     <Content Include="Content\accdatastore\areas\nationality\views\nationality\nationality.css" />
     <Content Include="Content\accdatastore\views\global.css" />
     <Content Include="Content\bootstrap-multiselect.css" />
@@ -328,6 +327,7 @@
     <Compile Include="Areas\Authorisation\ViewModels\IndexAuthorisation\IndexViewModel.cs" />
     <Compile Include="Areas\DatahubProfile\Controllers\IndexDatahubController.cs" />
     <Compile Include="Areas\DatahubProfile\DatahubProfileAreaRegistration.cs" />
+    <Compile Include="Areas\DatahubProfile\Models\MainChartData.cs" />
     <Compile Include="Areas\DatahubProfile\ViewModels\Datahub\PupilObject.cs" />
     <Compile Include="Areas\DatahubProfile\ViewModels\Datahub\DatahubViewModel.cs" />
     <Compile Include="Areas\DatahubProfile\ViewModels\Datahub\DatahubData.cs" />
@@ -385,7 +385,6 @@
     <Compile Include="Areas\SchoolRollForecast\SchoolRollForecastAreaRegistration.cs" />
     <Compile Include="Areas\SchoolRollForecast\ViewModels\SchoolRollForecastViewModel.cs" />
     <Compile Include="Areas\ScrumHub\Controllers\ScrumHubController.cs" />
-    <Compile Include="Areas\DatahubProfile\Models\MainChartData.cs" />
     <Compile Include="Areas\ScrumHub\Models\ScrumViewModel.cs" />
     <Compile Include="Areas\ScrumHub\Models\UserCourses.cs" />
     <Compile Include="Areas\ScrumHub\ScrumHubAreaRegistration.cs" />

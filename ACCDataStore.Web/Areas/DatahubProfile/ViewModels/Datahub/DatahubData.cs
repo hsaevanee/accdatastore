@@ -42,7 +42,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub
 
         public double Percentage(int number)
         {
-            return (double)(number * 100) / allpupilsexcludemovedoutscotland;
+            return (double)(number * 100) / allpupils;
         }
 
         public object FormatNumber(int number)

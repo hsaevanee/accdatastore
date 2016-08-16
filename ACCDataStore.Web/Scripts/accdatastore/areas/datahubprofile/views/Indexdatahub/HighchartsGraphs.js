@@ -1,31 +1,36 @@
-﻿var hGraphs = {
+﻿
+var hGraphs = {
     cache: {},
-    getData: function () {
+    getData: function (callback) {
         $.get('/DatahubProfile/IndexDatahub/MainPieChartData',
             function (data) {
                 console.log(data);
-                hGraphs.cache.mainChart = data;
-                hGraphs.mainChart();
+                hGraphs.cache[callback] = data;
+                hGraphs[callback]();
         });
     },
     mainChart: function () {
         var seriesTotal = [], seriesSpecific = [];
         for (var key in hGraphs.cache.mainChart.totals) {
-            seriesTotal.push({ name: key, y: hGraphs.cache.mainChart.totals[key] });
+            if (key != 'title') {
+                seriesTotal.push({ name: key, y: hGraphs.cache.mainChart.totals[key] });
+            }
         }
         if (hGraphs.cache.mainChart.selected != null) {
             for (var key in hGraphs.cache.mainChart.selected) {
-                seriesSpecific.push({ name: key, y: hGraphs.cache.mainChart.selected[key] });
+                if (key != 'title') {
+                    seriesSpecific.push({ name: key, y: hGraphs.cache.mainChart.selected[key] });
+                }
             }
         }
         if (seriesTotal.length > 0) {
-            hGraphs.draw('#datahub-index-mainpiechart', seriesTotal);
+            hGraphs.draw('#datahub-index-mainpiechart', seriesTotal, hGraphs.cache.mainChart.totals.title);
         }
         if (seriesSpecific.length > 0) {
-            hGraphs.draw('#datahub-index-specificpiechart', seriesSpecific);
+            hGraphs.draw('#datahub-index-specificpiechart', seriesSpecific, hGraphs.cache.mainChart.selected.title);
         }
     },
-    draw: function (id, data) {
+    draw: function (id, data, title) {
         $(id).highcharts({
             chart: {
                 plotBackgroundColor: null,
@@ -34,7 +39,7 @@
                 type: 'pie'
             },
             title: {
-                text: 'Student Overview'
+                text: title + ' Students'
             },
             /*tooltip: {
                 pointFormat: ''
@@ -59,10 +64,13 @@
             }]
         });
     },
-    construct: function(type) {
-        hGraphs.getData();
-        hGraphs[type]();
+    construct: function (type) {
+        if (hGraphs.cache[type] != null) {
+            hGraphs[type]();
+        } else {
+            hGraphs.getData(type);
+        }
     }
 };
 
-window.onload = hGraphs.getData();
+window.onload = hGraphs.construct('mainChart');
