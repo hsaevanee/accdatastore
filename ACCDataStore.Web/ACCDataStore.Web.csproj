@@ -169,6 +169,7 @@
     <Content Include="bower_components\angular\index.js" />
     <Content Include="Config\GeneralSettings.xml" />
     <Content Include="Content\accdatastore\areas\DatahubProfile\views\datahub\datahub.css" />
+    <Content Include="Content\accdatastore\areas\DatahubProfile\views\datahub\infohub-index.css" />
     <Content Include="Content\accdatastore\areas\nationality\views\nationality\nationality.css" />
     <Content Include="Content\accdatastore\views\global.css" />
     <Content Include="Content\bootstrap-multiselect.css" />
@@ -240,6 +241,7 @@
     <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\accdatastore\areas\authorisation\Login.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\HeatMapIndex.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\HighchartsGraphs.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\IndexdatahubProfile.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\MapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\Pupilslist.js" />
@@ -383,6 +385,7 @@
     <Compile Include="Areas\SchoolRollForecast\SchoolRollForecastAreaRegistration.cs" />
     <Compile Include="Areas\SchoolRollForecast\ViewModels\SchoolRollForecastViewModel.cs" />
     <Compile Include="Areas\ScrumHub\Controllers\ScrumHubController.cs" />
+    <Compile Include="Areas\DatahubProfile\Models\MainChartData.cs" />
     <Compile Include="Areas\ScrumHub\Models\ScrumViewModel.cs" />
     <Compile Include="Areas\ScrumHub\Models\UserCourses.cs" />
     <Compile Include="Areas\ScrumHub\ScrumHubAreaRegistration.cs" />
@@ -531,7 +534,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Achievement\Models\" />
     <Folder Include="Areas\Authorisation\Models\" />
-    <Folder Include="Areas\DatahubProfile\Models\" />
     <Folder Include="Areas\InsightProfile\Models\" />
     <Folder Include="Areas\Nationality\Models\" />
     <Folder Include="Areas\PupilsPopulation\Models\" />
