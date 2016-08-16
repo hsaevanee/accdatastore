@@ -8,6 +8,8 @@
 <script src="~/Scripts/jquery.js"></script>
 <!-- Bootstrap Core JavaScript -->
 <script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/highcharts.js"></script>
+<script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/HighchartsGraphs.js"></script>
 }
 @{
     ViewBag.Title = "Index";
@@ -74,6 +76,46 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary text-center">
+                <div class="panel-heading">
+                    <h3 class="panel-title">About</h3>
+                </div>
+                <div class="panel-body">
+                    <p>
+                        This data represents the percentage of students that achieve positive
+                        destinations in term of their career goals. You can select a specific
+                        location or school to view the data, or you can see the over city stastistics.
+                        You can also view data related to any particular student by name.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary text-center">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Student Overview</h3>
+                </div>
+                <div class="panel-body">
+                    @if (Model.selectedschool != null)
+                    {
+                        <div id="datahub-index-mainpiechart" style="width: 50%; float: left"></div>
+                        <div id="datahub-index-specificpiechart" style="width: 50%; float: left"></div>
+                    }
+                    else
+                    {
+                        <div id="datahub-index-mainpiechart"></div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 @if (Model.SchoolData != null && Model.selectedschool != null && !Model.selectedschool.seedcode.Equals("100"))
 {
 <!-- /.row -->
@@ -86,7 +128,9 @@
                         <h4 class="panel-title text-center"> Opportunities for All Clients</h4>
                     </div>
                     <div class="panel-body">
-                            <table class="table table-bordered table-hover">
+                            
+                        
+                        <table class="table table-bordered table-hover">
                                 <tr>
                                     <th class="text-center" width="30%"></th>
                                     <th class="text-center" width="10%">Pupils</th>
@@ -95,14 +139,14 @@
                                     <th class="text-center" width="10%">Pupils</th>
                                 </tr>
                                 <tr>
-                                    <td class="text-left">All Clients (Excluding Those Moved outwith Scotland)</td>
+                                    <td class="text-left">All Clients</td>
                                     <td class="text-center">
-                                        <input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="@Model.SchoolData.FormatNumber(Model.SchoolData.allpupilsexcludemovedoutscotland)" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby, code = @Model.searchcode, dataname = "allpupilsexcludemovedoutscotland" })'" />
+                                        <input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="@Model.SchoolData.FormatNumber(Model.SchoolData.allpupils)" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby, code = @Model.searchcode, dataname = "allclients" })'" />
                                     </td>
-                                    <td class="text-center">@Model.SchoolData.FormatNumber(Model.SchoolData.allpupilsexcludemovedoutscotland)</td>
-                                    <td class="text-center">@Model.AberdeencityData.FormatNumber(Model.AberdeencityData.allpupilsexcludemovedoutscotland)</td>
+                                    <td class="text-center">@Model.SchoolData.FormatNumber(Model.SchoolData.allpupils)</td>
+                                    <td class="text-center">@Model.AberdeencityData.FormatNumber(Model.AberdeencityData.allpupils)</td>
                                     <td class="text-center">
-                                        <input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="@Model.AberdeencityData.FormatNumber(Model.AberdeencityData.allpupilsexcludemovedoutscotland)" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = "100", dataname = "allpupilsexcludemovedoutscotland" })'" />
+                                        <input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="@Model.AberdeencityData.FormatNumber(Model.AberdeencityData.allpupils)" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = "100", dataname = "allclients" })'" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -125,6 +169,17 @@
                                     <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(Model.AberdeencityData.allFemalepupils))</td>
                                     <td align="center">
                                         <input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="@Model.AberdeencityData.FormatNumber(Model.AberdeencityData.allFemalepupils)" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = "100", dataname = "Females" })'" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-left">Pupils 15</td>
+                                    <td align="center">
+                                        <input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="@Model.SchoolData.FormatNumber(Model.SchoolData.all15pupils)" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = @Model.seachby, code = @Model.searchcode, dataname = "Pupils15" })'" />
+                                    </td>
+                                    <td align="center">@String.Format("{0:#,0.00}", @Model.SchoolData.Percentage(Model.SchoolData.all15pupils))</td>
+                                    <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(Model.AberdeencityData.all15pupils))</td>
+                                    <td align="center">
+                                        <input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="@Model.AberdeencityData.FormatNumber(Model.AberdeencityData.all15pupils)" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = "100", dataname = "Pupils15" })'" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -505,10 +560,10 @@ else
                                 <th class="text-center">% for All Clients</th>
                             </tr>
                             <tr>
-                                <td class="text-left">All Clients (Excluding Those Moved outwith Scotland)</td>
+                                <td class="text-left">All Clients</td>
                                 @*<td colspan="2" align="center">@Model.AberdeencityData.allpupils</td>*@
                                  <td colspan="2" align="center">
-                                     <input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="@Model.AberdeencityData.FormatNumber(Model.AberdeencityData.allpupilsexcludemovedoutscotland)" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = "100", dataname = "allpupilsexcludemovedoutscotland" })'" />
+                                     <input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="@Model.AberdeencityData.FormatNumber(Model.AberdeencityData.allpupils)" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = "100", dataname = "allclients" })'" />
                                  </td>
                             </tr>
                             <tr>
@@ -524,6 +579,13 @@ else
                                     <input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="@Model.AberdeencityData.FormatNumber(Model.AberdeencityData.allFemalepupils)" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = "100", dataname = "Females" })'" />
                                 </td>
                                 <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(Model.AberdeencityData.allFemalepupils))</td>
+                            </tr>
+                            <tr>
+                                <td class="text-left">Pupils 15</td>
+                                <td align="center">
+                                    <input enabled type="button" class="btn btn-info btn-xs enabled" style="width: 50px; height:25px" value="@Model.AberdeencityData.FormatNumber(Model.AberdeencityData.all15pupils)" onclick="location.href='@Url.Action("GetListpupils", "IndexDatahub", new { searchby = "school", code = "100", dataname = "Pupils15" })'" />
+                                </td>
+                                <td align="center">@String.Format("{0:#,0.00}", @Model.AberdeencityData.Percentage(Model.AberdeencityData.all15pupils))</td>
                             </tr>
                             <tr>
                                 <td class="text-left">Pupils 16</td>
