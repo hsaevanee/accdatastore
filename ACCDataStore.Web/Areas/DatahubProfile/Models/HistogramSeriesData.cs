@@ -11,5 +11,6 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Models
         public List<double> participating { get; set; }
         public List<double> notParticipating { get; set; }
         public List<double> unknown { get; set; }
+        public string name { get; set; }
     }
 }

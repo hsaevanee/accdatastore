@@ -329,6 +329,7 @@
     <Compile Include="Areas\DatahubProfile\DatahubProfileAreaRegistration.cs" />
     <Compile Include="Areas\DatahubProfile\Models\HistogramSeriesData.cs" />
     <Compile Include="Areas\DatahubProfile\Models\MainChartData.cs" />
+    <Compile Include="Areas\DatahubProfile\Models\MonthlyDataSeries.cs" />
     <Compile Include="Areas\DatahubProfile\Models\PosNegSchoolList.cs" />
     <Compile Include="Areas\DatahubProfile\Models\ViewModelParams.cs" />
     <Compile Include="Areas\DatahubProfile\ViewModels\Datahub\PupilObject.cs" />
