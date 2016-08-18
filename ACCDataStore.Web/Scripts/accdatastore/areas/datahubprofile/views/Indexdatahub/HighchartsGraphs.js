@@ -69,9 +69,11 @@ var hGraphs = {
     },
     monthsTrends: function () {
         var series = [];
-        for (var key in hGraphs.cache.monthsTrends) {
-            if (key != 'months') {
-                series.push({ name: key, data: hGraphs.cache.monthsTrends[key] });
+        for (var i = 0; i < hGraphs.cache.monthsTrends.length; i++) {
+            for (var key in hGraphs.cache.monthsTrends[i]) {
+                if (key != 'months' && key != 'name') {
+                    series.push({ name: hGraphs.cache.monthsTrends[i].name + ' ' + key, data: hGraphs.cache.monthsTrends[i][key] });
+                }
             }
         }
         if (series.length > 0) {
@@ -88,7 +90,7 @@ var hGraphs = {
                 x: 0 //center
             },
             xAxis: {
-                categories: hGraphs.cache.monthsTrends.months
+                categories: hGraphs.cache.monthsTrends[0].months
             },
             yAxis: {
                 title: {
