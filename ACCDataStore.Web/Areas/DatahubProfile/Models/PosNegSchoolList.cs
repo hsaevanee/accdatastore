@@ -8,8 +8,8 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Models
     public class PosNegSchoolList
     {
         public string name { get; set; }
-        public int participating { get; set; }
-        public int notParticipating { get; set; }
-        public int unknown { get; set; }
+        public double participating { get; set; }
+        public double notParticipating { get; set; }
+        public double unknown { get; set; }
     }
 }

@@ -1,6 +1,32 @@
 ﻿
 $(document).ready(function () {
 
+    $('#summaryDatatable').DataTable({
+        dom: 'Bfrtip',
+        "scrollY": "200px",
+        "scrollCollapse": true,
+        paging: false,
+        "order": [],
+        "columnDefs": [{
+            "targets": 'no-sort',
+            "orderable": false,
+        }],
+        buttons: {
+            buttons: [
+                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                    extend: 'pdfHtml5',
+                    orientation: 'portrait',
+                    exportOptions: {
+                        modifier: {
+                            page: 'current'
+                        }
+                    },
+                    header: true,
+                    title: 'Summary '
+                }, 'print',
+            ]
+        }
+    });
 });
 
 function goToCreateURL(object) {
@@ -62,50 +88,4 @@ function myFunctionColumn(JSONObject) {
 
 }
 
-function drawChartColumn(data) {
-
-    $('#divChartContainer')
-            .highcharts(
-                    {
-                        chart: {
-                            type: 'column'
-                        },
-                        title: {
-                            text: data.dataTitle
-                        },
-                        subtitle: {
-                            text: ''
-                        },
-                        xAxis: {
-                            //categories: [ '0%', '5%', '10%', '15%','20%','25%','30%'],
-                            categories: data.dataCategories,
-                            title: {
-                                text: 'Destination'
-                            }
-                        },
-                        yAxis: {
-                            min: 0,
-                            title: {
-                                text: 'Percentages'
-                            }
-                        },
-                        tooltip: {
-                            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                            pointFormat: '<tr><td nowrap style="color:{series.color};padding:0">{series.name}: </td>'
-                                    + '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
-                            footerFormat: '</table>',
-                            shared: true,
-                            useHTML: true
-                        },
-                        plotOptions: {
-                            column: {
-                                pointPadding: 0.2,
-                                borderWidth: 0
-                            }
-                        },
-                        series: [{ name: data.schoolname, data: data.Schdata }, { name: 'All Clients', data: data.Abdcitydata }],
-                        credits: {
-                            enabled: false
-                        }
-                    });
-}
+ 

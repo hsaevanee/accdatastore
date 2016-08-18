@@ -10,7 +10,7 @@ var hGraphs = {
         };
         $.get(urls[callback],
             function (data) {
-                console.log(data);
+
                 hGraphs.cache[callback] = data;
                 hGraphs[callback]();
             });

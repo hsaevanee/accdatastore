@@ -52,34 +52,20 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             //TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
             
             IList<School> allSchools = GetListSchoolname();
-            List<string> notParticipatingDestinations = new List<string>();
-            notParticipatingDestinations.Add("Unemployed");
-            notParticipatingDestinations.Add("Economically Inactive");
-            notParticipatingDestinations.Add("Custody");
-            notParticipatingDestinations.Add("Unavailable - Ill Health");
+
             List<DatahubDataObj> allStudentData = Getlistpupil(this.rpGeneric2nd).Where(z => !String.IsNullOrWhiteSpace(z.SEED_Code)).ToList<DatahubDataObj>();
             List<PosNegSchoolList> tableSummaryData = new List<PosNegSchoolList>();
-            PosNegSchoolList aberdeenTotalsSummary = new PosNegSchoolList();
-            aberdeenTotalsSummary.name = "Aberdeen City";
-            aberdeenTotalsSummary.participating = 0;
-            aberdeenTotalsSummary.notParticipating = 0;
-            aberdeenTotalsSummary.unknown = 0;
+
             foreach (School school in allSchools)
             {
-                if (school.seedcode != "100" && !String.IsNullOrWhiteSpace(school.seedcode))
-                {
+                DatahubData temp = CreatDatahubdata(GetDatahubdatabySchoolcode(allStudentData, school.seedcode),school.seedcode); 
                     PosNegSchoolList entry = new PosNegSchoolList();
                     entry.name = school.name;
-                    entry.participating = allStudentData.Where(z => z.SEED_Code.Equals(school.seedcode)).Where(z => !notParticipatingDestinations.Contains(z.Current_Status)).Where(z => !z.Current_Status.Equals("Unknown")).Count();
-                    entry.notParticipating = allStudentData.Where(z => z.SEED_Code.Equals(school.seedcode)).Where(z => notParticipatingDestinations.Contains(z.Current_Status)).Count();
-                    entry.unknown = allStudentData.Where(z => z.SEED_Code.Equals(school.seedcode)).Where(z => z.Current_Status.Equals("Unknown")).Count();
-                    aberdeenTotalsSummary.participating += entry.participating;
-                    aberdeenTotalsSummary.notParticipating += entry.notParticipating;
-                    aberdeenTotalsSummary.unknown += entry.unknown;
+                    entry.participating = temp.Participating();
+                    entry.notParticipating = temp.NotParticipating();
+                    entry.unknown = temp.Percentage(temp.pupilsinUnknown);
                     tableSummaryData.Add(entry);
-                }
             }
-            tableSummaryData.Add(aberdeenTotalsSummary);
             DatahubViewModel viewModel = getPageViewModel(schoolsubmitButton, neighbourhoodssubmitButton);
             viewModel.summaryTableData = tableSummaryData;
             ViewModelParams pageViewModelParams = new ViewModelParams();
@@ -119,6 +105,8 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 {
                     vmDatahubViewModel.SchoolData = CreatDatahubdata(GetDatahubdatabyNeighbourhoods(rpGeneric2nd, sNeighbourhoods), sNeighbourhoods);
                     vmDatahubViewModel.selectedneighbourhoods = sNeighbourhoods;
+                    School temp = vmDatahubViewModel.ListNeighbourhoodsName.Where(x => x.seedcode.Equals(sNeighbourhoods)).FirstOrDefault();
+                    Session["chartSelectedNeighbour"] = vmDatahubViewModel.ListNeighbourhoodsName.Where(x => x.seedcode.Equals(sNeighbourhoods)).FirstOrDefault();
                     vmDatahubViewModel.selectedschool = vmDatahubViewModel.ListNeighbourhoodsName.Where(x => x.seedcode.Equals(sNeighbourhoods)).FirstOrDefault();
                     vmDatahubViewModel.seachby = "Neighbourhood";
                     vmDatahubViewModel.searchcode = sNeighbourhoods;
@@ -185,6 +173,18 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             List<DatahubDataObj> listdata = Getlistpupil(rpGeneric2nd);
 
             if (seedcode!= null && !seedcode.Equals("100"))
+            {
+                listdata = (from a in listdata where a.SEED_Code != null && a.SEED_Code.Equals(seedcode) select a).ToList();
+            }
+
+            return listdata;
+        }
+
+        protected List<DatahubDataObj> GetDatahubdatabySchoolcode(List<DatahubDataObj> listpupils, string seedcode)
+        {
+            List<DatahubDataObj> listdata = listpupils;
+
+            if (seedcode != null && !seedcode.Equals("100"))
             {
                 listdata = (from a in listdata where a.SEED_Code != null && a.SEED_Code.Equals(seedcode) select a).ToList();
             }
@@ -807,31 +807,46 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
         public JsonResult getBarChartData()
         {
-            //ViewModelParams selectionParams = Session["ViewModelParams"] as ViewModelParams;
-            this.schoolSelection = Session["chartSelectedSchool"] as School;
+            ViewModelParams selectionParams = Session["ViewModelParams"] as ViewModelParams;
+            
             List<DatahubDataObj> allStudentData = Getlistpupil(this.rpGeneric2nd);
-            List<string> notParticipatingDestinations = new List<string>();
-            notParticipatingDestinations.Add("Unemployed");
-            notParticipatingDestinations.Add("Economically Inactive");
-            notParticipatingDestinations.Add("Custody");
-            notParticipatingDestinations.Add("Unavailable - Ill Health");
+            DatahubData CityData = CreatDatahubdata(allStudentData, "100");
             MainChartData combinedData = new MainChartData();
             combinedData.totals = new
             {
                 name = "Aberdeen city",
-                participating = allStudentData.Where(z => !notParticipatingDestinations.Contains(z.Current_Status)).Where(z => !z.Current_Status.Equals("Unknown")).Count(),
-                notParticipating = allStudentData.Where(z => notParticipatingDestinations.Contains(z.Current_Status)).Count(),
-                unknown = allStudentData.Where(z => z.Current_Status.Equals("Unknown")).Count()
+                participating = CityData.Participating(), 
+                notParticipating = CityData.NotParticipating(),
+                unknown = CityData.Percentage(CityData.pupilsinUnknown)
             };
-            if (schoolSelection != null)
+            if (selectionParams.school != null)
             {
-                List<DatahubDataObj> refined = allStudentData.Except(allStudentData.Where(z => z.School_Name == null)).ToList().Where(z => z.School_Name.Equals(this.schoolSelection.name)).ToList();
+                schoolSelection = Session["chartSelectedSchool"] as School;
+                List<DatahubDataObj> refined = GetDatahubdatabySchoolcode(this.rpGeneric2nd, schoolSelection.seedcode);
+                DatahubData SchoolData = CreatDatahubdata(refined, schoolSelection.seedcode);
+
+
                 combinedData.selected = new
                 {
                     name = schoolSelection.name,
-                    participating = refined.Where(z => !notParticipatingDestinations.Contains(z.Current_Status)).Where(z => !z.Current_Status.Equals("Unknown")).Count(),
-                    notParticipating = refined.Where(z => notParticipatingDestinations.Contains(z.Current_Status)).Count(),
-                    unknown = refined.Where(z => z.Current_Status.Equals("Unknown")).Count()
+                    participating = SchoolData.Participating(),
+                    notParticipating = SchoolData.NotParticipating(),
+                    unknown = SchoolData.Percentage(SchoolData.pupilsinUnknown)
+                };
+            }
+            if (selectionParams.neighbourhood != null)
+            {
+                schoolSelection = Session["chartSelectedNeighbour"] as School;
+                List<DatahubDataObj> refined = GetDatahubdatabyNeighbourhoods(this.rpGeneric2nd, schoolSelection.seedcode);
+                DatahubData SchoolData = CreatDatahubdata(refined, schoolSelection.seedcode);
+
+
+                combinedData.selected = new
+                {
+                    name = schoolSelection.name,
+                    participating = SchoolData.Participating(),
+                    notParticipating = SchoolData.NotParticipating(),
+                    unknown = SchoolData.Percentage(SchoolData.pupilsinUnknown)
                 };
             }
             return Json(/*getPageViewModel(selectionParams.school, selectionParams.neighbourhood)*/ combinedData, JsonRequestBehavior.AllowGet);
