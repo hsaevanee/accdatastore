@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="BaseEntity.cs" />
     <Compile Include="ChartData.cs" />
+    <Compile Include="MonthOnMonthOverview\Models\MonthOnMonthObj.cs" />
     <Compile Include="Mapping\MSAccess\SchoolProfiles\EnglishLevelMap.cs" />
     <Compile Include="Mapping\MSAccess\SchoolProfiles\NationalIdentityMap.cs" />
     <Compile Include="SchoolProfiles\Census\AaeAttendanceObj.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="SchoolProfiles\Mapping\InCAS\InCAS2014Map.cs" />
     <Compile Include="SchoolProfiles\Mapping\InCAS\InCAS2013Map.cs" />
     <Compile Include="SchoolProfiles\Mapping\InCAS\InCAS2012Map.cs" />
+    <Compile Include="MonthOnMonthOverview\Mapping\Month1Map.cs" />
     <Compile Include="SchoolProfiles\Mapping\PIPS\PIPS2010Map.cs" />
     <Compile Include="SchoolProfiles\Mapping\PIPS\PIPS2011Map.cs" />
     <Compile Include="SchoolProfiles\Mapping\PIPS\PIPS2013Map.cs" />

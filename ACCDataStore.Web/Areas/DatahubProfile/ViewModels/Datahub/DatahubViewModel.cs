@@ -1,5 +1,6 @@
 ﻿using ACCDataStore.Entity;
 using ACCDataStore.Entity.DatahubProfile;
+using ACCDataStore.Web.Areas.DatahubProfile.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,5 +25,6 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub
         public IList<string> ListDatasets { get; set; }
         public string seachby { get; set; }
         public string searchcode { get; set; }
+        public List<PosNegSchoolList> summaryTableData { get; set; }
     }
 }

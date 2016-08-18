@@ -2,12 +2,18 @@
 var hGraphs = {
     cache: {},
     getData: function (callback) {
-        $.get('/DatahubProfile/IndexDatahub/MainPieChartData',
+        var urls = {
+            'mainChart': '/DatahubProfile/IndexDatahub/MainPieChartData',
+            'bigOlBarChart': '/DatahubProfile/IndexDatahub/getBarChartData',
+            'monthsTrends': '/DatahubProfile/IndexDatahub/monthlyHistogram',
+            'participatingBarChart': '/DatahubProfile/IndexDatahub/getBarChartData',
+        };
+        $.get(urls[callback],
             function (data) {
                 console.log(data);
                 hGraphs.cache[callback] = data;
                 hGraphs[callback]();
-        });
+            });
     },
     mainChart: function () {
         var seriesTotal = [], seriesSpecific = [];
@@ -24,13 +30,99 @@ var hGraphs = {
             }
         }
         if (seriesTotal.length > 0) {
-            hGraphs.draw('#datahub-index-mainpiechart', seriesTotal, hGraphs.cache.mainChart.totals.title);
+            hGraphs.drawPie('#datahub-index-mainpiechart', seriesTotal, hGraphs.cache.mainChart.totals.title);
         }
         if (seriesSpecific.length > 0) {
-            hGraphs.draw('#datahub-index-specificpiechart', seriesSpecific, hGraphs.cache.mainChart.selected.title);
+            hGraphs.drawPie('#datahub-index-specificpiechart', seriesSpecific, hGraphs.cache.mainChart.selected.title);
         }
     },
-    draw: function (id, data, title) {
+    bigOlBarChart: function () {
+        var series = [];
+        series.push({ name: 'Student data', data: [] });
+        if (hGraphs.cache.bigOlBarChart.AberdeencityData != null) {
+            for (var key in hGraphs.cache.bigOlBarChart.AberdeencityData) {
+                if (key != "datacode" && key != "allpupils" && key != "allpupilsexcludemovedoutscotland") {
+                    series[0].data.push([key, parseInt(hGraphs.cache.bigOlBarChart.AberdeencityData[key])]);
+                }
+            }
+        }
+        if (series.length > 0) {
+            hGraphs.drawBar('#datahub-index-bigolbarchart', series);
+        }
+    },
+    participatingBarChart: function () {
+        var series = [], counter = 0;
+        for (var key in hGraphs.cache.participatingBarChart) {
+            if (hGraphs.cache.participatingBarChart[key] != null) {
+                series.push({ name: hGraphs.cache.participatingBarChart[key].name, data: [] });
+                for (var cat in hGraphs.cache.participatingBarChart[key]) {
+                    if (cat != 'name') {
+                        series[counter].data.push([cat, hGraphs.cache.participatingBarChart[key][cat]]);
+                    }
+                }
+                counter++;
+            }
+        }
+        if (series.length > 0) {
+            hGraphs.drawBar('#datahub-index-bigolbarchart', series);
+        }
+    },
+    monthsTrends: function () {
+        var series = [];
+        for (var key in hGraphs.cache.monthsTrends) {
+            if (key != 'months') {
+                series.push({ name: key, data: hGraphs.cache.monthsTrends[key] });
+            }
+        }
+        if (series.length > 0) {
+            hGraphs.drawTrends("#month-trend-histogram", series);
+        }
+    },
+    drawTrends: function (id, series) {
+        $(id).highcharts({
+            chart: {
+                type: 'line'
+            },
+            title: {
+                text: 'Monthly Trends',
+                x: 0 //center
+            },
+            xAxis: {
+                categories: hGraphs.cache.monthsTrends.months
+            },
+            yAxis: {
+                title: {
+                    text: 'Student percentage (%)'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }],
+                min: 0,
+                max: 100
+            },
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: true
+                    },
+                    enableMouseTracking: false
+                }
+            },
+            tooltip: {
+                valueSuffix: '%'
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            },
+            series: series
+        });
+    },
+    drawPie: function (id, data, title) {
         $(id).highcharts({
             chart: {
                 plotBackgroundColor: null,
@@ -41,9 +133,6 @@ var hGraphs = {
             title: {
                 text: title + ' Students'
             },
-            /*tooltip: {
-                pointFormat: ''
-            },*/
             plotOptions: {
                 pie: {
                     allowPointSelect: true,
@@ -64,8 +153,56 @@ var hGraphs = {
             }]
         });
     },
+    drawBar: function (id, data) {
+        $(id).highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'School Student data'
+            },
+            xAxis: {
+                type: 'category',
+                label: {
+                    rotation: -45,
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif'
+                    }
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Students'
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            },
+            tooltip: {
+                pointFormat: "Number of students: <b>{point.y:.1f}</b>"
+            },
+            series: data,
+            dataLabels: {
+                enabled: true,
+                rotation: -90,
+                color: '#FFFFFF',
+                align: 'right',
+                format: "{point.y:.1f}",
+                y: 10,
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        });
+    },
     construct: function (type) {
-        if (hGraphs.cache[type] != null) {
+        if (hGraphs.cache[type] != null && hGraphs.cache[type] != undefined) {
             hGraphs[type]();
         } else {
             hGraphs.getData(type);
@@ -73,4 +210,8 @@ var hGraphs = {
     }
 };
 
-window.onload = hGraphs.construct('mainChart');
+window.onload = function () {
+    hGraphs.construct('mainChart');
+    hGraphs.construct('participatingBarChart');
+    hGraphs.construct('monthsTrends');
+}

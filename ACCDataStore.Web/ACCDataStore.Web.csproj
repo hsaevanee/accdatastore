@@ -327,7 +327,10 @@
     <Compile Include="Areas\Authorisation\ViewModels\IndexAuthorisation\IndexViewModel.cs" />
     <Compile Include="Areas\DatahubProfile\Controllers\IndexDatahubController.cs" />
     <Compile Include="Areas\DatahubProfile\DatahubProfileAreaRegistration.cs" />
+    <Compile Include="Areas\DatahubProfile\Models\HistogramSeriesData.cs" />
     <Compile Include="Areas\DatahubProfile\Models\MainChartData.cs" />
+    <Compile Include="Areas\DatahubProfile\Models\PosNegSchoolList.cs" />
+    <Compile Include="Areas\DatahubProfile\Models\ViewModelParams.cs" />
     <Compile Include="Areas\DatahubProfile\ViewModels\Datahub\PupilObject.cs" />
     <Compile Include="Areas\DatahubProfile\ViewModels\Datahub\DatahubViewModel.cs" />
     <Compile Include="Areas\DatahubProfile\ViewModels\Datahub\DatahubData.cs" />

@@ -40,6 +40,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             //eGeneralSettings.CurriculumpgCounter++;
             //TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
             var vmDatahubViewModel = new DatahubViewModel();
+            MonthOnMonthOverview(rpGeneric2nd);
 
             return View("Home", vmDatahubViewModel);
         }
@@ -49,6 +50,47 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             //var eGeneralSettings = TS.Core.Helper.ConvertHelper.XmlFile2Object(HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"), typeof(GeneralCounter)) as GeneralCounter;
             //eGeneralSettings.CurriculumpgCounter++;
             //TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
+            
+            IList<School> allSchools = GetListSchoolname();
+            List<string> notParticipatingDestinations = new List<string>();
+            notParticipatingDestinations.Add("Unemployed");
+            notParticipatingDestinations.Add("Economically Inactive");
+            notParticipatingDestinations.Add("Custody");
+            notParticipatingDestinations.Add("Unavailable - Ill Health");
+            List<DatahubDataObj> allStudentData = Getlistpupil(this.rpGeneric2nd).Where(z => !String.IsNullOrWhiteSpace(z.SEED_Code)).ToList<DatahubDataObj>();
+            List<PosNegSchoolList> tableSummaryData = new List<PosNegSchoolList>();
+            PosNegSchoolList aberdeenTotalsSummary = new PosNegSchoolList();
+            aberdeenTotalsSummary.name = "Aberdeen City";
+            aberdeenTotalsSummary.participating = 0;
+            aberdeenTotalsSummary.notParticipating = 0;
+            aberdeenTotalsSummary.unknown = 0;
+            foreach (School school in allSchools)
+            {
+                if (school.seedcode != "100" && !String.IsNullOrWhiteSpace(school.seedcode))
+                {
+                    PosNegSchoolList entry = new PosNegSchoolList();
+                    entry.name = school.name;
+                    entry.participating = allStudentData.Where(z => z.SEED_Code.Equals(school.seedcode)).Where(z => !notParticipatingDestinations.Contains(z.Current_Status)).Where(z => !z.Current_Status.Equals("Unknown")).Count();
+                    entry.notParticipating = allStudentData.Where(z => z.SEED_Code.Equals(school.seedcode)).Where(z => notParticipatingDestinations.Contains(z.Current_Status)).Count();
+                    entry.unknown = allStudentData.Where(z => z.SEED_Code.Equals(school.seedcode)).Where(z => z.Current_Status.Equals("Unknown")).Count();
+                    aberdeenTotalsSummary.participating += entry.participating;
+                    aberdeenTotalsSummary.notParticipating += entry.notParticipating;
+                    aberdeenTotalsSummary.unknown += entry.unknown;
+                    tableSummaryData.Add(entry);
+                }
+            }
+            tableSummaryData.Add(aberdeenTotalsSummary);
+            DatahubViewModel viewModel = getPageViewModel(schoolsubmitButton, neighbourhoodssubmitButton);
+            viewModel.summaryTableData = tableSummaryData;
+            ViewModelParams pageViewModelParams = new ViewModelParams();
+            pageViewModelParams.school = schoolsubmitButton;
+            pageViewModelParams.neighbourhood = neighbourhoodssubmitButton;
+            Session["ViewModelParams"] = pageViewModelParams;
+            return View("index2", viewModel);
+        }
+
+        protected DatahubViewModel getPageViewModel(string schoolsubmitButton, string neighbourhoodssubmitButton)
+        {
             var vmDatahubViewModel = new DatahubViewModel();
             var datahubAbdcitydata = new DatahubData();
 
@@ -57,15 +99,17 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             vmDatahubViewModel.ListSchoolNameData = GetListSchoolname();
             vmDatahubViewModel.ListNeighbourhoodsName = GetListNeighbourhoodsname(rpGeneric2nd);
 
-            if (schoolsubmitButton != null) { 
+            if (schoolsubmitButton != null)
+            {
                 var sSchoolcode = Request["selectedschoolcode"];
-                if (sSchoolcode != null) {
-                    vmDatahubViewModel.SchoolData = CreatDatahubdata(GetDatahubdatabySchoolcode(rpGeneric2nd, sSchoolcode), sSchoolcode); 
+                if (sSchoolcode != null)
+                {
+                    vmDatahubViewModel.SchoolData = CreatDatahubdata(GetDatahubdatabySchoolcode(rpGeneric2nd, sSchoolcode), sSchoolcode);
                     vmDatahubViewModel.selectedschoolcode = sSchoolcode;
                     Session["chartSelectedSchool"] = GetListSchoolname().Where(x => x.seedcode.Equals(sSchoolcode)).FirstOrDefault();
                     vmDatahubViewModel.selectedschool = vmDatahubViewModel.ListSchoolNameData.Where(x => x.seedcode.Equals(sSchoolcode)).FirstOrDefault();
-                    vmDatahubViewModel.seachby= "School";
-                    vmDatahubViewModel.searchcode = sSchoolcode;   
+                    vmDatahubViewModel.seachby = "School";
+                    vmDatahubViewModel.searchcode = sSchoolcode;
                 }
             }
             if (neighbourhoodssubmitButton != null)
@@ -77,12 +121,10 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                     vmDatahubViewModel.selectedneighbourhoods = sNeighbourhoods;
                     vmDatahubViewModel.selectedschool = vmDatahubViewModel.ListNeighbourhoodsName.Where(x => x.seedcode.Equals(sNeighbourhoods)).FirstOrDefault();
                     vmDatahubViewModel.seachby = "Neighbourhood";
-                    vmDatahubViewModel.searchcode = sNeighbourhoods;   
+                    vmDatahubViewModel.searchcode = sNeighbourhoods;
                 }
             }
-
-
-            return View("index2", vmDatahubViewModel);
+            return vmDatahubViewModel;
         }
 
         protected List<DatahubDataObj> Getlistpupil(IGenericRepository2nd rpGeneric2nd)
@@ -745,6 +787,77 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 combinedData.selected = selectedChart;
             }
             return Json(combinedData, JsonRequestBehavior.AllowGet);
+        }
+
+        public void MonthOnMonthOverview(IGenericRepository2nd rpGeneric2nd)
+        {
+            List<Month1> month1 = rpGeneric2nd.FindAll<Month1>().ToList();
+            List<Month2> month2 = rpGeneric2nd.FindAll<Month2>().ToList();
+            List<Month3> month3 = rpGeneric2nd.FindAll<Month3>().ToList();
+            List<Month4> month4 = rpGeneric2nd.FindAll<Month4>().ToList();
+            List<Month5> month5 = rpGeneric2nd.FindAll<Month5>().ToList();
+            List<Month6> month6 = rpGeneric2nd.FindAll<Month6>().ToList();
+            List<Month7> month7 = rpGeneric2nd.FindAll<Month7>().ToList();
+            List<Month8> month8 = rpGeneric2nd.FindAll<Month8>().ToList();
+            List<Month9> month9 = rpGeneric2nd.FindAll<Month9>().ToList();
+            List<Month10> month10 = rpGeneric2nd.FindAll<Month10>().ToList();
+            List<Month11> month11 = rpGeneric2nd.FindAll<Month11>().ToList();
+            List<Month12> month12 = rpGeneric2nd.FindAll<Month12>().ToList();
+        }
+
+        public JsonResult getBarChartData()
+        {
+            //ViewModelParams selectionParams = Session["ViewModelParams"] as ViewModelParams;
+            this.schoolSelection = Session["chartSelectedSchool"] as School;
+            List<DatahubDataObj> allStudentData = Getlistpupil(this.rpGeneric2nd);
+            List<string> notParticipatingDestinations = new List<string>();
+            notParticipatingDestinations.Add("Unemployed");
+            notParticipatingDestinations.Add("Economically Inactive");
+            notParticipatingDestinations.Add("Custody");
+            notParticipatingDestinations.Add("Unavailable - Ill Health");
+            MainChartData combinedData = new MainChartData();
+            combinedData.totals = new
+            {
+                name = "Aberdeen city",
+                participating = allStudentData.Where(z => !notParticipatingDestinations.Contains(z.Current_Status)).Where(z => !z.Current_Status.Equals("Unknown")).Count(),
+                notParticipating = allStudentData.Where(z => notParticipatingDestinations.Contains(z.Current_Status)).Count(),
+                unknown = allStudentData.Where(z => z.Current_Status.Equals("Unknown")).Count()
+            };
+            if (schoolSelection != null)
+            {
+                List<DatahubDataObj> refined = allStudentData.Except(allStudentData.Where(z => z.School_Name == null)).ToList().Where(z => z.School_Name.Equals(this.schoolSelection.name)).ToList();
+                combinedData.selected = new
+                {
+                    name = schoolSelection.name,
+                    participating = refined.Where(z => !notParticipatingDestinations.Contains(z.Current_Status)).Where(z => !z.Current_Status.Equals("Unknown")).Count(),
+                    notParticipating = refined.Where(z => notParticipatingDestinations.Contains(z.Current_Status)).Count(),
+                    unknown = refined.Where(z => z.Current_Status.Equals("Unknown")).Count()
+                };
+            }
+            return Json(/*getPageViewModel(selectionParams.school, selectionParams.neighbourhood)*/ combinedData, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult monthlyHistogram()
+        {
+            List<DatahubDataObj> month1 = Getlistpupil(rpGeneric2nd);
+            List<DatahubData> allSeries = new List<DatahubData>();
+            for (int i = 0; i < 12; i++)
+            {
+                allSeries.Add(CreatDatahubdata(month1, "Jan"));
+            }
+            HistogramSeriesData jsonOut = new HistogramSeriesData();
+            jsonOut.months = new List<string>();
+            jsonOut.participating = new List<double>();
+            jsonOut.notParticipating = new List<double>();
+            jsonOut.unknown = new List<double>();
+            foreach (DatahubData month in allSeries)
+            {
+                jsonOut.months.Add(month.datacode);
+                jsonOut.participating.Add(Math.Round(month.Participating(), 2));
+                jsonOut.notParticipating.Add(Math.Round(month.NotParticipating(), 2));
+                jsonOut.unknown.Add(Math.Round(month.Percentage(month.pupilsinUnknown), 2));
+            }
+            return Json(jsonOut, JsonRequestBehavior.AllowGet);
         }
 
     }
