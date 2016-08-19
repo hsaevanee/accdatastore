@@ -748,6 +748,8 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
         public JsonResult MainPieChartData()
         {
+
+            ViewModelParams selectionParams = Session["ViewModelParams"] as ViewModelParams;
             this.schoolSelection = Session["chartSelectedSchool"] as School;
             //List<DatahubDataObj> allStudentData = this.rpGeneric2nd.FindAll<DatahubDataObj>().ToList();
             List<DatahubDataObj> allStudentData = Getlistpupil(this.rpGeneric2nd);
@@ -767,12 +769,32 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 male19 = (allStudentData.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 19)).ToList<DatahubDataObj>().Count(),
             };
             combinedData.totals = pieChartTotals;
-            if (this.schoolSelection != null)
+            if (selectionParams.school != null)
             {
                 List<DatahubDataObj> refined = allStudentData.Except(allStudentData.Where(z => z.School_Name == null)).ToList().Where(z => z.School_Name.Equals(this.schoolSelection.name)).ToList();
                 object selectedChart = new
                 {
                     title = this.schoolSelection.name,
+                    female15 = (refined.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 15)).ToList<DatahubDataObj>().Count(),
+                    male15 = (refined.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 15)).ToList<DatahubDataObj>().Count(),
+                    female16 = (refined.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 16)).ToList<DatahubDataObj>().Count(),
+                    male16 = (refined.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 16)).ToList<DatahubDataObj>().Count(),
+                    female17 = (refined.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 17)).ToList<DatahubDataObj>().Count(),
+                    male17 = (refined.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 17)).ToList<DatahubDataObj>().Count(),
+                    female18 = (refined.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 18)).ToList<DatahubDataObj>().Count(),
+                    male18 = (refined.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 18)).ToList<DatahubDataObj>().Count(),
+                    female19 = (refined.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 19)).ToList<DatahubDataObj>().Count(),
+                    male19 = (refined.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 19)).ToList<DatahubDataObj>().Count(),
+                };
+                combinedData.selected = selectedChart;
+            }
+            if (selectionParams.neighbourhood != null)
+            {
+                schoolSelection = Session["chartSelectedNeighbour"] as School;
+                List<DatahubDataObj> refined = GetDatahubdatabyNeighbourhoods(this.rpGeneric2nd, schoolSelection.seedcode);
+                object selectedChart = new
+                {
+                    title = schoolSelection.name,
                     female15 = (refined.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 15)).ToList<DatahubDataObj>().Count(),
                     male15 = (refined.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 15)).ToList<DatahubDataObj>().Count(),
                     female16 = (refined.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 16)).ToList<DatahubDataObj>().Count(),
@@ -883,10 +905,11 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
         public JsonResult monthlyHistogram()
         {
+            ViewModelParams selectionParams = Session["ViewModelParams"] as ViewModelParams;
             List<HistogramSeriesData> allseriesoutput = new List<HistogramSeriesData>();
             this.schoolSelection = Session["chartSelectedSchool"] as School;
             int numberofseries = 1;
-            if (schoolSelection != null)
+            if (selectionParams.school != null || selectionParams.neighbourhood != null)
             {
                 numberofseries = 2;
             }
@@ -904,10 +927,16 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                         indexofmonths = 0;
                     }
                     List<DatahubDataObj> comparison = MonthOnMonthOverview(rpGeneric2nd, monthname[indexofmonths]);
-                    if (schoolSelection != null && j > 0)
+                    if (selectionParams.school != null && j > 0)
                     {
                         seriesName = schoolSelection.name;
                         comparison = comparison.Where(x => !String.IsNullOrWhiteSpace(x.SEED_Code)).Where(x => x.SEED_Code.Equals(schoolSelection.seedcode)).ToList<DatahubDataObj>();
+                    }
+                    if (selectionParams.neighbourhood != null && j > 0)
+                    {
+                        schoolSelection = Session["chartSelectedNeighbour"] as School;
+                        seriesName = schoolSelection.name;
+                        comparison = GetDatahubdatabyNeighbourhoods(this.rpGeneric2nd, schoolSelection.seedcode);
                     }
                     allSeries.Add(CreatDatahubdata(comparison, monthname[indexofmonths]));
                 }
