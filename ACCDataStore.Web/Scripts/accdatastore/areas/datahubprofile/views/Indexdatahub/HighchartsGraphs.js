@@ -133,7 +133,7 @@ var hGraphs = {
                 type: 'pie'
             },
             title: {
-                text: title + ' Students'
+                text: title + ' Students by Age and Gender'
             },
             plotOptions: {
                 pie: {
@@ -158,10 +158,11 @@ var hGraphs = {
     drawBar: function (id, data) {
         $(id).highcharts({
             chart: {
-                type: 'column'
+                type: 'column',
+                height: 400
             },
             title: {
-                text: 'School Student data'
+                text: 'Student Participation Overview'
             },
             xAxis: {
                 type: 'category',
