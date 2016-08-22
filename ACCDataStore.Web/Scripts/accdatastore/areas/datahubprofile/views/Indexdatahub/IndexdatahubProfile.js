@@ -1,5 +1,6 @@
 ﻿
 $(document).ready(function () {
+  
 
     $('#summaryDatatable').DataTable({
         dom: 'Bfrtip',
@@ -7,10 +8,6 @@ $(document).ready(function () {
         "scrollCollapse": true,
         paging: false,
         "order": [],
-        "columnDefs": [{
-            "targets": 'no-sort',
-            "orderable": false,
-        }],
         buttons: {
             buttons: [
                 'copyHtml5', 'excelHtml5', 'csvHtml5', {
