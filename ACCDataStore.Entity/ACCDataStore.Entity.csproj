@@ -59,6 +59,8 @@
   <ItemGroup>
     <Compile Include="BaseEntity.cs" />
     <Compile Include="ChartData.cs" />
+    <Compile Include="DatahubProfile\SummaryData.cs" />
+    <Compile Include="Mapping\MySQL\SummaryDataMap.cs" />
     <Compile Include="MonthOnMonthOverview\Models\MonthOnMonthObj.cs" />
     <Compile Include="Mapping\MSAccess\SchoolProfiles\EnglishLevelMap.cs" />
     <Compile Include="Mapping\MSAccess\SchoolProfiles\NationalIdentityMap.cs" />
