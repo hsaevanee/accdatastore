@@ -1,16 +1,18 @@
 ﻿
 var hGraphs = {
     cache: {},
+    benchmark: {},
     getData: function (callback) {
         var urls = {
             'mainChart': '/DatahubProfile/IndexDatahub/MainPieChartData',
             'bigOlBarChart': '/DatahubProfile/IndexDatahub/getBarChartData',
             'monthsTrends': '/DatahubProfile/IndexDatahub/monthlyHistogram',
             'participatingBarChart': '/DatahubProfile/IndexDatahub/getBarChartData',
+            'allSchoolComparison': '/DatahubProfile/IndexDatahub/getAllSchoolComparison'
         };
         $.get(urls[callback],
             function (data) {
-
+                console.log(data);
                 hGraphs.cache[callback] = data;
                 hGraphs[callback]();
             });
@@ -35,6 +37,26 @@ var hGraphs = {
         if (seriesSpecific.length > 0) {
             hGraphs.drawPie('#datahub-index-specificpiechart', seriesSpecific, hGraphs.cache.mainChart.selected.title);
         }
+        document.getElementById('beckmark-pies-ajax').innerHTML = Date.now() - hGraphs.benchmark.mainChart;
+        document.getElementById('beckmark-pies-server').innerHTML = hGraphs.cache.mainChart.benchmarkResults;
+    },
+    allSchoolComparison: function() {
+        var series = [];
+        if (hGraphs.cache.allSchoolComparison.data != null) {
+            for (var i = 0; i < hGraphs.cache.allSchoolComparison.data.length; i++) {
+                series.push({ name: hGraphs.cache.allSchoolComparison.data[i].name, data: [] });
+                for (var key in hGraphs.cache.allSchoolComparison.data[i]) {
+                    if (key != 'name') {
+                        series[i].data.push([key, hGraphs.cache.allSchoolComparison.data[i][key]]);
+                    }
+                }
+            }
+        }
+        if (series.length > 0) {
+            hGraphs.drawBar("#index-all-school-comparison-chart", series);
+        }
+        document.getElementById('beckmark-all-school-bar-ajax').innerHTML = Date.now() - hGraphs.benchmark.allSchoolComparison;
+        document.getElementById('beckmark-all-school-bar-server').innerHTML = hGraphs.cache.allSchoolComparison.benchmarkResults;
     },
     bigOlBarChart: function () {
         var series = [];
@@ -53,7 +75,7 @@ var hGraphs = {
     participatingBarChart: function () {
         var series = [], counter = 0;
         for (var key in hGraphs.cache.participatingBarChart) {
-            if (hGraphs.cache.participatingBarChart[key] != null) {
+            if (key != 'benchmarkResults' && hGraphs.cache.participatingBarChart[key] != null) {
                 series.push({ name: hGraphs.cache.participatingBarChart[key].name, data: [] });
                 for (var cat in hGraphs.cache.participatingBarChart[key]) {
                     if (cat != 'name') {
@@ -66,19 +88,23 @@ var hGraphs = {
         if (series.length > 0) {
             hGraphs.drawBar('#datahub-index-bigolbarchart', series);
         }
+        document.getElementById('beckmark-participation-bar-ajax').innerHTML = Date.now() - hGraphs.benchmark.participatingBarChart;
+        document.getElementById('beckmark-participation-bar-server').innerHTML = hGraphs.cache.participatingBarChart.benchmarkResults;
     },
     monthsTrends: function () {
         var series = [];
-        for (var i = 0; i < hGraphs.cache.monthsTrends.length; i++) {
-            for (var key in hGraphs.cache.monthsTrends[i]) {
+        for (var i = 0; i < hGraphs.cache.monthsTrends.chart.length; i++) {
+            for (var key in hGraphs.cache.monthsTrends.chart[i]) {
                 if (key != 'months' && key != 'name') {
-                    series.push({ name: hGraphs.cache.monthsTrends[i].name + ' ' + key, data: hGraphs.cache.monthsTrends[i][key] });
+                    series.push({ name: hGraphs.cache.monthsTrends.chart[i].name + ' ' + key, data: hGraphs.cache.monthsTrends.chart[i][key] });
                 }
             }
         }
         if (series.length > 0) {
             hGraphs.drawTrends("#month-trend-histogram", series);
         }
+        document.getElementById('beckmark-lines-ajax').innerHTML = Date.now() - hGraphs.benchmark.monthsTrends;
+        document.getElementById('beckmark-lines-server').innerHTML = hGraphs.cache.monthsTrends.benchmarkResults;
     },
     drawTrends: function (id, series) {
         $(id).highcharts({
@@ -90,7 +116,7 @@ var hGraphs = {
                 x: 0 //center
             },
             xAxis: {
-                categories: hGraphs.cache.monthsTrends[0].months
+                categories: hGraphs.cache.monthsTrends.chart[0].months
             },
             yAxis: {
                 title: {
@@ -176,6 +202,7 @@ var hGraphs = {
             },
             yAxis: {
                 min: 0,
+                max: 100,
                 title: {
                     text: 'Students'
                 }
@@ -205,6 +232,7 @@ var hGraphs = {
         });
     },
     construct: function (type) {
+        hGraphs.benchmark[type] = Date.now();
         if (hGraphs.cache[type] != null && hGraphs.cache[type] != undefined) {
             hGraphs[type]();
         } else {
@@ -214,6 +242,7 @@ var hGraphs = {
 };
 
 window.onload = function () {
+    hGraphs.construct('allSchoolComparison');
     hGraphs.construct('mainChart');
     hGraphs.construct('participatingBarChart');
     hGraphs.construct('monthsTrends');

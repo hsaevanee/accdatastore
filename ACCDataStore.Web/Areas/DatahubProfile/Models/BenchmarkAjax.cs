@@ -5,10 +5,10 @@ using System.Web;
 
 namespace ACCDataStore.Web.Areas.DatahubProfile.Models
 {
-    public class MainChartData
+    public class BenchmarkAjax
     {
-        public object totals { get; set; }
-        public object selected { get; set; }
+        public List<PosNegSchoolList> data { get; set; }
+        public List<HistogramSeriesData> chart { get; set; }
         public long benchmarkResults { get; set; }
     }
 }

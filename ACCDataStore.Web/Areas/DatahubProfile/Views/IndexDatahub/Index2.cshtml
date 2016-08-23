@@ -29,6 +29,39 @@
 }
 
 <body>
+    <div>
+        <table>
+            <tr>
+                <th>Element</th>
+                <th>Server load time (ms)</th>
+                <th>AJAX load time (ms)</th>
+            </tr>
+            <tr>
+                <td>Page</td>
+                <td colspan="2">@Model.benchmarkResults</td>
+            </tr>
+            <tr>
+                <td>All schools barchart</td>
+                <td id="beckmark-all-school-bar-server"></td>
+                <td id="beckmark-all-school-bar-ajax"></td>
+            </tr>
+            <tr>
+                <td>Pie charts</td>
+                <td id="beckmark-pies-server"></td>
+                <td id="beckmark-pies-ajax"></td>
+            </tr>
+            <tr>
+                <td>Participation barchart</td>
+                <td id="beckmark-participation-bar-server"></td>
+                <td id="beckmark-participation-bar-ajax"></td>
+            </tr>
+            <tr>
+                <td>Trend graph</td>
+                <td id="beckmark-lines-server"></td>
+                <td id="beckmark-lines-ajax"></td>
+            </tr>
+        </table>
+    </div>
     <div class="container">
             <!-- Content Row -->
     <div class="row">
@@ -154,6 +187,7 @@
                         </table>
                     </div>
                 </div>
+                <div id="index-all-school-comparison-chart"></div>
             </div>
         </div>
     </div>

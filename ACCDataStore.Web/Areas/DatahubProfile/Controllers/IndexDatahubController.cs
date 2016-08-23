@@ -16,6 +16,7 @@ using System.Reflection;
 using ACCDataStore.Helpers.ORM.Helpers.Security;
 using ACCDataStore.Helpers.ORM;
 using ACCDataStore.Web.Areas.DatahubProfile.Models;
+using System.Diagnostics;
 
 namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 {
@@ -31,6 +32,11 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
         {
             this.rpGeneric2nd = rpGeneric2nd;
             this.schoolSelection = new School("", "");
+        }
+
+        public ActionResult ScotlandIndex()
+        {
+            return View("ScotlandIndex");
         }
 
 
@@ -50,7 +56,8 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             //var eGeneralSettings = TS.Core.Helper.ConvertHelper.XmlFile2Object(HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"), typeof(GeneralCounter)) as GeneralCounter;
             //eGeneralSettings.CurriculumpgCounter++;
             //TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
-            
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
             IList<School> allSchools = GetListSchoolname();
 
             List<DatahubDataObj> allStudentData = Getlistpupil(this.rpGeneric2nd).Where(z => !String.IsNullOrWhiteSpace(z.SEED_Code)).ToList<DatahubDataObj>();
@@ -66,12 +73,15 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                     entry.unknown = temp.Percentage(temp.pupilsinUnknown);
                     tableSummaryData.Add(entry);
             }
+            Session["AllSchoolComparisonData"] = tableSummaryData;
             DatahubViewModel viewModel = getPageViewModel(schoolsubmitButton, neighbourhoodssubmitButton);
             viewModel.summaryTableData = tableSummaryData;
             ViewModelParams pageViewModelParams = new ViewModelParams();
             pageViewModelParams.school = schoolsubmitButton;
             pageViewModelParams.neighbourhood = neighbourhoodssubmitButton;
             Session["ViewModelParams"] = pageViewModelParams;
+            timer.Stop();
+            viewModel.benchmarkResults = timer.ElapsedMilliseconds;
             return View("index2", viewModel);
         }
 
@@ -748,7 +758,8 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
         public JsonResult MainPieChartData()
         {
-
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
             ViewModelParams selectionParams = Session["ViewModelParams"] as ViewModelParams;
             this.schoolSelection = Session["chartSelectedSchool"] as School;
             //List<DatahubDataObj> allStudentData = this.rpGeneric2nd.FindAll<DatahubDataObj>().ToList();
@@ -808,10 +819,12 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 };
                 combinedData.selected = selectedChart;
             }
+            timer.Stop();
+            combinedData.benchmarkResults = timer.ElapsedMilliseconds;
             return Json(combinedData, JsonRequestBehavior.AllowGet);
         }
 
-        public List<DatahubDataObj> MonthOnMonthOverview(IGenericRepository2nd rpGeneric2nd, string type)
+        protected List<DatahubDataObj> MonthOnMonthOverview(IGenericRepository2nd rpGeneric2nd, string type)
         {
             List<DatahubDataObj> selectedMonth = new List<DatahubDataObj>();
             switch (type)
@@ -858,8 +871,9 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
         public JsonResult getBarChartData()
         {
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
             ViewModelParams selectionParams = Session["ViewModelParams"] as ViewModelParams;
-            
             List<DatahubDataObj> allStudentData = Getlistpupil(this.rpGeneric2nd);
             DatahubData CityData = CreatDatahubdata(allStudentData, "100");
             MainChartData combinedData = new MainChartData();
@@ -900,11 +914,16 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                     unknown = SchoolData.Percentage(SchoolData.pupilsinUnknown)
                 };
             }
-            return Json(/*getPageViewModel(selectionParams.school, selectionParams.neighbourhood)*/ combinedData, JsonRequestBehavior.AllowGet);
+            timer.Stop();
+            combinedData.benchmarkResults = timer.ElapsedMilliseconds;
+            return Json(combinedData, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult monthlyHistogram()
         {
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            BenchmarkAjax wrapper = new BenchmarkAjax();
             ViewModelParams selectionParams = Session["ViewModelParams"] as ViewModelParams;
             List<HistogramSeriesData> allseriesoutput = new List<HistogramSeriesData>();
             this.schoolSelection = Session["chartSelectedSchool"] as School;
@@ -955,7 +974,23 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 }
                 allseriesoutput.Add(jsonOut);
             }
-            return Json(allseriesoutput, JsonRequestBehavior.AllowGet);
+            wrapper.chart = allseriesoutput;
+            timer.Stop();
+            wrapper.benchmarkResults = timer.ElapsedMilliseconds;
+            return Json(wrapper, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult getAllSchoolComparison()
+        {
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            BenchmarkAjax wrapper = new BenchmarkAjax();
+            List<PosNegSchoolList> tableSummaryData = Session["AllSchoolComparisonData"] as List<PosNegSchoolList>;
+            Session["AllSchoolComparisonData"] = null;
+            wrapper.data = tableSummaryData;
+            timer.Stop();
+            wrapper.benchmarkResults = timer.ElapsedMilliseconds;
+            return Json(wrapper, JsonRequestBehavior.AllowGet);
         }
 
     }
