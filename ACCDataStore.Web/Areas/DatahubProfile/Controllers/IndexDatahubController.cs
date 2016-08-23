@@ -118,13 +118,18 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
         protected List<DatahubDataObj> Getlistpupil(IGenericRepository2nd rpGeneric2nd)
         {
     
-                List<DatahubDataObj> listdata = this.rpGeneric2nd.FindAll<DatahubDataObj>().ToList() ;
-                List<DatahubDataObj> pupilsmoveoutScotland = listdata.Where(x => x.Current_Status.ToLower().Equals("moved outwith scotland")).ToList();
+                //List<DatahubDataObj> listdata = this.rpGeneric2nd.FindAll<DatahubDataObj>().ToList() ;
+            IList<DatahubDataObj> listdata = this.rpGeneric2nd.QueryOver<DatahubDataObj>()
+                                            .Where(r => r.Data_Year == 2016 && r.Data_Month == 08)
+                                            .List<DatahubDataObj>();
 
-                List<DatahubDataObj> listResult = listdata.Except(pupilsmoveoutScotland).ToList();
+
+            List<DatahubDataObj> pupilsmoveoutScotland = listdata.Where(x => x.Current_Status.ToLower().Equals("moved outwith scotland")).ToList();
+
+            List<DatahubDataObj> listResult = listdata.Except(pupilsmoveoutScotland).ToList();
 
 
-                return listResult;
+            return listResult;
         }
 
         protected IList<School> GetListSchoolname()
@@ -222,6 +227,12 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
         protected DatahubData CreatDatahubdata(List<DatahubDataObj> listdata,string datahubcode)
         {
             var datahubdata = new DatahubData();
+
+            if (listdata.Count() == 0) {
+                datahubdata = null;
+            }
+            else
+            { 
             datahubdata.datacode = datahubcode;
             datahubdata.allpupils = listdata.Count(x => !x.SDS_Client_Ref.Equals(""));
             datahubdata.allFemalepupils = listdata.Count(x => x.Gender.ToLower().Equals("female"));
@@ -261,7 +272,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             datahubdata.pupilsinUnavailableillHealth = listdata.Count(x => x.Current_Status.ToLower().Equals("unavailable - ill health"));
             datahubdata.pupilsinUnemployed = listdata.Count(x => x.Current_Status.ToLower().Equals("unemployed"));
             datahubdata.pupilsinUnknown = listdata.Count(x => x.Current_Status.ToLower().Equals("unknown"));
-
+            }
 
             return datahubdata;
         }
@@ -811,46 +822,70 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             return Json(combinedData, JsonRequestBehavior.AllowGet);
         }
 
-        public List<DatahubDataObj> MonthOnMonthOverview(IGenericRepository2nd rpGeneric2nd, string type)
+        public IList<DatahubDataObj> MonthOnMonthOverview(IGenericRepository2nd rpGeneric2nd, string type)
         {
-            List<DatahubDataObj> selectedMonth = new List<DatahubDataObj>();
+            IList<DatahubDataObj> selectedMonth = new List<DatahubDataObj>();
             switch (type)
             {
                 case "Jan":
-                    selectedMonth = rpGeneric2nd.FindAll<Month1>().ToList<DatahubDataObj>();
+                    selectedMonth = rpGeneric2nd.QueryOver<DatahubDataObj>()
+                                    .Where(r => r.Data_Month == 01)
+                                    .List<DatahubDataObj>();
                     break;
                 case "Feb":
-                    selectedMonth = rpGeneric2nd.FindAll<Month2>().ToList<DatahubDataObj>();
+                    selectedMonth = rpGeneric2nd.QueryOver<DatahubDataObj>()
+                                    .Where(r => r.Data_Month == 02)
+                                    .List<DatahubDataObj>();
                     break;
                 case "Mar":
-                    selectedMonth = rpGeneric2nd.FindAll<Month3>().ToList<DatahubDataObj>();
+                    selectedMonth = rpGeneric2nd.QueryOver<DatahubDataObj>()
+                                    .Where(r => r.Data_Month == 03)
+                                    .List<DatahubDataObj>();
                     break;
                 case "Apr":
-                    selectedMonth = rpGeneric2nd.FindAll<Month4>().ToList<DatahubDataObj>();
+                    selectedMonth = rpGeneric2nd.QueryOver<DatahubDataObj>()
+                                    .Where(r => r.Data_Month == 04)
+                                    .List<DatahubDataObj>();
                     break;
                 case "May":
-                    selectedMonth = rpGeneric2nd.FindAll<Month5>().ToList<DatahubDataObj>();
+                    selectedMonth = rpGeneric2nd.QueryOver<DatahubDataObj>()
+                                    .Where(r => r.Data_Month == 05)
+                                    .List<DatahubDataObj>();
                     break;
                 case "Jun":
-                    selectedMonth = rpGeneric2nd.FindAll<Month6>().ToList<DatahubDataObj>();
+                    selectedMonth = rpGeneric2nd.QueryOver<DatahubDataObj>()
+                                    .Where(r => r.Data_Month == 06)
+                                    .List<DatahubDataObj>();
                     break;
                 case "Jul":
-                    selectedMonth = rpGeneric2nd.FindAll<Month7>().ToList<DatahubDataObj>();
+                    selectedMonth = rpGeneric2nd.QueryOver<DatahubDataObj>()
+                                    .Where(r => r.Data_Month == 07)
+                                    .List<DatahubDataObj>();
                     break;
                 case "Aug":
-                    selectedMonth = rpGeneric2nd.FindAll<Month8>().ToList<DatahubDataObj>();
+                    selectedMonth = rpGeneric2nd.QueryOver<DatahubDataObj>()
+                                    .Where(r => r.Data_Month == 13)
+                                    .List<DatahubDataObj>();
                     break;
                 case "Sep":
-                    selectedMonth = rpGeneric2nd.FindAll<Month9>().ToList<DatahubDataObj>();
+                    selectedMonth = rpGeneric2nd.QueryOver<DatahubDataObj>()
+                                    .Where(r => r.Data_Month == 09)
+                                    .List<DatahubDataObj>();
                     break;
                 case "Oct":
-                    selectedMonth = rpGeneric2nd.FindAll<Month10>().ToList<DatahubDataObj>();
+                    selectedMonth = rpGeneric2nd.QueryOver<DatahubDataObj>()
+                                    .Where(r => r.Data_Month == 10)
+                                    .List<DatahubDataObj>();
                     break;
                 case "Nov":
-                    selectedMonth = rpGeneric2nd.FindAll<Month11>().ToList<DatahubDataObj>();
+                    selectedMonth = rpGeneric2nd.QueryOver<DatahubDataObj>()
+                                    .Where(r => r.Data_Month == 11)
+                                    .List<DatahubDataObj>();
                     break;
                 case "Dec":
-                    selectedMonth = rpGeneric2nd.FindAll<Month12>().ToList<DatahubDataObj>();
+                    selectedMonth = rpGeneric2nd.QueryOver<DatahubDataObj>()
+                                    .Where(r => r.Data_Month == 12)
+                                    .List<DatahubDataObj>();
                     break;
             }
             return selectedMonth;
@@ -859,14 +894,14 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
         public JsonResult getBarChartData()
         {
             ViewModelParams selectionParams = Session["ViewModelParams"] as ViewModelParams;
-            
+
             List<DatahubDataObj> allStudentData = Getlistpupil(this.rpGeneric2nd);
             DatahubData CityData = CreatDatahubdata(allStudentData, "100");
             MainChartData combinedData = new MainChartData();
             combinedData.totals = new
             {
                 name = "Aberdeen city",
-                participating = CityData.Participating(), 
+                participating = CityData.Participating(),
                 notParticipating = CityData.NotParticipating(),
                 unknown = CityData.Percentage(CityData.pupilsinUnknown)
             };
@@ -926,7 +961,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                     {
                         indexofmonths = 0;
                     }
-                    List<DatahubDataObj> comparison = MonthOnMonthOverview(rpGeneric2nd, monthname[indexofmonths]);
+                    IList<DatahubDataObj> comparison = MonthOnMonthOverview(rpGeneric2nd, monthname[indexofmonths]);
                     if (selectionParams.school != null && j > 0)
                     {
                         seriesName = schoolSelection.name;
@@ -938,7 +973,9 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                         seriesName = schoolSelection.name;
                         comparison = GetDatahubdatabyNeighbourhoods(this.rpGeneric2nd, schoolSelection.seedcode);
                     }
-                    allSeries.Add(CreatDatahubdata(comparison, monthname[indexofmonths]));
+
+                    
+                    allSeries.Add(CreatDatahubdata(comparison.CastTo<List<DatahubDataObj>>(), monthname[indexofmonths]));
                 }
                 HistogramSeriesData jsonOut = new HistogramSeriesData();
                 jsonOut.months = new List<string>();
@@ -948,10 +985,10 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 jsonOut.name = seriesName;
                 foreach (DatahubData month in allSeries)
                 {
-                    jsonOut.months.Add(month.datacode);
-                    jsonOut.participating.Add(Math.Round(month.Participating(), 2));
-                    jsonOut.notParticipating.Add(Math.Round(month.NotParticipating(), 2));
-                    jsonOut.unknown.Add(Math.Round(month.Percentage(month.pupilsinUnknown), 2));
+                    jsonOut.months.Add(month ==null? "":month.datacode);
+                    jsonOut.participating.Add(month == null ? -1.00 : Math.Round(month.Participating(), 2));
+                    jsonOut.notParticipating.Add(month == null ? -1.00 : Math.Round(month.NotParticipating(), 2));
+                    jsonOut.unknown.Add(month == null ? -1.00 : Math.Round(month.Percentage(month.pupilsinUnknown), 2));
                 }
                 allseriesoutput.Add(jsonOut);
             }

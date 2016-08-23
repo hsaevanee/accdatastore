@@ -66,6 +66,8 @@ namespace ACCDataStore.Entity.DatahubProfile
         public virtual string Transition_Plan_Source { get; set; }
         public virtual string Childs_Plan { get; set; }
         public virtual string Childs_Plan_Source { get; set; }
+        public virtual int Data_Month { get; set; }
+        public virtual int Data_Year { get; set; }
     }
     
 }

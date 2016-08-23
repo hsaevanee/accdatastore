@@ -72,10 +72,11 @@ var hGraphs = {
         for (var i = 0; i < hGraphs.cache.monthsTrends.length; i++) {
             for (var key in hGraphs.cache.monthsTrends[i]) {
                 if (key != 'months' && key != 'name') {
-                    series.push({ name: hGraphs.cache.monthsTrends[i].name + ' ' + key, data: hGraphs.cache.monthsTrends[i][key] });
+                    series.push({ name: hGraphs.cache.monthsTrends[i].name + ' ' + key, data: hGraphs.cache.monthsTrends[i][key].map(function (x) { if (x > -1) { return x; } }) });
                 }
             }
         }
+        console.log(series);
         if (series.length > 0) {
             hGraphs.drawTrends("#month-trend-histogram", series);
         }
@@ -90,7 +91,7 @@ var hGraphs = {
                 x: 0 //center
             },
             xAxis: {
-                categories: hGraphs.cache.monthsTrends[0].months
+                categories: hGraphs.cache.monthsTrends[0].months.map(function (x) { if (x != null && x != "") { return x; } })
             },
             yAxis: {
                 title: {
