@@ -167,7 +167,6 @@
     <Content Include="bower_components\angular\angular.js" />
     <Content Include="bower_components\angular\angular.min.js" />
     <Content Include="bower_components\angular\index.js" />
-    <Content Include="Config\GeneralSettings.xml" />
     <Content Include="Content\accdatastore\areas\DatahubProfile\views\datahub\datahub.css" />
     <Content Include="Content\accdatastore\areas\nationality\views\nationality\nationality.css" />
     <Content Include="Content\accdatastore\views\global.css" />
@@ -215,6 +214,9 @@
     <Content Include="Content\accdatastore\areas\nationality\views\indexnationality\index.css" />
     <Content Include="Content\accdatastore\views\index\index.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Config\GeneralSettings.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Global.asax" />
     <Content Include="app.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
