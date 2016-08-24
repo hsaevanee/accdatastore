@@ -12,8 +12,8 @@ namespace ACCDataStore.Entity.Mapping.MSAccess
     {
         public DatahubDataMap()
         {
-            Table("datahubdata_aberdeen");
-            Id(x => x.Id).Column("ID");
+            Table("Datahubdata_aberdeen");
+            Id(x => x.Id).Column("Id");
             Map(x => x.Cohort);
             Map(x => x.Forename);
             Map(x => x.Surname);

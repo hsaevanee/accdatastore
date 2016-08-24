@@ -29,6 +29,39 @@
 }
 
 <body>
+    <div>
+        <table>
+            <tr>
+                <th>Element</th>
+                <th>Server load time (ms)</th>
+                <th>AJAX load time (ms)</th>
+            </tr>
+            <tr>
+                <td>Page</td>
+                <td colspan="2">@Model.benchmarkResults</td>
+            </tr>
+            <tr>
+                <td>All schools barchart</td>
+                <td id="beckmark-all-school-bar-server"></td>
+                <td id="beckmark-all-school-bar-ajax"></td>
+            </tr>
+            <tr>
+                <td>Pie charts</td>
+                <td id="beckmark-pies-server"></td>
+                <td id="beckmark-pies-ajax"></td>
+            </tr>
+            <tr>
+                <td>Participation barchart</td>
+                <td id="beckmark-participation-bar-server"></td>
+                <td id="beckmark-participation-bar-ajax"></td>
+            </tr>
+            <tr>
+                <td>Trend graph</td>
+                <td id="beckmark-lines-server"></td>
+                <td id="beckmark-lines-ajax"></td>
+            </tr>
+        </table>
+    </div>
     <div class="container">
             <!-- Content Row -->
     <div class="row">
@@ -111,29 +144,7 @@
         <div class="col-md-12">
             <div class="panel panel-primary text-center">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Student Overview</h3>
-                </div>
-                <div class="panel-body">
-                    @if (Model.selectedschool != null)
-                    {
-                        <div id="datahub-index-specificpiechart" style="width: 50%; float: left"></div>
-                        <div id="datahub-index-mainpiechart" style="width: 50%; float: left"></div>
-                    }
-                    else
-                    {
-                        <div id="datahub-index-mainpiechart"></div>
-                    }
-                    <div id="datahub-index-bigolbarchart"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-primary text-center">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Student Overview</h3>
+                    <h3 class="panel-title">Aberdeen Schools Overview</h3>
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">
@@ -172,9 +183,32 @@
                                         </td>
                                     </tr>
                                 }
-                                </tbody>
+                            </tbody>
                         </table>
                     </div>
+                </div>
+                <div id="index-all-school-comparison-chart"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary text-center">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Student Overview</h3>
+                </div>
+                <div class="panel-body">
+                    @if (Model.selectedschool != null)
+                    {
+                        <div id="datahub-index-specificpiechart" style="width: 50%; float: left"></div>
+                        <div id="datahub-index-mainpiechart" style="width: 50%; float: left"></div>
+                    }
+                    else
+                    {
+                        <div id="datahub-index-mainpiechart"></div>
+                    }
+                    <div id="datahub-index-bigolbarchart"></div>
                 </div>
             </div>
         </div>

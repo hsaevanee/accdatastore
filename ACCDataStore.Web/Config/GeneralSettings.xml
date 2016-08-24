@@ -1,6 +1,10 @@
 ﻿<GeneralCounter>
   <SiteCounter>3</SiteCounter>
+<<<<<<< HEAD
   <HomepgCounter>2328</HomepgCounter>
+=======
+  <HomepgCounter>2336</HomepgCounter>
+>>>>>>> 2b56ce6c73961f4cd012c1cdddc225b5d0d9bb24
   <TeampgCounter>439</TeampgCounter>
   <SchProfilepgCounter>591</SchProfilepgCounter>
   <EthinicBGpgCounter>568</EthinicBGpgCounter>

@@ -327,6 +327,7 @@
     <Compile Include="Areas\Authorisation\ViewModels\IndexAuthorisation\IndexViewModel.cs" />
     <Compile Include="Areas\DatahubProfile\Controllers\IndexDatahubController.cs" />
     <Compile Include="Areas\DatahubProfile\DatahubProfileAreaRegistration.cs" />
+    <Compile Include="Areas\DatahubProfile\Models\BenchmarkAjax.cs" />
     <Compile Include="Areas\DatahubProfile\Models\HistogramSeriesData.cs" />
     <Compile Include="Areas\DatahubProfile\Models\MainChartData.cs" />
     <Compile Include="Areas\DatahubProfile\Models\MonthlyDataSeries.cs" />
@@ -521,6 +522,7 @@
     <Content Include="Areas\ScrumHub\Views\_ViewStart.cshtml" />
     <Content Include="Areas\ScrumHub\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\ScrumHub\Views\ScrumHub\ScrumIndex.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\ScotlandIndex.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\About.cshtml" />

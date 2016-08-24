@@ -19,7 +19,7 @@ $(document).ready(function () {
                         }
                     },
                     header: true,
-                    title: 'Summary '
+                    title: 'School breakdown for Aberdeen city'
                 }, 'print',
             ]
         }
