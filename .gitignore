@@ -156,4 +156,5 @@ $RECYCLE.BIN/
 .DS_Store
 
 # Ignoring GeneralSettings
+ACCDataStore.Web\Config\
 ACCDataStore.Web\Config\GeneralSettings.xml
