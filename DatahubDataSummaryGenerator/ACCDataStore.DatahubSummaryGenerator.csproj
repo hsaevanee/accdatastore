@@ -7,8 +7,8 @@
     <ProjectGuid>{3DD4FD8E-BE5F-4A6B-B201-AA7A55F14868}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DatahubDataSummaryGenerator</RootNamespace>
-    <AssemblyName>DatahubDataSummaryGenerator</AssemblyName>
+    <RootNamespace>ACCDataStore</RootNamespace>
+    <AssemblyName>DatahubSummaryGenerator</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -52,7 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="SummaryGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

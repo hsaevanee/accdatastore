@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DatahubDataSummaryGenerator
 {
-    class Program
+    class SummaryGenerator
     {
         private static ISessionFactory CreateSessionFactory()
         {
