@@ -69,52 +69,52 @@ namespace ACCDataStore.Entity.DatahubProfile
         public virtual string Childs_Plan_Source { get; set; }
 
     }
-    public class Month1 : DatahubDataObj
-    { 
-    }
+    //public class Month1 : DatahubDataObj
+    //{ 
+    //}
 
-    public class Month2 : DatahubDataObj
-    {
-    }
+    //public class Month2 : DatahubDataObj
+    //{
+    //}
 
-    public class Month3 : DatahubDataObj
-    {
-    }
+    //public class Month3 : DatahubDataObj
+    //{
+    //}
 
-    public class Month4 : DatahubDataObj
-    {
-    }
+    //public class Month4 : DatahubDataObj
+    //{
+    //}
 
-    public class Month5 : DatahubDataObj
-    {
-    }
+    //public class Month5 : DatahubDataObj
+    //{
+    //}
 
-    public class Month6 : DatahubDataObj
-    {
-    }
+    //public class Month6 : DatahubDataObj
+    //{
+    //}
 
-    public class Month7 : DatahubDataObj
-    {
-    }
+    //public class Month7 : DatahubDataObj
+    //{
+    //}
 
-    public class Month8 : DatahubDataObj
-    {
-    }
+    //public class Month8 : DatahubDataObj
+    //{
+    //}
 
-    public class Month9 : DatahubDataObj
-    {
-    }
+    //public class Month9 : DatahubDataObj
+    //{
+    //}
 
-    public class Month10 : DatahubDataObj
-    {
-    }
+    //public class Month10 : DatahubDataObj
+    //{
+    //}
 
-    public class Month11 : DatahubDataObj
-    {
-    }
+    //public class Month11 : DatahubDataObj
+    //{
+    //}
 
-    public class Month12 : DatahubDataObj
-    {
-    }
+    //public class Month12 : DatahubDataObj
+    //{
+    //}
 
 }

@@ -96,11 +96,12 @@ var hGraphs = {
         for (var i = 0; i < hGraphs.cache.monthsTrends.chart.length; i++) {
             for (var key in hGraphs.cache.monthsTrends.chart[i]) {
                 if (key != 'months' && key != 'name') {
-                    series.push({ name: hGraphs.cache.monthsTrends.chart[i].name + ' ' + key, data: hGraphs.cache.monthsTrends.chart[i][key] });
+                    series.push({ name: hGraphs.cache.monthsTrends.chart[i].name + ' ' + key, data: hGraphs.cache.monthsTrends.chart[i][key].filter(function (x) { if (x > -1) { return x; } }) });
                 }
             }
         }
         if (series.length > 0) {
+            console.log(series);
             hGraphs.drawTrends("#month-trend-histogram", series);
         }
         document.getElementById('beckmark-lines-ajax').innerHTML = Date.now() - hGraphs.benchmark.monthsTrends;
@@ -116,7 +117,7 @@ var hGraphs = {
                 x: 0 //center
             },
             xAxis: {
-                categories: hGraphs.cache.monthsTrends.chart[0].months
+                categories: hGraphs.cache.monthsTrends.chart[0].months.filter(function (x) { if (x != null && x != "") { return x; } })
             },
             yAxis: {
                 title: {

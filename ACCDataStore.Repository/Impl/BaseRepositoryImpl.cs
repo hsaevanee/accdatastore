@@ -73,5 +73,10 @@ namespace ACCDataStore.Repository.Impl
         {
             this.session.Delete(entity);
         }
+
+        public IQueryOver<T,T> QueryOver<T>() where T : class
+        {
+            return this.session.QueryOver<T>();
+        }
     }
 }

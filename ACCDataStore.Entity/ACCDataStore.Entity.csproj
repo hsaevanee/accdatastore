@@ -98,7 +98,6 @@
     <Compile Include="SchoolProfiles\Mapping\InCAS\InCAS2014Map.cs" />
     <Compile Include="SchoolProfiles\Mapping\InCAS\InCAS2013Map.cs" />
     <Compile Include="SchoolProfiles\Mapping\InCAS\InCAS2012Map.cs" />
-    <Compile Include="MonthOnMonthOverview\Mapping\Month1Map.cs" />
     <Compile Include="SchoolProfiles\Mapping\PIPS\PIPS2010Map.cs" />
     <Compile Include="SchoolProfiles\Mapping\PIPS\PIPS2011Map.cs" />
     <Compile Include="SchoolProfiles\Mapping\PIPS\PIPS2013Map.cs" />
@@ -167,7 +166,9 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="MonthOnMonthOverview\Mapping\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

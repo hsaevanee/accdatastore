@@ -128,7 +128,12 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
         protected List<DatahubDataObj> Getlistpupil(IGenericRepository2nd rpGeneric2nd)
         {
     
-                List<DatahubDataObj> listdata = this.rpGeneric2nd.FindAll<DatahubDataObj>().ToList() ;
+                //List<DatahubDataObj> listdata = this.rpGeneric2nd.FindAll<DatahubDataObj>().ToList() ;
+            IList<DatahubDataObj> listdata = this.rpGeneric2nd.QueryOver<DatahubDataObj>()
+                                            .Where(r => r.Data_Year == 2016 && r.Data_Month == 08)
+                                            .List<DatahubDataObj>();
+
+
                 List<DatahubDataObj> pupilsmoveoutScotland = listdata.Where(x => x.Current_Status.ToLower().Equals("moved outwith scotland")).ToList();
 
                 List<DatahubDataObj> listResult = listdata.Except(pupilsmoveoutScotland).ToList();
@@ -232,6 +237,12 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
         protected DatahubData CreatDatahubdata(List<DatahubDataObj> listdata,string datahubcode)
         {
             var datahubdata = new DatahubData();
+
+            if (listdata.Count() == 0) {
+                datahubdata = null;
+            }
+            else
+            { 
             datahubdata.datacode = datahubcode;
             datahubdata.allpupils = listdata.Count(x => !x.SDS_Client_Ref.Equals(""));
             datahubdata.allFemalepupils = listdata.Count(x => x.Gender.ToLower().Equals("female"));
@@ -271,7 +282,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             datahubdata.pupilsinUnavailableillHealth = listdata.Count(x => x.Current_Status.ToLower().Equals("unavailable - ill health"));
             datahubdata.pupilsinUnemployed = listdata.Count(x => x.Current_Status.ToLower().Equals("unemployed"));
             datahubdata.pupilsinUnknown = listdata.Count(x => x.Current_Status.ToLower().Equals("unknown"));
-
+            }
 
             return datahubdata;
         }
@@ -824,48 +835,13 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             return Json(combinedData, JsonRequestBehavior.AllowGet);
         }
 
-        protected List<DatahubDataObj> MonthOnMonthOverview(IGenericRepository2nd rpGeneric2nd, string type)
+        protected IList<DatahubDataObj> MonthOnMonthOverview(IGenericRepository2nd rpGeneric2nd, string type, int year)
         {
-            List<DatahubDataObj> selectedMonth = new List<DatahubDataObj>();
-            switch (type)
-            {
-                case "Jan":
-                    selectedMonth = rpGeneric2nd.FindAll<Month1>().ToList<DatahubDataObj>();
-                    break;
-                case "Feb":
-                    selectedMonth = rpGeneric2nd.FindAll<Month2>().ToList<DatahubDataObj>();
-                    break;
-                case "Mar":
-                    selectedMonth = rpGeneric2nd.FindAll<Month3>().ToList<DatahubDataObj>();
-                    break;
-                case "Apr":
-                    selectedMonth = rpGeneric2nd.FindAll<Month4>().ToList<DatahubDataObj>();
-                    break;
-                case "May":
-                    selectedMonth = rpGeneric2nd.FindAll<Month5>().ToList<DatahubDataObj>();
-                    break;
-                case "Jun":
-                    selectedMonth = rpGeneric2nd.FindAll<Month6>().ToList<DatahubDataObj>();
-                    break;
-                case "Jul":
-                    selectedMonth = rpGeneric2nd.FindAll<Month7>().ToList<DatahubDataObj>();
-                    break;
-                case "Aug":
-                    selectedMonth = rpGeneric2nd.FindAll<Month8>().ToList<DatahubDataObj>();
-                    break;
-                case "Sep":
-                    selectedMonth = rpGeneric2nd.FindAll<Month9>().ToList<DatahubDataObj>();
-                    break;
-                case "Oct":
-                    selectedMonth = rpGeneric2nd.FindAll<Month10>().ToList<DatahubDataObj>();
-                    break;
-                case "Nov":
-                    selectedMonth = rpGeneric2nd.FindAll<Month11>().ToList<DatahubDataObj>();
-                    break;
-                case "Dec":
-                    selectedMonth = rpGeneric2nd.FindAll<Month12>().ToList<DatahubDataObj>();
-                    break;
-            }
+            string[] monthname = new string[12] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+            int month = Array.IndexOf(monthname, type) + 1;
+            IList<DatahubDataObj> selectedMonth = rpGeneric2nd.QueryOver<DatahubDataObj>()
+                                    .Where(r => r.Data_Month == month && r.Data_Year == year)
+                                    .List<DatahubDataObj>();
             return selectedMonth;
         }
 
@@ -938,14 +914,16 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 string seriesName = "Aberdeen city";
                 string[] monthname = new string[12] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
                 int indexofmonths = Array.IndexOf(monthname, DateTime.Now.ToString("MMM"));
+                int year = int.Parse(DateTime.Now.ToString("yyyy")) - 1;
                 for (int i = 0; i < 12; i++)
                 {
                     indexofmonths++;
                     if (indexofmonths > 11)
                     {
                         indexofmonths = 0;
+                        year++;
                     }
-                    List<DatahubDataObj> comparison = MonthOnMonthOverview(rpGeneric2nd, monthname[indexofmonths]);
+                    IList<DatahubDataObj> comparison = MonthOnMonthOverview(rpGeneric2nd, monthname[indexofmonths], year);
                     if (selectionParams.school != null && j > 0)
                     {
                         seriesName = schoolSelection.name;
@@ -957,7 +935,9 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                         seriesName = schoolSelection.name;
                         comparison = GetDatahubdatabyNeighbourhoods(this.rpGeneric2nd, schoolSelection.seedcode);
                     }
-                    allSeries.Add(CreatDatahubdata(comparison, monthname[indexofmonths]));
+
+                    
+                    allSeries.Add(CreatDatahubdata(comparison.CastTo<List<DatahubDataObj>>(), monthname[indexofmonths]));
                 }
                 HistogramSeriesData jsonOut = new HistogramSeriesData();
                 jsonOut.months = new List<string>();
@@ -967,10 +947,10 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 jsonOut.name = seriesName;
                 foreach (DatahubData month in allSeries)
                 {
-                    jsonOut.months.Add(month.datacode);
-                    jsonOut.participating.Add(Math.Round(month.Participating(), 2));
-                    jsonOut.notParticipating.Add(Math.Round(month.NotParticipating(), 2));
-                    jsonOut.unknown.Add(Math.Round(month.Percentage(month.pupilsinUnknown), 2));
+                    jsonOut.months.Add(month ==null? "":month.datacode);
+                    jsonOut.participating.Add(month == null ? -1.00 : Math.Round(month.Participating(), 2));
+                    jsonOut.notParticipating.Add(month == null ? -1.00 : Math.Round(month.NotParticipating(), 2));
+                    jsonOut.unknown.Add(month == null ? -1.00 : Math.Round(month.Percentage(month.pupilsinUnknown), 2));
                 }
                 allseriesoutput.Add(jsonOut);
             }

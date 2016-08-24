@@ -12,7 +12,7 @@ namespace ACCDataStore.Entity.Mapping.MSAccess
     {
         public DatahubDataMap()
         {
-            Table("Datahubdata");
+            Table("Datahubdata_aberdeen");
             Id(x => x.Id).Column("Id");
             Map(x => x.Cohort);
             Map(x => x.Forename);
@@ -71,6 +71,8 @@ namespace ACCDataStore.Entity.Mapping.MSAccess
             Map(x => x.Transition_Plan_Source);
             Map(x => x.Childs_Plan);
             Map(x => x.Childs_Plan_Source);
+            Map(x => x.Data_Month);
+            Map(x => x.Data_Year);
         }
     }
 }

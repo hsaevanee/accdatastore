@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ACCDataStore.Entity.DatahubProfile
 {
-    class SummaryData : BaseEntity
+    public class SummaryData : BaseEntity
     {
         public virtual int id { get; set; }
         public virtual string name { get; set; }
