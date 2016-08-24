@@ -154,6 +154,12 @@
     <Compile Include="SchoolProfile\StudentSIMD.cs" />
     <Compile Include="SchoolProfile\WiderAchievementObj.cs" />
     <Compile Include="SchoolRollForecast\SchoolRollForecastObj.cs" />
+    <Compile Include="ScotlandMapData\Entities\CouncilObj.cs" />
+    <Compile Include="ScotlandMapData\Entities\DataZoneObj.cs" />
+    <Compile Include="ScotlandMapData\Entities\IntermediateZoneObj.cs" />
+    <Compile Include="ScotlandMapData\Mappings\CouncilMap.cs" />
+    <Compile Include="ScotlandMapData\Mappings\DataZoneMap.cs" />
+    <Compile Include="ScotlandMapData\Mappings\IntermediateZoneMap.cs" />
     <Compile Include="ScrumHub\ScrumCourseMap.cs" />
     <Compile Include="ScrumHub\ScrumCourseModel.cs" />
     <Compile Include="ScrumHub\ScrumHubMap.cs" />
