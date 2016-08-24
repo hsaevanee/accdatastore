@@ -74,7 +74,7 @@ namespace ACCDataStore.Entity.DatahubProfile
         public virtual int voluntaryWorkMale { get; set; }
         public virtual int voluntaryWorkFemale { get; set; }
         public virtual int voluntaryWorkUnspecified { get; set; }
-        public virtual int AvgWeek { get; set; }
+        public virtual double AvgWeek { get; set; }
         public virtual int custodyMale { get; set; }
         public virtual int custodyFemale { get; set; }
         public virtual int custodyUnspecified { get; set; }
