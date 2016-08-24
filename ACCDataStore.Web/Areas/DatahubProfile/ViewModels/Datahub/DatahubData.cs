@@ -42,7 +42,9 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub
 
         public double Percentage(int number)
         {
-            return (double)(number * 100) / allpupils;
+            double result = (double)(number * 100) / allpupils;
+            return double.IsNaN(result) ? 0.0 : result;
+             
         }
 
         public object FormatNumber(int number)
