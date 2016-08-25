@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACCDataStore
+namespace ACCDataStore.Entity.DatahubProfile
 {
-    public class AllSchoolMap : ClassMap<AllCitySchools>
+    public class AllSchoolsMap : ClassMap<AllSchools>
     {
-        public AllSchoolMap()
+        public AllSchoolsMap()
         {
             Table("datahubdata_schools");
             Id(x => x.id).Column("id");

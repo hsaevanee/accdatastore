@@ -6,16 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACCDataStore.Entity.Mapping.MySQL
+namespace ACCDataStore.Entity.DatahubProfile
 {
     public class AberdeenSummaryMap : ClassMap<AberdeenSummary>
     {
         public AberdeenSummaryMap()
         {
             Table("datahubdata_summary_aberdeen");
-            Id(x => x.id).Column("id");
+            Id(x => x.id).GeneratedBy.Increment();
             Map(x => x.name);
             Map(x => x.dataCode);
+            Map(x => x.allMale);
             Map(x => x.allFemale);
             Map(x => x.allUnspecified);
             Map(x => x.all15Male);
@@ -39,6 +40,9 @@ namespace ACCDataStore.Entity.Mapping.MySQL
             Map(x => x.schoolInTransitionMale);
             Map(x => x.schoolInTransitionFemale);
             Map(x => x.schoolInTransitionUnspecified);
+            Map(x => x.movedOutScotlandMale);
+            Map(x => x.movedOutScotlandFemale);
+            Map(x => x.movedOutScotlandUnspecified);
             Map(x => x.activityAgreementMale);
             Map(x => x.activityAgreementFemale);
             Map(x => x.activityAgreementUnspecified);

@@ -35,6 +35,9 @@ namespace ACCDataStore.Entity.DatahubProfile
         public virtual int schoolInTransitionMale { get; set; }
         public virtual int schoolInTransitionFemale { get; set; }
         public virtual int schoolInTransitionUnspecified { get; set; }
+        public virtual int movedOutScotlandMale { get; set; }
+        public virtual int movedOutScotlandFemale { get; set; }
+        public virtual int movedOutScotlandUnspecified { get; set; }
         public virtual int activityAgreementMale { get; set; }
         public virtual int activityAgreementFemale { get; set; }
         public virtual int activityAgreementUnspecified { get; set; }
@@ -90,7 +93,7 @@ namespace ACCDataStore.Entity.DatahubProfile
         public virtual int unknownMale { get; set; }
         public virtual int unknownFemale { get; set; }
         public virtual int unknownUnspecified { get; set; }
-        public virtual int type { get; set; }
+        public virtual string type { get; set; }
         public virtual int dataMonth { get; set; }
         public virtual int dataYear { get; set; }
     }

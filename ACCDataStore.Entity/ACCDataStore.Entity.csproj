@@ -59,8 +59,10 @@
   <ItemGroup>
     <Compile Include="BaseEntity.cs" />
     <Compile Include="ChartData.cs" />
-    <Compile Include="DatahubProfile\SummaryData.cs" />
-    <Compile Include="Mapping\MySQL\SummaryDataMap.cs" />
+    <Compile Include="DatahubProfile\Entities\AllSchools.cs" />
+    <Compile Include="DatahubProfile\Entities\SummaryData.cs" />
+    <Compile Include="DatahubProfile\Mappings\AllSchoolsMap.cs" />
+    <Compile Include="DatahubProfile\Mappings\SummaryDataMap.cs" />
     <Compile Include="MonthOnMonthOverview\Models\MonthOnMonthObj.cs" />
     <Compile Include="Mapping\MSAccess\SchoolProfiles\EnglishLevelMap.cs" />
     <Compile Include="Mapping\MSAccess\SchoolProfiles\NationalIdentityMap.cs" />
@@ -70,8 +72,8 @@
     <Compile Include="SchoolProfiles\EnglishLevel.cs" />
     <Compile Include="SchoolProfiles\EthnicBackground.cs" />
     <Compile Include="CriteriaParameters.cs" />
-    <Compile Include="DatahubProfile\NeighbourhoodObj.cs" />
-    <Compile Include="DatahubProfile\DatahubDataObj.cs" />
+    <Compile Include="DatahubProfile\Entities\NeighbourhoodObj.cs" />
+    <Compile Include="DatahubProfile\Entities\DatahubDataObj.cs" />
     <Compile Include="CheckModel.cs" />
     <Compile Include="Gender.cs" />
     <Compile Include="GeneralCounter.cs" />
@@ -80,8 +82,8 @@
     <Compile Include="Mapping\MSAccess\Age05sInfoMap.cs" />
     <Compile Include="Mapping\MSAccess\SchoolProfiles\EthnicBackgroundMap.cs" />
     <Compile Include="Mapping\MSAccess\LuEnglishLevelMap.cs" />
-    <Compile Include="Mapping\MSAccess\NeighbourhoodMap.cs" />
-    <Compile Include="Mapping\MSAccess\DatahubDataMap.cs" />
+    <Compile Include="DatahubProfile\Mappings\NeighbourhoodMap.cs" />
+    <Compile Include="DatahubProfile\Mappings\DatahubDataMap.cs" />
     <Compile Include="Mapping\MSAccess\SchoolProfiles\CostcenterMap.cs" />
     <Compile Include="Mapping\MSAccess\SchoolProfiles\PupilMap.cs" />
     <Compile Include="Mapping\MSAccess\SchPrimarySchoolMap.cs" />

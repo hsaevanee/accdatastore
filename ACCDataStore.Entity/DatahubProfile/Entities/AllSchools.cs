@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACCDataStore
+namespace ACCDataStore.Entity.DatahubProfile
 {
-    public class AllCitySchools
+    public class AllSchools : BaseEntity
     {
         public virtual int id { get; set; }
         public virtual string seedCode { get; set; }
