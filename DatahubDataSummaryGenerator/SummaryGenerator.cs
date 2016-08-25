@@ -443,12 +443,6 @@ namespace DatahubDataSummaryGenerator
             //IList<DatahubDataObj> result2 = getSubsetStudentsByZone(session, studentDataAllPeriods, "data zone", "S01000011", 08, 2016);
         }
 
-        private class Period
-        {
-            public int month { get; set; }
-            public int year { get; set; }
-
-        }
         private static bool checkIfRefferencesAreConsistent(ISession session)
         {
             //Work in progress (essensially useless class)
