@@ -8,6 +8,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,19 +32,16 @@ namespace DatahubDataSummaryGenerator
 
         private static void SaveRowForEntity(ISession session, object entity)
         {
-            using (ITransaction transaction = session.BeginTransaction())
+           
+            try
             {
-                try
-                {
-                    session.Save(entity);
-                    transaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                    transaction.Rollback();
-                    throw;
-                }
+                session.Save(entity);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                //transaction.Rollback();
+                throw;
             }
         }
 
@@ -182,11 +181,58 @@ namespace DatahubDataSummaryGenerator
 
         static void Main(string[] args)
         {
+            FileStream ostrm;
+            StreamWriter writer;
+            TextWriter oldOut = Console.Out;
+            try
+            {
+                ostrm = new FileStream("./Output.txt", FileMode.OpenOrCreate, FileAccess.Write);
+                writer = new StreamWriter(ostrm);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Cannot open Output.txt for writing");
+                Console.WriteLine(e.Message);
+                return;
+            }
+            Console.SetOut(writer);
+
             var sessionFactory = CreateSessionFactory();
             using (ISession session = sessionFactory.OpenSession())
             {
-                using (session.BeginTransaction())
+                using (ITransaction transaction = session.BeginTransaction())
                 {
+                    Console.WriteLine("Starting initial population...");
+                    Stopwatch stopwatch_g = new Stopwatch();
+                    
+                    // Populate session
+                    initialPopulation(session);
+
+                    Stopwatch stopwatch_t = new Stopwatch();
+                    Console.WriteLine("Starting transaction...");
+                    stopwatch_t.Start();
+                    
+                    // Begin transaction
+                    try
+                    {
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.ToString());
+                        transaction.Rollback();
+                        throw;
+                    }
+                    stopwatch_t.Stop();
+                    Console.WriteLine("Transaction: Completed");
+                    Console.WriteLine("Time elapsed: {0}", stopwatch_t.Elapsed);
+
+                    stopwatch_g.Stop();
+                    Console.WriteLine("Initial population: Finalized");
+                    Console.WriteLine("Total time elapsed: {0}", stopwatch_g.Elapsed);
+
+                    session.Dispose();
+
                     //var str = session.Get<DataZoneObj>("S01000001").Reference_Parent;
                     //// insert magic code
                     //IList<DatahubDataObj> datahubStudentData = session.QueryOver<DatahubDataObj>().Where(x => x.Data_Month == 08 && x.Data_Year == 2016 && x.Current_Status != "Moved Outwith Scotland").List<DatahubDataObj>();
@@ -198,9 +244,9 @@ namespace DatahubDataSummaryGenerator
                     //}
                     //Console.WriteLine();
 
-                    IList<DatahubDataObj> datahubStudentDataAllPeriods = session.QueryOver<DatahubDataObj>().List<DatahubDataObj>();
-                    IList<DatahubDataObj> result = getSubsetStudentsByZone(session, datahubStudentDataAllPeriods, "intermediate zone","S02000024", 08, 2016);
-                    IList<DatahubDataObj> result2 = getSubsetStudentsByZone(session, datahubStudentDataAllPeriods, "data zone", "S01000011", 08, 2016);
+                    //IList<DatahubDataObj> datahubStudentDataAllPeriods = session.QueryOver<DatahubDataObj>().List<DatahubDataObj>();
+                    //IList<DatahubDataObj> result = getSubsetStudentsByZone(session, datahubStudentDataAllPeriods, "intermediate zone","S02000024", 08, 2016);
+                    //IList<DatahubDataObj> result2 = getSubsetStudentsByZone(session, datahubStudentDataAllPeriods, "data zone", "S01000011", 08, 2016);
 
                     //CreateOneMonthEntry(session, datahubStudentDataAllPeriods, 08, 2016);
                     //var newssss = session.CreateSQLQuery("SELECT DISTINCT `accdatastore`.`datahubdata_aberdeen`.`Data_Month`, `accdatastore`.`datahubdata_aberdeen`.`Data_Year` from `accdatastore`.`datahubdata_aberdeen` WHERE not(Current_Status = 'Moved Outwith Scotland')");
@@ -214,10 +260,12 @@ namespace DatahubDataSummaryGenerator
                     //{
                     //    monthYearData.Add(new monthYear { month = item, year = yearList[monthList.IndexOf(item)] });
                     //}
-                    Console.WriteLine();
                 }
             }
-            Console.WriteLine("Operation completed.");
+            Console.SetOut(oldOut);
+            writer.Close();
+            ostrm.Close();
+            Console.WriteLine("Done");
             Console.ReadKey();
         }
 
@@ -235,10 +283,10 @@ namespace DatahubDataSummaryGenerator
 
         private static IList<DatahubDataObj> getSubsetStudentsByZone (ISession session, IList<DatahubDataObj> allStudents, string zonetype, string zonecode, int month, int year)
         {
-            // This method retrieves a subset of Datahub Student Data by their corresponding neighbourhood and a specific period in time (month, year)
-            // We first fetch all the post codes that correspond to that neighbourhood
+            // This method retrieves a subset of Datahub Student Data by their corresponding neighbourhood or data zone and a specific period of time
+            // We first fetch all the post codes that correspond to that neighbourhood or data zone
             // Then we filther the Datahub Student Data list by the specific period (month, year)
-            // Finally we join the two lists and return a list of Datahub Student Data
+            // Finally we join the two lists and return a list of Datahub Student Data matching the criteria
 
             IList<NeighbourhoodObj> postCodes = new Collection<NeighbourhoodObj>();
             IList<DatahubDataObj> subsetStudents = new Collection<DatahubDataObj>();
@@ -273,27 +321,6 @@ namespace DatahubDataSummaryGenerator
             return subsetStudents;
         }
 
-        //private static IList<DatahubDataObj> getSubsetStudents(ISession session, IList<DatahubDataObj> allStudents, string subsetType, int month, int year)
-        //{
-        //    IList<DatahubDataObj> subsetStudents = new Collection<DatahubDataObj>();
-
-        //    switch (subsetType.ToLower())
-        //    {
-        //        case "council":
-        //            subsetStudents = allStudents.Where(x => x.Data_Month == month && x.Data_Year == year).ToList();
-        //            break;
-        //        case "intermediate zone":
-        //            break;
-        //        case "data zone":
-        //            break;
-        //        case "school":
-        //            subsetStudents = allStudents.Where(x => x.Data_Month == month && x.Data_Year == year && x.SEED_Code!=null && x.SEED_Code).ToList();
-        //            break;
-        //    }
-
-        //    return subsetStudents;
-        //}
-
         protected static void CreateOneMonthEntry(ISession session, IList<DatahubDataObj> allStudents, string type, int month, int year)
         {
             IList<DatahubDataObj> subsetStudents = new Collection<DatahubDataObj>();
@@ -324,13 +351,154 @@ namespace DatahubDataSummaryGenerator
             //    Console.WriteLine(property.Name + " : " + property.GetValue(SummaryEntries[0]).ToString());
             //}
         }
-    }
 
-    public class monthYear
-    {
-        public int month { get; set; }
-        public int year { get; set; }
-    }
+        private static void initialPopulation(ISession session)
+        {
+            
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
 
+            Console.WriteLine("Preparing data for all periods: Started");
+
+            IList<DatahubDataObj> studentDataAllPeriods = session.QueryOver<DatahubDataObj>().List<DatahubDataObj>();
+            var monthYearList = studentDataAllPeriods.Select(x => new { x.Data_Month, x.Data_Year }).ToList().Distinct().ToList();
+            IList dataZonesList = session.QueryOver<DataZoneObj>().Where(x => x.Reference_Council == "S12000033").List().Select(x => x.Reference).ToList();
+            IList<IntermediateZoneObj> intermediateZonesList = session.QueryOver<IntermediateZoneObj>().Where(x => x.Reference_Council == "S12000033").List();
+            IList<AllSchools> allSchoolsList = session.QueryOver<AllSchools>().List<AllSchools>();
+          
+            stopwatch.Stop();
+            Console.WriteLine("Preparing data for all periods: Completed");
+            Console.WriteLine("Time elapsed: {0}", stopwatch.Elapsed);
+            stopwatch.Reset();
+
+
+            foreach (var period in monthYearList)
+            {
+                stopwatch.Start();
+                Console.WriteLine("");
+                Console.WriteLine("Starting routine for {0}/{1}", period.Data_Month, period.Data_Year);
+                int currMonth = period.Data_Month;
+                int currYear = period.Data_Year;
+
+                // Calculate council summary
+
+                Console.WriteLine("Generating summary data and saving to session for Aberdeen City: Started");
+                var allCouncilStudentsThisPeriod = getSubsetStudentsByCouncil(studentDataAllPeriods,currMonth,currYear);
+                var councilSummary = CalculateSummaryData(allCouncilStudentsThisPeriod, "S12000033", "Aberdeen City", "Council", currMonth, currYear);
+                session.Save(councilSummary);
+
+                stopwatch.Stop();
+                Console.WriteLine("Generating summary data and saving to session for Aberdeen City: Completed");
+                Console.WriteLine("Time elapsed: {0}", stopwatch.Elapsed);
+                stopwatch.Reset();
+
+                // Calculate intermediate zones summary
+                stopwatch.Start();
+                Console.WriteLine("Generating summary data and saving to session for {0} intermediate zones: Started", intermediateZonesList.Count());
+                foreach (IntermediateZoneObj intZone in intermediateZonesList)
+                {
+                    var allIntermediateZoneStudentsThisPeriod = getSubsetStudentsByZone(session, studentDataAllPeriods, "intermediate zone", intZone.Reference, currMonth, currYear);
+                    AberdeenSummary currSummary = CalculateSummaryData(allIntermediateZoneStudentsThisPeriod, intZone.Reference, intZone.Name,"Intermediate Zone", currMonth, currYear);
+                    session.Save(currSummary);
+                }
+
+                stopwatch.Stop();
+                Console.WriteLine("Generating summary data and saving to session for intermediate zones: Completed");
+                Console.WriteLine("Time elapsed: {0}", stopwatch.Elapsed);
+                stopwatch.Reset();
+
+                // Calculate data zones summary
+                stopwatch.Start();
+                Console.WriteLine("Generating summary data and saving to session for {0} data zones: Started", dataZonesList.Count);
+                foreach (string zonecode in dataZonesList)
+                {
+                    var allIntermediateZoneStudentsThisPeriod = getSubsetStudentsByZone(session, studentDataAllPeriods, "intermediate zone", zonecode, currMonth, currYear);
+                    AberdeenSummary currSummary = CalculateSummaryData(allIntermediateZoneStudentsThisPeriod, zonecode, zonecode, "Data Zone", currMonth, currYear);
+                    session.Save(currSummary);
+                }
+
+                stopwatch.Stop();
+                Console.WriteLine("Generating summary data and saving to session for data zones: Completed");
+                Console.WriteLine("Time elapsed: {0}", stopwatch.Elapsed);
+                stopwatch.Reset();
+
+                // Calculate all schools summary
+                stopwatch.Start();
+                Console.WriteLine("Generating summary data and saving to session for {0} schools: Started", allSchoolsList.Count());
+                foreach (AllSchools school in allSchoolsList)
+                {
+                    var allSchoolStudentsThisPeriod = getSubsetStudentsBySchool(studentDataAllPeriods, school.seedCode, currMonth, currYear);
+                    AberdeenSummary currSummary = CalculateSummaryData(allSchoolStudentsThisPeriod, school.seedCode, school.name, "School", currMonth, currYear);
+                    session.Save(currSummary);
+                }
+                stopwatch.Stop();
+                Console.WriteLine("Generating summary data and saving to session for schools: Completed");
+                Console.WriteLine("Time elapsed: {0}", stopwatch.Elapsed);
+                stopwatch.Reset();
+
+            }
+            
+            //Test:
+            //IList<DatahubDataObj> result = getSubsetStudentsByZone(session, studentDataAllPeriods, "intermediate zone", "S02000024", 08, 2016);
+            //IList<DatahubDataObj> result2 = getSubsetStudentsByZone(session, studentDataAllPeriods, "data zone", "S01000011", 08, 2016);
+        }
+
+        private class Period
+        {
+            public int month { get; set; }
+            public int year { get; set; }
+
+        }
+        private static bool checkIfRefferencesAreConsistent(ISession session)
+        {
+            //Work in progress (essensially useless class)
+            //Coming from neighbourhood table
+            IList<AllSchools> allSchoolsList = session.QueryOver<AllSchools>().List<AllSchools>();
+            IList<NeighbourhoodObj> allPostCodes = session.QueryOver<NeighbourhoodObj>().List<NeighbourhoodObj>();
+
+            IEnumerable<string> intermediateZonesList = allPostCodes.Select(x => x.IntDataZone ).Distinct().ToList();
+            IEnumerable<string> dataZonesList = allPostCodes.Select(x => x.DataZone ).Distinct().ToList();
+
+            //Coming from map_data_table
+            IList<DataZoneObj> dzList = session.QueryOver<DataZoneObj>().Where(x => x.Reference_Council == "S12000033").List<DataZoneObj>();
+            IList<IntermediateZoneObj> izList = session.QueryOver<IntermediateZoneObj>().Where(x => x.Reference_Council == "S12000033").List<IntermediateZoneObj>();
+
+            IEnumerable<string> izL = izList.Select(x => x.Reference).ToList();
+            IEnumerable<string> dzL = dzList.Select(x => x.Reference).ToList();
+
+            var isEqual = ScrambledEquals<string>(intermediateZonesList, izL);
+            var isEqua2l = ScrambledEquals<string>(dataZonesList, dzL);
+
+            return (isEqua2l && isEqual);
+        }
+
+        public static bool ScrambledEquals<T>(IEnumerable<T> list1, IEnumerable<T> list2)
+        {
+            var cnt = new Dictionary<T, int>();
+            foreach (T s in list1)
+            {
+                if (cnt.ContainsKey(s))
+                {
+                    cnt[s]++;
+                }
+                else
+                {
+                    cnt.Add(s, 1);
+                }
+            }
+            foreach (T s in list2)
+            {
+                if (cnt.ContainsKey(s))
+                {
+                    cnt[s]--;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return cnt.Values.All(c => c == 0);
+        }
+    }
     
 }
