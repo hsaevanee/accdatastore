@@ -164,11 +164,11 @@
                         if (council != null)
                         {
                             <li>
-                                <a href="@Url.Action("MapData", "IndexDatahub", new { Area = "DatahubProfile" }, null)">@council.name</a>
+                                <a href="@Url.Action("Index", "IndexDatahub", new { Area = "DatahubProfile" }, null)">@council.name</a>
                             </li>
-                            <li>
-                                    <a href="@Url.Action("MapData", "IndexDatahub", new { Area = "DatahubProfile" }, null)">Interactive Map</a>
-                                </li>
+                            @*<li>
+                                    <a href="@Url.Action("IndexCoucil", "IndexDatahub", new { Area = "DatahubProfile", sCouncilname = @council.name, sCouncilcode = @council.seedcode }, null)">Work in Progress</a>
+                                </li>*@
                                 <li>
                                     <a href="@Url.Action("HeatMapData", "IndexDatahub", new { Area = "DatahubProfile", sSchoolName = "" }, null)">Interactive HeatMap</a>
                                 </li>

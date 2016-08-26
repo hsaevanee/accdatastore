@@ -53,15 +53,21 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             return View("ScotlandIndex", vmDatahubViewModel);
         }
 
-        public ActionResult IndexCoucil(string selectedcouncil)
+        public ActionResult IndexCoucil(string sCouncilname, string sCouncilcode)
         {
             //var eGeneralSettings = TS.Core.Helper.ConvertHelper.XmlFile2Object(HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"), typeof(GeneralCounter)) as GeneralCounter;
             //eGeneralSettings.CurriculumpgCounter++;
             //TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
             var vmDatahubViewModel = new DatahubViewModel();
-            //MonthOnMonthOverview(rpGeneric2nd);
+            IList<School> allCouncils = GetListCouncilname();
+            //MonthOnMonthOverview(rpGeneric2nd);            
+            vmDatahubViewModel.selectedcouncil = allCouncils.Where(x => x.seedcode.Equals(sCouncilcode)).FirstOrDefault();
+            Session["Council"] = vmDatahubViewModel.selectedcouncil;
+            vmDatahubViewModel.ListSchoolNameData = GetListSchoolname();
+            vmDatahubViewModel.ListNeighbourhoodsName = GetListNeighbourhoodsname(rpGeneric2nd);
 
-            return View("Home", vmDatahubViewModel);
+
+            return View("index2", vmDatahubViewModel);
         }
      
 
@@ -108,9 +114,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             Session["ViewModelParams"] = pageViewModelParams;
             timer.Stop();
             viewModel.benchmarkResults = timer.ElapsedMilliseconds;
-            var sCouncilcode = Request["selectedcouncil"];
-            viewModel.selectedcouncil = allCouncils.Where(x => x.seedcode.Equals(sCouncilcode)).FirstOrDefault();
-            Session["Council"] = viewModel.selectedcouncil;
+            Session["Council"] = new School("S12000033", "Aberdeen City");
             return View("index2", viewModel);
         }
 
