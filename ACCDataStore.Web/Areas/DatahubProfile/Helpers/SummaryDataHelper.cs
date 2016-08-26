@@ -19,7 +19,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Helpers
 
         private IGenericRepository2nd rpGeneric2nd;
 
-        public SummaryDataViewModel GetSummaryDataForCouncil(string code, int month, int year)
+        public SummaryDataViewModel GetSummaryDataForCouncil<T>(string code, int month, int year) where T : SummaryData
         {
             //SummaryData result = new SummaryData();
             //switch (councilName.ToLower())
@@ -32,36 +32,36 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Helpers
             //        break;
             //}
 
-            var result = rpGeneric2nd.QueryOver<AberdeenSummary>().Where(x => x.dataCode == code && x.dataMonth == month && x.dataYear == year).SingleOrDefault();
+            var result = rpGeneric2nd.QueryOver<T>().Where(x => x.dataCode == code && x.dataMonth == month && x.dataYear == year).SingleOrDefault();
             return new SummaryDataViewModel(result);
         }
 
-        public IList<SummaryDataViewModel> GetSummaryDataForAllDataZones(int month, int year)
+        public IList<SummaryDataViewModel> GetSummaryDataForAllDataZones<T>(int month, int year) where T : SummaryData
         {
             var result = rpGeneric2nd.QueryOver<AberdeenSummary>().Where(x => x.type == "Data Zone" && x.dataMonth == month && x.dataYear == year).List<SummaryData>();
             return _CreateListOfViewModels(result);
         }
 
-        public SummaryDataViewModel GetSummaryDataForSingleDataZone(string code, int month, int year)
+        public SummaryDataViewModel GetSummaryDataForSingleDataZone<T>(string code, int month, int year) where T : SummaryData
         {
             var result = rpGeneric2nd.QueryOver<AberdeenSummary>().Where(x => x.type == "Data Zone" && x.dataCode == code && x.dataMonth == month && x.dataYear == year).SingleOrDefault();
             return new SummaryDataViewModel(result);
         }
 
-        public SummaryDataViewModel GetSummaryDataForSingleIntermediateZone(string code, int month, int year)
+        public SummaryDataViewModel GetSummaryDataForSingleIntermediateZone<T>(string code, int month, int year) where T : SummaryData
         {
             var result = rpGeneric2nd.QueryOver<AberdeenSummary>().Where(x => x.type == "Intermediate Zone" && x.dataCode == code && x.dataMonth == month && x.dataYear == year).SingleOrDefault();
             return new SummaryDataViewModel(result);
         }
 
-        public IList<SummaryDataViewModel> GetSummaryDataForAllIntermediateZones(int month, int year)
+        public IList<SummaryDataViewModel> GetSummaryDataForAllIntermediateZones<T>(int month, int year) where T : SummaryData
         {
             var result = rpGeneric2nd.QueryOver<AberdeenSummary>().Where(x => x.type == "Intermediate Zone" && x.dataMonth == month && x.dataYear == year).List<SummaryData>();
 
             return _CreateListOfViewModels(result);
         }
 
-        public IList<SummaryDataViewModel> GetSummaryDataForAllSchools(string councilCode, int month, int year)
+        public IList<SummaryDataViewModel> GetSummaryDataForAllSchools<T>(string councilCode, int month, int year) where T : SummaryData
         {
             IList<SummaryData> result = new Collection<SummaryData>();
             IList<AllSchools> allSchoolsForCouncil = this.rpGeneric2nd.QueryOver<AllSchools>().Where(x => x.referenceCouncil == councilCode).List();
@@ -81,30 +81,40 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Helpers
             return _CreateListOfViewModels(result);
         }
 
-        public SummaryDataViewModel GetSummaryDataForSingleSchool(string seedCode, int month, int year ) 
+        public SummaryDataViewModel GetSummaryDataForSingleSchool<T>(string seedCode, int month, int year ) where T : SummaryData
         { 
-            SummaryData currentSummary = (SummaryData) this.rpGeneric2nd.Query<AberdeenSummary>()
+            SummaryData currentSummary = (SummaryData) this.rpGeneric2nd.Query<T>()
                                             .Where(x => x.type == "School" && x.dataCode == seedCode && x.dataMonth == month && x.dataYear == year)
                                             .SingleOrDefault();
             return new SummaryDataViewModel(currentSummary); 
         }
 
 
-        // WIP
-        private IQueryable<SummaryData> _SummaryDataQueryCouncilHelper(string councilName)
-        {
-            IQueryable<SummaryData> queryOver;
-            switch (councilName.ToLower())
-            {
-                case "aberdeen city":
-                    queryOver = (IQueryable<AberdeenSummary>) this.rpGeneric2nd.Query<AberdeenSummary>();
-                    break;
-                default:
-                    queryOver = null;
-                    break;
-            }
-            return queryOver;
-        }
+        //// WIP
+        //private IQueryable<SummaryData> _SummaryDataQueryCouncilHelper(string councilName)
+        //{
+        //    IQueryable<SummaryData> queryOver;
+        //    switch (councilName.ToLower())
+        //    {
+        //        case "aberdeen city":
+        //            queryOver = (IQueryable<AberdeenSummary>) this.rpGeneric2nd.Query<AberdeenSummary>();
+        //            break;
+        //        default:
+        //            queryOver = null;
+        //            break;
+        //    }
+        //    return queryOver;
+        //}
+
+        //public IList<SummaryData> _Tester<T>(string inz) where T : SummaryData
+        //{
+            
+        //    var q = this.rpGeneric2nd.QueryOver<T>().Where(x => x.name == inz).List<SummaryData>();
+            
+
+        //    return q;
+        //}
+
 
         private IList<SummaryDataViewModel> _CreateListOfViewModels(IList<SummaryData> summaryDataList)
         {
@@ -140,7 +150,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Helpers
             List<SummaryDataViewModel> allCouncils = new List<SummaryDataViewModel>();
             foreach (string city in cities) 
             {
-                allCouncils.Add(GetSummaryDataForCouncil(city, month, year));
+                allCouncils.Add(GetSummaryDataForCouncil<AberdeenSummary>(city, month, year));
             }
             foreach (SummaryDataViewModel council in allCouncils)
             {

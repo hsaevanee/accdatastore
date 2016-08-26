@@ -47,7 +47,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             vmDatahubViewModel.allCouncilTable = new List<SummaryDataViewModel>();
             foreach (string council in councils)
             {
-                vmDatahubViewModel.allCouncilTable.Add(Helper.GetSummaryDataForCouncil(council, currentTime.Month, currentTime.Year));
+                vmDatahubViewModel.allCouncilTable.Add(Helper.GetSummaryDataForCouncil<AberdeenSummary>(council, currentTime.Month, currentTime.Year));
             }
             Session["Council"] = null;
             return View("ScotlandIndex", vmDatahubViewModel);
@@ -1030,7 +1030,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             //var not_participating = vm.NotParticipating();
             //var unknown = vm.Percentage(vm.allPupilsInUnknown);
             //var lazy = participating + not_participating + unknown;
-       
+
             //var data = CreatDatahubdata(GetDatahubdatabySchoolcode(rpGeneric2nd, "100"), "100");
             //var p = data.Participating();
             //var n = data.NotParticipating();
@@ -1039,15 +1039,15 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             //var lazy2 = p + n + u;
 
             //var aa = Helper.GetSummaryDataForAllSchools("S12000033", 08, 2016);
+            //var pre = Helper._Tester<AberdeenSummary>("Aberdeen City");
 
-
-            var a = Helper.GetSummaryDataForAllDataZones(08, 2016);
-            var b = Helper.GetSummaryDataForAllIntermediateZones(08, 2016);
-            var c = Helper.GetSummaryDataForAllSchools("S12000033", 08, 2016);
-            var d = Helper.GetSummaryDataForCouncil("S12000033", 08, 2016);
-            var e = Helper.GetSummaryDataForSingleDataZone("S01000011", 08, 2016);
-            var f = Helper.GetSummaryDataForSingleIntermediateZone("S02000033", 08, 2016);
-            var g = Helper.GetSummaryDataForSingleSchool("5244439", 08, 2016);
+            var a = Helper.GetSummaryDataForAllDataZones<AberdeenSummary>(08, 2016);
+            var b = Helper.GetSummaryDataForAllIntermediateZones<AberdeenSummary>(08, 2016);
+            var c = Helper.GetSummaryDataForAllSchools<AberdeenSummary>("S12000033", 08, 2016);
+            var d = Helper.GetSummaryDataForCouncil<AberdeenSummary>("S12000033", 08, 2016);
+            var e = Helper.GetSummaryDataForSingleDataZone<AberdeenSummary>("S01000011", 08, 2016);
+            var f = Helper.GetSummaryDataForSingleIntermediateZone<AberdeenSummary>("S02000033", 08, 2016);
+            var g = Helper.GetSummaryDataForSingleSchool<AberdeenSummary>("5244439", 08, 2016);
             return Json("" , JsonRequestBehavior.AllowGet);
         }
 
@@ -1281,7 +1281,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
         public JsonResult GetdataforHeatmapDatazone(string datasetname)
         {
-            IList<SummaryDataViewModel> allSummaryDataZoneVM = Helper.GetSummaryDataForAllDataZones(08, 2016);
+            IList<SummaryDataViewModel> allSummaryDataZoneVM = Helper.GetSummaryDataForAllDataZones<AberdeenSummary>(08, 2016);
             IList<decimal> percentageData = new Collection<decimal>();
 
             if (datasetname.Equals("Participating"))
