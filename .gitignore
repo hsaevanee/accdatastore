@@ -157,3 +157,4 @@ $RECYCLE.BIN/
 
 # Ignoring GeneralSettings
 ACCDataStore.Web\Config\GeneralSettings.xml
+/.vs/config
