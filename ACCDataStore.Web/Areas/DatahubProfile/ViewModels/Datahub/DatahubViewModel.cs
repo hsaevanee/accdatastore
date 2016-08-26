@@ -13,7 +13,9 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub
 
         public IList<School> ListSchoolNameData { get; set; }
         public IList<School> ListNeighbourhoodsName { get; set; }
+        public IList<School> ListCouncilName { get; set; }
         public School selectedschool { get; set; }
+        public School selectedcouncil { get; set; }
         public string selectedschoolcode { get; set; } // for school dropdown list
         public string selectedneighbourhoods { get; set; } // for neighbourhood dropdown list
         public DatahubData AberdeencityData { get; set; }
@@ -27,5 +29,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub
         public string searchcode { get; set; }
         public List<PosNegSchoolList> summaryTableData { get; set; }
         public long benchmarkResults { get; set; }
+
+
     }
 }

@@ -157,14 +157,32 @@
                         <a href="@Url.Action("IndexHome", "IndexDatahub", new { Area = "DatahubProfile" }, null)">Home</a>
                     </li>
                     <li>
-                        <a href="@Url.Action("Index", "IndexDatahub", new { Area = "DatahubProfile" }, null)">Data</a>
+                        <a href="@Url.Action("ScotlandIndex", "IndexDatahub", new { Area = "DatahubProfile" }, null)">Data</a>
                     </li>
-                    <li>
+                    @{
+                        School council = Session["Council"] as School;
+                        if (council != null)
+                        {
+                            <li>
+                                @council.name
+                            </li>
+                            <li>
+                                    <a href="@Url.Action("MapData", "IndexDatahub", new { Area = "DatahubProfile" }, null)">Interactive Map</a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("HeatMapData", "IndexDatahub", new { Area = "DatahubProfile", sSchoolName = "" }, null)">Interactive HeatMap</a>
+                                </li>
+
+                        }
+
+
+                    }
+                    @*<li>
                         <a href="@Url.Action("MapData", "IndexDatahub", new { Area = "DatahubProfile" }, null)">Interactive Map</a>
                     </li>
                     <li>
                         <a href="@Url.Action("HeatMapData", "IndexDatahub", new { Area = "DatahubProfile", sSchoolName = "" }, null)">Interactive HeatMap</a>
-                    </li>
+                    </li>*@
                 </ol>
             </div>
         </div>
