@@ -241,10 +241,12 @@
     <Content Include="Images\WIP.jpg" />
     <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\accdatastore\areas\authorisation\Login.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\ComparisonsIndex.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\HeatMapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\HighchartsGraphs.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\IndexdatahubProfile.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\MapIndex.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\MapMain.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\Pupilslist.js" />
     <Content Include="Scripts\accdatastore\areas\insightprofile\views\benchmarkmeasure\IndexLeaver.js" />
     <Content Include="Scripts\accdatastore\areas\insightprofile\views\benchmarkmeasure\MapLeaverDestinationIndex.js" />
@@ -329,6 +331,7 @@
     <Compile Include="Areas\Authorisation\ViewModels\IndexAuthorisation\IndexViewModel.cs" />
     <Compile Include="Areas\DatahubProfile\Controllers\IndexDatahubController.cs" />
     <Compile Include="Areas\DatahubProfile\DatahubProfileAreaRegistration.cs" />
+    <Compile Include="Areas\DatahubProfile\Helpers\SummaryDataHelper.cs" />
     <Compile Include="Areas\DatahubProfile\Models\BenchmarkAjax.cs" />
     <Compile Include="Areas\DatahubProfile\Models\HistogramSeriesData.cs" />
     <Compile Include="Areas\DatahubProfile\Models\MainChartData.cs" />
@@ -339,6 +342,7 @@
     <Compile Include="Areas\DatahubProfile\ViewModels\Datahub\DatahubViewModel.cs" />
     <Compile Include="Areas\DatahubProfile\ViewModels\Datahub\DatahubData.cs" />
     <Compile Include="Areas\DatahubProfile\ViewModels\Datahub\SummaryDataViewModel.cs" />
+    <Compile Include="Areas\DatahubProfile\Views\IndexDatahub\Comparisons\ComparisonsViewModel.cs" />
     <Compile Include="Areas\InsightProfile\Controllers\BenchmarkMeasureController.cs" />
     <Compile Include="Areas\InsightProfile\Controllers\InsightProfileController.cs" />
     <Compile Include="Areas\InsightProfile\InsightProfileAreaRegistration.cs" />
@@ -526,6 +530,9 @@
     <Content Include="Areas\ScrumHub\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\ScrumHub\Views\ScrumHub\ScrumIndex.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\ScotlandIndex.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Comparisons\Comparisons.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Comparisons\_DataTables.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Map\MapIndex.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\About.cshtml" />
