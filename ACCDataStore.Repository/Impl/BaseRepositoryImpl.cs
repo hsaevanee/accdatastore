@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NHibernate;
+using NHibernate.Linq;
 
 namespace ACCDataStore.Repository.Impl
 {
@@ -77,6 +78,12 @@ namespace ACCDataStore.Repository.Impl
         public IQueryOver<T,T> QueryOver<T>() where T : class
         {
             return this.session.QueryOver<T>();
+            
+        }
+
+        public IQueryable<T> Query<T>() where T : class
+        {
+            return this.session.Query<T>();
         }
     }
 }

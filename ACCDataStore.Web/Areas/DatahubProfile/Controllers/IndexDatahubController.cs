@@ -17,6 +17,8 @@ using ACCDataStore.Helpers.ORM.Helpers.Security;
 using ACCDataStore.Helpers.ORM;
 using ACCDataStore.Web.Areas.DatahubProfile.Models;
 using System.Diagnostics;
+using System.Collections.ObjectModel;
+using NHibernate;
 
 namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 {
@@ -38,7 +40,6 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
         {
             return View("ScotlandIndex");
         }
-
 
         public ActionResult IndexHome()
         {
@@ -971,6 +972,79 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             timer.Stop();
             wrapper.benchmarkResults = timer.ElapsedMilliseconds;
             return Json(wrapper, JsonRequestBehavior.AllowGet);
+        }
+
+        private SummaryData GetSummaryDataForCouncil(string councilName, int month, int year)
+        {
+            SummaryData result = new SummaryData();
+            switch (councilName.ToLower())
+            {
+                case "aberdeen city":
+                    result = this.rpGeneric2nd.QueryOver<AberdeenSummary>().Where(x => x.dataMonth == month && x.dataYear == year).CastTo<SummaryData>();
+                    break;
+                default:
+                    result = null;
+                    break;
+            }
+            return result;
+        }
+
+        private IList<SummaryData> GetSummaryDataForAllSchools(string councilCode, int month, int year)
+        {
+            IList<SummaryData> result = new Collection<SummaryData>();
+            IList<AllSchools> allSchoolsForCouncil = this.rpGeneric2nd.QueryOver<AllSchools>().Where(x => x.referenceCouncil == councilCode).List();
+            foreach (var school in allSchoolsForCouncil)
+            {
+                // At this point we should know to witch council/city to point to [TODO]
+                var query = _SummaryDataQueryCouncilHelper("Aberdeen City");
+                Type type = typeof(AberdeenSummary);
+                Assembly n = type.Assembly;
+                System.Reflection.Assembly a = typeof(AberdeenSummary).Assembly;
+
+                SummaryData currentSummary = this.rpGeneric2nd.Query<AberdeenSummary>()
+                                            .Where(x => x.type == "School" && x.dataCode == school.seedCode && x.dataMonth == month && x.dataYear == year)
+                                            .SingleOrDefault();
+                result.Add(currentSummary);
+            }
+            return result;
+        }
+
+        private SummaryData GetSummaryDataForSingleSchool() { return new SummaryData(); }
+
+        private IQueryable<SummaryData> _SummaryDataQueryCouncilHelper(string councilName)
+        {
+            IQueryable<SummaryData> queryOver;
+            switch (councilName.ToLower())
+            {
+                case "aberdeen city":
+                    queryOver = (IQueryable<AberdeenSummary>) this.rpGeneric2nd.Query<AberdeenSummary>();
+                    break;
+                default:
+                    queryOver = null;
+                    break;
+            }
+            return queryOver;
+        }
+
+        public ActionResult ApiTestQQQ()
+        {
+            var currentSummary = this.rpGeneric2nd.QueryOver<AberdeenSummary>().Where(x => x.type == "Council" && x.dataMonth == 08 && x.dataYear == 2016).SingleOrDefault();
+            SummaryDataViewModel vm = new SummaryDataViewModel(currentSummary);
+            var participating = vm.Participating();
+            var not_participating = vm.NotParticipating();
+            var unknown = vm.Percentage(vm.allPupilsInUnknown);
+            var lazy = participating + not_participating + unknown;
+       
+            var data = CreatDatahubdata(GetDatahubdatabySchoolcode(rpGeneric2nd, "100"), "100");
+            var p = data.Participating();
+            var n = data.NotParticipating();
+            var u = data.Percentage(data.pupilsinUnknown);
+
+            var lazy2 = p + n + u;
+
+            var aa = GetSummaryDataForAllSchools("S12000033", 08, 2016);
+
+            return Json(lazy , JsonRequestBehavior.AllowGet);
         }
 
     }

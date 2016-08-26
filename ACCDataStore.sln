@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACCDataStore.Repository", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACCDataStore.Core", "ACCDataStore.Core\ACCDataStore.Core.csproj", "{1089DBBB-7B0B-482B-AAE0-D40CC98D8D75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatahubDataSummaryGenerator", "DatahubDataSummaryGenerator\DatahubDataSummaryGenerator.csproj", "{3DD4FD8E-BE5F-4A6B-B201-AA7A55F14868}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACCDataStore.DatahubSummaryGenerator", "DatahubDataSummaryGenerator\ACCDataStore.DatahubSummaryGenerator.csproj", "{3DD4FD8E-BE5F-4A6B-B201-AA7A55F14868}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

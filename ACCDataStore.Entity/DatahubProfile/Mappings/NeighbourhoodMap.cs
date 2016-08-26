@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACCDataStore.Entity.Mapping.MSAccess
+namespace ACCDataStore.Entity.DatahubProfile
 {
     public class NeighbourhoodMap : ClassMap<NeighbourhoodObj>
     {

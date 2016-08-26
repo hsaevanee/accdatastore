@@ -46,7 +46,7 @@ namespace ACCDataStore.Entity.DatahubProfile
         public virtual string Course_Level { get; set; }
         public virtual string Employer_Name { get; set; }
         public virtual string Job_Title { get; set; }
-        public virtual string End_Date { get; set; }
+        public virtual DateTime End_Date { get; set; }
         public virtual string Weeks_since_last_Pos_Status { get; set; }
         public virtual string Last_Positive_Status { get; set; }
         public virtual DateTime Last_Engagement_with_SDS { get; set; }
