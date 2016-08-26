@@ -38,8 +38,13 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
         public ActionResult ScotlandIndex()
         {
-            return View("ScotlandIndex");
+            var vmDatahubViewModel = new DatahubViewModel();
+            vmDatahubViewModel.ListCouncilName = GetListCouncilname();
+            Session["Council"] = null;
+            return View("ScotlandIndex", vmDatahubViewModel);
         }
+
+     
 
         public ActionResult IndexHome()
         {
@@ -60,6 +65,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             Stopwatch timer = new Stopwatch();
             timer.Start();
             IList<School> allSchools = GetListSchoolname();
+            IList<School> allCouncils = GetListCouncilname();
 
             List<DatahubDataObj> allStudentData = Getlistpupil(this.rpGeneric2nd).Where(z => !String.IsNullOrWhiteSpace(z.SEED_Code)).ToList<DatahubDataObj>();
             List<PosNegSchoolList> tableSummaryData = new List<PosNegSchoolList>();
@@ -83,6 +89,9 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             Session["ViewModelParams"] = pageViewModelParams;
             timer.Stop();
             viewModel.benchmarkResults = timer.ElapsedMilliseconds;
+            var sCouncilcode = Request["selectedcouncil"];
+            viewModel.selectedcouncil = allCouncils.Where(x => x.seedcode.Equals(sCouncilcode)).FirstOrDefault();
+            Session["Council"] = viewModel.selectedcouncil;
             return View("index2", viewModel);
         }
 
@@ -161,6 +170,15 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
            temp.Add(new School("5246237", "Oldmachar Academy"));
            temp.Add(new School("5246431", "St Machar Academy"));
            temp.Add(new School("5244838", "Torry Academy"));
+            return temp;
+
+        }
+
+        protected IList<School> GetListCouncilname()
+        {
+            List<School> temp = new List<School>();
+            temp.Add(new School("S12000033", "Aberdeen City"));
+            temp.Add(new School("S12000046", "Glasgow City"));
             return temp;
 
         }
@@ -982,6 +1000,11 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 case "aberdeen city":
                     result = this.rpGeneric2nd.QueryOver<AberdeenSummary>().Where(x => x.dataMonth == month && x.dataYear == year).CastTo<SummaryData>();
                     break;
+
+                case "glasgow city":
+                    result = this.rpGeneric2nd.QueryOver<GlasgowSummary>().Where(x => x.dataMonth == month && x.dataYear == year).CastTo<SummaryData>();
+                    break;
+
                 default:
                     result = null;
                     break;

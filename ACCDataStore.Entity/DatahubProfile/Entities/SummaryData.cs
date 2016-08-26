@@ -101,4 +101,8 @@ namespace ACCDataStore.Entity.DatahubProfile
     {
 
     }
+    public class GlasgowSummary : SummaryData
+    {
+
+    }
 }
