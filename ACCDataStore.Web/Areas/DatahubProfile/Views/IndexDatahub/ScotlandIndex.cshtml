@@ -1,6 +1,9 @@
 ﻿@model ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub.DatahubViewModel
 @section Header {
-    <script src="~/Scripts/highcharts.js"></script>   
+    <script  src="~/Scripts/jquery.js"></script>
+    <script  src="~/Scripts/highcharts.js"></script>
+    <script  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDryCUbMmTBoPQ2o0FsBDg6OnvlFsnCU4Q"></script>
+    <script  src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/ScotlandIndexMain.js"></script>
 }
 @{
     //Wider Achievement
@@ -42,7 +45,7 @@
                         }
                     </div>
                 </div>
-                <div style="background-color: pink; height: 400px">Scotland map</div>
+                <div id="map-canvas" style="width: 100%; height: 500px"></div>
             </div>
         </div>
     <div class="row">
