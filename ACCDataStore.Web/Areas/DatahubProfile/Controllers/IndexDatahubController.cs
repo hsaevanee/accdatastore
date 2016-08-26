@@ -974,6 +974,8 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             return Json(wrapper, JsonRequestBehavior.AllowGet);
         }
 
+
+        // BEGIN MESS
         private SummaryData GetSummaryDataForCouncil(string councilName, int month, int year)
         {
             SummaryData result = new SummaryData();
@@ -986,6 +988,12 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                     result = null;
                     break;
             }
+            return result;
+        }
+
+        private IList<AberdeenSummary> GetSummaryDataForAllDataZones(int month, int year)
+        {
+            var result = this.rpGeneric2nd.QueryOver<AberdeenSummary>().Where(x => x.type == "Data Zone" && x.dataMonth == month && x.dataYear == year).List<AberdeenSummary>();
             return result;
         }
 
@@ -1011,6 +1019,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
         private SummaryData GetSummaryDataForSingleSchool() { return new SummaryData(); }
 
+        // WIP
         private IQueryable<SummaryData> _SummaryDataQueryCouncilHelper(string councilName)
         {
             IQueryable<SummaryData> queryOver;
@@ -1045,6 +1054,305 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             var aa = GetSummaryDataForAllSchools("S12000033", 08, 2016);
 
             return Json(lazy , JsonRequestBehavior.AllowGet);
+        }
+
+        // END MESS
+        // BEGIN MERGE
+        public ActionResult GetGeoJSON(string id)
+        {
+            // Id shouldn't be null
+            if (id != null)
+            {
+                // A string to hold our GeoJSON content as recieved by the database
+                string result = null;
+
+                // Check the id type and query the corresponding table
+                try
+                {
+                    if (id.StartsWith("S01")) { result = this.rpGeneric2nd.GetById<DataZoneObj>(id).GeoJSON; }
+                    else if (id.StartsWith("S02")) { result = this.rpGeneric2nd.GetById<IntermediateZoneObj>(id).GeoJSON; }
+                    else if (id.StartsWith("S12")) { result = this.rpGeneric2nd.GetById<CouncilObj>(id).GeoJSON; }
+                }
+                catch (NullReferenceException ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    return new HttpStatusCodeResult(404, "Item Not Found");
+                }
+
+                return new ContentResult { Content = result, ContentType = "application/json" };
+
+            }
+
+            return new HttpStatusCodeResult(404, "Missing parameter!");
+        }
+
+        public ActionResult GetDatazonesByCouncilName(string councilName)
+        {
+            string councilId = null;
+
+            //Validate and get corresponding council id
+            try
+            {
+                councilId = this.rpGeneric2nd.QueryOver<CouncilObj>()
+                               .Where(r => r.Name == councilName)
+                               .SingleOrDefault()
+                               .Reference;
+            }
+            catch (NullReferenceException ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return Content(null);
+            }
+
+            IList<string> result = getDatazoneListByCouncilId(councilId);
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        public ActionResult GetDatazonesByCouncilId(string councilId)
+        {
+            // TODO: Should validate councilId
+            IList<string> result = getDatazoneListByCouncilId(councilId);
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        private IList<string> getDatazoneListByCouncilId(string councilId)
+        {
+            var datazoneList = this.rpGeneric2nd.QueryOver<DataZoneObj>()
+                .Where(r => r.Reference_Council == councilId)
+                .List<DataZoneObj>();
+
+            IList<string> result = new Collection<string>();
+            foreach (var item in datazoneList)
+            {
+                result.Add(item.Reference);
+            }
+
+            return result;
+        }
+
+        public ActionResult GetNeighbourhoodIdsByCouncilId(string councilId)
+        {
+            // TODO: Should validate councilId
+            IList<string> result = getNeighbourhoodIdListByCouncilId(councilId);
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        private IList<string> getNeighbourhoodIdListByCouncilId(string councilId)
+        {
+            var neighbourhoodList = this.rpGeneric2nd.QueryOver<IntermediateZoneObj>()
+                .Where(r => r.Reference_Council == councilId)
+                .List<IntermediateZoneObj>();
+
+            IList<string> result = new Collection<string>();
+            foreach (var item in neighbourhoodList)
+            {
+                result.Add(item.Reference);
+            }
+
+            return result;
+        }
+        // Comparisons
+        //public ActionResult Comparisons()
+        //{
+        //    var result = new ComparisonsViewModel();
+
+        //    IList<DatahubData> list = new Collection<DatahubData>();
+        //    result.ListSchoolNameData = GetListSchoolnameGlasgow();
+        //    result.ListNeighbourhoodsName = GetListNeighbourhoodsname(rpGeneric);
+        //    var city_data = CreatDatahubdata(GetDatahubdatabySchoolcode(rpGeneric, "100"), "100");
+        //    city_data.name = "Glasgow";
+        //    list.Add(city_data);
+        //    result.ListSelectionData = list;
+        //    return View(result);
+        //}
+
+        //public ActionResult Test1(ICollection<String> list, string type)
+        //{
+        //    IList<School> selection = new Collection<School>();
+        //    if (type != null)
+        //    {
+        //        if (type.ToLower().Equals("neighbourhoods"))
+        //        {
+        //            selection = GetListNeighbourhoodsnameGlasgow(rpGeneric2nd);
+        //        }
+        //        if (type.ToLower().Equals("schools"))
+        //        {
+        //            selection = GetListSchoolnameGlasgow();
+        //        }
+        //    }
+
+        //    IList<DatahubData> result = new Collection<DatahubData>();
+        //    var city_data = CreatDatahubdata(GetDatahubdatabySchoolcode(rpGeneric2nd, "100"), "100");
+        //    city_data.name = "Glasgow"; // To do
+        //    result.Add(city_data);
+
+
+        //    //foreach (var item in list)
+        //    //{ 
+        //    //    foreach (School school in schools)
+        //    //    {
+        //    //        if (!list.Contains(school.seedcode)) return Content("Error");
+        //    //    }
+        //    //}
+
+        //    foreach (var item in list)
+        //    {
+        //        var match = selection.FirstOrDefault(p => p.seedcode == item);
+        //        if (match == null) return Content("Error");
+        //    }
+
+
+
+
+        //    foreach (var item in list)
+        //    {
+        //        if (type.ToLower().Equals("neighbourhoods"))
+        //        {
+        //            var data = CreatDatahubdata(GetDatahubdatabyNeighbourhoods(rpGeneric2nd, item), item);
+        //            var match = selection.FirstOrDefault(p => p.seedcode == item);
+
+        //            data.name = match.name;
+
+        //            result.Add(data);
+        //        };
+        //        if (type.ToLower().Equals("schools"))
+        //        {
+        //            var data = CreatDatahubdata(GetDatahubdatabySchoolcode(rpGeneric2nd, item), item);
+        //            var match = selection.FirstOrDefault(p => p.seedcode == item);
+
+        //            data.name = match.name;
+
+        //            result.Add(data);
+        //        };
+
+        //    }
+        //    return PartialView("_DataTables", result);
+        //}
+
+        protected IList<School> GetListSchoolnameGlasgow()
+        {
+            List<School> temp = new List<School>();
+            temp.Add(new School("8448647", "Abercorn School"));
+            temp.Add(new School("8431930", "All Saints Secondary School"));
+            temp.Add(new School("1003135", "Ashton Secondary School"));
+            temp.Add(new School("8458138", "Bannerman High School"));
+            temp.Add(new School("8432031", "Bellahouston Academy"));
+            temp.Add(new School("8442347", "Cardinal Winning Secondary"));
+            temp.Add(new School("8440042", "Cartvale School"));
+            temp.Add(new School("8434034", "Castlemilk High School"));
+            temp.Add(new School("8432236", "Cleveden Secondary School"));
+            temp.Add(new School("8459932", "Drumchapel High School"));
+            temp.Add(new School("8433232", "Eastbank Academy"));
+            temp.Add(new School("8414041", "Enhanced Vocational Inclusion Programme (EVIP)"));
+            temp.Add(new School("8432627", "Glasgow Gaelic Secondary School"));
+            temp.Add(new School("8433836", "Govan High School"));
+            temp.Add(new School("8441243", "Hazelwood School"));
+            temp.Add(new School("8434239", "Hillhead High School"));
+            temp.Add(new School("8434336", "Hillpark Secondary School"));
+            temp.Add(new School("8440948", "Hollybrook School"));
+            temp.Add(new School("8434530", "Holyrood Secondary School"));
+            temp.Add(new School("8434638", "Hyndland Secondary School"));
+            temp.Add(new School("8458731", "John Paul Academy"));
+            temp.Add(new School("8470332", "Jordanhill School"));
+            temp.Add(new School("8435138", "Kings Park Secondary School"));
+            temp.Add(new School("8435634", "Knightswood Secondary School"));
+            temp.Add(new School("8443645", "Linburn Academy"));
+            temp.Add(new School("8435731", "Lochend Community High School"));
+            temp.Add(new School("8435839", "Lourdes Secondary School"));
+            temp.Add(new School("8452741", "Middlefield Residential School"));
+            temp.Add(new School("8443742", "Newhills School"));
+            temp.Add(new School("8436134", "Notre Dame High School (Glasgow)"));
+            temp.Add(new School("8441340", "Parkhill School"));
+            temp.Add(new School("8436339", "Rosshall Academy"));
+            temp.Add(new School("8436932", "Shawlands Academy"));
+            temp.Add(new School("8437130", "Smithycroft Secondary School"));
+            temp.Add(new School("8431639", "Springburn Academy"));
+            temp.Add(new School("8437238", "St Andrews RC Secondary"));
+            temp.Add(new School("8438331", "St Margaret Mary's Secondary School"));
+            temp.Add(new School("8438439", "St Mungo's Academy"));
+            temp.Add(new School("8442843", "St Oswald's School"));
+            temp.Add(new School("8432139", "St Paul's High School"));
+            temp.Add(new School("8438730", "St Roch's Secondary School"));
+            temp.Add(new School("8438838", "St Thomas Aquinas Secondary School"));
+            temp.Add(new School("1000241", "Westmuir High School"));
+            temp.Add(new School("8439532", "Whitehill Secondary School"));
+            return temp;
+        }
+
+        public JsonResult GetdataforHeatmapDatazone(string datasetname)
+        {
+            IList<AberdeenSummary> allSummaryDataZone = GetSummaryDataForAllDataZones(08, 2016);
+            IList<SummaryDataViewModel> allSummaryDataZoneVM = new Collection<SummaryDataViewModel>();
+            IList<decimal> percentageData = new Collection<decimal>();
+            
+            foreach (AberdeenSummary item in allSummaryDataZone)
+            {
+                allSummaryDataZoneVM.Add(new SummaryDataViewModel(item));
+            }
+
+            if (datasetname.Equals("Participating"))
+            {
+
+                percentageData = allSummaryDataZoneVM.Select(x => x.Participating()).ToList();
+            }
+            else if (datasetname.Equals("Not-Participating"))
+            {
+                percentageData = allSummaryDataZoneVM.Select(x => x.NotParticipating()).ToList();
+            }
+            else
+            {
+
+                percentageData = allSummaryDataZoneVM.Select(x => x.Percentage(x.allPupilsInUnknown)).ToList();
+            }
+
+            var result = new
+            {
+                datacode = allSummaryDataZoneVM.Select(x => x.dataCode).ToList(),
+                data = percentageData,
+                minimum = percentageData.Min(),
+                maximum = percentageData.Max(),
+            };
+
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+            //try
+            //{
+
+            //    if (datasetname.Equals("Participating"))
+            //    {
+
+            //        tempdata = Listdatahubdata.Select(x => x.Participating()).ToList();
+            //    }
+            //    else if (datasetname.Equals("Not-Participating"))
+            //    {
+            //        tempdata = Listdatahubdata.Select(x => x.NotParticipating()).ToList();
+            //    }
+            //    else
+            //    {
+
+            //        tempdata = Listdatahubdata.Select(x => x.Percentage(x.pupilsinUnknown)).ToList();
+            //    }
+
+            //    data = new
+            //    {
+            //        datacode = Listdatahubdata.Select(x => x.datacode).ToList(),
+            //        data = tempdata,
+            //        minimum = tempdata.Min(),
+            //        maximum = tempdata.Max(),
+            //    };
+
+            //    return Json(data, JsonRequestBehavior.AllowGet);
+
+            //}
+            //catch (Exception ex)
+            //{
+            //    return ThrowJSONError(ex);
+            //}
         }
 
     }

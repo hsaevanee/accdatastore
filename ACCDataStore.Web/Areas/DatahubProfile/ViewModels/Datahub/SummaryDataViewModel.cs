@@ -249,8 +249,9 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub
         public decimal Percentage(int number)
         {
             // decimals are better suited for persentage
-            decimal? result = (decimal)(number * 100m) / this.allPupils;
-            return result.HasValue ? (decimal)result : 0.0m;
+            if (this.allPupils == 0) return 0.0m;
+            return (decimal)(number * 100m) / this.allPupils;
+            //return result.HasValue ? (decimal)result : 0.0m;
 
         }
 

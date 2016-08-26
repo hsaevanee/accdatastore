@@ -167,21 +167,21 @@ namespace DatahubDataSummaryGenerator
 
         static void Main(string[] args)
         {
-            FileStream ostrm;
-            StreamWriter writer;
-            TextWriter oldOut = Console.Out;
-            try
-            {
-                ostrm = new FileStream("./Output.txt", FileMode.OpenOrCreate, FileAccess.Write);
-                writer = new StreamWriter(ostrm);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Cannot open Output.txt for writing");
-                Console.WriteLine(e.Message);
-                return;
-            }
-            Console.SetOut(writer);
+            //FileStream ostrm;
+            //StreamWriter writer;
+            //TextWriter oldOut = Console.Out;
+            //try
+            //{
+            //    ostrm = new FileStream("./Output.txt", FileMode.OpenOrCreate, FileAccess.Write);
+            //    writer = new StreamWriter(ostrm);
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine("Cannot open Output.txt for writing");
+            //    Console.WriteLine(e.Message);
+            //    return;
+            //}
+            //Console.SetOut(writer);
 
             var sessionFactory = CreateSessionFactory();
             using (ISession session = sessionFactory.OpenSession())
@@ -190,15 +190,29 @@ namespace DatahubDataSummaryGenerator
                 {
                     Console.WriteLine("Starting initial population...");
                     Stopwatch stopwatch_g = new Stopwatch();
-                    
+                    stopwatch_g.Start();
+                    IList<DatahubDataObj> studentDataAllPeriods = session.QueryOver<DatahubDataObj>().List<DatahubDataObj>();
                     // Populate session
-                    initialPopulation(session);
+                    //initialPopulation(session); 
+                    var listOfDataZoneSummaries = session.QueryOver<SummaryData>().Where(x => x.type == "Data Zone").List<AberdeenSummary>();
+                    foreach(var item in listOfDataZoneSummaries)
+                    {
+                        var calculation = getSubsetStudentsByZone(session, studentDataAllPeriods, "data zone", item.dataCode, item.dataMonth, item.dataYear);
+                        AberdeenSummary currSummary = CalculateSummaryData(calculation, item.dataCode, item.dataCode, "Data Zone", item.dataMonth, item.dataYear);
+                        foreach(var prop in item.GetType().GetProperties()) 
+                        {
+                            if(prop.Name!="id") prop.SetValue(item, prop.GetValue(currSummary));
+                            
+                        }
+                        session.Update(item);
+                    }
+
 
                     Stopwatch stopwatch_t = new Stopwatch();
                     Console.WriteLine("Starting transaction...");
                     stopwatch_t.Start();
                     
-                    // Begin transaction
+                     //Begin transaction
                     try
                     {
                         transaction.Commit();
@@ -218,39 +232,11 @@ namespace DatahubDataSummaryGenerator
                     Console.WriteLine("Total time elapsed: {0}", stopwatch_g.Elapsed);
 
                     session.Dispose();
-
-                    //var str = session.Get<DataZoneObj>("S01000001").Reference_Parent;
-                    //// insert magic code
-                    //IList<DatahubDataObj> datahubStudentData = session.QueryOver<DatahubDataObj>().Where(x => x.Data_Month == 08 && x.Data_Year == 2016 && x.Current_Status != "Moved Outwith Scotland").List<DatahubDataObj>();
-                    ////datahubStudentData = datahubStudentData.Where(x => );
-                    //var temp = CalculateSummaryData(datahubStudentData, "S12000033", "Aberdeen", 1, 08, 2016);
-                    //foreach (var property in temp.GetType().GetProperties())
-                    //{
-                    //    Console.WriteLine(property.Name + " : " + property.GetValue(temp).ToString());
-                    //}
-                    //Console.WriteLine();
-
-                    //IList<DatahubDataObj> datahubStudentDataAllPeriods = session.QueryOver<DatahubDataObj>().List<DatahubDataObj>();
-                    //IList<DatahubDataObj> result = getSubsetStudentsByZone(session, datahubStudentDataAllPeriods, "intermediate zone","S02000024", 08, 2016);
-                    //IList<DatahubDataObj> result2 = getSubsetStudentsByZone(session, datahubStudentDataAllPeriods, "data zone", "S01000011", 08, 2016);
-
-                    //CreateOneMonthEntry(session, datahubStudentDataAllPeriods, 08, 2016);
-                    //var newssss = session.CreateSQLQuery("SELECT DISTINCT `accdatastore`.`datahubdata_aberdeen`.`Data_Month`, `accdatastore`.`datahubdata_aberdeen`.`Data_Year` from `accdatastore`.`datahubdata_aberdeen` WHERE not(Current_Status = 'Moved Outwith Scotland')");
-                    //var nezzzz = datahubStudentDataAllPeriods.Select(x => new { x.Data_Month, x.Data_Year }).Distinct().ToList();
-                    //IList<monthYear> monthYearData = datahubStudentDataAllPeriods.Select(x => new monthYear { month = x.Data_Month, Data_Year = x.Data_Year }).Distinct().ToList();
-
-                    //var monthList = datahubStudentData.Select(x => x.Data_Month).Distinct().ToList();
-                    //var yearList = datahubStudentData.Select(x => x.Data_Year).Distinct().ToList();
-                    //IList<monthYear> monthYearData = new Collection<monthYear>();
-                    //foreach (var item in monthList)
-                    //{
-                    //    monthYearData.Add(new monthYear { month = item, year = yearList[monthList.IndexOf(item)] });
-                    //}
                 }
             }
-            Console.SetOut(oldOut);
-            writer.Close();
-            ostrm.Close();
+            //Console.SetOut(oldOut);
+            //writer.Close();
+            //ostrm.Close();
             Console.WriteLine("Done");
             Console.ReadKey();
         }
@@ -329,6 +315,7 @@ namespace DatahubDataSummaryGenerator
             {
                 IList<DatahubDataObj> allStudentsThisSchool = allStudents.Where(x => x.SEED_Code!=null && x.SEED_Code.Equals(school.seedCode)).ToList();
                 AberdeenSummary currentSummary = CalculateSummaryData(allStudentsThisSchool, school.seedCode, school.name, "School", month, year);
+
                 //SaveRowForEntity(session, currentSummary);
             }
             
@@ -398,7 +385,7 @@ namespace DatahubDataSummaryGenerator
                 Console.WriteLine("Generating summary data and saving to session for {0} data zones: Started", dataZonesList.Count);
                 foreach (string zonecode in dataZonesList)
                 {
-                    var allIntermediateZoneStudentsThisPeriod = getSubsetStudentsByZone(session, studentDataAllPeriods, "intermediate zone", zonecode, currMonth, currYear);
+                    var allIntermediateZoneStudentsThisPeriod = getSubsetStudentsByZone(session, studentDataAllPeriods, "Data Zone", zonecode, currMonth, currYear);
                     AberdeenSummary currSummary = CalculateSummaryData(allIntermediateZoneStudentsThisPeriod, zonecode, zonecode, "Data Zone", currMonth, currYear);
                     session.Save(currSummary);
                 }
