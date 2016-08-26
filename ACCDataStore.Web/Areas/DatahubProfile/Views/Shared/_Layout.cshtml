@@ -164,7 +164,7 @@
                         if (council != null)
                         {
                             <li>
-                                @council.name
+                                <a href="@Url.Action("MapData", "IndexDatahub", new { Area = "DatahubProfile" }, null)">@council.name</a>
                             </li>
                             <li>
                                     <a href="@Url.Action("MapData", "IndexDatahub", new { Area = "DatahubProfile" }, null)">Interactive Map</a>
