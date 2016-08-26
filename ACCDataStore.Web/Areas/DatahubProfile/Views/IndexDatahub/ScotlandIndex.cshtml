@@ -1,6 +1,7 @@
 ﻿@model ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub.DatahubViewModel
 @section Header {
-    <script src="~/Scripts/highcharts.js"></script>   
+    <script src="~/Scripts/highcharts.js"></script>  
+    <script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/HighchartsCheat.js"></script> 
 }
 @{
     //Wider Achievement
@@ -48,13 +49,31 @@
     <div class="row">
         <div class="col-md-12">
             <h2>Scotland Monthly Particapation</h2>
-            <div style="background-color: lightblue; height: 400px">Scotland wide month table</div>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Council</th>
+                        <th>Participating</th>
+                        <th>Not Participating</th>
+                        <th>Unknown</th>
+                    </tr>
+                    @foreach (var data in Model.allCouncilTable)
+                    { 
+                        <tr>
+                            <td>@data.name</td>
+                            <td>@Math.Round(data.Participating(), 2)</td>
+                            <td>@Math.Round(data.NotParticipating(), 2)</td>
+                            <td>@Math.Round(data.Percentage(data.allPupilsInUnknown), 2)</td>
+                        </tr>
+                    }
+                </table>
+            </div>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
             <h2>Scotland Monthly Participation Trend Graph</h2>
-            <div style="background-color: lightgreen; height: 400px">Scotland Month Trend Graph</div>
+            <div id="month-trend-histogram"></div>
         </div>
     </div>
     </div> <!--container-->

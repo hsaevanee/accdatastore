@@ -73,19 +73,22 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Helpers
                 //Assembly n = type.Assembly;
                 //System.Reflection.Assembly a = typeof(AberdeenSummary).Assembly;
 
-                SummaryData currentSummary = GetSummaryDataForSingleSchool(school.seedCode, month, year);
+                SummaryData currentSummary = (SummaryData)this.rpGeneric2nd.Query<AberdeenSummary>()
+                                            .Where(x => x.type == "School" && x.dataCode == school.seedCode && x.dataMonth == month && x.dataYear == year)
+                                            .SingleOrDefault();
                 result.Add(currentSummary);
             }
             return _CreateListOfViewModels(result);
         }
 
-        public SummaryData GetSummaryDataForSingleSchool(string seedCode, int month, int year ) 
+        public SummaryDataViewModel GetSummaryDataForSingleSchool(string seedCode, int month, int year ) 
         { 
             SummaryData currentSummary = (SummaryData) this.rpGeneric2nd.Query<AberdeenSummary>()
                                             .Where(x => x.type == "School" && x.dataCode == seedCode && x.dataMonth == month && x.dataYear == year)
                                             .SingleOrDefault();
-            return currentSummary; 
+            return new SummaryDataViewModel(currentSummary); 
         }
+
 
         // WIP
         private IQueryable<SummaryData> _SummaryDataQueryCouncilHelper(string councilName)
@@ -113,6 +116,40 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Helpers
                 summaryDataViewModelList.Add(new SummaryDataViewModel(item));
             }
             return summaryDataViewModelList;
+        }
+
+        public SummaryDataViewModel GetScotlandSummary(int month, int year)
+        {
+            SummaryData dummy = new SummaryData();
+            List<string> exclussions = new List<string>();
+            string[] cities = new string[2] { "Aberdeen City", "Glasgow City" };
+            exclussions.Add("name");
+            exclussions.Add("dataCode");
+            exclussions.Add("type");
+            dummy.name = "Scotland";
+            dummy.dataCode = "SC0000001";
+            dummy.type = "National";
+            foreach (var prop in dummy.GetType().GetProperties())
+            {
+                if (!exclussions.Contains(prop.Name))
+                {
+                    prop.SetValue(dummy, 0);
+                }
+            }
+            SummaryDataViewModel allScotland = new SummaryDataViewModel(dummy);
+            List<SummaryDataViewModel> allCouncils = new List<SummaryDataViewModel>();
+            foreach (string city in cities) 
+            {
+                allCouncils.Add(GetSummaryDataForCouncil(city, month, year));
+            }
+            foreach (SummaryDataViewModel council in allCouncils)
+            {
+                foreach (var prop in council.GetType().GetProperties()) 
+                {
+                    prop.SetValue(allScotland, ((double)prop.GetValue(allScotland) + (double)prop.GetValue(council)));// <--- Questionable code!!! Start from here
+                }
+            } 
+            return allScotland;
         }
     }
 }

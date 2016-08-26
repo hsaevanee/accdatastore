@@ -41,8 +41,14 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
         public ActionResult ScotlandIndex()
         {
             var vmDatahubViewModel = new DatahubViewModel();
+            string[] councils = new string[2] { "S12000033", "S12000033" };
+            DateTime currentTime = DateTime.Now;
             vmDatahubViewModel.ListCouncilName = GetListCouncilname();
-            //vmDatahubViewModel.allCouncilTable = Helper.
+            vmDatahubViewModel.allCouncilTable = new List<SummaryDataViewModel>();
+            foreach (string council in councils)
+            {
+                vmDatahubViewModel.allCouncilTable.Add(Helper.GetSummaryDataForCouncil(council, currentTime.Month, currentTime.Year));
+            }
             Session["Council"] = null;
             return View("ScotlandIndex", vmDatahubViewModel);
         }
@@ -936,6 +942,10 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             List<HistogramSeriesData> allseriesoutput = new List<HistogramSeriesData>();
             this.schoolSelection = Session["chartSelectedSchool"] as School;
             int numberofseries = 1;
+            if (selectionParams == null)
+            {
+                selectionParams = new ViewModelParams();
+            }
             if (selectionParams.school != null || selectionParams.neighbourhood != null)
             {
                 numberofseries = 2;
