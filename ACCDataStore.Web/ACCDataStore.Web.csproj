@@ -331,6 +331,7 @@
     <Compile Include="Areas\Authorisation\ViewModels\IndexAuthorisation\IndexViewModel.cs" />
     <Compile Include="Areas\DatahubProfile\Controllers\IndexDatahubController.cs" />
     <Compile Include="Areas\DatahubProfile\DatahubProfileAreaRegistration.cs" />
+    <Compile Include="Areas\DatahubProfile\Helpers\SummaryDataHelper.cs" />
     <Compile Include="Areas\DatahubProfile\Models\BenchmarkAjax.cs" />
     <Compile Include="Areas\DatahubProfile\Models\HistogramSeriesData.cs" />
     <Compile Include="Areas\DatahubProfile\Models\MainChartData.cs" />

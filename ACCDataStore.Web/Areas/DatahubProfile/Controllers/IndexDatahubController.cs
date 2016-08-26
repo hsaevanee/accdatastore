@@ -19,6 +19,7 @@ using ACCDataStore.Web.Areas.DatahubProfile.Models;
 using System.Diagnostics;
 using System.Collections.ObjectModel;
 using NHibernate;
+using ACCDataStore.Web.Areas.DatahubProfile.Helpers;
 
 namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 {
@@ -30,10 +31,12 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
         private School schoolSelection;
 
+        private SummaryDataHelper Helper;
         public IndexDatahubController(IGenericRepository2nd rpGeneric2nd)
         {
             this.rpGeneric2nd = rpGeneric2nd;
             this.schoolSelection = new School("", "");
+            this.Helper = new SummaryDataHelper(rpGeneric2nd);
         }
 
         public ActionResult ScotlandIndex()
@@ -976,84 +979,35 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
 
         // BEGIN MESS
-        private SummaryData GetSummaryDataForCouncil(string councilName, int month, int year)
-        {
-            SummaryData result = new SummaryData();
-            switch (councilName.ToLower())
-            {
-                case "aberdeen city":
-                    result = this.rpGeneric2nd.QueryOver<AberdeenSummary>().Where(x => x.dataMonth == month && x.dataYear == year).CastTo<SummaryData>();
-                    break;
-                default:
-                    result = null;
-                    break;
-            }
-            return result;
-        }
-
-        private IList<AberdeenSummary> GetSummaryDataForAllDataZones(int month, int year)
-        {
-            var result = this.rpGeneric2nd.QueryOver<AberdeenSummary>().Where(x => x.type == "Data Zone" && x.dataMonth == month && x.dataYear == year).List<AberdeenSummary>();
-            return result;
-        }
-
-        private IList<SummaryData> GetSummaryDataForAllSchools(string councilCode, int month, int year)
-        {
-            IList<SummaryData> result = new Collection<SummaryData>();
-            IList<AllSchools> allSchoolsForCouncil = this.rpGeneric2nd.QueryOver<AllSchools>().Where(x => x.referenceCouncil == councilCode).List();
-            foreach (var school in allSchoolsForCouncil)
-            {
-                // At this point we should know to witch council/city to point to [TODO]
-                var query = _SummaryDataQueryCouncilHelper("Aberdeen City");
-                Type type = typeof(AberdeenSummary);
-                Assembly n = type.Assembly;
-                System.Reflection.Assembly a = typeof(AberdeenSummary).Assembly;
-
-                SummaryData currentSummary = this.rpGeneric2nd.Query<AberdeenSummary>()
-                                            .Where(x => x.type == "School" && x.dataCode == school.seedCode && x.dataMonth == month && x.dataYear == year)
-                                            .SingleOrDefault();
-                result.Add(currentSummary);
-            }
-            return result;
-        }
-
-        private SummaryData GetSummaryDataForSingleSchool() { return new SummaryData(); }
-
-        // WIP
-        private IQueryable<SummaryData> _SummaryDataQueryCouncilHelper(string councilName)
-        {
-            IQueryable<SummaryData> queryOver;
-            switch (councilName.ToLower())
-            {
-                case "aberdeen city":
-                    queryOver = (IQueryable<AberdeenSummary>) this.rpGeneric2nd.Query<AberdeenSummary>();
-                    break;
-                default:
-                    queryOver = null;
-                    break;
-            }
-            return queryOver;
-        }
+        
 
         public ActionResult ApiTestQQQ()
         {
-            var currentSummary = this.rpGeneric2nd.QueryOver<AberdeenSummary>().Where(x => x.type == "Council" && x.dataMonth == 08 && x.dataYear == 2016).SingleOrDefault();
-            SummaryDataViewModel vm = new SummaryDataViewModel(currentSummary);
-            var participating = vm.Participating();
-            var not_participating = vm.NotParticipating();
-            var unknown = vm.Percentage(vm.allPupilsInUnknown);
-            var lazy = participating + not_participating + unknown;
+            //var currentSummary = this.rpGeneric2nd.QueryOver<AberdeenSummary>().Where(x => x.type == "Council" && x.dataMonth == 08 && x.dataYear == 2016).SingleOrDefault();
+            //SummaryDataViewModel vm = new SummaryDataViewModel(currentSummary);
+            //var participating = vm.Participating();
+            //var not_participating = vm.NotParticipating();
+            //var unknown = vm.Percentage(vm.allPupilsInUnknown);
+            //var lazy = participating + not_participating + unknown;
        
-            var data = CreatDatahubdata(GetDatahubdatabySchoolcode(rpGeneric2nd, "100"), "100");
-            var p = data.Participating();
-            var n = data.NotParticipating();
-            var u = data.Percentage(data.pupilsinUnknown);
+            //var data = CreatDatahubdata(GetDatahubdatabySchoolcode(rpGeneric2nd, "100"), "100");
+            //var p = data.Participating();
+            //var n = data.NotParticipating();
+            //var u = data.Percentage(data.pupilsinUnknown);
 
-            var lazy2 = p + n + u;
+            //var lazy2 = p + n + u;
 
-            var aa = GetSummaryDataForAllSchools("S12000033", 08, 2016);
+            //var aa = Helper.GetSummaryDataForAllSchools("S12000033", 08, 2016);
 
-            return Json(lazy , JsonRequestBehavior.AllowGet);
+
+            var a = Helper.GetSummaryDataForAllDataZones(08, 2016);
+            var b = Helper.GetSummaryDataForAllIntermediateZones(08, 2016);
+            var c = Helper.GetSummaryDataForAllSchools("S12000033", 08, 2016);
+            var d = Helper.GetSummaryDataForCouncil("S12000033", 08, 2016);
+            var e = Helper.GetSummaryDataForSingleDataZone("S01000011", 08, 2016);
+            var f = Helper.GetSummaryDataForSingleIntermediateZone("S02000033", 08, 2016);
+            var g = Helper.GetSummaryDataForSingleSchool("5244439", 08, 2016);
+            return Json("" , JsonRequestBehavior.AllowGet);
         }
 
         // END MESS
@@ -1286,14 +1240,8 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
         public JsonResult GetdataforHeatmapDatazone(string datasetname)
         {
-            IList<AberdeenSummary> allSummaryDataZone = GetSummaryDataForAllDataZones(08, 2016);
-            IList<SummaryDataViewModel> allSummaryDataZoneVM = new Collection<SummaryDataViewModel>();
+            IList<SummaryDataViewModel> allSummaryDataZoneVM = Helper.GetSummaryDataForAllDataZones(08, 2016);
             IList<decimal> percentageData = new Collection<decimal>();
-            
-            foreach (AberdeenSummary item in allSummaryDataZone)
-            {
-                allSummaryDataZoneVM.Add(new SummaryDataViewModel(item));
-            }
 
             if (datasetname.Equals("Participating"))
             {
