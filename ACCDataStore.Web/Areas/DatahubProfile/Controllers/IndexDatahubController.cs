@@ -40,6 +40,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
         {
             var vmDatahubViewModel = new DatahubViewModel();
             vmDatahubViewModel.ListCouncilName = GetListCouncilname();
+            //vmDatahubViewModel.allCouncilTable = Helper.
             Session["Council"] = null;
             return View("ScotlandIndex", vmDatahubViewModel);
         }
