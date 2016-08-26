@@ -30,20 +30,6 @@ namespace DatahubDataSummaryGenerator
                 .BuildSessionFactory();
         }
 
-        private static void SaveRowForEntity(ISession session, object entity)
-        {
-           
-            try
-            {
-                session.Save(entity);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                //transaction.Rollback();
-                throw;
-            }
-        }
 
         protected static AberdeenSummary CalculateSummaryData(IList<DatahubDataObj> studentData, string datacode, string name, string type, int month, int year)
         {
