@@ -34,11 +34,12 @@
                             </div>
                         </form>*@
 
-                        @using (Html.BeginForm("Index", "IndexDatahub", new { area = "DatahubProfile" }))
+                        @*@using (Html.BeginForm("ScotlandIndex", "IndexDatahub", FormMethod.Post, new { vmDatahubViewModel = Model }))*@
+                        @using (Html.BeginForm("Data", "IndexDatahub"))
                         {
                             <div style="display: inline-block">
                                 <div class="form-group">
-                                        @Html.DropDownListFor(m => m.selectedcouncil, new SelectList(Model.ListCouncilName, "seedcode", "name"), "--- Council---")
+                                        @Html.DropDownListFor(m => m.selectedcouncil, Model.AvailableCouncis, "--- Council---")
                                     <button type="submit" class="btn btn-default">Submit</button>
                                 </div>
                                 

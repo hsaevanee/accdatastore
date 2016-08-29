@@ -53,7 +53,7 @@ namespace ACCDataStore.Helpers.ORM
                             .ConnectionString(c => c.DatabaseFile(sConnectionString))
                             .ShowSql
                         )
-                    .Mappings(m => m.FluentMappings.AddFromAssemblyOf<ACCDataStore.Entity.Mapping.MSAccess.DatahubDataMap>())
+                        .Mappings(m => m.FluentMappings.AddFromAssemblyOf<ACCDataStore.Entity.Mapping.MSAccess.DatahubDataObjMap>())
                     .BuildConfiguration();
                     break;
                 default:
@@ -124,7 +124,7 @@ namespace ACCDataStore.Helpers.ORM
                     .BuildConfiguration();
                     break;
                 default:
-                    sConnectionString = @"Server =" + sDbHost + ";Port=" + sDbPort + ";Database=" + sDbName + ";User ID=" + sDbUser + ";Password=" + sDbPassword + ";";
+                    sConnectionString = @"Server =" + sDbHost + ";Port=" + sDbPort + ";Database=" + sDbName + ";User ID=" + sDbUser + ";Password=" + sDbPassword + ";convert zero datetime=True";
                     configuration = Fluently
                         .Configure()
                         .Database(MySQLConfiguration
@@ -132,7 +132,7 @@ namespace ACCDataStore.Helpers.ORM
                             .ConnectionString(sConnectionString)
                             .ShowSql
                         )
-                    .Mappings(m => m.FluentMappings.AddFromAssemblyOf<ACCDataStore.Entity.Mapping.MySQL.LA100SchoolsMap>())
+                    .Mappings(m => m.FluentMappings.AddFromAssemblyOf<ACCDataStore.Entity.DatahubProfile.DatahubDataObj>())
                     .BuildConfiguration();
                     break;
             }

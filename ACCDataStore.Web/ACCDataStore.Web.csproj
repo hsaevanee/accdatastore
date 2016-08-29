@@ -245,6 +245,7 @@
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\ComparisonsIndex.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\HeatMapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\HighchartsCheat.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\HighchartsGraphsNew.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\HighchartsGraphs.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\IndexdatahubProfile.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\MapIndex.js" />
@@ -334,6 +335,7 @@
     <Compile Include="Areas\Authorisation\ViewModels\IndexAuthorisation\IndexViewModel.cs" />
     <Compile Include="Areas\DatahubProfile\Controllers\IndexDatahubController.cs" />
     <Compile Include="Areas\DatahubProfile\DatahubProfileAreaRegistration.cs" />
+    <Compile Include="Areas\DatahubProfile\Helpers\SummaryDataHelperCity.cs" />
     <Compile Include="Areas\DatahubProfile\Helpers\SummaryDataHelper.cs" />
     <Compile Include="Areas\DatahubProfile\Models\BenchmarkAjax.cs" />
     <Compile Include="Areas\DatahubProfile\Models\HistogramSeriesData.cs" />
@@ -536,6 +538,7 @@
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Comparisons\Comparisons.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Comparisons\_DataTables.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Map\MapIndex.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Data.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\About.cshtml" />

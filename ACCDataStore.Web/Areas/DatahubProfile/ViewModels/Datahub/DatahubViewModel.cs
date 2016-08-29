@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub
 {
@@ -15,7 +16,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub
         public IList<School> ListNeighbourhoodsName { get; set; }
         public IList<School> ListCouncilName { get; set; }
         public School selectedschool { get; set; }
-        public School selectedcouncil { get; set; }
+        public string selectedcouncil { get; set; }
         public string selectedschoolcode { get; set; } // for school dropdown list
         public string selectedneighbourhoods { get; set; } // for neighbourhood dropdown list
         public DatahubData AberdeencityData { get; set; }
@@ -30,6 +31,9 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub
         public List<PosNegSchoolList> summaryTableData { get; set; }
         public long benchmarkResults { get; set; }
         public List<SummaryDataViewModel> allCouncilTable { get; set; }
+        public SummaryDataViewModel CityData { get; set; }
+        public SummaryDataViewModel SelectedData { get; set; }
+        public IEnumerable<SelectListItem> AvailableCouncis { get; set; }
 
 
     }

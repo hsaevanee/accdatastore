@@ -9,5 +9,6 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Models
     {
         public string school { get; set; }
         public string neighbourhood { get; set; }
+        public string councilName { get; set; }
     }
 }

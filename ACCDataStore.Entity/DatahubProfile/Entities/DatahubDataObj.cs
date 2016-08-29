@@ -69,5 +69,6 @@ namespace ACCDataStore.Entity.DatahubProfile
         public virtual int Data_Month { get; set; }
         public virtual int Data_Year { get; set; }
     }
-    
+    public class DatahubDataGlasgow : DatahubDataObj { }
+    public class DatahubDataAberdeen : DatahubDataObj { }
 }

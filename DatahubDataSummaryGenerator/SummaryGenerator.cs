@@ -26,7 +26,11 @@ namespace DatahubDataSummaryGenerator
                         c => c.FromConnectionStringWithKey("ConnectionString")
                     )
                 )
-                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<ACCDataStore.Entity.DatahubProfile.AberdeenSummaryMap>())
+                .Mappings(m =>
+                
+                    m.FluentMappings.AddFromAssemblyOf<ACCDataStore.Entity.DatahubProfile.SummaryData>()
+                  
+                    )
                 .BuildSessionFactory();
         }
 
@@ -191,22 +195,26 @@ namespace DatahubDataSummaryGenerator
                     Console.WriteLine("Starting initial population...");
                     Stopwatch stopwatch_g = new Stopwatch();
                     stopwatch_g.Start();
-                    IList<DatahubDataObj> studentDataAllPeriods = session.QueryOver<DatahubDataObj>().List<DatahubDataObj>();
+                    //IList<DatahubDataObj> studentDataAllPeriods = session.QueryOver<DatahubDataObj>().List<DatahubDataObj>();
                     // Populate session
                     //initialPopulation(session); 
-                    var listOfDataZoneSummaries = session.QueryOver<SummaryData>().Where(x => x.type == "Data Zone").List<AberdeenSummary>();
-                    foreach(var item in listOfDataZoneSummaries)
-                    {
-                        var calculation = getSubsetStudentsByZone(session, studentDataAllPeriods, "data zone", item.dataCode, item.dataMonth, item.dataYear);
-                        AberdeenSummary currSummary = CalculateSummaryData(calculation, item.dataCode, item.dataCode, "Data Zone", item.dataMonth, item.dataYear);
-                        foreach(var prop in item.GetType().GetProperties()) 
-                        {
-                            if(prop.Name!="id") prop.SetValue(item, prop.GetValue(currSummary));
-                            
-                        }
-                        session.Update(item);
-                    }
+                    //var listOfDataZoneSummaries = session.QueryOver<SummaryData>().Where(x => x.type == "Data Zone").List<AberdeenSummary>();
+                    //foreach(var item in listOfDataZoneSummaries)
+                    //{
+                    //    var calculation = getSubsetStudentsByZone(session, studentDataAllPeriods, "data zone", item.dataCode, item.dataMonth, item.dataYear);
+                    //    AberdeenSummary currSummary = CalculateSummaryData(calculation, item.dataCode, item.dataCode, "Data Zone", item.dataMonth, item.dataYear);
+                    //    foreach(var prop in item.GetType().GetProperties()) 
+                    //    {
+                    //        if(prop.Name!="id") prop.SetValue(item, prop.GetValue(currSummary));
 
+                    //    }
+                    //    session.Update(item);
+                    //}
+
+                    //var test = session.QueryOver<DatahubDataAberdeen>().List<DatahubDataAberdeen>();
+                    //var testa = session.QueryOver<DatahubDataGlasgow>().List<DatahubDataGlasgow>();
+
+                    SummaryGeneratorHelper.initialPopulationForCouncil<DatahubDataGlasgow>(session);
 
                     Stopwatch stopwatch_t = new Stopwatch();
                     Console.WriteLine("Starting transaction...");

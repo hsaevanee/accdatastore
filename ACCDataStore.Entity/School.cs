@@ -12,6 +12,8 @@ namespace ACCDataStore.Entity
         public string name { get; set; }
         public string schooltype { get; set; }
 
+        public School() { }
+
         public School(string seedcode, string name)
         {
             this.seedcode = seedcode;
