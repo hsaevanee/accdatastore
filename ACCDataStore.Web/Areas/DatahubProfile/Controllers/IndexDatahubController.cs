@@ -104,18 +104,22 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             return View("ScotlandIndex", vmDatahubViewModel);
         }
 
-        public ActionResult Data(string schoolsubmitButton, string neighbourhoodssubmitButton, string name, int? month, int? year)
+        public ActionResult Data(string schoolsubmitButton, string neighbourhoodssubmitButton, int? month, int? year)
         {
             var sup = Request;
             // Should be able to specify which city, month and year are we interested in
             // Timer to benchmark loading
             Stopwatch timer = new Stopwatch();
             timer.Start();
-            name = Request["selectedcouncil"];
+            string name = Request["selectedcouncil"];
             //We dont use these for now
-            
-            IList<School> allCouncils = GetListCouncilname();
 
+            if (name == null)
+            {
+                return RedirectToAction("ScotlandIndex");
+            }
+            IList<School> allCouncils = GetListCouncilname();
+            Session["Council"] = name;
 
             //Declare variables we are going to use
             SummaryDataViewModel councilData = null;
@@ -1634,9 +1638,25 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             return temp;
         }
 
+
+        // BEGIN MAP PART
+
+        public ActionResult Map()
+        {
+            return View("Map");
+        }
+        
+        /// <summary>
+        /// Retrieves percentage data for datazones for particular city
+        /// </summary>
+        /// <param name="datasetname">Participating, NonParticipating, Unknown</param>
+        /// <returns></returns>
         public JsonResult GetdataforHeatmapDatazone(string datasetname)
         {
-            IList<SummaryDataViewModel> allSummaryDataZoneVM = Helper.GetSummaryDataForAllDataZones<AberdeenSummary>(08, 2016);
+            var sessionParameters = Session["ViewModelParams"] as ViewModelParams;
+            string name = sessionParameters.councilName;
+
+            IList<SummaryDataViewModel> allSummaryDataZoneVM = Helper2.ByName(name).GetSummaryDataForAllDataZones(8, 2016);
             IList<decimal> percentageData = new Collection<decimal>();
 
             if (datasetname.Equals("Participating"))

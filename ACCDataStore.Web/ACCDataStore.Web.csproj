@@ -537,7 +537,7 @@
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\ScotlandIndex.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Comparisons\Comparisons.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Comparisons\_DataTables.cshtml" />
-    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Map\MapIndex.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Map.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Data.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
@@ -555,6 +555,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Achievement\Models\" />
     <Folder Include="Areas\Authorisation\Models\" />
+    <Folder Include="Areas\DatahubProfile\Views\IndexDatahub\Map\" />
     <Folder Include="Areas\InsightProfile\Models\" />
     <Folder Include="Areas\Nationality\Models\" />
     <Folder Include="Areas\PupilsPopulation\Models\" />

@@ -104,8 +104,15 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Helpers
         /// <returns>A SummaryDataViewModel object</returns>
         public SummaryDataViewModel GetSummaryDataForCouncil(int month, int year)
         {
-            var result = repository.QueryOver<T>().Where(x => x.type == "Council" && x.dataMonth == month && x.dataYear == year).SingleOrDefault();
-            return new SummaryDataViewModel(result);
+            try
+            {
+                var result = repository.QueryOver<T>().Where(x => x.type == "Council" && x.dataMonth == month && x.dataYear == year).SingleOrDefault();
+                return new SummaryDataViewModel(result);
+            }
+            catch(Exception e)
+            {
+                return null;
+            }
         }
 
         /// <summary>

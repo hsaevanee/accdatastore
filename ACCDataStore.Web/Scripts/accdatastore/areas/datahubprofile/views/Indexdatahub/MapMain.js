@@ -354,7 +354,7 @@ function loadData(datasetname) {
 
     $.ajax({
         type: "POST",
-        url: sContextPath + "DatahubProfile/IndexDatahub/GetdataforHeatmap",
+        url: sContextPath + "DatahubProfile/IndexDatahub/GetdataforHeatmapDatazone",
         data: JSON.stringify(JSONObject),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
