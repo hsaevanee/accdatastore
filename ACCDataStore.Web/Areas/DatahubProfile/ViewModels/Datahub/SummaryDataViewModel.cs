@@ -8,6 +8,9 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub
 {
     public class SummaryDataViewModel
     {
+        // We should be able to instantiate an empty symmarydataviewmodel if the summaryData that comes from the
+        // database is null or an exception is thrown
+        public SummaryDataViewModel() { }
         public SummaryDataViewModel(SummaryData summaryData)
         {
             this.name = summaryData.name;
