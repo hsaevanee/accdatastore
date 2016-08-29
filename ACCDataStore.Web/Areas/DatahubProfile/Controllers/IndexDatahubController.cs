@@ -1634,9 +1634,25 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             return temp;
         }
 
+
+        // BEGIN MAP PART
+
+        public ActionResult Map()
+        {
+            return View("Map");
+        }
+        
+        /// <summary>
+        /// Retrieves percentage data for datazones for particular city
+        /// </summary>
+        /// <param name="datasetname">Participating, NonParticipating, Unknown</param>
+        /// <returns></returns>
         public JsonResult GetdataforHeatmapDatazone(string datasetname)
         {
-            IList<SummaryDataViewModel> allSummaryDataZoneVM = Helper.GetSummaryDataForAllDataZones<AberdeenSummary>(08, 2016);
+            var sessionParameters = Session["ViewModelParams"] as ViewModelParams;
+            string name = sessionParameters.councilName;
+
+            IList<SummaryDataViewModel> allSummaryDataZoneVM = Helper2.ByName(name).GetSummaryDataForAllDataZones(8, 2016);
             IList<decimal> percentageData = new Collection<decimal>();
 
             if (datasetname.Equals("Participating"))
