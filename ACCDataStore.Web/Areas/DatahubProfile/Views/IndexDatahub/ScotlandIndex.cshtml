@@ -1,10 +1,13 @@
 ﻿@model ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub.DatahubViewModel
+@using Newtonsoft.Json
 @section Header {
     <script  src="~/Scripts/jquery.js"></script>
     <script  src="~/Scripts/highcharts.js"></script>
     <script  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDryCUbMmTBoPQ2o0FsBDg6OnvlFsnCU4Q"></script>
     <script  src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/ScotlandIndexMain.js"></script>
-    <script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/HighchartsCheat.js"></script> 
+    <script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/HighchartsGraphsNew.js"></script> 
+    <script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/CouncilSelector.js"></script>
+    <script>var councilList = @Html.Raw(JsonConvert.SerializeObject(this.Model.ListCouncilName));</script>
 }
 @{
     //Wider Achievement
@@ -39,7 +42,13 @@
                         {
                             <div style="display: inline-block">
                                 <div class="form-group">
-                                        @Html.DropDownListFor(m => m.selectedcouncil, Model.AvailableCouncis, "--- Council---")
+                                        @*@Html.DropDownListFor(m => m.selectedcouncil, Model.ListCouncilName.Select(x => x.name).ToList(), "--- Council---")*@
+                                    <select id="council-selection" name="selectedcouncil">
+                                        @foreach (var name in Model.ListCouncilName)
+                                        {
+                                            <option>@name.name</option>
+                                        }
+                                    </select>
                                     <button type="submit" class="btn btn-default">Submit</button>
                                 </div>
                                 
@@ -52,7 +61,7 @@
         </div>
     <div class="row">
         <div class="col-md-12">
-            <h2>Scotland Monthly Particapation</h2>
+            <h2>Scotland Monthly Participation</h2>
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <tr>
@@ -64,7 +73,7 @@
                     @foreach (var data in Model.allCouncilTable)
                     { 
                         <tr>
-                            <td>@data.name</td>
+                            <td><a style="cursor: pointer" onclick="selectCouncil(this.firstChild.nodeValue)">@data.name</a></td>
                             <td>@Math.Round(data.Participating(), 2)</td>
                             <td>@Math.Round(data.NotParticipating(), 2)</td>
                             <td>@Math.Round(data.Percentage(data.allPupilsInUnknown), 2)</td>

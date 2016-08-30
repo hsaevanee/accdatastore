@@ -67,13 +67,24 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             Session.Clear();
             DateTime currentTime = DateTime.Now; // This wont work next month!
             vmDatahubViewModel.allCouncilTable = new List<SummaryDataViewModel>();
+            vmDatahubViewModel.ListCouncilName = Helper2.GetAllCouncilList();
 
             // Begin section "CHEAT" :D
             // We should have a method in the city helper that calculates this for all available councils
             string[] councils = new string[2] { "S12000033", "S12000033" };
-            foreach (string council in councils)
+            foreach (School council in vmDatahubViewModel.ListCouncilName)
             {
-                vmDatahubViewModel.allCouncilTable.Add(Helper.GetSummaryDataForCouncil<AberdeenSummary>(council, currentTime.Month, currentTime.Year));
+                SummaryDataViewModel oneCouncilRes;
+                try {
+                    oneCouncilRes = Helper2.ByName(council.name).GetSummaryDataForCouncil(8, 2016);
+                }
+                catch
+                {
+                    SummaryData TempData = new SummaryData();
+                    TempData.name = council.name;
+                    oneCouncilRes = new SummaryDataViewModel(TempData);
+                }
+                vmDatahubViewModel.allCouncilTable.Add(oneCouncilRes);
             }
 
             // Should implement a helper to get available councils
@@ -201,6 +212,10 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             Stopwatch timer = new Stopwatch();
             timer.Start();
             ViewModelParams selectionParams = Session["ViewModelParams"] as ViewModelParams;
+            if (selectionParams == null)
+            {
+                selectionParams = new ViewModelParams();
+            }
             //List<DatahubDataObj> allStudentData = Getlistpupil(this.rpGeneric2nd);
             //DatahubData CityData = CreatDatahubdata(allStudentData, "100");
             SummaryDataViewModel CityData = Helper.GetSummaryDataForCouncil<AberdeenSummary>("S12000033", 08, 2016);
@@ -1800,6 +1815,12 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
         }
 
         // END OF MAP ACTIONS
+
+
+        public JsonResult GetScotlandLineGraph()
+        {
+            return Json(Helper2.GetScotlandSummary(8, 2016), JsonRequestBehavior.AllowGet);
+        }
 
     }
 }

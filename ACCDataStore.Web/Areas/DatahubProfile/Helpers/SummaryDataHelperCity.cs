@@ -42,6 +42,57 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Helpers
         }
 
         /// <summary>
+        /// Retrieves a list of all council names.
+        /// </summary>
+        /// <returns>IList of School objects containing council data.</returns>
+        public IList<School> GetAllCouncilList()
+        {
+            IList<School> results = this.repository.QueryOver<CouncilObj>().List().Select(x => new School { name = x.Name, seedcode = x.Reference }).ToList();
+            return results;
+        }
+
+        public SummaryDataViewModel GetScotlandSummary(int month, int year)
+        {
+            SummaryData dummy = new SummaryData();
+            List<string> exclussions = new List<string>();
+            string[] cities = new string[2] { "aberdeen city", "glasgow city" };
+            exclussions.Add("name");
+            exclussions.Add("dataCode");
+            exclussions.Add("type");
+            dummy.name = "Scotland";
+            dummy.dataCode = "SC0000001";
+            dummy.type = "National";
+            foreach (var prop in dummy.GetType().GetProperties())
+            {
+                if (!exclussions.Contains(prop.Name))
+                {
+                    prop.SetValue(dummy, 0);
+                }
+            }
+            SummaryDataViewModel allScotland = new SummaryDataViewModel(dummy);
+            List<SummaryDataViewModel> allCouncils = new List<SummaryDataViewModel>();
+            foreach (string city in cities)
+            {
+                allCouncils.Add(ByName(city).GetSummaryDataForCouncil(month, year));
+            }
+            foreach (SummaryDataViewModel council in allCouncils)
+            {
+                foreach (var prop in council.GetType().GetProperties())
+                {
+                    if (prop.PropertyType == typeof(int))
+                    {
+                        prop.SetValue(allScotland, ((int)prop.GetValue(allScotland) + (int)prop.GetValue(council)));
+                    }
+                    if (prop.PropertyType == typeof(double))
+                    {
+                        prop.SetValue(allScotland, ((double)prop.GetValue(allScotland) + (double)prop.GetValue(council)));
+                    }
+                }
+            }
+            return allScotland;
+        }
+
+        /// <summary>
         /// Check whether the specified council name is valid
         /// </summary>
         /// <param name="name">Council name</param>
@@ -238,6 +289,8 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Helpers
             IList<School> result = this.repository.QueryOver<DataZoneObj>().Where(x => x.Reference_Council == this.councilId).List().Select(x => new School { seedcode = x.Reference, name = x.Reference, schooltype = "Data Zone" }).ToList();
             return result;
         }
+
+        
 
         /// <summary>
         /// Helper method used to convert IList of SummaryData objects to IList of SummaryDataViewModel objects
