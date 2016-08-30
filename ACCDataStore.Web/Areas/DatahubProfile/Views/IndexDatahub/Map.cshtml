@@ -1,20 +1,25 @@
-﻿@model ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub.DatahubViewModel
+﻿@model ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub.CurrentCouncil
+@using Newtonsoft.Json
 @section Header {
     <!-- Bootstrap Core JavaScript -->
-<script src="~/Scripts/jquery.js"></script>
-<script src="~/Scripts/jquery-ui.min-1.11.1.js"></script>
+    <script src="~/Scripts/jquery.js"></script>
+    <script src="~/Scripts/jquery-ui.min-1.11.1.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jQuery-ui-Slider-Pips/1.11.3/jquery-ui-slider-pips.min.js" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-ui-Slider-Pips/1.11.3/jquery-ui-slider-pips.min.js"></script>
-<script src="~/Scripts/bootstrap.min.js"></script>
-<script src="~/Scripts/highcharts.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/highcharts.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDryCUbMmTBoPQ2o0FsBDg6OnvlFsnCU4Q"></script>
+    <script>
+        var currentCouncil = @Html.Raw(JsonConvert.SerializeObject(this.Model)); console.log(currentCouncil)
+    </script>
     <script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/MapMain.js"></script>
     @*<script src="http://code.highcharts.com/maps/modules/data.js"></script>*@
     @*<script src="http://code.highcharts.com/maps/modules/exporting.js"></script>*@
-@*<script src="~/Scripts/accdatastore/views/Datazone_with_Desc.js"></script>*@
-@*<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-lightness/jquery-ui.css" />*@
+    @*<script src="~/Scripts/accdatastore/views/Datazone_with_Desc.js"></script>*@
+    @*<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-lightness/jquery-ui.css" />*@
 
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/flick/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/flick/jquery-ui.css">
+    
     <style type="text/css">
 
     .nicebox {
@@ -30,20 +35,20 @@
         border: rgb(229, 229, 229) 1px solid;
     }
 
-    #data-box {
-        /*top: 15px;
-        left: 480px;*/
-        height: 45px;
-        line-height: 45px;
-        display: none;
-    }
+#data-box {
+    /*top: 15px;
+    left: 480px;*/
+    height: 45px;
+    line-height: 45px;
+    display: none;
+}
 
 
     #legend {
         display: flex;
-        display: -webkit-box;
-        padding-top: 7px;
-    }
+                display: -webkit-box;
+                padding-top: 7px;
+            }
 
     .color-key {
         background: linear-gradient(to right, hsl(5, 69%, 54%) 0%, hsl(29, 71%, 51%) 17%, hsl(54, 74%, 47%) 33%, hsl(78, 76%, 44%) 50%, hsl(102, 78%, 41%) 67%, hsl(127, 81%, 37%) 83%, hsl(151, 83%, 34%) 100%);
@@ -55,13 +60,13 @@
         line-height: 1.0em;
     }
 
-    #data-value {
+#data-value {
         font-size: 1.0em;
         font-weight: bold;
     }
 
-    #data-label {
-        font-size: 1.0em;
+#data-label {
+    font-size: 1.0em;
         font-weight: normal;
         /*padding-right: 10px;*/
     }

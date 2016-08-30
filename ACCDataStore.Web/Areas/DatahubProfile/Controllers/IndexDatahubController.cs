@@ -40,25 +40,6 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             this.Helper = new SummaryDataHelper(rpGeneric2nd);
             this.Helper2 = new CouncilHelper(rpGeneric2nd);
         }
-
-        
-
-        public ActionResult IndexCoucil(string sCouncilname, string sCouncilcode)
-        {
-            //var eGeneralSettings = TS.Core.Helper.ConvertHelper.XmlFile2Object(HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"), typeof(GeneralCounter)) as GeneralCounter;
-            //eGeneralSettings.CurriculumpgCounter++;
-            //TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
-            var vmDatahubViewModel = new DatahubViewModel();
-            IList<School> allCouncils = GetListCouncilname();
-            //MonthOnMonthOverview(rpGeneric2nd);            
-            //vmDatahubViewModel.selectedcouncil = allCouncils.Where(x => x.seedcode.Equals(sCouncilcode)).FirstOrDefault();
-            Session["Council"] = vmDatahubViewModel.selectedcouncil;
-            vmDatahubViewModel.ListSchoolNameData = GetListSchoolname();
-            vmDatahubViewModel.ListNeighbourhoodsName = GetListNeighbourhoodsname(rpGeneric2nd);
-
-
-            return View("index2", vmDatahubViewModel);
-        }
      
 
         public ActionResult IndexHome()
@@ -202,6 +183,8 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
             }
 
+            IList<School> allDataZonesList = Helper2.ByName(name).GetDataZonesList();
+            Session["CurrentCouncil"] = new CurrentCouncil(name, allSchoolsList, allIntermediateZonesList, allDataZonesList);
             // Stop timer and add benchmark results to viewmodel
             timer.Stop();
             viewModel.benchmarkResults = timer.ElapsedMilliseconds;
@@ -411,8 +394,26 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             combinedData.benchmarkResults = timer.ElapsedMilliseconds;
             return Json(combinedData, JsonRequestBehavior.AllowGet);
         }
-        //End redesign
+        //END OF REDESIGN
 
+        //BEGIN LEGACY CODE [WARNING: CONTAINS ACTIONS RESPONSIBLE FOR PUPIL DATA (DO NOT DELETE THESE!; note: need to be reimplemented to map to the correct datahub student data table)
+
+        public ActionResult IndexCoucil(string sCouncilname, string sCouncilcode)
+        {
+            //var eGeneralSettings = TS.Core.Helper.ConvertHelper.XmlFile2Object(HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"), typeof(GeneralCounter)) as GeneralCounter;
+            //eGeneralSettings.CurriculumpgCounter++;
+            //TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
+            var vmDatahubViewModel = new DatahubViewModel();
+            IList<School> allCouncils = GetListCouncilname();
+            //MonthOnMonthOverview(rpGeneric2nd);            
+            //vmDatahubViewModel.selectedcouncil = allCouncils.Where(x => x.seedcode.Equals(sCouncilcode)).FirstOrDefault();
+            Session["Council"] = vmDatahubViewModel.selectedcouncil;
+            vmDatahubViewModel.ListSchoolNameData = GetListSchoolname();
+            vmDatahubViewModel.ListNeighbourhoodsName = GetListNeighbourhoodsname(rpGeneric2nd);
+
+
+            return View("index2", vmDatahubViewModel);
+        }
 
         public ActionResult Index(string schoolsubmitButton, string neighbourhoodssubmitButton)
         {
@@ -1352,10 +1353,10 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             wrapper.benchmarkResults = timer.ElapsedMilliseconds;
             return Json(wrapper, JsonRequestBehavior.AllowGet);
         }
-
-        // BEGIN MESS
+        // END OF LEGACY CODE
         
 
+        // BEGIN MESS
         public ActionResult ApiTestQQQ()
         {
             //var currentSummary = this.rpGeneric2nd.QueryOver<AberdeenSummary>().Where(x => x.type == "Council" && x.dataMonth == 08 && x.dataYear == 2016).SingleOrDefault();
@@ -1410,7 +1411,8 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             
         }
 
-        // END MESS
+        // END OFMESS
+
         // BEGIN MERGE
         public ActionResult GetGeoJSON(string id)
         {
@@ -1510,6 +1512,9 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
             return result;
         }
+
+        // TBI - To be implemented :D
+
         // Comparisons
         //public ActionResult Comparisons()
         //{
@@ -1638,86 +1643,92 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             return temp;
         }
 
+        // END OF MERGE
 
-        // BEGIN MAP PART
+        // BEGIN MAP ACTIONS
 
         public ActionResult Map()
         {
-            return View("Map");
+            CurrentCouncil currentCouncil = Session["CurrentCouncil"] as CurrentCouncil;
+            return View("Map", currentCouncil);
         }
-        
+
         /// <summary>
-        /// Retrieves percentage data for datazones for particular city
+        /// This action is responsible for retrieval of data needed for the heatmap
         /// </summary>
-        /// <param name="datasetname">Participating, NonParticipating, Unknown</param>
-        /// <returns></returns>
-        public JsonResult GetdataforHeatmapDatazone(string datasetname)
+        /// <param name="datasetname">Accepted values: Participating, Not-Participating or Unknown</param>
+        /// <param name="type">Accepted values: School, Intermediate Zone, Data Zone</param>
+        /// <param name="name">Accepted values: Councils names for which we have data</param>
+        /// <returns>JSON object with datacodes, percentages of students in current dataset subdivision (check datasetname parameter), min percentage and max percentage</returns>
+        public JsonResult GetHeatmapData(string datasetname, string type, string name)
         {
-            var sessionParameters = Session["ViewModelParams"] as ViewModelParams;
-            string name = sessionParameters.councilName;
+            // Should we get the name from the session or from action parameter?
+            // Note: sticking to sSession should do the trick for now
+            // Just kidding, I want to be able to test this from Postman (a really intuitive tool for testing rest api's)
+            //var sessionParameters = Session["ViewModelParams"] as ViewModelParams;
+            //string name = sessionParameters.councilName;
 
-            IList<SummaryDataViewModel> allSummaryDataZoneVM = Helper2.ByName(name).GetSummaryDataForAllDataZones(8, 2016);
-            IList<decimal> percentageData = new Collection<decimal>();
-
-            if (datasetname.Equals("Participating"))
+            try
             {
+                // Should we move to IEnumerable from IList?
+                // "IEnumerable<T> represents a series of items that you can iterate over (using foreach, for example), 
+                // whereas IList<T> is a collection that you can add to or remove from." - StackOverflow, user: Matt Hamilton
+                // Note: IEnumberable does not countain Count() method but provides easier iteration
 
-                percentageData = allSummaryDataZoneVM.Select(x => x.Participating()).ToList();
+                // Begin get currentSelection
+                IList<SummaryDataViewModel> currentSelection = new Collection<SummaryDataViewModel>();
+
+                switch (type.ToLower())
+                {
+                    case "data zone":
+                        currentSelection = Helper2.ByName(name).GetSummaryDataForAllDataZones(8, 2016);
+                        break;
+                    case "intermediate zone":
+                        currentSelection = Helper2.ByName(name).GetSummaryDataForAllIntermediateZones(8, 2016);
+                        break;
+                    case "school":
+                        currentSelection = Helper2.ByName(name).GetSummaryDataForAllSchools(8, 2016);
+                        break;
+                    default:
+                        throw new ArgumentException();
+                }
+                
+
+                // Begin calculate data percentages
+                IList<decimal> percentageData = new Collection<decimal>();
+
+                if (datasetname.Equals("Participating"))
+                {
+                    percentageData = currentSelection.Select(x => x.Participating()).ToList();
+                }
+                else if (datasetname.Equals("Not-Participating"))
+                {
+                    percentageData = currentSelection.Select(x => x.NotParticipating()).ToList();
+                }
+                else if(datasetname.Equals("Unknown"))
+                {
+                    percentageData = currentSelection.Select(x => x.Percentage(x.allPupilsInUnknown)).ToList();
+                }
+
+                // Begin format result
+                var result = new
+                {
+                    datacode = currentSelection.Select(x => x.dataCode).ToList(), // We dont really need this line, as this is passed to the map view model
+                    data = percentageData,
+                    minimum = percentageData.Min(),
+                    maximum = percentageData.Max(),
+                };
+
+                return Json(result, JsonRequestBehavior.AllowGet);
             }
-            else if (datasetname.Equals("Not-Participating"))
+            catch (Exception ex)
             {
-                percentageData = allSummaryDataZoneVM.Select(x => x.NotParticipating()).ToList();
+                // We shouldn't probably expose this information for the public version
+                return ThrowJSONError(ex);
             }
-            else
-            {
-
-                percentageData = allSummaryDataZoneVM.Select(x => x.Percentage(x.allPupilsInUnknown)).ToList();
-            }
-
-            var result = new
-            {
-                datacode = allSummaryDataZoneVM.Select(x => x.dataCode).ToList(),
-                data = percentageData,
-                minimum = percentageData.Min(),
-                maximum = percentageData.Max(),
-            };
-
-
-            return Json(result, JsonRequestBehavior.AllowGet);
-            //try
-            //{
-
-            //    if (datasetname.Equals("Participating"))
-            //    {
-
-            //        tempdata = Listdatahubdata.Select(x => x.Participating()).ToList();
-            //    }
-            //    else if (datasetname.Equals("Not-Participating"))
-            //    {
-            //        tempdata = Listdatahubdata.Select(x => x.NotParticipating()).ToList();
-            //    }
-            //    else
-            //    {
-
-            //        tempdata = Listdatahubdata.Select(x => x.Percentage(x.pupilsinUnknown)).ToList();
-            //    }
-
-            //    data = new
-            //    {
-            //        datacode = Listdatahubdata.Select(x => x.datacode).ToList(),
-            //        data = tempdata,
-            //        minimum = tempdata.Min(),
-            //        maximum = tempdata.Max(),
-            //    };
-
-            //    return Json(data, JsonRequestBehavior.AllowGet);
-
-            //}
-            //catch (Exception ex)
-            //{
-            //    return ThrowJSONError(ex);
-            //}
         }
+
+        // END OF MAP ACTIONS
 
     }
 }
