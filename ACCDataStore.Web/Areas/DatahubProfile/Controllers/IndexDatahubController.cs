@@ -1748,7 +1748,31 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
         public JsonResult GetScotlandLineGraph()
         {
-            return Json(Helper2.GetScotlandSummary(8, 2016), JsonRequestBehavior.AllowGet);
+            string[] monthname = new string[12] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+            int month = 8;
+            int year = 2016;
+            HistogramSeriesData oneMonthOutput = new HistogramSeriesData();
+            oneMonthOutput.name = "Scotland";
+            oneMonthOutput.participating = new List<double>();
+            oneMonthOutput.notParticipating = new List<double>();
+            oneMonthOutput.unknown = new List<double>();
+            oneMonthOutput.months = new List<string>();
+            while (oneMonthOutput.participating.Count < 1)
+            {
+                //month++;
+                //if (month > 12)
+                //{
+                //    month = 0;
+                //    year++;
+                //}
+                SummaryDataViewModel oneMonth = Helper2.GetScotlandSummary(month, year);
+                oneMonthOutput.months.Add(monthname[month - 1]);
+                oneMonthOutput.participating.Add((double)oneMonth.Participating());
+                oneMonthOutput.notParticipating.Add((double)oneMonth.NotParticipating());
+                oneMonthOutput.unknown.Add((double)oneMonth.Percentage(oneMonth.unknownFemale + oneMonth.unknownMale + oneMonth.unknownUnspecified));
+            }
+
+            return Json(oneMonthOutput, JsonRequestBehavior.AllowGet);
         }
 
     }

@@ -73,7 +73,11 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Helpers
             List<SummaryDataViewModel> allCouncils = new List<SummaryDataViewModel>();
             foreach (string city in cities)
             {
-                allCouncils.Add(ByName(city).GetSummaryDataForCouncil(month, year));
+                var tempCouncilData = ByName(city);
+                if (tempCouncilData != null)
+                {
+                    allCouncils.Add(tempCouncilData.GetSummaryDataForCouncil(month, year));
+                }
             }
             foreach (SummaryDataViewModel council in allCouncils)
             {
