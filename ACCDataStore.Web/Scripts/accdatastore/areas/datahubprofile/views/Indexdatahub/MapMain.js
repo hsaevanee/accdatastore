@@ -1,32 +1,51 @@
-﻿var map;
+﻿//var map;
 var data1;
 var datag;
 
-$(document).ready(function () {
-    //$.getJSON("http://localhost:2777/DatahubProfile/IndexDatahub/ApiJsonTest").done(function (data) {
-    //    console.log("second success");
-    //    data1 = data;
-    //    loadData("Participating");
-    //}).error(function (jqXHR, textStatus, errorThrown) {
-    //    console.log("error " + textStatus);
-    //    console.log("incoming Text " + jqXHR.responseText);
-    //}).always(function () {
-    //    console.log("complete");
-    //});
-    loadData("Participating");
+var schools = new google.maps.Data();
+var intermediateZones = new google.maps.Data();
+var dataZones = new google.maps.Data();
 
-    var dataZoneList = [];
-    //$.getJSON(sContextPath + "DatahubProfile/IndexDatahub/GetDatazonesByCouncilName?councilName=Glasgow City").done(function (data) {
-    //    data.forEach(function (item) {
-    //        $.getJSON(sContextPath + "DatahubProfile/IndexDatahub/GetGeoJSON?id=" + item).done(function (data) {
-    //            dataZoneList.push(data);
-    //        })
-    //    })
-    //}).error(function (jqXHR, textStatus, errorThrown) {
-    //    console.log("error " + textStatus);
-    //    console.log("incoming Text " + jqXHR.responseText);
-    //});
+var map;
+function HandleSelection()
+{
+    $("#selectedtype").change(function () {
+        var type = $('#selectedtype :selected').text();
+        if (type == "Intermediate Zones") {
+            currentCouncil.intermediateZones.forEach(function (item) {
+                $.getJSON(sContextPath + "DatahubProfile/IndexDatahub/GetGeoJSON?id=" + item.seedcode).done(function (data) {
+                    //console.log(data);
+                    console.log(item.seedcode);
+                    map.data.addGeoJson(data);
+                })
+            })
+
+        } else if (type == "Data Zones") {
+            var jqxhr = $.getJSON(sContextPath + "DatahubProfile/IndexDatahub/GetDataZonesByCouncilName?councilName=" + currentCouncil.name).done(function (data) {
+                data.forEach(function (item) {
+                    $.getJSON(sContextPath + "DatahubProfile/IndexDatahub/GetGeoJSON?id=" + item).done(function (data) {
+                        //console.log(data);
+                        console.log("12");
+                        map.data.addGeoJson(data);
+                    })
+                })
+            }).error(function (jqXHR, textStatus, errorThrown) {
+                console.log("error " + textStatus);
+                console.log("incoming Text " + jqXHR.responseText);
+            })
+        }
+    })
+
+}
+
+$(document).ready(function () {
+    $.when(InitMap(map)).then(
+        
+        );
+    //loadData("Participating");
     
+    
+
     $(document.body).on('click', '.a-close-popup-information', function () {
         $("#popup-information").hide(250);
     });
@@ -46,6 +65,77 @@ $(document).ready(function () {
         $('#thresholdViewCenter').val(getAverage(datag.data));
     });
 });
+
+function loadDataZones(map)
+{
+    //council.
+    var jqxhr = $.getJSON(sContextPath + "DatahubProfile/IndexDatahub/GetDatazonesByCouncilName?councilName=" + currentCouncil.name).done(function (data) {
+        data.forEach(function (item) {
+            $.getJSON(sContextPath + "DatahubProfile/IndexDatahub/GetGeoJSON?id=" + item).done(function (data) {
+                //console.log(data);
+                dataZones.addGeoJson(data);
+            })
+        })
+    }).error(function (jqXHR, textStatus, errorThrown) {
+        console.log("error " + textStatus);
+        console.log("incoming Text " + jqXHR.responseText);
+    })
+
+}
+function InitMap(map) {
+    var url = "https:\/\/maps.googleapis.com/maps/api/geocode/json?&address=" + currentCouncil.name + ",Scotland,UK";
+    var mapCenter;
+
+    var jqxhr = $.getJSON(url, function (result) {
+        
+        mapCenter = result.results[0].geometry.location;
+        var sw = result.results[0].geometry.bounds.southwest;
+        ne = result.results[0].geometry.bounds.northeast;
+        mapBounds = new google.maps.LatLngBounds(sw, ne);
+         
+        //console.log(result);
+    })
+    
+    jqxhr.complete(function (data) {
+        console.log("complete")
+        console.log(mapCenter);
+        map = new google.maps.Map(document.getElementById('map-canvas'), {
+            center: mapCenter
+        });
+        map.fitBounds(mapBounds);
+        loadDataZones(map)
+        $("#selectedtype").change(function () {
+            map.data.forEach(function (feature) {
+                map.data.remove(feature);
+            })
+            var type = $('#selectedtype :selected').text();
+            if (type == "Intermediate Zones") {
+                currentCouncil.intermediateZones.forEach(function (item) {
+                    $.getJSON(sContextPath + "DatahubProfile/IndexDatahub/GetGeoJSON?id=" + item.seedcode).done(function (data) {
+                        //console.log(data);
+                        console.log(item.seedcode);
+                        map.data.addGeoJson(data);
+                    })
+                })
+
+            } else if (type == "Data Zones") {
+                var jqxhr = $.getJSON(sContextPath + "DatahubProfile/IndexDatahub/GetDataZonesByCouncilName?councilName=" + currentCouncil.name).done(function (data) {
+                    data.forEach(function (item) {
+                        $.getJSON(sContextPath + "DatahubProfile/IndexDatahub/GetGeoJSON?id=" + item).done(function (data) {
+                            //console.log(data);
+                            console.log("12");
+                            map.data.addGeoJson(data);
+                        })
+                    })
+                }).error(function (jqXHR, textStatus, errorThrown) {
+                    console.log("error " + textStatus);
+                    console.log("incoming Text " + jqXHR.responseText);
+                })
+            }
+        })
+    });
+}
+
 
 // initialize spinner on ajax loading
 function InitSpinner() {
@@ -199,8 +289,10 @@ function getAverage(data) {
     var avg = sum / data.length;
     return avg;
 }
+
+
 // initialize map object
-function InitMap(data) {
+function InitMapNew(data) {
     datag = data;
     createSlider(Math.round(getAverage(datag.data)));
     $('#averageText').append(' ' + getAverage(datag.data))
@@ -337,7 +429,7 @@ function InitMap(data) {
     });
 
     map.data.addListener('click', function (kmlEvent) {
-        SearchData(kmlEvent.feature.getProperty('DZ_CODE'), "ZoneCode");
+        SearchData(kmlEvent.feature.getProperty('DZ_CODE'), "data zone");
     });
 
 }
@@ -378,13 +470,13 @@ function ShowPopupInformation(sInformation) {
 // call server side method via ajax
 function SearchData(sCondition, sKeyname) {
     var JSONObject = {
-        "keyvalue": sCondition,
-        "keyname": sKeyname
+        "type": sKeyname,
+        "code": sCondition
     }
 
     $.ajax({
         type: "POST",
-        url: sContextPath + "DatahubProfile/IndexDatahub/SearchByName",
+        url: sContextPath + "DatahubProfile/IndexDatahub/MapDataForSelection",
         data: JSON.stringify(JSONObject),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -518,7 +610,7 @@ function ShowPopupInfo(data) {
     sInformation += "<h4 class='text-center'>" + data.dataTitle + "</h4>";
     sInformation += "</div><div class='panel-body'>";
     sInformation += "<table class='table table-bordered table-hover'>";
-    sInformation += "<thead><tr><th> </th><th class='text-center'>" + data.schoolname + "</th><th class='text-center'> Glasgow City </th></tr></thead>";
+    sInformation += "<thead><tr><th> </th><th class='text-center'>" + data.schoolname + "</th><th class='text-center'>" + currentCouncil.name +"</th></tr></thead>";
     sInformation += "<tbody>";
     if (data.dataCategories.length != 0) {
         for (var i = 0; i < data.dataCategories.length; i++) {
