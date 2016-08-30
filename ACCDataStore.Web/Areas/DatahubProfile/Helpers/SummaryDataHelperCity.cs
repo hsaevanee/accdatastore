@@ -240,6 +240,16 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Helpers
         }
 
         /// <summary>
+        /// Retrieves a list of all council names.
+        /// </summary>
+        /// <returns>IList of School objects containing council data.</returns>
+        public IList<School> GetAllCouncilList()
+        {
+            IList<School> results = null;
+            return results;
+        }
+
+        /// <summary>
         /// Helper method used to convert IList of SummaryData objects to IList of SummaryDataViewModel objects
         /// </summary>
         /// <param name="summaryDataList">IList of SummaryData objects</param>
