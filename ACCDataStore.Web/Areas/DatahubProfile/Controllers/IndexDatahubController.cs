@@ -1490,6 +1490,30 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             return result;
         }
 
+        public ActionResult GetIntermediateZonesByCouncilName(string name)
+        {
+            string councilId = null;
+
+            //Validate and get corresponding council id
+            try
+            {
+                councilId = this.rpGeneric2nd.QueryOver<CouncilObj>()
+                               .Where(r => r.Name == name)
+                               .SingleOrDefault()
+                               .Reference;
+            }
+            catch (NullReferenceException ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return Content(null);
+            }
+
+            IList <string> result = getNeighbourhoodIdListByCouncilId(councilId);
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+
+        }
+
         public ActionResult GetNeighbourhoodIdsByCouncilId(string councilId)
         {
             // TODO: Should validate councilId
@@ -1724,6 +1748,53 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             catch (Exception ex)
             {
                 // We shouldn't probably expose this information for the public version
+                return ThrowJSONError(ex);
+            }
+        }
+
+        public JsonResult MapDataForSelection(string code, string type)
+        {
+            try
+            {
+                CurrentCouncil currentCouncil = Session["CurrentCouncil"] as CurrentCouncil;
+
+                SummaryDataViewModel currentCouncilData = Helper2.ByName(currentCouncil.name).GetSummaryDataForCouncil(8, 2016);
+
+                SummaryDataViewModel currentSelectionData = new SummaryDataViewModel();
+
+                switch (type.ToLower())
+                {
+                    case "data zone":
+                        currentSelectionData = Helper2.ByName(currentCouncil.name).GetSummaryDataForSingleDataZone(code,8, 2016);
+                        break;
+                    case "intermediate zone":
+                        currentSelectionData = Helper2.ByName(currentCouncil.name).GetSummaryDataForSingleIntermediateZone(code,8, 2016);
+                        break;
+                    case "school":
+                        currentSelectionData = Helper2.ByName(currentCouncil.name).GetSummaryDataForSingleSchool(code,8, 2016);
+                        break;
+                    default:
+                        throw new ArgumentException();
+                }
+
+
+                var data = new
+                {
+                    dataTitle = "Destination -" + currentSelectionData.name,
+                    schoolname = currentSelectionData.name,
+                    searchcode = code,
+                    searchby = type,
+                    dataCategories = new string[] { "Participating", "Not-Participating", "Unconfirmed" },
+                    Schdata = new decimal[] { currentSelectionData.Participating(), currentSelectionData.NotParticipating(), currentSelectionData.Percentage(currentSelectionData.allPupilsInUnknown) },
+                    Abdcitydata = new decimal[] { currentCouncilData.Participating(), currentCouncilData.NotParticipating(), currentCouncilData.Percentage(currentCouncilData.allPupilsInUnknown) }
+
+                };
+
+                return Json(data, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
                 return ThrowJSONError(ex);
             }
         }
