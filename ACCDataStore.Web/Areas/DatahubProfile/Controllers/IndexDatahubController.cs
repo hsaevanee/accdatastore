@@ -1747,7 +1747,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 {
                     percentageData = currentSelection.Select(x => x.NotParticipating()).ToList();
                 }
-                else if(datasetname.Equals("Unknown"))
+                else if(datasetname.Equals("Unconfirmed"))
                 {
                     percentageData = currentSelection.Select(x => x.Percentage(x.allPupilsInUnknown)).ToList();
                 }
