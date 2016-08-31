@@ -2,7 +2,7 @@
 var hGraphs = {
     cache: {},
     benchmark: {},
-    getData: function (callback) {
+    getData: function (callback, param) {
         var urls = {
             mainChart: '/DatahubProfile/IndexDatahub/MainPieChartDataNew',
             bigOlBarChart: '/DatahubProfile/IndexDatahub/getBarChartData',
@@ -13,9 +13,12 @@ var hGraphs = {
         };
         $.get(urls[callback],
             function (data) {
-                console.log(data);
                 hGraphs.cache[callback] = data;
-                hGraphs[callback]();
+                if (param != null && param != undefined) {
+                    hGraphs[callback](param);
+                } else {
+                    hGraphs[callback]();
+                }
             });
     },
     scotlandIndexLine: function () {
@@ -52,19 +55,23 @@ var hGraphs = {
         document.getElementById('beckmark-pies-ajax').innerHTML = Date.now() - hGraphs.benchmark.mainChart;
         document.getElementById('beckmark-pies-server').innerHTML = hGraphs.cache.mainChart.benchmarkResults;
     },
-    allSchoolComparison: function() {
+    allSchoolComparison: function (type) {
+        if (type == null || type == undefined) {
+            type = 'participating';
+        }
         var series = [];
         if (hGraphs.cache.allSchoolComparison.data != null) {
             for (var i = 0; i < hGraphs.cache.allSchoolComparison.data.length; i++) {
                 series.push({ name: hGraphs.cache.allSchoolComparison.data[i].name, data: [] });
                 for (var key in hGraphs.cache.allSchoolComparison.data[i]) {
-                    if (key != 'name') {
+                    if (key == type) {
                         series[i].data.push([key, hGraphs.cache.allSchoolComparison.data[i][key]]);
                     }
                 }
             }
         }
         if (series.length > 0) {
+            console.log(series);
             hGraphs.drawBar("#index-all-school-comparison-chart", series);
         }
         document.getElementById('beckmark-all-school-bar-ajax').innerHTML = Date.now() - hGraphs.benchmark.allSchoolComparison;
@@ -108,12 +115,11 @@ var hGraphs = {
         for (var i = 0; i < hGraphs.cache.monthsTrends.chart.length; i++) {
             for (var key in hGraphs.cache.monthsTrends.chart[i]) {
                 if (key != 'months' && key != 'name') {
-                    series.push({ name: hGraphs.cache.monthsTrends.chart[i].name + ' ' + key, data: hGraphs.cache.monthsTrends.chart[i][key].filter(function (x) { if (x > -1) { return Math.round(x * Math.random() *100)/100; } }) });
+                    series.push({ name: hGraphs.cache.monthsTrends.chart[i].name + ' ' + key, data: hGraphs.cache.monthsTrends.chart[i][key].filter(function (x) { if (x > -1) { return x; } }).map(function (x) { return Math.round(x * Math.random() * 100) / 100; }) });
                 }
             }
         }
         if (series.length > 0) {
-            console.log(series);
             hGraphs.drawTrends("#month-trend-histogram", series, hGraphs.cache.monthsTrends.chart[0].months.filter(function (x) { if (x != null && x != "") { return x; } }));
         }
         document.getElementById('beckmark-lines-ajax').innerHTML = Date.now() - hGraphs.benchmark.monthsTrends;
@@ -244,13 +250,22 @@ var hGraphs = {
             }
         });
     },
-    construct: function (type) {
+    construct: function (type, param) {
         hGraphs.benchmark[type] = Date.now();
         if (hGraphs.cache[type] != null && hGraphs.cache[type] != undefined) {
-            hGraphs[type]();
+            if (param != null && param != undefined) {
+                hGraphs[type](param);
+            } else {
+                hGraphs[type]();
+            }
         } else {
-            hGraphs.getData(type);
+            hGraphs.getData(type, param);
         }
+    },
+    switchAllSchoolComparison: function (type) {
+        var graph = document.getElementById('index-all-school-comparison-chart');
+        graph.removeChild(graph.firstChild);
+        hGraphs.construct('allSchoolComparison', type);
     }
 };
 
