@@ -199,28 +199,28 @@ namespace DatahubDataSummaryGenerator
                     // Populate session
                     //initialPopulation(session);
 
-                    IList<DatahubDataObj> studentDataAllPeriods = session.QueryOver<DatahubDataAberdeen>().List<DatahubDataObj>();
-                    var listOfDataZoneSummaries = session.QueryOver<AberdeenSummary>().Where(x => x.type == "Data Zone").List<AberdeenSummary>();
-                    foreach (var item in listOfDataZoneSummaries)
+                    //IList<DatahubDataObj> studentDataAllPeriods = session.QueryOver<DatahubDataAberdeen>().List<DatahubDataObj>();
+                    //var listOfDataZoneSummaries = session.QueryOver<AberdeenSummary>().Where(x => x.type == "Data Zone").List<AberdeenSummary>();
+                    //foreach (var item in listOfDataZoneSummaries)
 
-                    {
-                        Console.WriteLine("starting for datazone {0} period: {1}/{2}", item.name, item.dataMonth, item.dataYear);
-                        var calculation = getSubsetStudentsByZone(session, studentDataAllPeriods, "data zone", item.dataCode, item.dataMonth, item.dataYear);
-                        AberdeenSummary currSummary = CalculateSummaryData(calculation, item.dataCode, item.dataCode, "Data Zone", item.dataMonth, item.dataYear);
-                        foreach (var prop in item.GetType().GetProperties())
-                        {
-                            if (prop.Name != "id") prop.SetValue(item, prop.GetValue(currSummary));
+                    //{
+                    //    Console.WriteLine("starting for datazone {0} period: {1}/{2}", item.name, item.dataMonth, item.dataYear);
+                    //    var calculation = getSubsetStudentsByZone(session, studentDataAllPeriods, "data zone", item.dataCode, item.dataMonth, item.dataYear);
+                    //    AberdeenSummary currSummary = CalculateSummaryData(calculation, item.dataCode, item.dataCode, "Data Zone", item.dataMonth, item.dataYear);
+                    //    foreach (var prop in item.GetType().GetProperties())
+                    //    {
+                    //        if (prop.Name != "id") prop.SetValue(item, prop.GetValue(currSummary));
 
-                        }
-                        session.Update(item);
-                    }
+                    //    }
+                    //    session.Update(item);
+                    //}
 
                     //var test = session.QueryOver<DatahubDataAberdeen>().List<DatahubDataAberdeen>();
                     //var testa = session.QueryOver<DatahubDataGlasgow>().List<DatahubDataGlasgow>();
 
 
                     // This line of code does magic!!!
-                    //SummaryGeneratorHelper.initialPopulationForCouncil<DatahubDataGlasgow>(session);
+                    SummaryGeneratorHelper.initialPopulationForCouncil<DatahubDataGlasgow>(session);
 
                     Stopwatch stopwatch_t = new Stopwatch();
                     Console.WriteLine("Starting transaction...");
