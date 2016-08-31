@@ -143,9 +143,10 @@ namespace ACCDataStore
             summaryData.unknownMale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("unknown") && x.Gender.ToLower().Equals("male"));
             summaryData.unknownUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("unknown") && x.Gender.ToLower().Equals("information not yet obtained"));
 
-            var temp = studentDataForPeriod.Where(x => x.Weeks_since_last_Pos_Status != null).DefaultIfEmpty().ToList();
+            //var temp = studentDataForPeriod.Where(x => x.Weeks_since_last_Pos_Status != null).DefaultIfEmpty().ToList();
             //This doesnt work for glasgow
             //summaryData.AvgWeek = temp.First() == null ? 0.0 : temp.Average(x => Convert.ToInt16(x.Weeks_since_last_Pos_Status ?? "0"));
+            summaryData.AvgWeek = 0.0;
 
             return summaryData;
         }

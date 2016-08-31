@@ -77,6 +77,10 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 SummaryDataViewModel oneCouncilRes;
                 try {
                     oneCouncilRes = Helper2.ByName(council.name).GetSummaryDataForCouncil(8, 2016);
+                    if (oneCouncilRes == null)
+                    {
+                        throw new ArgumentNullException(council.name + " data is null.");
+                    }
                 }
                 catch
                 {
@@ -86,7 +90,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 }
                 vmDatahubViewModel.allCouncilTable.Add(oneCouncilRes);
             }
-
+            vmDatahubViewModel.allCouncilTable.Sort((x,y) => string.Compare(x.name, y.name));
             // Should implement a helper to get available councils
             vmDatahubViewModel.AvailableCouncis = new[]
             {
@@ -200,6 +204,14 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             timer.Stop();
             viewModel.benchmarkResults = timer.ElapsedMilliseconds;
 
+            IList<SummaryDataViewModel> list = new Collection<SummaryDataViewModel>();
+            var city_data = councilData;
+            city_data.name = name;
+            list.Add(city_data);
+            viewModel.ListSelectionData = list;
+
+
+
             return View("Data", viewModel);
 
 
@@ -308,7 +320,10 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                     {
                         comparison = Helper2.ByName(selectionParams.councilName).GetSummaryDataForCouncil(months[indexofmonths], year);
                     }
-
+                    if (comparison == null)
+                    {
+                        comparison = Helper2.ByName(selectionParams.councilName).GetSummaryDataForCouncil(8, 2016);
+                    }
 
                     allSeries.Add(comparison);
                 }
@@ -317,7 +332,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 jsonOut.participating = new List<double>();
                 jsonOut.notParticipating = new List<double>();
                 jsonOut.unknown = new List<double>();
-                jsonOut.name = seriesName;
+                jsonOut.name = selectionParams.councilName;
                 foreach (SummaryDataViewModel month in allSeries)
                 {
                     //Get date
@@ -415,18 +430,10 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
         public ActionResult IndexCoucil(string sCouncilname, string sCouncilcode)
         {
-            //var eGeneralSettings = TS.Core.Helper.ConvertHelper.XmlFile2Object(HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"), typeof(GeneralCounter)) as GeneralCounter;
-            //eGeneralSettings.CurriculumpgCounter++;
-            //TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
             var vmDatahubViewModel = new DatahubViewModel();
-            IList<School> allCouncils = GetListCouncilname();
-            //MonthOnMonthOverview(rpGeneric2nd);            
-            //vmDatahubViewModel.selectedcouncil = allCouncils.Where(x => x.seedcode.Equals(sCouncilcode)).FirstOrDefault();
-            Session["Council"] = vmDatahubViewModel.selectedcouncil;
-            vmDatahubViewModel.ListSchoolNameData = GetListSchoolname();
-            vmDatahubViewModel.ListNeighbourhoodsName = GetListNeighbourhoodsname(rpGeneric2nd);
+            ViewModelParams paramz = Session["ViewModelParams"] as ViewModelParams;
 
-
+ 
             return View("index2", vmDatahubViewModel);
         }
 
@@ -1569,68 +1576,69 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
         //    return View(result);
         //}
 
-        //public ActionResult Test1(ICollection<String> list, string type)
-        //{
-        //    IList<School> selection = new Collection<School>();
-        //    if (type != null)
-        //    {
-        //        if (type.ToLower().Equals("neighbourhoods"))
-        //        {
-        //            selection = GetListNeighbourhoodsnameGlasgow(rpGeneric2nd);
-        //        }
-        //        if (type.ToLower().Equals("schools"))
-        //        {
-        //            selection = GetListSchoolnameGlasgow();
-        //        }
-        //    }
+        public ActionResult Test1(ICollection<String> list, string type)
+        {
+            CurrentCouncil currentCouncil = Session["CurrentCouncil"] as CurrentCouncil;
+            IList<School> selection = new Collection<School>();
+            if (type != null)
+            {
+                if (type.ToLower().Equals("neighbourhoods"))
+                {   //finding neighbourhoods object using list 
+                    selection = currentCouncil.intermediateZones;
+                }
+                if (type.ToLower().Equals("schools"))
+                {
+                    selection = currentCouncil.schools;
+                }
+            }
 
-        //    IList<DatahubData> result = new Collection<DatahubData>();
-        //    var city_data = CreatDatahubdata(GetDatahubdatabySchoolcode(rpGeneric2nd, "100"), "100");
-        //    city_data.name = "Glasgow"; // To do
-        //    result.Add(city_data);
-
-
-        //    //foreach (var item in list)
-        //    //{ 
-        //    //    foreach (School school in schools)
-        //    //    {
-        //    //        if (!list.Contains(school.seedcode)) return Content("Error");
-        //    //    }
-        //    //}
-
-        //    foreach (var item in list)
-        //    {
-        //        var match = selection.FirstOrDefault(p => p.seedcode == item);
-        //        if (match == null) return Content("Error");
-        //    }
+            IList<DatahubData> result = new Collection<DatahubData>();
+            var city_data = CreatDatahubdata(GetDatahubdatabySchoolcode(rpGeneric2nd, "100"), "100");
+            //city_data.name = "Glasgow"; // To do
+            result.Add(city_data);
 
 
+            //foreach (var item in list)
+            //{ 
+            //    foreach (School school in schools)
+            //    {
+            //        if (!list.Contains(school.seedcode)) return Content("Error");
+            //    }
+            //}
+
+            foreach (var item in list)
+            {
+                var match = selection.FirstOrDefault(p => p.seedcode == item);
+                if (match == null) return Content("Error");
+            }
 
 
-        //    foreach (var item in list)
-        //    {
-        //        if (type.ToLower().Equals("neighbourhoods"))
-        //        {
-        //            var data = CreatDatahubdata(GetDatahubdatabyNeighbourhoods(rpGeneric2nd, item), item);
-        //            var match = selection.FirstOrDefault(p => p.seedcode == item);
 
-        //            data.name = match.name;
 
-        //            result.Add(data);
-        //        };
-        //        if (type.ToLower().Equals("schools"))
-        //        {
-        //            var data = CreatDatahubdata(GetDatahubdatabySchoolcode(rpGeneric2nd, item), item);
-        //            var match = selection.FirstOrDefault(p => p.seedcode == item);
+            foreach (var item in list)
+            {
+                if (type.ToLower().Equals("neighbourhoods"))
+                {
+                    var data = CreatDatahubdata(GetDatahubdatabyNeighbourhoods(rpGeneric2nd, item), item);
+                    var match = selection.FirstOrDefault(p => p.seedcode == item);
 
-        //            data.name = match.name;
+                    data.name = match.name;
 
-        //            result.Add(data);
-        //        };
+                    result.Add(data);
+                };
+                if (type.ToLower().Equals("schools"))
+                {
+                    var data = CreatDatahubdata(GetDatahubdatabySchoolcode(rpGeneric2nd, item), item);
+                    var match = selection.FirstOrDefault(p => p.seedcode == item);
 
-        //    }
-        //    return PartialView("_DataTables", result);
-        //}
+                    data.name = match.name;
+
+                    result.Add(data);
+                };
+
+            }
+            return PartialView("_DataTables", result);
+        }
 
         protected IList<School> GetListSchoolnameGlasgow()
         {
@@ -1828,19 +1836,19 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             oneMonthOutput.notParticipating = new List<double>();
             oneMonthOutput.unknown = new List<double>();
             oneMonthOutput.months = new List<string>();
-            while (oneMonthOutput.participating.Count < 1)
+            while (oneMonthOutput.participating.Count < 12)
             {
-                //month++;
-                //if (month > 12)
-                //{
-                //    month = 0;
-                //    year++;
-                //}
-                SummaryDataViewModel oneMonth = Helper2.GetScotlandSummary(month, year);
+                month++;
+                if (month > 12)
+                {
+                    month = 1;
+                    year++;
+                }
+                SummaryDataViewModel oneMonth = Helper2.GetScotlandSummary(8, 2016);
                 oneMonthOutput.months.Add(monthname[month - 1]);
-                oneMonthOutput.participating.Add((double)oneMonth.Participating());
-                oneMonthOutput.notParticipating.Add((double)oneMonth.NotParticipating());
-                oneMonthOutput.unknown.Add((double)oneMonth.Percentage(oneMonth.unknownFemale + oneMonth.unknownMale + oneMonth.unknownUnspecified));
+                oneMonthOutput.participating.Add(Math.Round((double)oneMonth.Participating(), 2));
+                oneMonthOutput.notParticipating.Add(Math.Round((double)oneMonth.NotParticipating(), 2));
+                oneMonthOutput.unknown.Add(Math.Round((double)oneMonth.Percentage(oneMonth.unknownFemale + oneMonth.unknownMale + oneMonth.unknownUnspecified), 2));
             }
 
             return Json(oneMonthOutput, JsonRequestBehavior.AllowGet);
