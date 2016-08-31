@@ -31,6 +31,8 @@ function asdf(map) {
 }
 $(document).ready(function () {
     InitMap(map)
+    $("#selectedtype").change(function () { $(thresholdControl).show() })
+
 });
 
 
@@ -264,7 +266,7 @@ function loadData(datasetname, type, map) {
                 })
                 datag = data;
                 createSlider(Math.round(getAverage(datag.data)));
-                $('#averageText').append(' ' + getAverage(datag.data))
+                $('#averageText').html(' ' + getAverage(datag.data).toFixed(2) + '%');
                 // update and display the legend
                 document.getElementById('census-min').textContent =
                 data.minimum.toFixed(1) + "%";
@@ -352,7 +354,7 @@ function loadData(datasetname, type, map) {
                 })
                 datag = data;
                 createSlider(Math.round(getAverage(datag.data)));
-                $('#averageText').append(' ' + getAverage(datag.data))
+                $('#averageText').html(getAverage(datag.data).toFixed(2));
                 // update and display the legend
                 document.getElementById('census-min').textContent =
                 data.minimum.toFixed(1) + "%";
