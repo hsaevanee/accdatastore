@@ -123,6 +123,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
             //This is the container for all of the data we are going to send to the page (our view model)
             DatahubViewModel viewModel = new DatahubViewModel();
+            viewModel.selectedcouncil = name;
 
             // Check if city name is valid [should also do other types of validation such as period validation]
             if(!Helper2.ValidateCouncilName(name)) {
