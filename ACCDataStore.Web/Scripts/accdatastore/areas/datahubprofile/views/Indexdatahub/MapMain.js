@@ -162,8 +162,8 @@ function createSlider(centerValue) {
         };
     });
 
-    var averge = $('<label>|</label>').css('left', Math.round(getAverage(datag.data)) + '%');
-    $('.slider').append(averge);
+    //var averge = $('<label>|</label>').css('left', Math.round(getAverage(datag.data)) + '%');
+    //$('.slider').append(averge);
 };
 
 
@@ -222,6 +222,9 @@ function getAverage(data) {
 }
 
 function loadData(datasetname, type, map) {
+    map.data.forEach(function (feature) {
+        map.data.remove(feature);
+    })
     console.log("loading data");
     console.log(map);
     var JSONObject = {
@@ -229,7 +232,7 @@ function loadData(datasetname, type, map) {
         "type": type,
         "name": currentCouncil.name
     }
-
+    
     $.ajax({
         type: "POST",
         url: sContextPath + "DatahubProfile/IndexDatahub/GetHeatmapData",
@@ -237,25 +240,23 @@ function loadData(datasetname, type, map) {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
-            map.data.forEach(function (feature) {
-                map.data.remove(feature);
-            })
+            map.data.setStyle(function (feature) {
+
+                var outlineWeight = 0.5, zIndex = 1;
+                if (feature.getProperty('datazone') === 'hover') {
+                    outlineWeight = zIndex = 2;
+                }
+
+                return {
+                    strokeWeight: outlineWeight,
+                    strokeColor: '#fff',
+                    zIndex: zIndex,
+                    fillOpacity: 0.70
+                };
+            });
             if (type == "Intermediate Zone")
             {
-                map.data.setStyle(function (feature) {
-
-                    var outlineWeight = 0.5, zIndex = 1;
-                    if (feature.getProperty('datazone') === 'hover') {
-                        outlineWeight = zIndex = 2;
-                    }
-
-                    return {
-                        strokeWeight: outlineWeight,
-                        strokeColor: '#fff',
-                        zIndex: zIndex,
-                        fillOpacity: 0.70
-                    };
-                });
+                
                 currentCouncil.intermediateZones.forEach(function (item) {
                     $.getJSON(sContextPath + "DatahubProfile/IndexDatahub/GetGeoJSON?id=" + item.seedcode).done(function (data) {
                         //console.log(data);
@@ -313,8 +314,12 @@ function loadData(datasetname, type, map) {
                     $("#popup-information").hide(250);
                 })
                 InitSpinner();
+                $("#selecteddataset").unbind()
                 $("#selecteddataset").change(function () {
                     var datasetname = $('#selecteddataset :selected').text();
+                    map.data.forEach(function (feature) {
+                        map.data.remove(feature);
+                    })
                     loadData(datasetname, type, map);
                 })
 
@@ -330,20 +335,7 @@ function loadData(datasetname, type, map) {
             }
             else if (type=="Data Zone")
             {
-                map.data.setStyle(function (feature) {
-
-                    var outlineWeight = 0.5, zIndex = 1;
-                    if (feature.getProperty('datazone') === 'hover') {
-                        outlineWeight = zIndex = 2;
-                    }
-
-                    return {
-                        strokeWeight: outlineWeight,
-                        strokeColor: '#fff',
-                        zIndex: zIndex,
-                        fillOpacity: 0.70
-                    };
-                });
+                
                 currentCouncil.dataZones.forEach(function (item) {
                     $.getJSON(sContextPath + "DatahubProfile/IndexDatahub/GetGeoJSON?id=" + item.seedcode).done(function (data) {
                         //console.log(data);
@@ -401,6 +393,7 @@ function loadData(datasetname, type, map) {
                     $("#popup-information").hide(250);
                 })
                 InitSpinner();
+                $("#selecteddataset").unbind()
                 $("#selecteddataset").change(function () {
                     var datasetname = $('#selecteddataset :selected').text();
                     loadData(datasetname, type, map);
