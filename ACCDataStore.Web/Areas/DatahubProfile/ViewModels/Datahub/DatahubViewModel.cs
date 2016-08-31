@@ -34,7 +34,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub
         public SummaryDataViewModel CityData { get; set; }
         public SummaryDataViewModel SelectedData { get; set; }
         public IEnumerable<SelectListItem> AvailableCouncis { get; set; }
-
+        public IList<SummaryDataViewModel> ListSelectionData { get; set; }
 
     }
 }

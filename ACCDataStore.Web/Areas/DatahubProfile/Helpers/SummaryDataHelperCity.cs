@@ -81,15 +81,18 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Helpers
             }
             foreach (SummaryDataViewModel council in allCouncils)
             {
-                foreach (var prop in council.GetType().GetProperties())
+                if (council != null)
                 {
-                    if (prop.PropertyType == typeof(int))
+                    foreach (var prop in council.GetType().GetProperties())
                     {
-                        prop.SetValue(allScotland, ((int)prop.GetValue(allScotland) + (int)prop.GetValue(council)));
-                    }
-                    if (prop.PropertyType == typeof(double))
-                    {
-                        prop.SetValue(allScotland, ((double)prop.GetValue(allScotland) + (double)prop.GetValue(council)));
+                        if (prop.PropertyType == typeof(int))
+                        {
+                            prop.SetValue(allScotland, ((int)prop.GetValue(allScotland) + (int)prop.GetValue(council)));
+                        }
+                        if (prop.PropertyType == typeof(double))
+                        {
+                            prop.SetValue(allScotland, ((double)prop.GetValue(allScotland) + (double)prop.GetValue(council)));
+                        }
                     }
                 }
             }

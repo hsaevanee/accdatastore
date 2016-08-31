@@ -542,6 +542,8 @@
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Comparisons\_DataTables.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Map.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Data.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Index2 - Copy.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\IndexDatahub\_DataTables.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\About.cshtml" />
