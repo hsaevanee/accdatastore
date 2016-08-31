@@ -86,7 +86,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 }
                 vmDatahubViewModel.allCouncilTable.Add(oneCouncilRes);
             }
-
+            vmDatahubViewModel.allCouncilTable.Sort((x,y) => string.Compare(x.name, y.name));
             // Should implement a helper to get available councils
             vmDatahubViewModel.AvailableCouncis = new[]
             {
@@ -308,7 +308,10 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                     {
                         comparison = Helper2.ByName(selectionParams.councilName).GetSummaryDataForCouncil(months[indexofmonths], year);
                     }
-
+                    if (comparison == null)
+                    {
+                        comparison = Helper2.ByName(selectionParams.councilName).GetSummaryDataForCouncil(8, 2016);
+                    }
 
                     allSeries.Add(comparison);
                 }
@@ -317,7 +320,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 jsonOut.participating = new List<double>();
                 jsonOut.notParticipating = new List<double>();
                 jsonOut.unknown = new List<double>();
-                jsonOut.name = seriesName;
+                jsonOut.name = selectionParams.councilName;
                 foreach (SummaryDataViewModel month in allSeries)
                 {
                     //Get date
@@ -1828,19 +1831,19 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             oneMonthOutput.notParticipating = new List<double>();
             oneMonthOutput.unknown = new List<double>();
             oneMonthOutput.months = new List<string>();
-            while (oneMonthOutput.participating.Count < 1)
+            while (oneMonthOutput.participating.Count < 12)
             {
-                //month++;
-                //if (month > 12)
-                //{
-                //    month = 0;
-                //    year++;
-                //}
-                SummaryDataViewModel oneMonth = Helper2.GetScotlandSummary(month, year);
+                month++;
+                if (month > 12)
+                {
+                    month = 1;
+                    year++;
+                }
+                SummaryDataViewModel oneMonth = Helper2.GetScotlandSummary(8, 2016);
                 oneMonthOutput.months.Add(monthname[month - 1]);
-                oneMonthOutput.participating.Add((double)oneMonth.Participating());
-                oneMonthOutput.notParticipating.Add((double)oneMonth.NotParticipating());
-                oneMonthOutput.unknown.Add((double)oneMonth.Percentage(oneMonth.unknownFemale + oneMonth.unknownMale + oneMonth.unknownUnspecified));
+                oneMonthOutput.participating.Add(Math.Round((double)oneMonth.Participating(), 2));
+                oneMonthOutput.notParticipating.Add(Math.Round((double)oneMonth.NotParticipating(), 2));
+                oneMonthOutput.unknown.Add(Math.Round((double)oneMonth.Percentage(oneMonth.unknownFemale + oneMonth.unknownMale + oneMonth.unknownUnspecified), 2));
             }
 
             return Json(oneMonthOutput, JsonRequestBehavior.AllowGet);

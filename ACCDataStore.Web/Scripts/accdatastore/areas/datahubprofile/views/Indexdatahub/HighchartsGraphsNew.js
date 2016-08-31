@@ -18,8 +18,16 @@ var hGraphs = {
                 hGraphs[callback]();
             });
     },
-    scotlandLineGraph: function () {
-
+    scotlandIndexLine: function () {
+        var series = [];
+        for (var key in hGraphs.cache.scotlandIndexLine) {
+            if (key != 'months' && key != 'name') {
+                series.push({ name: hGraphs.cache.scotlandIndexLine.name + ' ' + key, data: hGraphs.cache.scotlandIndexLine[key].map(function (x) { return Math.round(x * Math.random() * 100) / 100; }) });
+            }
+        }
+        if (series.length > 0) {
+            hGraphs.drawTrends('#month-trend-histogram', series, hGraphs.cache.scotlandIndexLine.months);
+        }
     },
     mainChart: function () {
         var seriesTotal = [], seriesSpecific = [];
@@ -100,18 +108,18 @@ var hGraphs = {
         for (var i = 0; i < hGraphs.cache.monthsTrends.chart.length; i++) {
             for (var key in hGraphs.cache.monthsTrends.chart[i]) {
                 if (key != 'months' && key != 'name') {
-                    series.push({ name: hGraphs.cache.monthsTrends.chart[i].name + ' ' + key, data: hGraphs.cache.monthsTrends.chart[i][key].filter(function (x) { if (x > -1) { return x; } }) });
+                    series.push({ name: hGraphs.cache.monthsTrends.chart[i].name + ' ' + key, data: hGraphs.cache.monthsTrends.chart[i][key].filter(function (x) { if (x > -1) { return Math.round(x * Math.random() *100)/100; } }) });
                 }
             }
         }
         if (series.length > 0) {
             console.log(series);
-            hGraphs.drawTrends("#month-trend-histogram", series);
+            hGraphs.drawTrends("#month-trend-histogram", series, hGraphs.cache.monthsTrends.chart[0].months.filter(function (x) { if (x != null && x != "") { return x; } }));
         }
         document.getElementById('beckmark-lines-ajax').innerHTML = Date.now() - hGraphs.benchmark.monthsTrends;
         document.getElementById('beckmark-lines-server').innerHTML = hGraphs.cache.monthsTrends.benchmarkResults;
     },
-    drawTrends: function (id, series) {
+    drawTrends: function (id, series, legend) {
         $(id).highcharts({
             chart: {
                 type: 'line'
@@ -121,7 +129,7 @@ var hGraphs = {
                 x: 0 //center
             },
             xAxis: {
-                categories: hGraphs.cache.monthsTrends.chart[0].months.filter(function (x) { if (x != null && x != "") { return x; } })
+                categories: legend
             },
             yAxis: {
                 title: {

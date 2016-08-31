@@ -4,6 +4,15 @@
     <script  src="~/Scripts/jquery.js"></script>
     <script  src="~/Scripts/highcharts.js"></script>
     <script  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDryCUbMmTBoPQ2o0FsBDg6OnvlFsnCU4Q"></script>
+    <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+    <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.html5.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.print.min.js"></script>
+    <link rel="stylesheet" href=" https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" type="text/css" />
+    <link rel="stylesheet" href=" https://cdn.datatables.net/buttons/1.1.2/css/buttons.dataTables.min.css" type="text/css" />
     <script  src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/ScotlandIndexMain.js"></script>
     <script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/HighchartsGraphsNew.js"></script> 
     <script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/CouncilSelector.js"></script>
@@ -63,22 +72,35 @@
         <div class="col-md-12">
             <h2>Scotland Monthly Participation</h2>
             <div class="table-responsive">
-                <table class="table table-bordered">
-                    <tr>
-                        <th>Council</th>
-                        <th>Participating</th>
-                        <th>Not Participating</th>
-                        <th>Unknown</th>
-                    </tr>
-                    @foreach (var data in Model.allCouncilTable)
-                    { 
+                <table class="table table-bordered" id="scotland-all-councils">
+                    <thead>
                         <tr>
-                            <td><a style="cursor: pointer" onclick="selectCouncil(this.firstChild.nodeValue)">@data.name</a></td>
-                            <td>@Math.Round(data.Participating(), 2)</td>
-                            <td>@Math.Round(data.NotParticipating(), 2)</td>
-                            <td>@Math.Round(data.Percentage(data.allPupilsInUnknown), 2)</td>
+                            <th>Council</th>
+                            <th>Participating</th>
+                            <th>Not Participating</th>
+                            <th>Unknown</th>
                         </tr>
-                    }
+                    </thead>
+                    <tbody>
+                        @foreach (var data in Model.allCouncilTable)
+                        {
+                            <tr>
+                                <td>
+                                    @if (data.name == "Aberdeen City" || data.name == "Glasgow City")
+                                    {
+                                        <a style="cursor: pointer" onclick="selectCouncil(this.firstChild.nodeValue)">@data.name</a>
+                                    }
+                                    else
+                                    {
+                                        @data.name
+                                    }
+                                </td>
+                                <td>@Math.Round(data.Participating(), 2)</td>
+                                <td>@Math.Round(data.NotParticipating(), 2)</td>
+                                <td>@Math.Round(data.Percentage(data.allPupilsInUnknown), 2)</td>
+                            </tr>
+                        }
+                    </tbody> 
                 </table>
             </div>
         </div>

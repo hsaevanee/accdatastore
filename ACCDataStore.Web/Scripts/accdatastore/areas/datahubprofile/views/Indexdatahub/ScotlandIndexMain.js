@@ -1,6 +1,7 @@
 ﻿$(document).ready(function () {
     console.log('success!');
     initMap();
+    loadDataTable();
 })
 
 function initMap()
@@ -55,10 +56,11 @@ function initMap()
                 if (cities.indexOf(item.name) == -1) {
                     marker.setIcon('http://i.imgur.com/3a4ykxd.png');
                 }
-                marker.addListener('click', function() {
-                    selectCouncil(item.name);
-                });
-
+                if (cities.indexOf(item.name) > -1) {
+                    marker.addListener('click', function () {
+                        selectCouncil(item.name);
+                    });
+                }
             });
         });
 
@@ -67,13 +69,27 @@ function initMap()
     //map.fitBounds(bounds);
 }
 
-function contains(array, item) {
-    var result = false;
-    for (var i = 0; i < array.lenght; i++) {
-        if (array[i] == item) {
-            result = true;
-            break;
+function loadDataTable() {
+    $('#scotland-all-councils').DataTable({
+        dom: 'Bfrtip',
+        "scrollY": "400px",
+        "scrollCollapse": true,
+        paging: false,
+        "order": [],
+        buttons: {
+            buttons: [
+                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                    extend: 'pdfHtml5',
+                    orientation: 'portrait',
+                    exportOptions: {
+                        modifier: {
+                            page: 'current'
+                        }
+                    },
+                    header: true,
+                    title: 'All Council Participation'
+                }, 'print',
+            ]
         }
-    }
-    return result;
+    });
 }
