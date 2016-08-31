@@ -4,11 +4,12 @@ var hGraphs = {
     benchmark: {},
     getData: function (callback) {
         var urls = {
-            'mainChart': '/DatahubProfile/IndexDatahub/MainPieChartDataNew',
-            'bigOlBarChart': '/DatahubProfile/IndexDatahub/getBarChartData',
-            'monthsTrends': '/DatahubProfile/IndexDatahub/monthlyHistogramNew',
-            'participatingBarChart': '/DatahubProfile/IndexDatahub/getBarChartDataNew',
-            'allSchoolComparison': '/DatahubProfile/IndexDatahub/getAllSchoolComparison'
+            mainChart: '/DatahubProfile/IndexDatahub/MainPieChartDataNew',
+            bigOlBarChart: '/DatahubProfile/IndexDatahub/getBarChartData',
+            monthsTrends: '/DatahubProfile/IndexDatahub/monthlyHistogramNew',
+            participatingBarChart: '/DatahubProfile/IndexDatahub/getBarChartDataNew',
+            allSchoolComparison: '/DatahubProfile/IndexDatahub/getAllSchoolComparison',
+            scotlandIndexLine: '/DatahubProfile/IndexDatahub/GetScotlandLineGraph'
         };
         $.get(urls[callback],
             function (data) {
@@ -16,6 +17,9 @@ var hGraphs = {
                 hGraphs.cache[callback] = data;
                 hGraphs[callback]();
             });
+    },
+    scotlandLineGraph: function () {
+
     },
     mainChart: function () {
         var seriesTotal = [], seriesSpecific = [];
@@ -243,8 +247,13 @@ var hGraphs = {
 };
 
 window.onload = function () {
-    hGraphs.construct('allSchoolComparison');
-    hGraphs.construct('mainChart');
-    hGraphs.construct('participatingBarChart');
-    hGraphs.construct('monthsTrends');
+    var page = location.pathname.split('/')[location.pathname.split('/').length - 1].split('?')[0].toLowerCase().trim();
+    if (page == 'data') {
+        hGraphs.construct('allSchoolComparison');
+        hGraphs.construct('mainChart');
+        hGraphs.construct('participatingBarChart');
+        hGraphs.construct('monthsTrends');
+    } else if (page == 'scotlandindex') {
+        hGraphs.construct('scotlandIndexLine');
+    }
 }

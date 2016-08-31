@@ -84,8 +84,9 @@
     <Reference Include="MySql.Data">
       <HintPath>..\packages\MySql.Data.6.8.3\lib\net45\MySql.Data.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.5.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -243,6 +244,7 @@
     <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\accdatastore\areas\authorisation\Login.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\ComparisonsIndex.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\CouncilSelector.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\HeatMapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\HighchartsCheat.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\HighchartsGraphsNew.js" />
@@ -343,6 +345,7 @@
     <Compile Include="Areas\DatahubProfile\Models\MonthlyDataSeries.cs" />
     <Compile Include="Areas\DatahubProfile\Models\PosNegSchoolList.cs" />
     <Compile Include="Areas\DatahubProfile\Models\ViewModelParams.cs" />
+    <Compile Include="Areas\DatahubProfile\ViewModels\Datahub\CurrentCouncil.cs" />
     <Compile Include="Areas\DatahubProfile\ViewModels\Datahub\PupilObject.cs" />
     <Compile Include="Areas\DatahubProfile\ViewModels\Datahub\DatahubViewModel.cs" />
     <Compile Include="Areas\DatahubProfile\ViewModels\Datahub\DatahubData.cs" />

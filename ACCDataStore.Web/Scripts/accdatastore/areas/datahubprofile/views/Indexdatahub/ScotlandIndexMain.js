@@ -34,18 +34,29 @@ function initMap()
     //})
 
     var cities = ["Aberdeen City", "Glasgow City", "Aberdeenshire"];
-    cities.forEach( function(item) {
-        $.getJSON("http://maps.googleapis.com/maps/api/geocode/json?&address=" + item + ",Scotland,UK")
+    councilList.forEach( function(item) {
+        $.getJSON("http://maps.googleapis.com/maps/api/geocode/json?&address=" + item.name + ",Scotland,UK")
             .done(function (result) {
                 console.log(result);
-                var marker = new google.maps.Marker({
+                /*var markerProps = {
                     position: result.results[0].geometry.location,
                     map: map,
                     title: item
+                };
+                if (item.name != "Glasgow City") {
+                    markerProps.icon = 'http://i.imgur.com/3a4ykxd.png';
+                }*/
+                var marker = new google.maps.Marker({
+                    position: result.results[0].geometry.location,
+                    map: map,
+                    title: item,
+                    icon: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
                 });
-                marker.addListener('click', function () {
-                    console.log(marker.title);
-                    //
+                if (cities.indexOf(item.name) == -1) {
+                    marker.setIcon('http://i.imgur.com/3a4ykxd.png');
+                }
+                marker.addListener('click', function() {
+                    selectCouncil(item.name);
                 });
 
             });
@@ -54,4 +65,15 @@ function initMap()
     
 
     //map.fitBounds(bounds);
+}
+
+function contains(array, item) {
+    var result = false;
+    for (var i = 0; i < array.lenght; i++) {
+        if (array[i] == item) {
+            result = true;
+            break;
+        }
+    }
+    return result;
 }
