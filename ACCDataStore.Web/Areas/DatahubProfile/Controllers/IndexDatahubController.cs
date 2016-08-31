@@ -1580,7 +1580,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             if (type != null)
             {
                 if (type.ToLower().Equals("neighbourhoods"))
-                {
+                {   //finding neighbourhoods object using list 
                     selection = currentCouncil.intermediateZones;
                 }
                 if (type.ToLower().Equals("schools"))
