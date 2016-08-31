@@ -109,10 +109,18 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             timer.Start();
             string name = Request["selectedcouncil"];
             //We dont use these for now
-
+            CurrentCouncil currentCouncil = Session["CurrentCouncil"] as CurrentCouncil;
             if (name == null)
             {
-                return RedirectToAction("ScotlandIndex");
+                if (currentCouncil.name == null)
+                {
+                    return RedirectToAction("ScotlandIndex");
+                }
+                else
+                {
+                    name = currentCouncil.name;
+                }
+                
             }
             IList<School> allCouncils = GetListCouncilname();
             Session["Council"] = name;
@@ -1697,6 +1705,10 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
         public ActionResult Map()
         {
             CurrentCouncil currentCouncil = Session["CurrentCouncil"] as CurrentCouncil;
+            if (currentCouncil == null)
+            {
+                return RedirectToAction("ScotlandIndex");
+            }
             return View("Map", currentCouncil);
         }
 
