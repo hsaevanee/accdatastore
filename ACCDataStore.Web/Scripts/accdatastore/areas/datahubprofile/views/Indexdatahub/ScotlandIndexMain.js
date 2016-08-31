@@ -34,7 +34,7 @@ function initMap()
     //    })
     //})
 
-    var cities = ["Aberdeen City", "Glasgow City", "Aberdeenshire"];
+    var cities = ["Aberdeen City", "Glasgow City"];
     councilList.forEach( function(item) {
         $.getJSON("http://maps.googleapis.com/maps/api/geocode/json?&address=" + item.name + ",Scotland,UK")
             .done(function (result) {

@@ -109,10 +109,18 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             timer.Start();
             string name = Request["selectedcouncil"];
             //We dont use these for now
-
+            CurrentCouncil currentCouncil = Session["CurrentCouncil"] as CurrentCouncil;
             if (name == null)
             {
-                return RedirectToAction("ScotlandIndex");
+                if (currentCouncil.name == null)
+                {
+                    return RedirectToAction("ScotlandIndex");
+                }
+                else
+                {
+                    name = currentCouncil.name;
+                }
+                
             }
             IList<School> allCouncils = GetListCouncilname();
             Session["Council"] = name;
@@ -127,6 +135,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
             //This is the container for all of the data we are going to send to the page (our view model)
             DatahubViewModel viewModel = new DatahubViewModel();
+            viewModel.selectedcouncil = name;
 
             // Check if city name is valid [should also do other types of validation such as period validation]
             if(!Helper2.ValidateCouncilName(name)) {
@@ -167,18 +176,28 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             //Now if the schoolsubmitbutton or neighbourhood submitbutton was clicked we populate our viewmodel
             IList<School> allSchoolsList = Helper2.ByName(name).GetSchoolsList();
             viewModel.ListSchoolNameData = allSchoolsList;
-
+            IList<SummaryDataViewModel> list = new Collection<SummaryDataViewModel>();
+            var city_data = councilData;
+            city_data.name = name;
+            list.Add(city_data);
             
             if (schoolsubmitButton != null)
             {
-                var sSchoolcode = Request["selectedschool"];
-                School currentSchool = allSchoolsList.Where(x => x.seedcode == sSchoolcode).FirstOrDefault();
+                List<string> sSchoolcode = Request["selectedschoolcode"].Split(',').ToList<string>();
+                //var sSchoolcode = Request["selectedschool"];
+                //School currentSchool = allSchoolsList.Where(x => x.seedcode == sSchoolcode).FirstOrDefault();
                 if (sSchoolcode != null)
                 {
-                    SummaryDataViewModel currentSchoolData = Helper2.ByName(name).GetSummaryDataForSingleSchool(sSchoolcode, 8, 2016);
-                    Session["chartSelectedSchool"] = currentSchoolData;
-                    viewModel.selectedschool = currentSchool;
-                    viewModel.SelectedData = currentSchoolData;
+                    foreach (string school in sSchoolcode)
+                    {
+                        School currentSchool = allSchoolsList.Where(x => x.seedcode == school).FirstOrDefault();
+                        SummaryDataViewModel currentSchoolData = Helper2.ByName(name).GetSummaryDataForSingleSchool(school, 8, 2016);
+                        Session["chartSelectedSchool"] = currentSchoolData;
+                        viewModel.selectedschool = currentSchool;
+                        viewModel.SelectedData = currentSchoolData;
+                        list.Add(currentSchoolData);
+                    }
+                    
                 }
 
             }
@@ -198,17 +217,12 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
             }
 
+            viewModel.ListSelectionData = list;
             IList<School> allDataZonesList = Helper2.ByName(name).GetDataZonesList();
             Session["CurrentCouncil"] = new CurrentCouncil(name, allSchoolsList, allIntermediateZonesList, allDataZonesList);
             // Stop timer and add benchmark results to viewmodel
             timer.Stop();
             viewModel.benchmarkResults = timer.ElapsedMilliseconds;
-
-            IList<SummaryDataViewModel> list = new Collection<SummaryDataViewModel>();
-            var city_data = councilData;
-            city_data.name = name;
-            list.Add(city_data);
-            viewModel.ListSelectionData = list;
 
 
 
@@ -284,10 +298,10 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             {
                 selectionParams = new ViewModelParams();
             }
-            if (selectionParams.school != null || selectionParams.neighbourhood != null)
-            {
-                numberofseries = 2;
-            }
+            //if (selectionParams.school != null || selectionParams.neighbourhood != null)
+            //{
+            //    numberofseries = 2;
+            //}
             for (int j = 0; j < numberofseries; j++)
             {
                 List<SummaryDataViewModel> allSeries = new List<SummaryDataViewModel>();
@@ -1592,8 +1606,10 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 }
             }
 
-            IList<DatahubData> result = new Collection<DatahubData>();
-            var city_data = CreatDatahubdata(GetDatahubdatabySchoolcode(rpGeneric2nd, "100"), "100");
+            IList<SummaryDataViewModel> result = new Collection<SummaryDataViewModel>();
+
+            SummaryDataViewModel city_data = Helper2.ByName(currentCouncil.name).GetSummaryDataForCouncil(08, 2016);
+             
             //city_data.name = "Glasgow"; // To do
             result.Add(city_data);
 
@@ -1619,7 +1635,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             {
                 if (type.ToLower().Equals("neighbourhoods"))
                 {
-                    var data = CreatDatahubdata(GetDatahubdatabyNeighbourhoods(rpGeneric2nd, item), item);
+                    var data = Helper2.ByName(currentCouncil.name).GetSummaryDataForSingleIntermediateZone(item, 08, 2016);
                     var match = selection.FirstOrDefault(p => p.seedcode == item);
 
                     data.name = match.name;
@@ -1628,7 +1644,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 };
                 if (type.ToLower().Equals("schools"))
                 {
-                    var data = CreatDatahubdata(GetDatahubdatabySchoolcode(rpGeneric2nd, item), item);
+                    var data = Helper2.ByName(currentCouncil.name).GetSummaryDataForSingleSchool(item, 08, 2016);
                     var match = selection.FirstOrDefault(p => p.seedcode == item);
 
                     data.name = match.name;
@@ -1697,6 +1713,10 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
         public ActionResult Map()
         {
             CurrentCouncil currentCouncil = Session["CurrentCouncil"] as CurrentCouncil;
+            if (currentCouncil == null)
+            {
+                return RedirectToAction("ScotlandIndex");
+            }
             return View("Map", currentCouncil);
         }
 

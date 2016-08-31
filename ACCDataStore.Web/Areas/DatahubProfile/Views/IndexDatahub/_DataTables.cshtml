@@ -24,8 +24,8 @@
                             @foreach (var data in Model)
                             {
                                 <tr>
-                                    <th class="text-center">@Html.DisplayTextFor(m => data.name)</th>
-                                    <td class="text-center">@Html.DisplayTextFor(m => data.allPupilsMovedOutwithScotland)</td>
+                                    <th class="text-center">@Html.DisplayTextFor(data.name)</th>
+                                    <td class="text-center">@Html.DisplayTextFor(data.allPupilsMovedOutwithScotland)</td>
                                     <td class="text-center">@String.Format("{0:#,0.0}", data.Percentage(data.allMale))</td>
                                     <td class="text-center">@String.Format("{0:#,0.0}", data.Percentage(data.allFemale))</td>
                                     <td class="text-center">@String.Format("{0:#,0.0}", data.Percentage(data.allPupils15))</td>
