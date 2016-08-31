@@ -271,7 +271,7 @@ function loadData(datasetname, type, map) {
                 document.getElementById('census-max').textContent =
                     data.maximum.toFixed(1) + "%";
 
-
+                google.maps.event.clearListeners(map.data, 'click');
                 // set up the style rules and events for google.maps.Data
                 map.data.addListener('mouseover', function (event) {
                     // set the hover state so the setStyle function can change the border
@@ -345,7 +345,7 @@ function loadData(datasetname, type, map) {
                 currentCouncil.dataZones.forEach(function (item) {
                     $.getJSON(sContextPath + "DatahubProfile/IndexDatahub/GetGeoJSON?id=" + item.seedcode).done(function (data) {
                         //console.log(data);
-                        console.log(item.seedcode);
+                        //console.log(data);
                         map.data.addGeoJson(data);
 
                     })
@@ -359,7 +359,7 @@ function loadData(datasetname, type, map) {
                 document.getElementById('census-max').textContent =
                     data.maximum.toFixed(1) + "%";
 
-
+                google.maps.event.clearListeners(map.data, 'click');
                 // set up the style rules and events for google.maps.Data
                 map.data.addListener('mouseover', function (event) {
                     // set the hover state so the setStyle function can change the border
