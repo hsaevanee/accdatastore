@@ -5,83 +5,35 @@ var datag;
 var schools = new google.maps.Data();
 var intermediateZones = new google.maps.Data();
 var dataZones = new google.maps.Data();
+var currentSelection;
 
 var map;
-function HandleSelection()
-{
-    $("#selectedtype").change(function () {
-        var type = $('#selectedtype :selected').text();
-        if (type == "Intermediate Zones") {
-            currentCouncil.intermediateZones.forEach(function (item) {
-                $.getJSON(sContextPath + "DatahubProfile/IndexDatahub/GetGeoJSON?id=" + item.seedcode).done(function (data) {
-                    //console.log(data);
-                    console.log(item.seedcode);
-                    map.data.addGeoJson(data);
-                })
-            })
 
-        } else if (type == "Data Zones") {
-            var jqxhr = $.getJSON(sContextPath + "DatahubProfile/IndexDatahub/GetDataZonesByCouncilName?councilName=" + currentCouncil.name).done(function (data) {
-                data.forEach(function (item) {
-                    $.getJSON(sContextPath + "DatahubProfile/IndexDatahub/GetGeoJSON?id=" + item).done(function (data) {
-                        //console.log(data);
-                        console.log("12");
-                        map.data.addGeoJson(data);
-                    })
-                })
-            }).error(function (jqXHR, textStatus, errorThrown) {
-                console.log("error " + textStatus);
-                console.log("incoming Text " + jqXHR.responseText);
-            })
-        }
-    })
-
-}
-
-$(document).ready(function () {
-    $.when(InitMap(map)).then(
-        
-        );
-    //loadData("Participating");
-    
-    
-
+function asdf(map) {
     $(document.body).on('click', '.a-close-popup-information', function () {
         $("#popup-information").hide(250);
-    });
+    })
     InitSpinner();
     $("#selecteddataset").change(function () {
         var datasetname = $('#selecteddataset :selected').text();
-        loadData(datasetname);
-    });
+        loadData(datasetname, currentSelection, map);
+    })
 
     $("#thresholdViewBtn").click(function () {
         var low = parseInt($('#thresholdViewLow').val())
         var high = parseInt($('#thresholdViewHigh').val())
-        threshholdView(datag, low, high);
-    });
+        threshholdView(datag, low, high, map);
+    })
 
     $("#thresholdViewAvg").click(function () {
         $('#thresholdViewCenter').val(getAverage(datag.data));
-    });
+    })
+}
+$(document).ready(function () {
+    InitMap(map)
 });
 
-function loadDataZones(map)
-{
-    //council.
-    var jqxhr = $.getJSON(sContextPath + "DatahubProfile/IndexDatahub/GetDatazonesByCouncilName?councilName=" + currentCouncil.name).done(function (data) {
-        data.forEach(function (item) {
-            $.getJSON(sContextPath + "DatahubProfile/IndexDatahub/GetGeoJSON?id=" + item).done(function (data) {
-                //console.log(data);
-                dataZones.addGeoJson(data);
-            })
-        })
-    }).error(function (jqXHR, textStatus, errorThrown) {
-        console.log("error " + textStatus);
-        console.log("incoming Text " + jqXHR.responseText);
-    })
 
-}
 function InitMap(map) {
     var url = "https:\/\/maps.googleapis.com/maps/api/geocode/json?&address=" + currentCouncil.name + ",Scotland,UK";
     var mapCenter;
@@ -103,39 +55,57 @@ function InitMap(map) {
             center: mapCenter
         });
         map.fitBounds(mapBounds);
-        loadDataZones(map)
+        //loadDataZones(map)
         $("#selectedtype").change(function () {
-            map.data.forEach(function (feature) {
-                map.data.remove(feature);
-            })
+            
             var type = $('#selectedtype :selected').text();
             if (type == "Intermediate Zones") {
-                currentCouncil.intermediateZones.forEach(function (item) {
-                    $.getJSON(sContextPath + "DatahubProfile/IndexDatahub/GetGeoJSON?id=" + item.seedcode).done(function (data) {
-                        //console.log(data);
-                        console.log(item.seedcode);
-                        map.data.addGeoJson(data);
-                    })
-                })
+                currentSelection = "Intermediate Zone";
+                loadData("Participating", currentSelection, map)
+                
 
             } else if (type == "Data Zones") {
-                var jqxhr = $.getJSON(sContextPath + "DatahubProfile/IndexDatahub/GetDataZonesByCouncilName?councilName=" + currentCouncil.name).done(function (data) {
-                    data.forEach(function (item) {
-                        $.getJSON(sContextPath + "DatahubProfile/IndexDatahub/GetGeoJSON?id=" + item).done(function (data) {
-                            //console.log(data);
-                            console.log("12");
-                            map.data.addGeoJson(data);
-                        })
-                    })
-                }).error(function (jqXHR, textStatus, errorThrown) {
-                    console.log("error " + textStatus);
-                    console.log("incoming Text " + jqXHR.responseText);
-                })
+                currentSelection = "Data Zone";
+                loadData("Participating", currentSelection, map)
             }
         })
     });
 }
 
+
+// show search result when click on map
+function ShowPopupInformation(sInformation) {
+    //var popupInformation = document.getElementById('popup-information');
+    //popupInformation.innerHTML = sInformation;
+    //$("#popup-information").show(250);
+    $("#divinformationContainer").html(sInformation);
+}
+
+
+
+// call server side method via ajax
+function SearchData(sCondition, sKeyname) {
+    var JSONObject = {
+        "type": sKeyname,
+        "code": sCondition
+    }
+
+    $.ajax({
+        type: "POST",
+        url: sContextPath + "DatahubProfile/IndexDatahub/MapDataForSelection",
+        data: JSON.stringify(JSONObject),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            ShowPopupInfo(data);
+            drawChartColumn(data);
+            drawPieChart(data);
+        },
+        error: function (xhr, err) {
+            SetErrorMessage(xhr);
+        }
+    });
+}
 
 // initialize spinner on ajax loading
 function InitSpinner() {
@@ -194,56 +164,15 @@ function createSlider(centerValue) {
     $('.slider').append(averge);
 };
 
-function threshholdView1(data, center, percentage) {
-    map.data.setStyle(function (feature) {
-        var low = [5, 69, 54];  // color of smallest datum
-        var high = [151, 83, 34];   // color of largest datum
 
-        var statisticdata = -1;
-
-        var temp = feature.getProperty('DZ_CODE');
-
-        for (var i = 0; i < data.datacode.length; i++) {
-            if (data.datacode[i] == temp) {
-                statisticdata = data.data[i];
-                break;
-            }
-
-        }
-
-        //var center = getAverage(datag.data);
-        var color = 'yellow';
-        var center = getAverage(datag.data);
-        if (statisticdata < (center - percentage)) { color = 'red'; }
-        if (statisticdata > (center + percentage)) { color = 'green'; }
-
-        // determine whether to show this shape or not
-        var showRow = true;
-        if (statisticdata == -1) {
-            showRow = false;
-        }
-
-        var outlineWeight = 0.5, zIndex = 1;
-        if (feature.getProperty('datazone') === 'hover') {
-            outlineWeight = zIndex = 2;
-        }
-
-        return {
-            strokeWeight: outlineWeight,
-            strokeColor: '#fff',
-            zIndex: zIndex,
-            fillColor: color,
-            fillOpacity: 0.75,
-            visible: showRow
-        };
-    });
-};
-
-function threshholdView(data, low, high) {
+function threshholdView(data, type, low, high, map) {
+    console.log("now");
+    console.log(map);
     map.data.setStyle(function (feature) {
         var statisticdata = -1;
 
-        var temp = feature.getProperty('DZ_CODE');
+        if (type == "Data Zone") var temp = feature.getProperty('DZ_CODE');
+        else if (type == "Intermediate Zone") var temp = feature.getProperty('IZ_CODE');
 
         for (var i = 0; i < data.datacode.length; i++) {
             if (data.datacode[i] == temp) {
@@ -275,7 +204,7 @@ function threshholdView(data, low, high) {
             strokeColor: '#fff',
             zIndex: zIndex,
             fillColor: color,
-            fillOpacity: 0.75,
+            fillOpacity: 0.70,
             visible: showRow
         };
     });
@@ -290,155 +219,12 @@ function getAverage(data) {
     return avg;
 }
 
-
-// initialize map object
-function InitMapNew(data) {
-    datag = data;
-    createSlider(Math.round(getAverage(datag.data)));
-    $('#averageText').append(' ' + getAverage(datag.data))
-    var mapCenter = new google.maps.LatLng(57.151810, -2.094451);
-    var mapOptions = {
-        zoom: 11,
-        center: mapCenter
-    }
-
-
-    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-
-    // Copypaste code
-    var url = "https:\/\/maps.googleapis.com/maps/api/geocode/json?&address=" + currentCouncil.name +"%2C%20uk";
-    $.getJSON(url, function (result) {
-        var loc = result.results[0].geometry.location;
-        var sw = result.results[0].geometry.bounds.southwest;
-        var ne = result.results[0].geometry.bounds.northeast;
-        var bounds = new google.maps.LatLngBounds(sw, ne);
-
-        map.setCenter(loc);
-        map.fitBounds(bounds);
-    })
-
-    //map.data.loadGeoJson('https://dl.dropboxusercontent.com/u/870146/KML/V2/Datazone_with_Desc.json' + "?rand=" + (new Date()).valueOf());
-
-    //map.data.addGeoJson(datazonejsondata);
-
-    //glasgow.dataZones.forEach(function (reference) {
-    //    var ulr2 = 'http:\/\/statistics.gov.scot/boundaries/' + reference + '.json';
-    //    //console.log(ulr2);
-    //    $.getJSON(ulr2, function (data) {
-    //        map.data.addGeoJson(data);
-    //    })
-    //})
-
-    //$.each(data1.result, function (i, item) { map.data.addGeoJson(item) })
-
-    $.getJSON(sContextPath + "DatahubProfile/IndexDatahub/GetDatazonesByCouncilName?councilName=" + currentCouncil.name).done(function (data) {
-        data.forEach(function (item) {
-            $.getJSON(sContextPath + "DatahubProfile/IndexDatahub/GetGeoJSON?id=" + item).done(function (data) {
-                map.data.addGeoJson(data);
-            })
-        })
-    }).error(function (jqXHR, textStatus, errorThrown) {
-        console.log("error " + textStatus);
-        console.log("incoming Text " + jqXHR.responseText);
-    });
-
-    //map.data.setStyle(function (feature) {
-    //    var low = [5, 69, 54];  // color of smallest datum
-    //    var high = [151, 83, 34];   // color of largest datum
-
-    //    var statisticdata = -1;
-
-    //    var temp = feature.getProperty('DZ_CODE');
-
-    //    for (var i = 0; i < data.datacode.length; i++) { 
-    //        if (data.datacode[i] == temp) {
-    //            statisticdata = data.data[i];
-    //            break;
-    //        }
-
-    //    }
-
-    //    var delta = (statisticdata - data.minimum) / (data.maximum - data.minimum);
-
-    //    var color = [];
-
-    //    for (var i = 0; i < 3; i++) {
-    //        // calculate an integer color based on the delta
-    //        color[i] = (high[i] - low[i]) * delta + low[i];
-    //    }
-
-
-    //    // determine whether to show this shape or not
-    //    var showRow = true;
-    //    if (statisticdata == -1) {
-    //        showRow = false;
-    //    }
-
-    //    var outlineWeight = 0.5, zIndex = 1;
-    //    if (feature.getProperty('datazone') === 'hover') {
-    //        outlineWeight = zIndex = 2;
-    //    }
-
-    //    return {
-    //        strokeWeight: outlineWeight,
-    //        strokeColor: '#fff',
-    //        zIndex: zIndex,
-    //        fillColor: 'hsl(' + color[0] + ',' + color[1] + '%,' + color[2] + '%)',
-    //        fillOpacity: 0.75,
-    //        visible: showRow
-    //    };
-    //});
-
-    // update and display the legend
-    document.getElementById('census-min').textContent =
-    data.minimum.toFixed(1) +"%";
-    document.getElementById('census-max').textContent =
-        data.maximum.toFixed(1) + "%";
-
-
-    // set up the style rules and events for google.maps.Data
-    map.data.addListener('mouseover', function (event) {
-        // set the hover state so the setStyle function can change the border
-        event.feature.setProperty('datazone', 'hover');
-        var temp = event.feature.getProperty('DZ_CODE');
-        var statisticdata = -1;
-        for (var i = 0; i < data.datacode.length; i++) {
-            if (data.datacode[i] == temp) {
-                statisticdata = data.data[i];
-                break;
-            }
-
-        }
-
-        var percent = (statisticdata - data.minimum) /
-            (data.maximum - data.minimum) * 100;
-
-        // update the label
-        document.getElementById('data-label').textContent =
-            event.feature.getProperty('DZ_CODE');
-        document.getElementById('data-value').textContent =
-            statisticdata.toFixed(1) + '%';
-        document.getElementById('data-box').style.display = 'block';
-        document.getElementById('data-caret').style.display = 'block';
-        document.getElementById('data-caret').style.paddingLeft = percent + '%';
-
-    });
-
-    map.data.addListener('mouseout', function (event) {
-        event.feature.setProperty('datazone', 'normal');
-    });
-
-    map.data.addListener('click', function (kmlEvent) {
-        SearchData(kmlEvent.feature.getProperty('DZ_CODE'), "data zone");
-    });
-
-}
-
-
-function loadData(datasetname) {
+function loadData(datasetname, type, map) {
+    console.log("loading data");
+    console.log(map);
     var JSONObject = {
         "datasetname": datasetname,
-        "type": "data zone",
+        "type": type,
         "name": currentCouncil.name
     }
 
@@ -449,7 +235,186 @@ function loadData(datasetname) {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
-            InitMap(data)
+            map.data.forEach(function (feature) {
+                map.data.remove(feature);
+            })
+            if (type == "Intermediate Zone")
+            {
+                map.data.setStyle(function (feature) {
+
+                    var outlineWeight = 0.5, zIndex = 1;
+                    if (feature.getProperty('datazone') === 'hover') {
+                        outlineWeight = zIndex = 2;
+                    }
+
+                    return {
+                        strokeWeight: outlineWeight,
+                        strokeColor: '#fff',
+                        zIndex: zIndex,
+                        fillOpacity: 0.70
+                    };
+                });
+                currentCouncil.intermediateZones.forEach(function (item) {
+                    $.getJSON(sContextPath + "DatahubProfile/IndexDatahub/GetGeoJSON?id=" + item.seedcode).done(function (data) {
+                        //console.log(data);
+                        console.log(item.seedcode);
+                        map.data.addGeoJson(data);
+
+                    })
+                })
+                datag = data;
+                createSlider(Math.round(getAverage(datag.data)));
+                $('#averageText').append(' ' + getAverage(datag.data))
+                // update and display the legend
+                document.getElementById('census-min').textContent =
+                data.minimum.toFixed(1) + "%";
+                document.getElementById('census-max').textContent =
+                    data.maximum.toFixed(1) + "%";
+
+
+                // set up the style rules and events for google.maps.Data
+                map.data.addListener('mouseover', function (event) {
+                    // set the hover state so the setStyle function can change the border
+                    event.feature.setProperty('datazone', 'hover');
+                    var temp = event.feature.getProperty('IZ_CODE');
+                    var statisticdata = -1;
+                    for (var i = 0; i < data.datacode.length; i++) {
+                        if (data.datacode[i] == temp) {
+                            statisticdata = data.data[i];
+                            break;
+                        }
+
+                    }
+
+                    var percent = (statisticdata - data.minimum) /
+                        (data.maximum - data.minimum) * 100;
+
+                    // update the label
+                    document.getElementById('data-label').textContent =
+                        event.feature.getProperty('IZ_CODE');
+                    document.getElementById('data-value').textContent =
+                        statisticdata.toFixed(1) + '%';
+                    document.getElementById('data-box').style.display = 'block';
+                    document.getElementById('data-caret').style.display = 'block';
+                    document.getElementById('data-caret').style.paddingLeft = percent + '%';
+
+                });
+
+                map.data.addListener('mouseout', function (event) {
+                    event.feature.setProperty('datazone', 'normal');
+                });
+
+                map.data.addListener('click', function (kmlEvent) {
+                    SearchData(kmlEvent.feature.getProperty('IZ_CODE'), "intermediate zone");
+                });
+                $(document.body).on('click', '.a-close-popup-information', function () {
+                    $("#popup-information").hide(250);
+                })
+                InitSpinner();
+                $("#selecteddataset").change(function () {
+                    var datasetname = $('#selecteddataset :selected').text();
+                    loadData(datasetname, type, map);
+                })
+
+                $("#thresholdViewBtn").click(function () {
+                    var low = parseInt($('#thresholdViewLow').val())
+                    var high = parseInt($('#thresholdViewHigh').val())
+                    threshholdView(datag, type, low, high, map);
+                })
+
+                $("#thresholdViewAvg").click(function () {
+                    $('#thresholdViewCenter').val(getAverage(datag.data));
+                })
+            }
+            else if (type=="Data Zone")
+            {
+                map.data.setStyle(function (feature) {
+
+                    var outlineWeight = 0.5, zIndex = 1;
+                    if (feature.getProperty('datazone') === 'hover') {
+                        outlineWeight = zIndex = 2;
+                    }
+
+                    return {
+                        strokeWeight: outlineWeight,
+                        strokeColor: '#fff',
+                        zIndex: zIndex,
+                        fillOpacity: 0.70
+                    };
+                });
+                currentCouncil.dataZones.forEach(function (item) {
+                    $.getJSON(sContextPath + "DatahubProfile/IndexDatahub/GetGeoJSON?id=" + item.seedcode).done(function (data) {
+                        //console.log(data);
+                        console.log(item.seedcode);
+                        map.data.addGeoJson(data);
+
+                    })
+                })
+                datag = data;
+                createSlider(Math.round(getAverage(datag.data)));
+                $('#averageText').append(' ' + getAverage(datag.data))
+                // update and display the legend
+                document.getElementById('census-min').textContent =
+                data.minimum.toFixed(1) + "%";
+                document.getElementById('census-max').textContent =
+                    data.maximum.toFixed(1) + "%";
+
+
+                // set up the style rules and events for google.maps.Data
+                map.data.addListener('mouseover', function (event) {
+                    // set the hover state so the setStyle function can change the border
+                    event.feature.setProperty('datazone', 'hover');
+                    var temp = event.feature.getProperty('DZ_CODE');
+                    var statisticdata = -1;
+                    for (var i = 0; i < data.datacode.length; i++) {
+                        if (data.datacode[i] == temp) {
+                            statisticdata = data.data[i];
+                            break;
+                        }
+
+                    }
+
+                    var percent = (statisticdata - data.minimum) /
+                        (data.maximum - data.minimum) * 100;
+
+                    // update the label
+                    document.getElementById('data-label').textContent =
+                        event.feature.getProperty('DZ_CODE');
+                    document.getElementById('data-value').textContent =
+                        statisticdata.toFixed(1) + '%';
+                    document.getElementById('data-box').style.display = 'block';
+                    document.getElementById('data-caret').style.display = 'block';
+                    document.getElementById('data-caret').style.paddingLeft = percent + '%';
+
+                });
+
+                map.data.addListener('mouseout', function (event) {
+                    event.feature.setProperty('datazone', 'normal');
+                });
+
+                map.data.addListener('click', function (kmlEvent) {
+                    SearchData(kmlEvent.feature.getProperty('DZ_CODE'), "data zone");
+                });
+                $(document.body).on('click', '.a-close-popup-information', function () {
+                    $("#popup-information").hide(250);
+                })
+                InitSpinner();
+                $("#selecteddataset").change(function () {
+                    var datasetname = $('#selecteddataset :selected').text();
+                    loadData(datasetname, type, map);
+                })
+
+                $("#thresholdViewBtn").click(function () {
+                    var low = parseInt($('#thresholdViewLow').val())
+                    var high = parseInt($('#thresholdViewHigh').val())
+                    threshholdView(datag, type, low, high, map);
+                })
+
+                $("#thresholdViewAvg").click(function () {
+                    $('#thresholdViewCenter').val(getAverage(datag.data));
+                })
+            }
+            
         },
         error: function (xhr, err) {
             SetErrorMessage(xhr);
@@ -457,39 +422,6 @@ function loadData(datasetname) {
     });
 }
 
-// show search result when click on map
-function ShowPopupInformation(sInformation) {
-    //var popupInformation = document.getElementById('popup-information');
-    //popupInformation.innerHTML = sInformation;
-    //$("#popup-information").show(250);
-    $("#divinformationContainer").html(sInformation);
-}
-
-
-
-// call server side method via ajax
-function SearchData(sCondition, sKeyname) {
-    var JSONObject = {
-        "type": sKeyname,
-        "code": sCondition
-    }
-
-    $.ajax({
-        type: "POST",
-        url: sContextPath + "DatahubProfile/IndexDatahub/MapDataForSelection",
-        data: JSON.stringify(JSONObject),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (data) {
-            ShowPopupInfo(data);
-            drawChartColumn(data);
-            drawPieChart(data);
-        },
-        error: function (xhr, err) {
-            SetErrorMessage(xhr);
-        }
-    });
-}
 
 function myFunctionColumn(pdata) {
     $.ajax({
