@@ -16,6 +16,8 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub
         public IList<School> ListNeighbourhoodsName { get; set; }
         public IList<School> ListCouncilName { get; set; }
         public School selectedschool { get; set; }
+        public List<string> listOfSchools { get; set; }
+        public List<string> listOfNeightbourhoods { get; set; }
         public string selectedcouncil { get; set; }
         public string selectedschoolcode { get; set; } // for school dropdown list
         public string selectedneighbourhoods { get; set; } // for neighbourhood dropdown list

@@ -57,18 +57,19 @@
                                     <td>@Html.DropDownList("selectedschoolcode", new SelectList(Model.ListSchoolNameData, "seedcode", "name"))</td>                                 
                                     @*<td>@Html.DropDownListFor(m => m.selectedschoolcode, new SelectList(Model.ListSchoolNameData, "seedcode", "name"))</td>*@
                                     
-                                    @*<td width="20%"><input type="submit" class="btn btn-primary" name="schoolsubmitButton" value="Search" /></td>*@
+                                    <td width="20%"><input type="submit" class="btn btn-primary" name="schoolsubmitButton" value="Search" /></td>
 
-                                    <td width="20%"><button class="btn btn-primary" id="schoolsubmitButton1">Search</button></td>
+                                    @*<td width="20%"><button class="btn btn-primary" id="schoolsubmitButton">Search</button></td>*@
                                 </tr>
                                 <tr>
                                     <td width="40%">Neighbourhoods</td>
                                     <td>@Html.DropDownList("selectedneighbourhoods", new SelectList(Model.ListNeighbourhoodsName, "seedcode", "name"))</td>
                                     @*<td width="20%"><input type="submit" class="btn btn-primary"  name="neighbourhoodssubmitButton" value="Search" /></td>*@
-                                    <td width="20%"><button class="btn btn-primary" id="neighbourhoodButton1">Search</button></td>
+                                    <td width="20%"><button class="btn btn-primary" id="neighbourhoodButton">Search</button></td>
                                 </tr>
                             </tbody>
                         </table>
+                        <input type="hidden" name="selectedcouncil" value="@Model.selectedcouncil" />
 }
                 </div>
             </div>
@@ -231,7 +232,7 @@
                             {
                                 <tr>
                                     <th class="text-center">@Html.DisplayTextFor(m => data.name)</th>
-                                    <td class="text-center">@Html.DisplayTextFor(m => data.allPupilsMovedOutwithScotland)</td>
+                                    <td class="text-center">@*@Html.DisplayTextFor(m => data.allPupilsMovedOutwithScotland)*@ @data.allPupils</td>
                                     <td class="text-center">@String.Format("{0:#,0.0}", data.Percentage(data.allMale))</td>
                                     <td class="text-center">@String.Format("{0:#,0.0}", data.Percentage(data.allFemale))</td>
                                     <td class="text-center">@String.Format("{0:#,0.0}", data.Percentage(data.allPupils15))</td>
@@ -378,8 +379,12 @@
             </div>
         </div>
     </div>
-
+    
 }
+        <div id="table-test1"></div>
+        @*<div id="myPartialContainer">
+            @Html.Partial("_DataTables", Model.ListSelectionData);
+        </div>*@
 
     <div class="row">
         <div class="col-md-12">
