@@ -246,7 +246,6 @@
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\ComparisonsIndex.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\CouncilSelector.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\HeatMapIndex.js" />
-    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\HighchartsCheat.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\HighchartsGraphsNew.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\HighchartsGraphs.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\IndexdatahubProfile.js" />

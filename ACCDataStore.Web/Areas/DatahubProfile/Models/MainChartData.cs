@@ -8,7 +8,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Models
     public class MainChartData
     {
         public object totals { get; set; }
-        public object selected { get; set; }
+        public List<object> selected { get; set; }
         public long benchmarkResults { get; set; }
     }
 }
