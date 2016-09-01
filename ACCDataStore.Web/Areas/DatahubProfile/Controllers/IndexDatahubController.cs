@@ -129,6 +129,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             SummaryDataViewModel councilData = null;
             IList<SummaryDataViewModel> councilSchoolsData = null;
             List<PosNegSchoolList> tableSummaryData = new List<PosNegSchoolList>();
+            List<PosNegSchoolList> tableSummaryIMDatazoneData = new List<PosNegSchoolList>();
 
             // To hold our current selection [city,month,year]
             ViewModelParams pageViewModelParams = new ViewModelParams();
@@ -164,7 +165,24 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
             viewModel.CityData = councilData;
             viewModel.summaryTableData = tableSummaryData;
-                
+
+
+            // This bit should live in a seperate controller IMO
+            IList<SummaryDataViewModel> councilIMDatazonesData = Helper2.ByName(name).GetSummaryDataForAllIntermediateZones(08, 2016);
+
+            //Prepare Intermediate datazone participation data
+            foreach (var IMDatazoneSummary in councilIMDatazonesData)
+            {
+                PosNegSchoolList entry = new PosNegSchoolList();
+                entry.name = IMDatazoneSummary.name;
+                entry.participating = (double)IMDatazoneSummary.Participating(); // decimal or double for percentages? we should decide
+                entry.notParticipating = (double)IMDatazoneSummary.NotParticipating();
+                entry.unknown = (double)IMDatazoneSummary.Percentage(IMDatazoneSummary.allPupilsInUnknown);
+                tableSummaryIMDatazoneData.Add(entry);
+            }
+
+            viewModel.summaryNeighboursTableData = tableSummaryIMDatazoneData;
+
             // ???, NVM we need this
             pageViewModelParams.school = schoolsubmitButton;
             pageViewModelParams.neighbourhood = neighbourhoodssubmitButton;
@@ -207,13 +225,29 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
             if (neighbourhoodssubmitButton != null)
             {
-                var datacode = Request["selectedneighbourhoods"];
-                School currentIntermediateZone = allIntermediateZonesList.Where(x => x.seedcode == datacode).FirstOrDefault();
+                List<string> dataZoneCode = Request["selectedneighbourhoods"].Split(',').ToList<string>();
+                //var sSchoolcode = Request["selectedschool"];
+                //School currentSchool = allSchoolsList.Where(x => x.seedcode == sSchoolcode).FirstOrDefault();
+                if (dataZoneCode != null)
+                {
+                    foreach (string school in dataZoneCode)
+                    {
+                        School currentSchool = allIntermediateZonesList.Where(x => x.seedcode == school).FirstOrDefault();
+                        SummaryDataViewModel currentSchoolData = Helper2.ByName(name).GetSummaryDataForSingleIntermediateZone(school, 8, 2016);
+                        Session["chartSelectedNeighbour"] = currentSchoolData;
+                        viewModel.selectedschool = currentSchool;
+                        viewModel.SelectedData = currentSchoolData;
+                        list.Add(currentSchoolData);
+                    }
 
-                SummaryDataViewModel currentIntermediateZoneData = Helper2.ByName(name).GetSummaryDataForSingleIntermediateZone(currentIntermediateZone.seedcode, 8, 2016);
-                Session["chartSelectedNeighbour"] = currentIntermediateZoneData;
-                viewModel.selectedschool = currentIntermediateZone;
-                viewModel.SelectedData = currentIntermediateZoneData;
+                }
+                //var datacode = Request["selectedneighbourhoods"];
+                //School currentIntermediateZone = allIntermediateZonesList.Where(x => x.seedcode == datacode).FirstOrDefault();
+
+                //SummaryDataViewModel currentIntermediateZoneData = Helper2.ByName(name).GetSummaryDataForSingleIntermediateZone(currentIntermediateZone.seedcode, 8, 2016);
+                //Session["chartSelectedNeighbour"] = currentIntermediateZoneData;
+                //viewModel.selectedschool = currentIntermediateZone;
+                //viewModel.SelectedData = currentIntermediateZoneData;
 
             }
 
