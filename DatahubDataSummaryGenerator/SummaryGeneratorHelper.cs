@@ -22,6 +22,10 @@ namespace ACCDataStore
 
             T summaryData = entity;
 
+            //string unspecified = "information not yet obtained";
+            string unspecified = "prefer not to say";
+
+
             summaryData.name = name;
             summaryData.dataCode = datacode;
             summaryData.dataMonth = month;
@@ -30,122 +34,133 @@ namespace ACCDataStore
 
             summaryData.movedOutScotlandFemale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("moved outwith scotland") && x.Gender.ToLower().Equals("female"));
             summaryData.movedOutScotlandMale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("moved outwith scotland") && x.Gender.ToLower().Equals("male"));
-            summaryData.movedOutScotlandUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("moved outwith scotland") && x.Gender.ToLower().Equals("information not yet obtained"));
+            summaryData.movedOutScotlandUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("moved outwith scotland") && x.Gender.ToLower().Equals(unspecified));
 
             studentDataForPeriod = studentDataForPeriod.Where(x => !(x.Current_Status.ToLower().Equals("moved outwith scotland"))).ToList();
 
             summaryData.allFemale = studentDataForPeriod.Count(x => x.Gender.ToLower().Equals("female"));
             summaryData.allMale = studentDataForPeriod.Count(x => x.Gender.ToLower().Equals("male"));
-            summaryData.allUnspecified = studentDataForPeriod.Count(x => x.Gender.ToLower().Equals("information not yet obtained"));
+            summaryData.allUnspecified = studentDataForPeriod.Count(x => x.Gender.ToLower().Equals(unspecified));
 
             summaryData.all15Female = studentDataForPeriod.Count(x => x.Age == 15 && x.Gender.ToLower().Equals("female"));
             summaryData.all15Male = studentDataForPeriod.Count(x => x.Age == 15 && x.Gender.ToLower().Equals("male"));
-            summaryData.all15Unspecified = studentDataForPeriod.Count(x => x.Age == 15 && x.Gender.ToLower().Equals("information not yet obtained"));
+            summaryData.all15Unspecified = studentDataForPeriod.Count(x => x.Age == 15 && x.Gender.ToLower().Equals(unspecified));
 
             summaryData.all16Female = studentDataForPeriod.Count(x => x.Age == 16 && x.Gender.ToLower().Equals("female"));
             summaryData.all16Male = studentDataForPeriod.Count(x => x.Age == 16 && x.Gender.ToLower().Equals("male"));
-            summaryData.all16Unspecified = studentDataForPeriod.Count(x => x.Age == 16 && x.Gender.ToLower().Equals("information not yet obtained"));
+            summaryData.all16Unspecified = studentDataForPeriod.Count(x => x.Age == 16 && x.Gender.ToLower().Equals(unspecified));
 
             summaryData.all17Female = studentDataForPeriod.Count(x => x.Age == 17 && x.Gender.ToLower().Equals("female"));
             summaryData.all17Male = studentDataForPeriod.Count(x => x.Age == 17 && x.Gender.ToLower().Equals("male"));
-            summaryData.all17Unspecified = studentDataForPeriod.Count(x => x.Age == 17 && x.Gender.ToLower().Equals("information not yet obtained"));
+            summaryData.all17Unspecified = studentDataForPeriod.Count(x => x.Age == 17 && x.Gender.ToLower().Equals(unspecified));
 
             summaryData.all18Female = studentDataForPeriod.Count(x => x.Age == 18 && x.Gender.ToLower().Equals("female"));
             summaryData.all18Male = studentDataForPeriod.Count(x => x.Age == 18 && x.Gender.ToLower().Equals("male"));
-            summaryData.all18Unspecified = studentDataForPeriod.Count(x => x.Age == 18 && x.Gender.ToLower().Equals("information not yet obtained"));
+            summaryData.all18Unspecified = studentDataForPeriod.Count(x => x.Age == 18 && x.Gender.ToLower().Equals(unspecified));
 
             summaryData.all19Female = studentDataForPeriod.Count(x => x.Age == 19 && x.Gender.ToLower().Equals("female"));
             summaryData.all19Male = studentDataForPeriod.Count(x => x.Age == 19 && x.Gender.ToLower().Equals("male"));
-            summaryData.all19Unspecified = studentDataForPeriod.Count(x => x.Age == 19 && x.Gender.ToLower().Equals("information not yet obtained"));
+            summaryData.all19Unspecified = studentDataForPeriod.Count(x => x.Age == 19 && x.Gender.ToLower().Equals(unspecified));
 
             summaryData.activityAgreementFemale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("activity agreement") && x.Gender.ToLower().Equals("female"));
             summaryData.activityAgreementMale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("activity agreement") && x.Gender.ToLower().Equals("male"));
-            summaryData.activityAgreementUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("activity agreement") && x.Gender.ToLower().Equals("information not yet obtained"));
+            summaryData.activityAgreementUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("activity agreement") && x.Gender.ToLower().Equals(unspecified));
 
             summaryData.schoolFemale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("school pupil") && x.Gender.ToLower().Equals("female"));
             summaryData.schoolMale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("school pupil") && x.Gender.ToLower().Equals("male"));
-            summaryData.schoolUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("school pupil") && x.Gender.ToLower().Equals("information not yet obtained"));
+            summaryData.schoolUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("school pupil") && x.Gender.ToLower().Equals(unspecified));
 
             summaryData.schoolInTransitionFemale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("school pupil - in transition") && x.Gender.ToLower().Equals("female"));
             summaryData.schoolInTransitionMale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("school pupil - in transition") && x.Gender.ToLower().Equals("male"));
-            summaryData.schoolInTransitionUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("school pupil - in transition") && x.Gender.ToLower().Equals("information not yet obtained"));
+            summaryData.schoolInTransitionUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("school pupil - in transition") && x.Gender.ToLower().Equals(unspecified));
 
             summaryData.activityAgreementFemale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("activity agreement") && x.Gender.ToLower().Equals("female"));
             summaryData.activityAgreementMale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("activity agreement") && x.Gender.ToLower().Equals("male"));
-            summaryData.activityAgreementUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("activity agreement") && x.Gender.ToLower().Equals("information not yet obtained"));
+            summaryData.activityAgreementUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("activity agreement") && x.Gender.ToLower().Equals(unspecified));
 
             summaryData.fundStage2Female = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("employability fund stage 2") && x.Gender.ToLower().Equals("female"));
             summaryData.fundStage2Male = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("employability fund stage 2") && x.Gender.ToLower().Equals("male"));
-            summaryData.fundStage2Unspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("employability fund stage 2") && x.Gender.ToLower().Equals("information not yet obtained"));
+            summaryData.fundStage2Unspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("employability fund stage 2") && x.Gender.ToLower().Equals(unspecified));
 
             summaryData.fundStage3Female = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("employability fund stage 3") && x.Gender.ToLower().Equals("female"));
             summaryData.fundStage3Male = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("employability fund stage 3") && x.Gender.ToLower().Equals("male"));
-            summaryData.fundStage3Unspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("employability fund stage 3") && x.Gender.ToLower().Equals("information not yet obtained"));
+            summaryData.fundStage3Unspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("employability fund stage 3") && x.Gender.ToLower().Equals(unspecified));
 
             summaryData.fundStage4Female = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("employability fund stage 4") && x.Gender.ToLower().Equals("female"));
             summaryData.fundStage4Male = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("employability fund stage 4") && x.Gender.ToLower().Equals("male"));
-            summaryData.fundStage4Unspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("employability fund stage 4") && x.Gender.ToLower().Equals("information not yet obtained"));
+            summaryData.fundStage4Unspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("employability fund stage 4") && x.Gender.ToLower().Equals(unspecified));
 
-            summaryData.fullTimeEmploymentFemale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("full-time employment") && x.Gender.ToLower().Equals("female"));
-            summaryData.fullTimeEmploymentMale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("full-time employment") && x.Gender.ToLower().Equals("male"));
-            summaryData.fullTimeEmploymentUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("full-time employment") && x.Gender.ToLower().Equals("information not yet obtained"));
+            //summaryData.fullTimeEmploymentFemale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("full-time employment") && x.Gender.ToLower().Equals("female"));
+            //summaryData.fullTimeEmploymentMale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("full-time employment") && x.Gender.ToLower().Equals("male"));
+            //summaryData.fullTimeEmploymentUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("full-time employment") && x.Gender.ToLower().Equals(unspecified));
+
+            summaryData.fullTimeEmploymentFemale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("employment") && x.Gender.ToLower().Equals("female"));
+            summaryData.fullTimeEmploymentMale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("employment") && x.Gender.ToLower().Equals("male"));
+            summaryData.fullTimeEmploymentUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("employment") && x.Gender.ToLower().Equals(unspecified));
 
             summaryData.furtherEducationFemale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("further education") && x.Gender.ToLower().Equals("female"));
             summaryData.furtherEducationMale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("further education") && x.Gender.ToLower().Equals("male"));
-            summaryData.furtherEducationUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("further education") && x.Gender.ToLower().Equals("information not yet obtained"));
+            summaryData.furtherEducationUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("further education") && x.Gender.ToLower().Equals(unspecified));
 
             summaryData.higherEducationFemale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("higher education") && x.Gender.ToLower().Equals("female"));
             summaryData.higherEducationMale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("higher education") && x.Gender.ToLower().Equals("male"));
-            summaryData.higherEducationUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("higher education") && x.Gender.ToLower().Equals("information not yet obtained"));
+            summaryData.higherEducationUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("higher education") && x.Gender.ToLower().Equals(unspecified));
 
             summaryData.modernApprenticeshipFemale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("modern apprenticeship") && x.Gender.ToLower().Equals("female"));
             summaryData.modernApprenticeshipMale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("modern apprenticeship") && x.Gender.ToLower().Equals("male"));
-            summaryData.modernApprenticeshipUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("modern apprenticeship") && x.Gender.ToLower().Equals("information not yet obtained"));
+            summaryData.modernApprenticeshipUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("modern apprenticeship") && x.Gender.ToLower().Equals(unspecified));
 
             summaryData.parttimeEmploymentFemale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("part-time employment") && x.Gender.ToLower().Equals("female"));
             summaryData.parttimeEmploymentMale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("part-time employment") && x.Gender.ToLower().Equals("male"));
-            summaryData.parttimeEmploymentUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("part-time employment") && x.Gender.ToLower().Equals("information not yet obtained"));
+            summaryData.parttimeEmploymentUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("part-time employment") && x.Gender.ToLower().Equals(unspecified));
 
             summaryData.personalDevelopmentFemale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("personal/ skills development") && x.Gender.ToLower().Equals("female"));
             summaryData.personalDevelopmentMale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("personal/ skills development") && x.Gender.ToLower().Equals("male"));
-            summaryData.personalDevelopmentUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("personal/ skills development") && x.Gender.ToLower().Equals("information not yet obtained"));
+            summaryData.personalDevelopmentUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("personal/ skills development") && x.Gender.ToLower().Equals(unspecified));
 
             summaryData.selfEmployedFemale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("self-employed") && x.Gender.ToLower().Equals("female"));
             summaryData.selfEmployedMale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("self-employed") && x.Gender.ToLower().Equals("male"));
-            summaryData.selfEmployedUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("self-employed") && x.Gender.ToLower().Equals("information not yet obtained"));
+            summaryData.selfEmployedUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("self-employed") && x.Gender.ToLower().Equals(unspecified));
 
-            summaryData.trainingFemale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("training (non ntp)") && x.Gender.ToLower().Equals("female"));
-            summaryData.trainingMale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("training (non ntp)") && x.Gender.ToLower().Equals("male"));
-            summaryData.trainingUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("training (non ntp)") && x.Gender.ToLower().Equals("information not yet obtained"));
+            summaryData.trainingFemale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("other formal training") && x.Gender.ToLower().Equals("female"));
+            summaryData.trainingMale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("other formal training") && x.Gender.ToLower().Equals("male"));
+            summaryData.trainingUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("other formal training") && x.Gender.ToLower().Equals(unspecified));
 
             summaryData.voluntaryWorkFemale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("voluntary work") && x.Gender.ToLower().Equals("female"));
             summaryData.voluntaryWorkMale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("voluntary work") && x.Gender.ToLower().Equals("male"));
-            summaryData.voluntaryWorkUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("voluntary work") && x.Gender.ToLower().Equals("information not yet obtained"));
+            summaryData.voluntaryWorkUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("voluntary work") && x.Gender.ToLower().Equals(unspecified));
 
             summaryData.custodyFemale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("custody") && x.Gender.ToLower().Equals("female"));
             summaryData.custodyMale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("custody") && x.Gender.ToLower().Equals("male"));
-            summaryData.custodyUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("custody") && x.Gender.ToLower().Equals("information not yet obtained"));
+            summaryData.custodyUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("custody") && x.Gender.ToLower().Equals(unspecified));
 
             summaryData.economicallyInactiveFemale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("economically inactive") && x.Gender.ToLower().Equals("female"));
             summaryData.economicallyInactiveMale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("economically inactive") && x.Gender.ToLower().Equals("male"));
-            summaryData.economicallyInactiveUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("economically inactive") && x.Gender.ToLower().Equals("information not yet obtained"));
+            summaryData.economicallyInactiveUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("economically inactive") && x.Gender.ToLower().Equals(unspecified));
 
             summaryData.illHealthFemale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("unavailable - ill health") && x.Gender.ToLower().Equals("female"));
             summaryData.illHealthMale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("unavailable - ill health") && x.Gender.ToLower().Equals("male"));
-            summaryData.illHealthUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("unavailable - ill health") && x.Gender.ToLower().Equals("information not yet obtained"));
+            summaryData.illHealthUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("unavailable - ill health") && x.Gender.ToLower().Equals(unspecified));
 
             summaryData.unemployedFemale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("unemployed") && x.Gender.ToLower().Equals("female"));
             summaryData.unemployedMale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("unemployed") && x.Gender.ToLower().Equals("male"));
-            summaryData.unemployedUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("unemployed") && x.Gender.ToLower().Equals("information not yet obtained"));
+            summaryData.unemployedUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("unemployed") && x.Gender.ToLower().Equals(unspecified));
 
+            // Aberdeen, Glasgow
+            //summaryData.unknownFemale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("unknown") && x.Gender.ToLower().Equals("female"));
+            //summaryData.unknownMale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("unknown") && x.Gender.ToLower().Equals("male"));
+            //summaryData.unknownUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("unknown") && x.Gender.ToLower().Equals(unspecified));
 
-            summaryData.unknownFemale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("unknown") && x.Gender.ToLower().Equals("female"));
-            summaryData.unknownMale = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("unknown") && x.Gender.ToLower().Equals("male"));
-            summaryData.unknownUnspecified = studentDataForPeriod.Count(x => x.Current_Status.ToLower().Equals("unknown") && x.Gender.ToLower().Equals("information not yet obtained"));
+            // Aberdeenshire
+            summaryData.unknownFemale = studentDataForPeriod.Count(x => x.Current_Status == null && x.Gender.ToLower().Equals("female"));
+            summaryData.unknownMale = studentDataForPeriod.Count(x => x.Current_Status == null && x.Gender.ToLower().Equals("male"));
+            summaryData.unknownUnspecified = studentDataForPeriod.Count(x => x.Current_Status == null && x.Gender.ToLower().Equals(unspecified));
 
+            //Aberdeen only
             //var temp = studentDataForPeriod.Where(x => x.Weeks_since_last_Pos_Status != null).DefaultIfEmpty().ToList();
-            //This doesnt work for glasgow
             //summaryData.AvgWeek = temp.First() == null ? 0.0 : temp.Average(x => Convert.ToInt16(x.Weeks_since_last_Pos_Status ?? "0"));
+
+            // Glasgo w and aberdeenshire avg
             summaryData.AvgWeek = 0.0;
 
             return summaryData;
@@ -279,7 +294,13 @@ namespace ACCDataStore
             
 
             Console.WriteLine("Preparing data for all periods: Started");
-            IList<DatahubDataObj> studentDataAllPeriods = session.QueryOver<T>().List<DatahubDataObj>();
+            // Aberdeenshire
+
+            IList<DatahubDataObj> studentDataAllPeriods = session.QueryOver<T>().Where(x => x.Current_Status != "Time Out to Travel"
+                    && x.Current_Status != "PSD (Social & Health)" && x.Current_Status != "PSD (Employability)" && x.Current_Status != "Get Ready for Work").List<DatahubDataObj>();
+            // Aberdeen glasgow
+            //IList<DatahubDataObj> studentDataAllPeriods = session.QueryOver<T>().List<DatahubDataObj>();
+
             var monthYearList = studentDataAllPeriods.Select(x => new { x.Data_Month, x.Data_Year }).ToList().Distinct().ToList();
             IList<string> dataZonesList = session.QueryOver<DataZoneObj>().Where(x => x.Reference_Council == council.referenceCode).List().Select(x => x.Reference).ToList();
             IList<IntermediateZoneObj> intermediateZonesList = session.QueryOver<IntermediateZoneObj>().Where(x => x.Reference_Council == council.referenceCode).List();
@@ -305,6 +326,9 @@ namespace ACCDataStore
                     case "Glasgow City":
                         populateForSinglePeriod<T,GlasgowSummary>(session, studentDataThisPeriod, council, currMonth, currYear, intermediateZonesList, dataZonesList, allSchoolsList);
                         break;
+                    case "Aberdeenshire":
+                        populateForSinglePeriod<T, AberdeenshireSummary>(session, studentDataThisPeriod, council, currMonth, currYear, intermediateZonesList, dataZonesList, allSchoolsList);
+                        break;
                 }
                 
             }
@@ -324,12 +348,17 @@ namespace ACCDataStore
                 case "DatahubDataAberdeen":
                     council.referenceCode = "S12000033";
                     council.name = "Aberdeen City";
-                    //council.summaryDataType = new AberdeenSummary();
+                    council.entity  = new AberdeenSummary();
                     break;
                 case "DatahubDataGlasgow":
                     council.referenceCode = "S12000046";
                     council.name = "Glasgow City";
                     council.entity = new GlasgowSummary();
+                    break;
+                case "DatahubDataAberdeenshire":
+                    council.referenceCode = "S12000034";
+                    council.name = "Aberdeenshire";
+                    council.entity = new AberdeenshireSummary();
                     break;
                 default:
                     council = null;
