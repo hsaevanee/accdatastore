@@ -62,11 +62,10 @@ var hGraphs = {
         if (type == null || type == undefined) {
             type = 'participating';
         }
-        var series = [];
-        var prep = [];
+        var series = [], lineLength = 4, line = [], axis = [];
         if (hGraphs.cache.allSchoolComparison.data != null) {
             for (var i = 0; i < hGraphs.cache.allSchoolComparison.data.length; i++) {
-                series.push({ name: hGraphs.cache.allSchoolComparison.data[i].name, data: [] });
+                series.push({ name: hGraphs.cache.allSchoolComparison.data[i].name, type: 'column', xAxis: 0, data: [] });
                 for (var key in hGraphs.cache.allSchoolComparison.data[i]) {
                     if (key == type) {
                         series[i].data.push(hGraphs.cache.allSchoolComparison.data[i][key]);
@@ -74,9 +73,14 @@ var hGraphs = {
                 }
             }
         }
+        for (var i = 0; i < lineLength; i++) {
+            line.push(hGraphs.cache.allSchoolComparison.councilAverage[type]);
+            axis.push(i.toString());
+        }
+        series.push({name: hGraphs.cache.allSchoolComparison.councilAverage.name + ' Average', type: 'line', xAxis: 1, data: line});
         if (series.length > 0) {
             console.log(series);
-            hGraphs.drawBar("#index-all-school-comparison-chart", series);
+            hGraphs.drawBarLine("#index-all-school-comparison-chart", series, [type], axis);
         }
         //document.getElementById('beckmark-all-school-bar-ajax').innerHTML = Date.now() - hGraphs.benchmark.allSchoolComparison;
         //document.getElementById('beckmark-all-school-bar-server').innerHTML = hGraphs.cache.allSchoolComparison.benchmarkResults;
@@ -279,6 +283,64 @@ var hGraphs = {
                     fontFamily: 'Verdana, sans-serif'
                 }
             }
+        });
+    },
+    drawBarLine: function (id, series, axis1, axis2) {
+        $(id).highcharts({
+            chart: {
+                zoomType: 'xy'
+            },
+            title: {
+                text: 'Student Participation Overview'
+            },
+            xAxis: [{
+                categories: axis1,
+                crosshair: true
+            }, {
+                categories: axis2, 
+                lineWidth: 0,
+                minorGridLineWidth: 0,
+                lineColor: 'transparent',
+                labels: {
+                    enabled: false
+                },
+                minorTickLength: 0,
+                tickLength: 0
+            }],
+            yAxis: [{
+                min: 0,
+                max: 100,
+                labels: {
+                    style: {
+                        color: Highcharts.getOptions().colors[1]
+                    }
+                },
+                title: {
+                    text: 'Student percentage (%)',
+                    style: {
+                        color: Highcharts.getOptions().colors[1]
+                    }
+                }
+            }],
+            tooltip: {
+                shared: true
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                y: 100,
+                floating: false,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+            },
+            plotOptions: {
+                line: {
+                    marker: {
+                        enabled: false
+                    }
+                }
+            },
+            series: series
         });
     },
     construct: function (type, param) {

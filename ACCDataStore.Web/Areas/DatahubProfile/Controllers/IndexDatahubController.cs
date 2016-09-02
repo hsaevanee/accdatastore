@@ -1477,7 +1477,16 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
         {
             Stopwatch timer = new Stopwatch();
             timer.Start();
+            ViewModelParams selection = Session["ViewModelParams"] as ViewModelParams;
+            SummaryDataViewModel councilData = Helper2.ByName(selection.councilName).GetSummaryDataForCouncil(8, 2016);
             BenchmarkAjax wrapper = new BenchmarkAjax();
+            wrapper.councilAverage = new
+            {
+                name = selection.councilName,
+                participating = councilData.Participating(),
+                notParticipating = councilData.NotParticipating(),
+                unknown = councilData.Percentage(councilData.allPupilsInUnknown)
+            };
             List<PosNegSchoolList> tableSummaryData = Session["AllSchoolComparisonData"] as List<PosNegSchoolList>;
             Session["AllSchoolComparisonData"] = null;
             wrapper.data = tableSummaryData;
