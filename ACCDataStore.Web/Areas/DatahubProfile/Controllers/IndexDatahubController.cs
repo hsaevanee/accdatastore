@@ -305,13 +305,16 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
             MainChartData combinedData = new MainChartData();
             combinedData.selected = new List<object>();
-            combinedData.totals = new
+            if (CityData != null)
             {
-                name = CityData.name,
-                participating = CityData.Participating(),
-                notParticipating = CityData.NotParticipating(),
-                unknown = CityData.Percentage(CityData.allPupilsInUnknown)
-            };
+                combinedData.totals = new
+                {
+                    name = CityData.name,
+                    participating = CityData.Participating(),
+                    notParticipating = CityData.NotParticipating(),
+                    unknown = CityData.Percentage(CityData.allPupilsInUnknown)
+                };
+            }
                 
 
             if (selectionParams.school != null && selectionParams.school.Count > 0)
@@ -334,15 +337,18 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
             if (selectionParams.neighbourhood != null && selectionParams.neighbourhood.Count > 0)
             {
-                SummaryDataViewModel intZoneData = Session["chartSelectedNeighbour"] as SummaryDataViewModel;
-                
-                combinedData.selected.Add(new
+                //SummaryDataViewModel intZoneData = Session["chartSelectedNeighbour"] as SummaryDataViewModel;
+                foreach (string neighbourhood in selectionParams.neighbourhood)
                 {
-                    name = intZoneData.name,
-                    participating = intZoneData.Participating(),
-                    notParticipating = intZoneData.NotParticipating(),
-                    unknown = intZoneData.Percentage(intZoneData.allPupilsInUnknown)
-                });
+                    SummaryDataViewModel intZoneData = Helper2.ByName(selectionParams.councilName).GetSummaryDataForSingleIntermediateZone(neighbourhood, 8, 2016);
+                    combinedData.selected.Add(new
+                    {
+                        name = intZoneData.name,
+                        participating = intZoneData.Participating(),
+                        notParticipating = intZoneData.NotParticipating(),
+                        unknown = intZoneData.Percentage(intZoneData.allPupilsInUnknown)
+                    });
+                }
             }
             timer.Stop();
             combinedData.benchmarkResults = timer.ElapsedMilliseconds;
