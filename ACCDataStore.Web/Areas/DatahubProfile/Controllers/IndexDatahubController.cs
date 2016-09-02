@@ -195,6 +195,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             }
 
             viewModel.summaryNeighboursTableData = tableSummaryIMDatazoneData;
+            Session["AllIMDatazoneComparisonData"] = tableSummaryIMDatazoneData; // I dont know why we do this
 
             // ???, NVM we need this
             //pageViewModelParams.school = schoolsubmitButton;
@@ -1454,7 +1455,19 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             return Json(wrapper, JsonRequestBehavior.AllowGet);
         }
         // END OF LEGACY CODE
-        
+
+        public JsonResult getAllIMDatazoneComparison()
+        {
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            BenchmarkAjax wrapper = new BenchmarkAjax();
+            List<PosNegSchoolList> tableSummaryData = Session["AllIMDatazoneComparisonData"] as List<PosNegSchoolList>;
+            Session["AllIMDatazoneComparisonData"] = null;
+            wrapper.data = tableSummaryData;
+            timer.Stop();
+            wrapper.benchmarkResults = timer.ElapsedMilliseconds;
+            return Json(wrapper, JsonRequestBehavior.AllowGet);
+        }
 
         // BEGIN MESS
         public ActionResult ApiTestQQQ()

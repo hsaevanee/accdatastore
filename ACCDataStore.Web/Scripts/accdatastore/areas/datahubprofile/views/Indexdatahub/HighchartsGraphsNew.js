@@ -9,6 +9,7 @@ var hGraphs = {
             monthsTrends: '/DatahubProfile/IndexDatahub/monthlyHistogramNew',
             participatingBarChart: '/DatahubProfile/IndexDatahub/getBarChartDataNew',
             allSchoolComparison: '/DatahubProfile/IndexDatahub/getAllSchoolComparison',
+            allIMDatazoneComparison: '/DatahubProfile/IndexDatahub/getAllIMDatazoneComparison',
             scotlandIndexLine: '/DatahubProfile/IndexDatahub/GetScotlandLineGraph'
         };
         $.get(urls[callback],
@@ -78,6 +79,28 @@ var hGraphs = {
         }
         document.getElementById('beckmark-all-school-bar-ajax').innerHTML = Date.now() - hGraphs.benchmark.allSchoolComparison;
         document.getElementById('beckmark-all-school-bar-server').innerHTML = hGraphs.cache.allSchoolComparison.benchmarkResults;
+    },
+    allIMDatazoneComparison: function (type) {
+        if (type == null || type == undefined) {
+            type = 'participating';
+        }
+        var series = [];
+        if (hGraphs.cache.allIMDatazoneComparison.data != null) {
+            for (var i = 0; i < hGraphs.cache.allIMDatazoneComparison.data.length; i++) {
+                series.push({ name: hGraphs.cache.allIMDatazoneComparison.data[i].name, data: [] });
+                for (var key in hGraphs.cache.allIMDatazoneComparison.data[i]) {
+                    if (key == type) {
+                        series[i].data.push([key, hGraphs.cache.allIMDatazoneComparison.data[i][key]]);
+                    }
+                }
+            }
+        }
+        if (series.length > 0) {
+            console.log(series);
+            hGraphs.drawBar("#index-all-IMDatazone-comparison-chart", series);
+        }
+        document.getElementById('beckmark-all-IMDatazone-bar-ajax').innerHTML = Date.now() - hGraphs.benchmark.allIMDatazoneComparison;
+        document.getElementById('beckmark-all-IMDatazone-bar-server').innerHTML = hGraphs.cache.allIMDatazoneComparison.benchmarkResults;
     },
     bigOlBarChart: function () {
         var series = [];
@@ -271,13 +294,19 @@ var hGraphs = {
         var graph = document.getElementById('index-all-school-comparison-chart');
         graph.removeChild(graph.firstChild);
         hGraphs.construct('allSchoolComparison', type);
-    }
+    },
+    switchAllIMDatazoneComparison: function (type) {
+        var graph = document.getElementById('index-all-IMDatazone-comparison-chart');
+        graph.removeChild(graph.firstChild);
+        hGraphs.construct('allIMDatazoneComparison', type);
+}
 };
 
 window.onload = function () {
     var page = location.pathname.split('/')[location.pathname.split('/').length - 1].split('?')[0].toLowerCase().trim();
     if (page == 'data') {
         hGraphs.construct('allSchoolComparison');
+        hGraphs.construct('allIMDatazoneComparison');
         //hGraphs.construct('mainChart'); <-- Legacy
         hGraphs.construct('participatingBarChart');
         hGraphs.construct('monthsTrends');
