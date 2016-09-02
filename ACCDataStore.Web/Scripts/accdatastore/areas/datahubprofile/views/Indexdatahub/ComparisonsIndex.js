@@ -14,6 +14,7 @@ $(document).ready(function () {
     $('#selectedschoolcode').multiselect({
         enableFiltering: true,
         numberDisplayed: 2,
+        maxHeight: 200,
         onChange: function (element, checked) {
             var selectedOptions = $('#selectedschoolcode option:selected');
 
@@ -58,6 +59,7 @@ $(document).ready(function () {
     $('#selectedneighbourhoods').multiselect({
         enableFiltering: true,
         numberDisplayed: 2,
+        maxHeight: 200,
         onChange: function (element, checked) {
             //if (selectedN.length < 4) {
             //    var brands = $('#selectedneighbourhoods option:selected');
