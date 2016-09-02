@@ -63,17 +63,19 @@ var hGraphs = {
             type = 'participating';
         }
         var series = [];
+        var prep = [];
         if (hGraphs.cache.allSchoolComparison.data != null) {
             for (var i = 0; i < hGraphs.cache.allSchoolComparison.data.length; i++) {
                 series.push({ name: hGraphs.cache.allSchoolComparison.data[i].name, data: [] });
                 for (var key in hGraphs.cache.allSchoolComparison.data[i]) {
                     if (key == type) {
-                        series[i].data.push([key, hGraphs.cache.allSchoolComparison.data[i][key]]);
+                        series[i].data.push(hGraphs.cache.allSchoolComparison.data[i][key]);
                     }
                 }
             }
         }
         if (series.length > 0) {
+            console.log(series);
             hGraphs.drawBar("#index-all-school-comparison-chart", series);
         }
         //document.getElementById('beckmark-all-school-bar-ajax').innerHTML = Date.now() - hGraphs.benchmark.allSchoolComparison;
@@ -95,7 +97,6 @@ var hGraphs = {
             }
         }
         if (series.length > 0) {
-            console.log(series);
             hGraphs.drawBar("#index-all-IMDatazone-comparison-chart", series);
         }
         //document.getElementById('beckmark-all-IMDatazone-bar-ajax').innerHTML = Date.now() - hGraphs.benchmark.allIMDatazoneComparison;

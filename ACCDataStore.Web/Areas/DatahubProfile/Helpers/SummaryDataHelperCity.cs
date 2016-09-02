@@ -171,7 +171,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Helpers
                 var result = repository.QueryOver<T>().Where(x => x.type == "Council" && x.dataMonth == month && x.dataYear == year).SingleOrDefault();
                 return new SummaryDataViewModel(result);
             }
-            catch(Exception e)
+            catch
             {
                 return null;
             }
@@ -187,7 +187,12 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Helpers
         public SummaryDataViewModel GetSummaryDataForSingleIntermediateZone(string code, int month, int year)
         {
             var result = repository.QueryOver<T>().Where(x => x.type == "Intermediate Zone" && x.dataCode == code && x.dataMonth == month && x.dataYear == year).SingleOrDefault();
-            return new SummaryDataViewModel(result);
+            SummaryDataViewModel output = null;
+            if (result != null)
+            {
+                output = new SummaryDataViewModel(result);
+            }
+            return output;
         }
 
         /// <summary>
@@ -240,7 +245,12 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Helpers
             SummaryData currentSummary = (SummaryData)this.repository.Query<T>()
                                             .Where(x => x.type == "School" && x.dataCode == seedCode && x.dataMonth == month && x.dataYear == year)
                                             .SingleOrDefault();
-            return new SummaryDataViewModel(currentSummary);
+            SummaryDataViewModel output = null;
+            if (currentSummary != null)
+            {
+                output = new SummaryDataViewModel(currentSummary);
+            }
+            return output;
         }
 
         /// <summary>
