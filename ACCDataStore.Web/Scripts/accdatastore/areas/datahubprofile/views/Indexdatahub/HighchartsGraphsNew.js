@@ -39,10 +39,12 @@ var hGraphs = {
                 seriesTotal.push({ name: key, y: hGraphs.cache.mainChart.totals[key] });
             }
         }
-        if (hGraphs.cache.mainChart.selected != null) {
-            for (var key in hGraphs.cache.mainChart.selected) {
-                if (key != 'title') {
-                    seriesSpecific.push({ name: key, y: hGraphs.cache.mainChart.selected[key] });
+        if (hGraphs.cache.mainChart.selected != null && hGraphs.cache.mainChart.selected.length > 0) {
+            for (var i = 0; i < hGraphs.cache.mainChart.selected.length; i++) {
+                for (var key in hGraphs.cache.mainChart.selected) {
+                    if (key != 'title') {
+                        seriesSpecific.push({ name: key, y: hGraphs.cache.mainChart.selected[key] });
+                    }
                 }
             }
         }
@@ -92,16 +94,19 @@ var hGraphs = {
         }
     },
     participatingBarChart: function () {
-        var series = [], counter = 0;
-        for (var key in hGraphs.cache.participatingBarChart) {
-            if (key != 'benchmarkResults' && hGraphs.cache.participatingBarChart[key] != null) {
-                series.push({ name: hGraphs.cache.participatingBarChart[key].name, data: [] });
-                for (var cat in hGraphs.cache.participatingBarChart[key]) {
-                    if (cat != 'name') {
-                        series[counter].data.push([cat, hGraphs.cache.participatingBarChart[key][cat]]);
-                    }
+        var series = [];
+        for (var i = 0; i < hGraphs.cache.participatingBarChart.selected.length; i++) {
+            series.push({ name: hGraphs.cache.participatingBarChart.selected[i].name, data: [] });
+            for (var cat in hGraphs.cache.participatingBarChart.selected[i]) {
+                if (cat != 'name') {
+                    series[series.length - 1].data.push([cat, hGraphs.cache.participatingBarChart.selected[i][cat]]);
                 }
-                counter++;
+            }
+        }
+        series.push({ name: hGraphs.cache.participatingBarChart.totals.name, data: [] });
+        for (var cat in hGraphs.cache.participatingBarChart.totals) {
+            if (cat != 'name') {
+                series[series.length - 1].data.push([cat, hGraphs.cache.participatingBarChart.totals[cat]]);
             }
         }
         if (series.length > 0) {
@@ -115,7 +120,7 @@ var hGraphs = {
         for (var i = 0; i < hGraphs.cache.monthsTrends.chart.length; i++) {
             for (var key in hGraphs.cache.monthsTrends.chart[i]) {
                 if (key != 'months' && key != 'name') {
-                    series.push({ name: hGraphs.cache.monthsTrends.chart[i].name + ' ' + key, data: hGraphs.cache.monthsTrends.chart[i][key].filter(function (x) { if (x > -1) { return x; } }).map(function (x) { return Math.round(x * Math.random() * 100) / 100; }) });
+                    series.push({ name: hGraphs.cache.monthsTrends.chart[i].name + ' ' + key, data: hGraphs.cache.monthsTrends.chart[i][key].filter(function (x) { if (x > -1) { return x; } }) });
                 }
             }
         }
@@ -273,7 +278,7 @@ window.onload = function () {
     var page = location.pathname.split('/')[location.pathname.split('/').length - 1].split('?')[0].toLowerCase().trim();
     if (page == 'data') {
         hGraphs.construct('allSchoolComparison');
-        hGraphs.construct('mainChart');
+        //hGraphs.construct('mainChart'); <-- Legacy
         hGraphs.construct('participatingBarChart');
         hGraphs.construct('monthsTrends');
     } else if (page == 'scotlandindex') {
