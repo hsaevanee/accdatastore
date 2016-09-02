@@ -1854,6 +1854,8 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                     percentageData = currentSelection.Select(x => x.Percentage(x.allPupilsInUnknown)).ToList();
                 }
 
+
+                SummaryDataViewModel currentCouncilData = Helper2.ByName(name).GetSummaryDataForCouncil(8, 2016);
                 // Begin format result
                 var result = new
                 {
@@ -1861,6 +1863,8 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                     data = percentageData,
                     minimum = percentageData.Min(),
                     maximum = percentageData.Max(),
+                    average = percentageData.Average(),
+                    average1 = currentCouncilData.Participating()
                 };
 
                 return Json(result, JsonRequestBehavior.AllowGet);

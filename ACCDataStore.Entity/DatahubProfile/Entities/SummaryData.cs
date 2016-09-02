@@ -97,12 +97,7 @@ namespace ACCDataStore.Entity.DatahubProfile
         public virtual int dataMonth { get; set; }
         public virtual int dataYear { get; set; }
     }
-    public class AberdeenSummary : SummaryData
-    {
-
-    }
-    public class GlasgowSummary : SummaryData
-    {
-
-    }
+    public class AberdeenSummary : SummaryData { }
+    public class GlasgowSummary : SummaryData { }
+    public class AberdeenshireSummary : SummaryData { }
 }

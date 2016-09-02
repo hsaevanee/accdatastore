@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ACCDataStore.Entity.DatahubProfile
 {
-    public class DatahubDataObj:BaseEntity
+    public class DatahubDataObj : BaseEntity
     {
         public virtual int Id { get; set; }
         public virtual string Cohort { get; set; }
@@ -71,4 +71,5 @@ namespace ACCDataStore.Entity.DatahubProfile
     }
     public class DatahubDataGlasgow : DatahubDataObj { }
     public class DatahubDataAberdeen : DatahubDataObj { }
+    public class DatahubDataAberdeenshire : DatahubDataObj { }
 }
