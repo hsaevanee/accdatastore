@@ -456,6 +456,11 @@
                     <h4 style="margin: 0; text-align: center">@Model.selectedcouncil Monthly Trends</h4>
                 </div>
                 <div class="panel-body">
+                    <div style="text-align: center">
+                        <button onclick="hGraphs.switchMonthsTrends('participating')">Participating</button>
+                        <button onclick="hGraphs.switchMonthsTrends('notParticipating')">Not Participating</button>
+                        <button onclick="hGraphs.switchMonthsTrends('unknown')">Unknown</button>
+                    </div>
                     <div id="month-trend-histogram"></div>
                 </div>
             </div>

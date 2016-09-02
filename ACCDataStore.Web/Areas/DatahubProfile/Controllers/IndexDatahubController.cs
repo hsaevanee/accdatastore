@@ -142,7 +142,14 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             {
                 pageViewModelParams.school = new List<string>();
             }
-            pageViewModelParams.neighbourhood = new List<string>();
+            if (Request["selectedneighbourhoods"] != null)
+            {
+                pageViewModelParams.neighbourhood = Request["selectedneighbourhoods"].Split(',').ToList<string>();
+            }
+            else
+            {
+                pageViewModelParams.neighbourhood = new List<string>();
+            }
             pageViewModelParams.councilName = name;
             Session["ViewModelParams"] = pageViewModelParams;
 
@@ -348,29 +355,45 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             timer.Start();
             BenchmarkAjax wrapper = new BenchmarkAjax();
             ViewModelParams selectionParams = Session["ViewModelParams"] as ViewModelParams;
+            IList<School> listOfAllSchools = Helper2.ByName(selectionParams.councilName).GetSchoolsList();
+            IList<School> listOfAllNeighbourhoods = Helper2.ByName(selectionParams.councilName).GetIntermediateZonesList();
             List<HistogramSeriesData> allseriesoutput = new List<HistogramSeriesData>();
-            SummaryDataViewModel currentSchool = Session["chartSelectedSchool"] as SummaryDataViewModel;
-            SummaryDataViewModel currentIntZone = Session["chartSelectedNeighbour"] as SummaryDataViewModel;
+            //SummaryDataViewModel currentSchool = Session["chartSelectedSchool"] as SummaryDataViewModel;
+            //SummaryDataViewModel currentIntZone = Session["chartSelectedNeighbour"] as SummaryDataViewModel;
             int numberofseries = 1;
             if (selectionParams == null)
             {
                 selectionParams = new ViewModelParams();
             }
-            //if (selectionParams.school != null || selectionParams.neighbourhood != null)
-            //{
-            //    numberofseries = 2;
-            //}
+            if (selectionParams.school != null)
+            {
+                numberofseries += selectionParams.school.Count;
+            }
+            if (selectionParams.neighbourhood != null)
+            {
+                numberofseries += selectionParams.neighbourhood.Count;
+            }
             for (int j = 0; j < numberofseries; j++)
             {
-                List<SummaryDataViewModel> allSeries = new List<SummaryDataViewModel>();
-                SummaryDataViewModel comparison;
-                string seriesName = "Aberdeen city";
-                //int[] months = new int[12] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
-                //int indexofmonths = Array.IndexOf(months, 10);
-                int indexofmonths = 7;
+                List<SummaryDataViewModel> allMonths = new List<SummaryDataViewModel>();
+                string seriesName = selectionParams.councilName;
+                string currentSchool = null;
+                string currentIntZone = null;
+                string[] monthname = new string[12] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+                int indexofmonths = Array.IndexOf(monthname, DateTime.Now.ToString("MMM"));
+                indexofmonths = 7; // <-- Because we only have data up to August 2016
                 int year = int.Parse(DateTime.Now.ToString("yyyy")) - 1;
+                if (selectionParams.school != null && selectionParams.school.Count > 0 && j > 0)
+                {
+                    currentSchool = selectionParams.school[j - 1];
+                }
+                if (selectionParams.neighbourhood != null && selectionParams.neighbourhood.Count > 0 && j > 0)
+                {
+                    currentIntZone = selectionParams.neighbourhood[j - 1];
+                }
                 for (int i = 0; i < 12; i++)
                 {
+                    SummaryDataViewModel comparison = null;
                     indexofmonths++;
                     if (indexofmonths > 11)
                     {
@@ -378,40 +401,42 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                         year++;
                     }
                     
-                    if (selectionParams.school != null && j > 0)
+                    if (selectionParams.school != null && selectionParams.school.Count > 0 && j > 0)
                     {
-                        seriesName = currentSchool.name;
-                        comparison = Helper2.ByName(selectionParams.councilName).GetSummaryDataForSingleSchool(currentSchool.dataCode, indexofmonths + 1, year);
+                        comparison = Helper2.ByName(selectionParams.councilName).GetSummaryDataForSingleSchool(currentSchool, indexofmonths + 1, year);
                         //comparison = comparison.Where(x => !String.IsNullOrWhiteSpace(x.SEED_Code)).Where(x => x.SEED_Code.Equals(schoolSelection.seedcode)).ToList<DatahubDataObj>();
                     }
-                    if (selectionParams.neighbourhood != null && j > 0)
+                    if (selectionParams.neighbourhood != null && selectionParams.neighbourhood.Count > 0 && j > 0)
                     {
-                        seriesName = currentIntZone.name;
-                        comparison = Helper2.ByName(selectionParams.councilName).GetSummaryDataForSingleIntermediateZone(currentIntZone.dataCode, indexofmonths + 1, year);
-                    }else
-                    {
-                        comparison = Helper2.ByName(selectionParams.councilName).GetSummaryDataForCouncil(indexofmonths + 1, year);
+                        comparison = Helper2.ByName(selectionParams.councilName).GetSummaryDataForSingleIntermediateZone(currentIntZone, indexofmonths + 1, year);
                     }
                     if (comparison == null)
                     {
                         comparison = Helper2.ByName(selectionParams.councilName).GetSummaryDataForCouncil(indexofmonths + 1, year);
                     }
 
-                    allSeries.Add(comparison);
+                    allMonths.Add(comparison);
+                }
+                if (selectionParams.school != null && selectionParams.school.Count > 0 && j > 0)
+                {
+                    seriesName = listOfAllSchools.Where(x => x.seedcode.Equals(currentSchool)).SingleOrDefault().name;
+                }
+                if (selectionParams.neighbourhood != null && selectionParams.neighbourhood.Count > 0 && j > 0)
+                {
+                    seriesName = listOfAllNeighbourhoods.Where(x => x.seedcode.Equals(currentIntZone)).SingleOrDefault().name;
                 }
                 HistogramSeriesData jsonOut = new HistogramSeriesData();
                 jsonOut.months = new List<string>();
                 jsonOut.participating = new List<double>();
                 jsonOut.notParticipating = new List<double>();
                 jsonOut.unknown = new List<double>();
-                jsonOut.name = selectionParams.councilName;
-                foreach (SummaryDataViewModel month in allSeries)
+                jsonOut.name = seriesName;
+                foreach (SummaryDataViewModel month in allMonths)
                 {
                     //Get date
                     if (month != null)
                     {
                     string currYear = month.dataYear.ToString();
-                    string[] monthname = new string[12] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
                     int m = month.dataMonth;
                     string currMonthName = monthname[m - 1];
                     string period = (currMonthName + "-" + currYear);

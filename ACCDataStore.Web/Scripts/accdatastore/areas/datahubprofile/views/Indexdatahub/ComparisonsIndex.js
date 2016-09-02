@@ -283,7 +283,7 @@ function createChartFromDataTable(idChart, idTable, title, names, startColumn) {
 
             allowDecimals: false,
             title: {
-                text: '%'
+                text: 'Student percentage (%)'
             }
         },
         tooltip: {

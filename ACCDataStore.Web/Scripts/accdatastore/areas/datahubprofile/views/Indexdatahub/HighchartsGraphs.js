@@ -205,7 +205,7 @@ var hGraphs = {
                 min: 0,
                 max: 100,
                 title: {
-                    text: 'Students'
+                    text: 'Student percentage (%)'
                 }
             },
             legend: {

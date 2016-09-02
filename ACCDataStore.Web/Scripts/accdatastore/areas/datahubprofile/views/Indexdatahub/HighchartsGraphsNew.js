@@ -54,8 +54,8 @@ var hGraphs = {
         if (seriesSpecific.length > 0) {
             hGraphs.drawPie('#datahub-index-specificpiechart', seriesSpecific, hGraphs.cache.mainChart.selected.title);
         }
-        document.getElementById('beckmark-pies-ajax').innerHTML = Date.now() - hGraphs.benchmark.mainChart;
-        document.getElementById('beckmark-pies-server').innerHTML = hGraphs.cache.mainChart.benchmarkResults;
+        //document.getElementById('beckmark-pies-ajax').innerHTML = Date.now() - hGraphs.benchmark.mainChart;
+        //document.getElementById('beckmark-pies-server').innerHTML = hGraphs.cache.mainChart.benchmarkResults;
     },
     allSchoolComparison: function (type) {
         if (type == null || type == undefined) {
@@ -73,11 +73,10 @@ var hGraphs = {
             }
         }
         if (series.length > 0) {
-            console.log(series);
             hGraphs.drawBar("#index-all-school-comparison-chart", series);
         }
-        document.getElementById('beckmark-all-school-bar-ajax').innerHTML = Date.now() - hGraphs.benchmark.allSchoolComparison;
-        document.getElementById('beckmark-all-school-bar-server').innerHTML = hGraphs.cache.allSchoolComparison.benchmarkResults;
+        //document.getElementById('beckmark-all-school-bar-ajax').innerHTML = Date.now() - hGraphs.benchmark.allSchoolComparison;
+        //document.getElementById('beckmark-all-school-bar-server').innerHTML = hGraphs.cache.allSchoolComparison.benchmarkResults;
     },
     bigOlBarChart: function () {
         var series = [];
@@ -112,14 +111,17 @@ var hGraphs = {
         if (series.length > 0) {
             hGraphs.drawBar('#datahub-index-bigolbarchart', series);
         }
-        document.getElementById('beckmark-participation-bar-ajax').innerHTML = Date.now() - hGraphs.benchmark.participatingBarChart;
-        document.getElementById('beckmark-participation-bar-server').innerHTML = hGraphs.cache.participatingBarChart.benchmarkResults;
+        //document.getElementById('beckmark-participation-bar-ajax').innerHTML = Date.now() - hGraphs.benchmark.participatingBarChart;
+        //document.getElementById('beckmark-participation-bar-server').innerHTML = hGraphs.cache.participatingBarChart.benchmarkResults;
     },
-    monthsTrends: function () {
+    monthsTrends: function (type) {
+        if (type == null || type == undefined) {
+            type = 'participating';
+        }
         var series = [];
         for (var i = 0; i < hGraphs.cache.monthsTrends.chart.length; i++) {
             for (var key in hGraphs.cache.monthsTrends.chart[i]) {
-                if (key != 'months' && key != 'name') {
+                if (key == type) {
                     series.push({ name: hGraphs.cache.monthsTrends.chart[i].name + ' ' + key, data: hGraphs.cache.monthsTrends.chart[i][key].filter(function (x) { if (x > -1) { return x; } }) });
                 }
             }
@@ -127,8 +129,8 @@ var hGraphs = {
         if (series.length > 0) {
             hGraphs.drawTrends("#month-trend-histogram", series, hGraphs.cache.monthsTrends.chart[0].months.filter(function (x) { if (x != null && x != "") { return x; } }));
         }
-        document.getElementById('beckmark-lines-ajax').innerHTML = Date.now() - hGraphs.benchmark.monthsTrends;
-        document.getElementById('beckmark-lines-server').innerHTML = hGraphs.cache.monthsTrends.benchmarkResults;
+        //document.getElementById('beckmark-lines-ajax').innerHTML = Date.now() - hGraphs.benchmark.monthsTrends;
+        //document.getElementById('beckmark-lines-server').innerHTML = hGraphs.cache.monthsTrends.benchmarkResults;
     },
     drawTrends: function (id, series, legend) {
         $(id).highcharts({
@@ -228,7 +230,7 @@ var hGraphs = {
                 min: 0,
                 max: 100,
                 title: {
-                    text: 'Students'
+                    text: 'Student percentage (%)'
                 }
             },
             legend: {
@@ -271,6 +273,11 @@ var hGraphs = {
         var graph = document.getElementById('index-all-school-comparison-chart');
         graph.removeChild(graph.firstChild);
         hGraphs.construct('allSchoolComparison', type);
+    },
+    switchMonthsTrends: function (type) {
+        var graph = document.getElementById('month-trend-histogram');
+        graph.removeChild(graph.firstChild);
+        hGraphs.construct('monthsTrends', type);
     }
 };
 
