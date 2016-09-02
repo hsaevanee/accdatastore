@@ -57,18 +57,19 @@
                                     <td>@Html.DropDownList("selectedschoolcode", new SelectList(Model.ListSchoolNameData, "seedcode", "name"))</td>                                 
                                     @*<td>@Html.DropDownListFor(m => m.selectedschoolcode, new SelectList(Model.ListSchoolNameData, "seedcode", "name"))</td>*@
                                     
-                                    @*<td width="20%"><input type="submit" class="btn btn-primary" name="schoolsubmitButton" value="Search" /></td>*@
+                                    <td width="20%"><input type="submit" class="btn btn-primary" name="schoolsubmitButton" value="Search" /></td>
 
-                                    <td width="20%"><button class="btn btn-primary" id="schoolsubmitButton1">Search</button></td>
+                                    @*<td width="20%"><button class="btn btn-primary" id="schoolsubmitButton">Search</button></td>*@
                                 </tr>
                                 <tr>
                                     <td width="40%">Neighbourhoods</td>
                                     <td>@Html.DropDownList("selectedneighbourhoods", new SelectList(Model.ListNeighbourhoodsName, "seedcode", "name"))</td>
-                                    @*<td width="20%"><input type="submit" class="btn btn-primary"  name="neighbourhoodssubmitButton" value="Search" /></td>*@
-                                    <td width="20%"><button class="btn btn-primary" id="neighbourhoodButton1">Search</button></td>
+                                    <td width="20%"><input type="submit" class="btn btn-primary"  name="neighbourhoodssubmitButton" value="Search" /></td>
+                                    @*<td width="20%"><button class="btn btn-primary" id="neighbourhoodButton">Search</button></td>*@
                                 </tr>
                             </tbody>
                         </table>
+                        <input type="hidden" name="selectedcouncil" value="@Model.selectedcouncil" />
 }
                 </div>
             </div>
@@ -125,11 +126,12 @@
         </div>
     </div>
 
+        <!--Schools Overview-->
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-primary text-center">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Aberdeen Schools Overview</h3>
+                    <h3 class="panel-title">@Model.selectedcouncil Schools Overview</h3>
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">
@@ -181,6 +183,63 @@
             </div>
         </div>
     </div>
+        <!--Neighbourhoods Overview-->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary text-center">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">@Model.selectedcouncil Neighbourhoods Overview</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table id="summaryNeighbourhoodDatatable" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="text-left">
+                                            Neighbourhood Name
+                                        </th>
+                                        <th class="text-center">
+                                            % Participating
+                                        </th>
+                                        <th class="text-center">
+                                            % Non-Participating
+                                        </th>
+                                        <th class="text-center">
+                                            % Unknown
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var School in Model.summaryNeighboursTableData)
+                                    {
+                                        <tr>
+                                            <td class="text-left">
+                                                @School.name
+                                            </td>
+                                            <td class="text-center">
+                                                @String.Format("{0:#,0.00}", @School.participating)
+                                            </td>
+                                            <td class="text-center">
+                                                @String.Format("{0:#,0.00}", @School.notParticipating)
+                                            </td>
+                                            <td class="text-center">
+                                                @String.Format("{0:#,0.00}", @School.unknown)
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div>
+                        <button onclick="hGraphs.switchAllIMDatazoneComparison('participating')">Participating</button>
+                        <button onclick="hGraphs.switchAllIMDatazoneComparison('notParticipating')">Not Participating</button>
+                        <button onclick="hGraphs.switchAllIMDatazoneComparison('unknown')">Unknown</button>
+                    </div>
+                    <div id="index-all-IMDatazone-comparison-chart"></div>
+                </div>
+            </div>
+        </div>
 
     <div class="row">
         <div class="col-md-12">
@@ -203,6 +262,11 @@
             </div>
         </div>
     </div>
+
+
+
+
+
 @if (Model.ListSelectionData != null)
 { 
     <div class="row">
@@ -230,8 +294,8 @@
                             @foreach (var data in Model.ListSelectionData)
                             {
                                 <tr>
-                                    <th class="text-center">@Html.DisplayTextFor(m => data.name)</th>
-                                    <td class="text-center">@Html.DisplayTextFor(m => data.allPupilsMovedOutwithScotland)</td>
+                                    <th class="text-left">@Html.DisplayTextFor(m => data.name)</th>
+                                    <td class="text-center">@data.allPupils</td>
                                     <td class="text-center">@String.Format("{0:#,0.0}", data.Percentage(data.allMale))</td>
                                     <td class="text-center">@String.Format("{0:#,0.0}", data.Percentage(data.allFemale))</td>
                                     <td class="text-center">@String.Format("{0:#,0.0}", data.Percentage(data.allPupils15))</td>
@@ -277,7 +341,7 @@
                                 @foreach (var data in Model.ListSelectionData)
                                 {
                                     <tr>
-                                        <th class="text-center">@Html.DisplayTextFor(m => data.name)</th>
+                                        <th class="text-left">@Html.DisplayTextFor(m => data.name)</th>
                                         <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInSchool))</td>
                                         <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInSchoolTransition))</td>
                                         <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInActivityAgreement))</td>
@@ -314,7 +378,7 @@
                                 @foreach (var data in Model.ListSelectionData)
                                 {
                                     <tr>
-                                        <th class="text-center">@Html.DisplayTextFor(m => data.name)</th>
+                                        <th class="text-left">@Html.DisplayTextFor(m => data.name)</th>
                                         <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInHigherEducation))</td>
                                         <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInModernApprenship))</td>
                                         <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInPartTimeEmployment))</td>
@@ -347,7 +411,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-center"></th>
-                                    <th class="text-center">Average Weeks Since Last Positive Destinationn</th>
+                                    @*<th class="text-center">Average Weeks Since Last Positive Destinationn</th>*@
                                     <th class="text-center">Custody</th>
                                     <th class="text-center">Economically Inactive</th>
                                     <th class="text-center">Unavailable-ill Health</th>
@@ -359,8 +423,8 @@
                                 @foreach (var data in Model.ListSelectionData)
                                 {
                                     <tr>
-                                        <th class="text-center">@Html.DisplayTextFor(m => data.name)</th>
-                                        <td class="text-center"></td>
+                                        <th class="text-left">@Html.DisplayTextFor(m => data.name)</th>
+                                        @*<td class="text-center"></td>*@
                                         <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInCustody))</td>
                                         <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInEconomicallyInactive))</td>
                                         <td class="text-center">@String.Format("{0:#,0.00}", data.Percentage(data.allPupilsInUnavailableIllHealth))</td>
@@ -378,14 +442,18 @@
             </div>
         </div>
     </div>
-
+    
 }
+        <div id="table-test1"></div>
+        @*<div id="myPartialContainer">
+            @Html.Partial("_DataTables", Model.ListSelectionData);
+        </div>*@
 
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h4 style="margin: 0; text-align: center">Aberdeen Monthly Trends</h4>
+                    <h4 style="margin: 0; text-align: center">@Model.selectedcouncil Monthly Trends</h4>
                 </div>
                 <div class="panel-body">
                     <div id="month-trend-histogram"></div>

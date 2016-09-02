@@ -313,12 +313,12 @@ function Test1(selected, type) {
     $.ajax({
         type: "POST",
         traditional: true,
-        url: sContextPath + 'DatahubProfile/IndexDatahub/Test1',
+        url: sContextPath + 'DatahubProfile/IndexDatahub/Data',
         data: parms,
         dataType: "html",
         success: function (data) {
-
-            $('#myPartialContainer').html(data);
+            alert(data);
+            $('#table-test1').html(data);
             MakeDemCharts();
             //var table = $('#OpportunitiesForAllClientsTable').DataTable({
             //    dom: 'Bfrtip',

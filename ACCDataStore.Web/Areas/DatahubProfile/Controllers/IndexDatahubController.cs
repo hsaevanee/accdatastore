@@ -68,6 +68,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             DateTime currentTime = DateTime.Now; // This wont work next month!
             vmDatahubViewModel.allCouncilTable = new List<SummaryDataViewModel>();
             vmDatahubViewModel.ListCouncilName = Helper2.GetAllCouncilList();
+            vmDatahubViewModel.ListCouncilName = vmDatahubViewModel.ListCouncilName.OrderBy<School, string>(x => x.name).ToList();
 
             // Begin section "CHEAT" :D
             // We should have a method in the city helper that calculates this for all available councils
@@ -129,12 +130,26 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             SummaryDataViewModel councilData = null;
             IList<SummaryDataViewModel> councilSchoolsData = null;
             List<PosNegSchoolList> tableSummaryData = new List<PosNegSchoolList>();
+            List<PosNegSchoolList> tableSummaryIMDatazoneData = new List<PosNegSchoolList>();
 
             // To hold our current selection [city,month,year]
             ViewModelParams pageViewModelParams = new ViewModelParams();
+            if (Request["selectedschoolcode"] != null)
+            {
+                pageViewModelParams.school = Request["selectedschoolcode"].Split(',').ToList<string>();
+            }
+            else
+            {
+                pageViewModelParams.school = new List<string>();
+            }
+            pageViewModelParams.neighbourhood = new List<string>();
+            pageViewModelParams.councilName = name;
+            Session["ViewModelParams"] = pageViewModelParams;
+
 
             //This is the container for all of the data we are going to send to the page (our view model)
             DatahubViewModel viewModel = new DatahubViewModel();
+            viewModel.selectedcouncil = name;
 
             // Check if city name is valid [should also do other types of validation such as period validation]
             if(!Helper2.ValidateCouncilName(name)) {
@@ -164,29 +179,56 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             viewModel.CityData = councilData;
             viewModel.summaryTableData = tableSummaryData;
                 
+
+            // This bit should live in a seperate controller IMO
+            IList<SummaryDataViewModel> councilIMDatazonesData = Helper2.ByName(name).GetSummaryDataForAllIntermediateZones(08, 2016);
+
+            //Prepare Intermediate datazone participation data
+            foreach (var IMDatazoneSummary in councilIMDatazonesData)
+            {
+                PosNegSchoolList entry = new PosNegSchoolList();
+                entry.name = IMDatazoneSummary.name;
+                entry.participating = (double)IMDatazoneSummary.Participating(); // decimal or double for percentages? we should decide
+                entry.notParticipating = (double)IMDatazoneSummary.NotParticipating();
+                entry.unknown = (double)IMDatazoneSummary.Percentage(IMDatazoneSummary.allPupilsInUnknown);
+                tableSummaryIMDatazoneData.Add(entry);
+            }
+
+            viewModel.summaryNeighboursTableData = tableSummaryIMDatazoneData;
+
             // ???, NVM we need this
-            pageViewModelParams.school = schoolsubmitButton;
-            pageViewModelParams.neighbourhood = neighbourhoodssubmitButton;
-            pageViewModelParams.councilName = name;
+            //pageViewModelParams.school = schoolsubmitButton;
+            //pageViewModelParams.neighbourhood = neighbourhoodssubmitButton;
+            //pageViewModelParams.councilName = name;
 
 
-            Session["ViewModelParams"] = pageViewModelParams;
 
             //Now if the schoolsubmitbutton or neighbourhood submitbutton was clicked we populate our viewmodel
             IList<School> allSchoolsList = Helper2.ByName(name).GetSchoolsList();
             viewModel.ListSchoolNameData = allSchoolsList;
-
+            IList<SummaryDataViewModel> list = new Collection<SummaryDataViewModel>();
+            var city_data = councilData;
+            city_data.name = name;
+            list.Add(city_data);
             
             if (schoolsubmitButton != null)
             {
-                var sSchoolcode = Request["selectedschool"];
-                School currentSchool = allSchoolsList.Where(x => x.seedcode == sSchoolcode).FirstOrDefault();
+                List<string> sSchoolcode = Request["selectedschoolcode"].Split(',').ToList<string>();
+
+                //var sSchoolcode = Request["selectedschool"];
+                //School currentSchool = allSchoolsList.Where(x => x.seedcode == sSchoolcode).FirstOrDefault();
                 if (sSchoolcode != null)
                 {
-                    SummaryDataViewModel currentSchoolData = Helper2.ByName(name).GetSummaryDataForSingleSchool(sSchoolcode, 8, 2016);
-                    Session["chartSelectedSchool"] = currentSchoolData;
-                    viewModel.selectedschool = currentSchool;
-                    viewModel.SelectedData = currentSchoolData;
+                    foreach (string school in sSchoolcode)
+                    {
+                        School currentSchool = allSchoolsList.Where(x => x.seedcode == school).FirstOrDefault();
+                        SummaryDataViewModel currentSchoolData = Helper2.ByName(name).GetSummaryDataForSingleSchool(school, 8, 2016);
+                        Session["chartSelectedSchool"] = currentSchoolData;
+                        viewModel.selectedschool = currentSchool;
+                        viewModel.SelectedData = currentSchoolData;
+                        list.Add(currentSchoolData);
+                    }
+                    
                 }
 
             }
@@ -196,27 +238,38 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
             if (neighbourhoodssubmitButton != null)
             {
-                var datacode = Request["selectedneighbourhoods"];
-                School currentIntermediateZone = allIntermediateZonesList.Where(x => x.seedcode == datacode).FirstOrDefault();
+                List<string> dataZoneCode = Request["selectedneighbourhoods"].Split(',').ToList<string>();
+                //var sSchoolcode = Request["selectedschool"];
+                //School currentSchool = allSchoolsList.Where(x => x.seedcode == sSchoolcode).FirstOrDefault();
+                if (dataZoneCode != null)
+                {
+                    foreach (string school in dataZoneCode)
+                    {
+                        School currentSchool = allIntermediateZonesList.Where(x => x.seedcode == school).FirstOrDefault();
+                        SummaryDataViewModel currentSchoolData = Helper2.ByName(name).GetSummaryDataForSingleIntermediateZone(school, 8, 2016);
+                        Session["chartSelectedNeighbour"] = currentSchoolData;
+                        viewModel.selectedschool = currentSchool;
+                        viewModel.SelectedData = currentSchoolData;
+                        list.Add(currentSchoolData);
+                    }
 
-                SummaryDataViewModel currentIntermediateZoneData = Helper2.ByName(name).GetSummaryDataForSingleIntermediateZone(currentIntermediateZone.seedcode, 8, 2016);
-                Session["chartSelectedNeighbour"] = currentIntermediateZoneData;
-                viewModel.selectedschool = currentIntermediateZone;
-                viewModel.SelectedData = currentIntermediateZoneData;
+                }
+                //var datacode = Request["selectedneighbourhoods"];
+                //School currentIntermediateZone = allIntermediateZonesList.Where(x => x.seedcode == datacode).FirstOrDefault();
+
+                //SummaryDataViewModel currentIntermediateZoneData = Helper2.ByName(name).GetSummaryDataForSingleIntermediateZone(currentIntermediateZone.seedcode, 8, 2016);
+                //Session["chartSelectedNeighbour"] = currentIntermediateZoneData;
+                //viewModel.selectedschool = currentIntermediateZone;
+                //viewModel.SelectedData = currentIntermediateZoneData;
 
             }
 
+            viewModel.ListSelectionData = list;
             IList<School> allDataZonesList = Helper2.ByName(name).GetDataZonesList();
             Session["CurrentCouncil"] = new CurrentCouncil(name, allSchoolsList, allIntermediateZonesList, allDataZonesList);
             // Stop timer and add benchmark results to viewmodel
             timer.Stop();
             viewModel.benchmarkResults = timer.ElapsedMilliseconds;
-
-            IList<SummaryDataViewModel> list = new Collection<SummaryDataViewModel>();
-            var city_data = councilData;
-            city_data.name = name;
-            list.Add(city_data);
-            viewModel.ListSelectionData = list;
 
 
 
@@ -238,46 +291,57 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             }
             //List<DatahubDataObj> allStudentData = Getlistpupil(this.rpGeneric2nd);
             //DatahubData CityData = CreatDatahubdata(allStudentData, "100");
-            SummaryDataViewModel CityData = Helper.GetSummaryDataForCouncil<AberdeenSummary>("S12000033", 08, 2016);
+            //SummaryDataViewModel CityData = Helper.GetSummaryDataForCouncil<AberdeenSummary>("S12000033", 08, 2016);
+
+            SummaryDataViewModel CityData = Helper2.ByName(selectionParams.councilName).GetSummaryDataForCouncil(8, 2016);
 
             MainChartData combinedData = new MainChartData();
+            combinedData.selected = new List<object>();
             combinedData.totals = new
             {
-                name = "Aberdeen city",
+                name = CityData.name,
                 participating = CityData.Participating(),
                 notParticipating = CityData.NotParticipating(),
                 unknown = CityData.Percentage(CityData.allPupilsInUnknown)
             };
-            if (selectionParams.school != null)
-            {
-                SummaryDataViewModel schoolData = Session["chartSelectedSchool"] as SummaryDataViewModel;
                 
 
+            if (selectionParams.school != null && selectionParams.school.Count > 0)
+            {
+                //SummaryDataViewModel schoolData = Session["chartSelectedSchool"] as SummaryDataViewModel;
 
-                combinedData.selected = new
+                foreach (string school in selectionParams.school)
                 {
+                    SummaryDataViewModel schoolData = Helper2.ByName(selectionParams.councilName).GetSummaryDataForSingleSchool(school, 8, 2016);
+                    combinedData.selected.Add(new
+                    {
                     name = schoolData.name,
                     participating = schoolData.Participating(),
                     notParticipating = schoolData.NotParticipating(),
                     unknown = schoolData.Percentage(schoolData.allPupilsInUnknown)
-                };
+                    });
             }
-            if (selectionParams.neighbourhood != null)
+            }
+
+
+            if (selectionParams.neighbourhood != null && selectionParams.neighbourhood.Count > 0)
             {
                 SummaryDataViewModel intZoneData = Session["chartSelectedNeighbour"] as SummaryDataViewModel;
                 
-                combinedData.selected = new
+                combinedData.selected.Add(new
                 {
                     name = intZoneData.name,
                     participating = intZoneData.Participating(),
                     notParticipating = intZoneData.NotParticipating(),
                     unknown = intZoneData.Percentage(intZoneData.allPupilsInUnknown)
-                };
+                });
             }
             timer.Stop();
             combinedData.benchmarkResults = timer.ElapsedMilliseconds;
             return Json(combinedData, JsonRequestBehavior.AllowGet);
         }
+
+
         public JsonResult monthlyHistogramNew()
         {
             Stopwatch timer = new Stopwatch();
@@ -292,16 +356,16 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             {
                 selectionParams = new ViewModelParams();
             }
-            if (selectionParams.school != null || selectionParams.neighbourhood != null)
-            {
-                numberofseries = 2;
-            }
+            //if (selectionParams.school != null || selectionParams.neighbourhood != null)
+            //{
+            //    numberofseries = 2;
+            //}
             for (int j = 0; j < numberofseries; j++)
             {
                 List<SummaryDataViewModel> allSeries = new List<SummaryDataViewModel>();
                 SummaryDataViewModel comparison;
                 string seriesName = "Aberdeen city";
-                int[] months = new int[12] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+                //int[] months = new int[12] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
                 //int indexofmonths = Array.IndexOf(months, 10);
                 int indexofmonths = 7;
                 int year = int.Parse(DateTime.Now.ToString("yyyy")) - 1;
@@ -317,20 +381,20 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                     if (selectionParams.school != null && j > 0)
                     {
                         seriesName = currentSchool.name;
-                        comparison = Helper2.ByName(selectionParams.councilName).GetSummaryDataForSingleSchool(currentSchool.dataCode, months[indexofmonths], year);
+                        comparison = Helper2.ByName(selectionParams.councilName).GetSummaryDataForSingleSchool(currentSchool.dataCode, indexofmonths + 1, year);
                         //comparison = comparison.Where(x => !String.IsNullOrWhiteSpace(x.SEED_Code)).Where(x => x.SEED_Code.Equals(schoolSelection.seedcode)).ToList<DatahubDataObj>();
                     }
                     if (selectionParams.neighbourhood != null && j > 0)
                     {
                         seriesName = currentIntZone.name;
-                        comparison = Helper2.ByName(selectionParams.councilName).GetSummaryDataForSingleIntermediateZone(currentIntZone.dataCode, months[indexofmonths], year);
+                        comparison = Helper2.ByName(selectionParams.councilName).GetSummaryDataForSingleIntermediateZone(currentIntZone.dataCode, indexofmonths + 1, year);
                     }else
                     {
-                        comparison = Helper2.ByName(selectionParams.councilName).GetSummaryDataForCouncil(months[indexofmonths], year);
+                        comparison = Helper2.ByName(selectionParams.councilName).GetSummaryDataForCouncil(indexofmonths + 1, year);
                     }
                     if (comparison == null)
                     {
-                        comparison = Helper2.ByName(selectionParams.councilName).GetSummaryDataForCouncil(8, 2016);
+                        comparison = Helper2.ByName(selectionParams.councilName).GetSummaryDataForCouncil(indexofmonths + 1, year);
                     }
 
                     allSeries.Add(comparison);
@@ -344,6 +408,8 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 foreach (SummaryDataViewModel month in allSeries)
                 {
                     //Get date
+                    if (month != null)
+                    {
                     string currYear = month.dataYear.ToString();
                     string[] monthname = new string[12] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
                     int m = month.dataMonth;
@@ -354,6 +420,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                     jsonOut.participating.Add(month == null ? -1.00 : Math.Round((double)month.Participating(), 2));
                     jsonOut.notParticipating.Add(month == null ? -1.00 : Math.Round((double)month.NotParticipating(), 2));
                     jsonOut.unknown.Add(month == null ? -1.00 : Math.Round((double)month.Percentage(month.allPupilsInUnknown), 2));
+                }
                 }
                 allseriesoutput.Add(jsonOut);
             }
@@ -369,15 +436,22 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             Stopwatch timer = new Stopwatch();
             timer.Start();
             ViewModelParams selectionParams = Session["ViewModelParams"] as ViewModelParams;
+            if (selectionParams == null)
+            {
+                selectionParams = new ViewModelParams();
+            }
             this.schoolSelection = Session["chartSelectedSchool"] as School;
             //List<DatahubDataObj> allStudentData = this.rpGeneric2nd.FindAll<DatahubDataObj>().ToList();
             //List<DatahubDataObj> allStudentData = Getlistpupil(this.rpGeneric2nd);
 
-            SummaryDataViewModel allStudentData = Helper.GetSummaryDataForCouncil<AberdeenSummary>("S12000033",8,2016); // Should get from session
+            //SummaryDataViewModel allStudentData = Helper.GetSummaryDataForCouncil<AberdeenSummary>("S12000033",8,2016); // Should get from session
+
+            SummaryDataViewModel allStudentData = Helper2.ByName(selectionParams.councilName).GetSummaryDataForCouncil(8, 2016);
             MainChartData combinedData = new MainChartData();
+            combinedData.selected = new List<object>();
             object pieChartTotals = new
             {
-                title = "Overall",
+                title = allStudentData.name,
                 female15 = allStudentData.all15Female,
                 male15 = allStudentData.all15Male,
                 female16 = allStudentData.all16Female,
@@ -390,10 +464,10 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 male19 = allStudentData.all19Male,
             };
             combinedData.totals = pieChartTotals;
-            if (selectionParams.school != null)
+            if (selectionParams.school != null && selectionParams.school.Count > 0)
             {
                 SummaryDataViewModel schoolData = Session["chartSelectedSchool"] as SummaryDataViewModel;
-                object selectedChart = new
+                combinedData.selected.Add(new
                 {
                     title = schoolData.name,
                     female15 = schoolData.all15Female,
@@ -406,13 +480,12 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                     male18 = schoolData.all18Male,
                     female19 = schoolData.all19Female,
                     male19 = schoolData.all19Male,
-                };
-                combinedData.selected = selectedChart;
+                });
             }
-            if (selectionParams.neighbourhood != null)
+            if (selectionParams.neighbourhood != null && selectionParams.neighbourhood.Count > 0)
             {
                 SummaryDataViewModel intermediateZoneData = Session["chartSelectedNeighbour"] as SummaryDataViewModel;
-                object selectedChart = new
+                combinedData.selected.Add(new
                 {
                     title = intermediateZoneData.name,
                     female15 = intermediateZoneData.all15Female,
@@ -425,8 +498,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                     male18 = intermediateZoneData.all18Male,
                     female19 = intermediateZoneData.all19Female,
                     male19 = intermediateZoneData.all19Male,
-                };
-                combinedData.selected = selectedChart;
+                });
             }
             timer.Stop();
             combinedData.benchmarkResults = timer.ElapsedMilliseconds;
@@ -472,8 +544,8 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             DatahubViewModel viewModel = getPageViewModel(schoolsubmitButton, neighbourhoodssubmitButton);
             viewModel.summaryTableData = tableSummaryData;
             ViewModelParams pageViewModelParams = new ViewModelParams();
-            pageViewModelParams.school = schoolsubmitButton;
-            pageViewModelParams.neighbourhood = neighbourhoodssubmitButton;
+            pageViewModelParams.school.Add(schoolsubmitButton);
+            pageViewModelParams.neighbourhood.Add(neighbourhoodssubmitButton);
             Session["ViewModelParams"] = pageViewModelParams;
             timer.Stop();
             viewModel.benchmarkResults = timer.ElapsedMilliseconds;
@@ -1201,7 +1273,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             if (selectionParams.school != null)
             {
                 List<DatahubDataObj> refined = allStudentData.Except(allStudentData.Where(z => z.School_Name == null)).ToList().Where(z => z.School_Name.Equals(this.schoolSelection.name)).ToList();
-                object selectedChart = new
+                combinedData.selected.Add(new
                 {
                     title = this.schoolSelection.name,
                     female15 = (refined.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 15)).ToList<DatahubDataObj>().Count(),
@@ -1214,14 +1286,13 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                     male18 = (refined.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 18)).ToList<DatahubDataObj>().Count(),
                     female19 = (refined.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 19)).ToList<DatahubDataObj>().Count(),
                     male19 = (refined.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 19)).ToList<DatahubDataObj>().Count(),
-                };
-                combinedData.selected = selectedChart;
+                });
             }
             if (selectionParams.neighbourhood != null)
             {
                 schoolSelection = Session["chartSelectedNeighbour"] as School;
                 List<DatahubDataObj> refined = GetDatahubdatabyNeighbourhoods(this.rpGeneric2nd, schoolSelection.seedcode);
-                object selectedChart = new
+                combinedData.selected.Add(new
                 {
                     title = schoolSelection.name,
                     female15 = (refined.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 15)).ToList<DatahubDataObj>().Count(),
@@ -1234,8 +1305,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                     male18 = (refined.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 18)).ToList<DatahubDataObj>().Count(),
                     female19 = (refined.Where(z => z.Gender.Equals("Female")).Where(z => z.Age == 19)).ToList<DatahubDataObj>().Count(),
                     male19 = (refined.Where(z => z.Gender.Equals("Male")).Where(z => z.Age == 19)).ToList<DatahubDataObj>().Count(),
-                };
-                combinedData.selected = selectedChart;
+                });
             }
             timer.Stop();
             combinedData.benchmarkResults = timer.ElapsedMilliseconds;
@@ -1274,13 +1344,13 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 DatahubData SchoolData = CreatDatahubdata(refined, schoolSelection.seedcode);
 
 
-                combinedData.selected = new
+                combinedData.selected.Add(new
                 {
                     name = schoolSelection.name,
                     participating = SchoolData.Participating(),
                     notParticipating = SchoolData.NotParticipating(),
                     unknown = SchoolData.Percentage(SchoolData.pupilsinUnknown)
-                };
+                });
             }
             if (selectionParams.neighbourhood != null)
             {
@@ -1289,13 +1359,13 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 DatahubData SchoolData = CreatDatahubdata(refined, schoolSelection.seedcode);
 
 
-                combinedData.selected = new
+                combinedData.selected.Add(new
                 {
                     name = schoolSelection.name,
                     participating = SchoolData.Participating(),
                     notParticipating = SchoolData.NotParticipating(),
                     unknown = SchoolData.Percentage(SchoolData.pupilsinUnknown)
-                };
+                });
             }
             timer.Stop();
             combinedData.benchmarkResults = timer.ElapsedMilliseconds;
@@ -1600,8 +1670,10 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 }
             }
 
-            IList<DatahubData> result = new Collection<DatahubData>();
-            var city_data = CreatDatahubdata(GetDatahubdatabySchoolcode(rpGeneric2nd, "100"), "100");
+            IList<SummaryDataViewModel> result = new Collection<SummaryDataViewModel>();
+
+            SummaryDataViewModel city_data = Helper2.ByName(currentCouncil.name).GetSummaryDataForCouncil(08, 2016);
+             
             //city_data.name = "Glasgow"; // To do
             result.Add(city_data);
 
@@ -1627,7 +1699,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             {
                 if (type.ToLower().Equals("neighbourhoods"))
                 {
-                    var data = CreatDatahubdata(GetDatahubdatabyNeighbourhoods(rpGeneric2nd, item), item);
+                    var data = Helper2.ByName(currentCouncil.name).GetSummaryDataForSingleIntermediateZone(item, 08, 2016);
                     var match = selection.FirstOrDefault(p => p.seedcode == item);
 
                     data.name = match.name;
@@ -1636,7 +1708,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 };
                 if (type.ToLower().Equals("schools"))
                 {
-                    var data = CreatDatahubdata(GetDatahubdatabySchoolcode(rpGeneric2nd, item), item);
+                    var data = Helper2.ByName(currentCouncil.name).GetSummaryDataForSingleSchool(item, 08, 2016);
                     var match = selection.FirstOrDefault(p => p.seedcode == item);
 
                     data.name = match.name;
