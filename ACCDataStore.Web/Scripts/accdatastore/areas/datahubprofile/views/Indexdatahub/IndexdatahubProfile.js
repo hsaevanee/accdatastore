@@ -24,6 +24,30 @@ $(document).ready(function () {
             ]
         }
     });
+
+
+    $('#summaryNeighbourhoodDatatable').DataTable({
+        dom: 'Bfrtip',
+        "scrollY": "200px",
+        "scrollCollapse": true,
+        paging: false,
+        "order": [],
+        buttons: {
+            buttons: [
+                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                    extend: 'pdfHtml5',
+                    orientation: 'portrait',
+                    exportOptions: {
+                        modifier: {
+                            page: 'current'
+                        }
+                    },
+                    header: true,
+                    title: 'Neightbourhood breakdown for Aberdeen city'
+                }, 'print',
+            ]
+        }
+    });
 });
 
 function goToCreateURL(object) {

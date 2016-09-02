@@ -130,6 +130,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             SummaryDataViewModel councilData = null;
             IList<SummaryDataViewModel> councilSchoolsData = null;
             List<PosNegSchoolList> tableSummaryData = new List<PosNegSchoolList>();
+            List<PosNegSchoolList> tableSummaryIMDatazoneData = new List<PosNegSchoolList>();
 
             // To hold our current selection [city,month,year]
             ViewModelParams pageViewModelParams = new ViewModelParams();
@@ -177,9 +178,30 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
             viewModel.CityData = councilData;
             viewModel.summaryTableData = tableSummaryData;
+                
+
+            // This bit should live in a seperate controller IMO
+            IList<SummaryDataViewModel> councilIMDatazonesData = Helper2.ByName(name).GetSummaryDataForAllIntermediateZones(08, 2016);
+
+            //Prepare Intermediate datazone participation data
+            foreach (var IMDatazoneSummary in councilIMDatazonesData)
+            {
+                PosNegSchoolList entry = new PosNegSchoolList();
+                entry.name = IMDatazoneSummary.name;
+                entry.participating = (double)IMDatazoneSummary.Participating(); // decimal or double for percentages? we should decide
+                entry.notParticipating = (double)IMDatazoneSummary.NotParticipating();
+                entry.unknown = (double)IMDatazoneSummary.Percentage(IMDatazoneSummary.allPupilsInUnknown);
+                tableSummaryIMDatazoneData.Add(entry);
+            }
+
+            viewModel.summaryNeighboursTableData = tableSummaryIMDatazoneData;
+
+            // ???, NVM we need this
+            //pageViewModelParams.school = schoolsubmitButton;
+            //pageViewModelParams.neighbourhood = neighbourhoodssubmitButton;
+            //pageViewModelParams.councilName = name;
 
 
-            
 
             //Now if the schoolsubmitbutton or neighbourhood submitbutton was clicked we populate our viewmodel
             IList<School> allSchoolsList = Helper2.ByName(name).GetSchoolsList();
@@ -216,13 +238,29 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
             if (neighbourhoodssubmitButton != null)
             {
-                var datacode = Request["selectedneighbourhoods"];
-                School currentIntermediateZone = allIntermediateZonesList.Where(x => x.seedcode == datacode).FirstOrDefault();
+                List<string> dataZoneCode = Request["selectedneighbourhoods"].Split(',').ToList<string>();
+                //var sSchoolcode = Request["selectedschool"];
+                //School currentSchool = allSchoolsList.Where(x => x.seedcode == sSchoolcode).FirstOrDefault();
+                if (dataZoneCode != null)
+                {
+                    foreach (string school in dataZoneCode)
+                    {
+                        School currentSchool = allIntermediateZonesList.Where(x => x.seedcode == school).FirstOrDefault();
+                        SummaryDataViewModel currentSchoolData = Helper2.ByName(name).GetSummaryDataForSingleIntermediateZone(school, 8, 2016);
+                        Session["chartSelectedNeighbour"] = currentSchoolData;
+                        viewModel.selectedschool = currentSchool;
+                        viewModel.SelectedData = currentSchoolData;
+                        list.Add(currentSchoolData);
+                    }
 
-                SummaryDataViewModel currentIntermediateZoneData = Helper2.ByName(name).GetSummaryDataForSingleIntermediateZone(currentIntermediateZone.seedcode, 8, 2016);
-                Session["chartSelectedNeighbour"] = currentIntermediateZoneData;
-                viewModel.selectedschool = currentIntermediateZone;
-                viewModel.SelectedData = currentIntermediateZoneData;
+                }
+                //var datacode = Request["selectedneighbourhoods"];
+                //School currentIntermediateZone = allIntermediateZonesList.Where(x => x.seedcode == datacode).FirstOrDefault();
+
+                //SummaryDataViewModel currentIntermediateZoneData = Helper2.ByName(name).GetSummaryDataForSingleIntermediateZone(currentIntermediateZone.seedcode, 8, 2016);
+                //Session["chartSelectedNeighbour"] = currentIntermediateZoneData;
+                //viewModel.selectedschool = currentIntermediateZone;
+                //viewModel.SelectedData = currentIntermediateZoneData;
 
             }
 
@@ -266,7 +304,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 notParticipating = CityData.NotParticipating(),
                 unknown = CityData.Percentage(CityData.allPupilsInUnknown)
             };
-
+                
 
             if (selectionParams.school != null && selectionParams.school.Count > 0)
             {
@@ -277,12 +315,12 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                     SummaryDataViewModel schoolData = Helper2.ByName(selectionParams.councilName).GetSummaryDataForSingleSchool(school, 8, 2016);
                     combinedData.selected.Add(new
                     {
-                        name = schoolData.name,
-                        participating = schoolData.Participating(),
-                        notParticipating = schoolData.NotParticipating(),
-                        unknown = schoolData.Percentage(schoolData.allPupilsInUnknown)
+                    name = schoolData.name,
+                    participating = schoolData.Participating(),
+                    notParticipating = schoolData.NotParticipating(),
+                    unknown = schoolData.Percentage(schoolData.allPupilsInUnknown)
                     });
-                }
+            }
             }
 
 
@@ -372,17 +410,17 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                     //Get date
                     if (month != null)
                     {
-                        string currYear = month.dataYear.ToString();
-                        string[] monthname = new string[12] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-                        int m = month.dataMonth;
-                        string currMonthName = monthname[m - 1];
-                        string period = (currMonthName + "-" + currYear);
+                    string currYear = month.dataYear.ToString();
+                    string[] monthname = new string[12] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+                    int m = month.dataMonth;
+                    string currMonthName = monthname[m - 1];
+                    string period = (currMonthName + "-" + currYear);
 
-                        jsonOut.months.Add(month == null ? "" : period);
-                        jsonOut.participating.Add(month == null ? -1.00 : Math.Round((double)month.Participating(), 2));
-                        jsonOut.notParticipating.Add(month == null ? -1.00 : Math.Round((double)month.NotParticipating(), 2));
-                        jsonOut.unknown.Add(month == null ? -1.00 : Math.Round((double)month.Percentage(month.allPupilsInUnknown), 2));
-                    }
+                    jsonOut.months.Add(month == null ? "" : period);
+                    jsonOut.participating.Add(month == null ? -1.00 : Math.Round((double)month.Participating(), 2));
+                    jsonOut.notParticipating.Add(month == null ? -1.00 : Math.Round((double)month.NotParticipating(), 2));
+                    jsonOut.unknown.Add(month == null ? -1.00 : Math.Round((double)month.Percentage(month.allPupilsInUnknown), 2));
+                }
                 }
                 allseriesoutput.Add(jsonOut);
             }

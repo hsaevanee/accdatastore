@@ -31,6 +31,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub
         public string seachby { get; set; }
         public string searchcode { get; set; }
         public List<PosNegSchoolList> summaryTableData { get; set; }
+        public List<PosNegSchoolList> summaryNeighboursTableData { get; set; }
         public long benchmarkResults { get; set; }
         public List<SummaryDataViewModel> allCouncilTable { get; set; }
         public SummaryDataViewModel CityData { get; set; }
