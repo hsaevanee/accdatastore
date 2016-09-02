@@ -220,8 +220,9 @@ namespace DatahubDataSummaryGenerator
 
 
                     // This line of code does magic!!!
-                    SummaryGeneratorHelper.initialPopulationForCouncil<DatahubDataGlasgow>(session);
+                    SummaryGeneratorHelper.initialPopulationForCouncil<DatahubDataAberdeenshire>(session);
 
+                    
                     Stopwatch stopwatch_t = new Stopwatch();
                     Console.WriteLine("Starting transaction...");
                     stopwatch_t.Start();

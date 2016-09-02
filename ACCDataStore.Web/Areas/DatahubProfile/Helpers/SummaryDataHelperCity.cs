@@ -35,6 +35,8 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Helpers
                     return new SummaryDataHelperNew<AberdeenSummary>(repository,"S12000033");
                 case "glasgow city":
                     return new SummaryDataHelperNew<GlasgowSummary>(repository, "S12000046");
+                case "aberdeenshire":
+                    return new SummaryDataHelperNew<AberdeenshireSummary>(repository, "S12000034");
                 default:
                     return null;
 
@@ -113,6 +115,8 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Helpers
                     case "aberdeen city":
                         return true;
                     case "glasgow city":
+                        return true;
+                    case "aberdeenshire":
                         return true;
                     default:
                         return false;

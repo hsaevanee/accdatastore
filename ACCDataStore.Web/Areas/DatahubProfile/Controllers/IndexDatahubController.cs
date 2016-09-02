@@ -202,6 +202,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             }
 
             viewModel.summaryNeighboursTableData = tableSummaryIMDatazoneData;
+            Session["AllIMDatazoneComparisonData"] = tableSummaryIMDatazoneData; // I dont know why we do this
 
             // ???, NVM we need this
             //pageViewModelParams.school = schoolsubmitButton;
@@ -1479,7 +1480,19 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             return Json(wrapper, JsonRequestBehavior.AllowGet);
         }
         // END OF LEGACY CODE
-        
+
+        public JsonResult getAllIMDatazoneComparison()
+        {
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            BenchmarkAjax wrapper = new BenchmarkAjax();
+            List<PosNegSchoolList> tableSummaryData = Session["AllIMDatazoneComparisonData"] as List<PosNegSchoolList>;
+            Session["AllIMDatazoneComparisonData"] = null;
+            wrapper.data = tableSummaryData;
+            timer.Stop();
+            wrapper.benchmarkResults = timer.ElapsedMilliseconds;
+            return Json(wrapper, JsonRequestBehavior.AllowGet);
+        }
 
         // BEGIN MESS
         public ActionResult ApiTestQQQ()
@@ -1866,6 +1879,8 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                     percentageData = currentSelection.Select(x => x.Percentage(x.allPupilsInUnknown)).ToList();
                 }
 
+
+                SummaryDataViewModel currentCouncilData = Helper2.ByName(name).GetSummaryDataForCouncil(8, 2016);
                 // Begin format result
                 var result = new
                 {
@@ -1873,6 +1888,8 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                     data = percentageData,
                     minimum = percentageData.Min(),
                     maximum = percentageData.Max(),
+                    average = percentageData.Average(),
+                    average1 = currentCouncilData.Participating()
                 };
 
                 return Json(result, JsonRequestBehavior.AllowGet);
