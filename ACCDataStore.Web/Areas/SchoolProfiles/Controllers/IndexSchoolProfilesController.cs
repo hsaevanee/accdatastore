@@ -49,7 +49,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             return View("SchoolWebsites");
         }
 
-
+        
         [AdminAuthentication]
         [Transactional]
         public ActionResult IndexSecondaryProfiles(string sSchoolType)
@@ -70,6 +70,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             Session["vmIndexSecondarySchoolProfilesModel"] = vmIndexSecondarySchoolProfilesModel;
             return View("IndexSecondarySchool", vmIndexSecondarySchoolProfilesModel);
         }
+
         [AdminAuthentication]
         [Transactional]
         public ActionResult IndexSpecialProfiles(string sSchoolType)

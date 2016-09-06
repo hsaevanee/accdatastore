@@ -22,6 +22,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         [Transactional]
 
         // GET: SchoolProfiles/IndexInteractiveMap
+        [AdminAuthentication]
+        [Transactional]
         public ActionResult Index()
         {
             return View("MapIndex");

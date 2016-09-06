@@ -24,6 +24,7 @@ $(document).ready(function () {
                 });
 
                 nonSelectedOptions.each(function () {
+ 
                     var input = $('input[value="' + $(this).val() + '"]');
                     input.prop('disabled', true);
                     input.parent('li').addClass('disabled');
@@ -40,11 +41,12 @@ $(document).ready(function () {
             }
 
             selected = [];
+
             $(selectedOptions).each(function (index, option) {
                 selected.push([$(this).val(), $(this).text()]);
             });
 
-            console.log(selected);
+            //console.log(selectedOptions);
     }
     });
 

@@ -1,0 +1,96 @@
+﻿ 
+@section Header {
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/highcharts.js"></script>   
+}
+@{
+    //SchoolProfile
+    ViewBag.Title = "Home";
+}
+
+<body>
+    <div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <a href="portfolio-item.html">
+                <img class="img-responsive img-hover" src="@Url.Content("~/Images/schoolprofile.png")" alt="">
+            </a>
+        </div>
+        <div class="col-md-9">
+            <h2>School Profiles</h2>
+            <p class="text-justify">
+                These profiles are a summary of the information that is available for each school in Aberdeen City. They contain attainment data, attendance, exclusions, violent incidents, costs, roll and census data but much more and they also contain links to related websites such as related Scottish Government publications, HMIE reports and school websites.
+            </p>
+            <p>
+                The profiles are intended for internal use for performance management and quality assurance purposes.
+            </p>
+            <p>
+                Profiles include: 
+            </p>
+            <p>
+                <ul>
+                    <li>
+                        <a href="@Url.Action("IndexPrimaryProfiles", "IndexPrimaryProfile", new { Area = "SchoolProfiles", sSchoolType = "2" }, null)">Primary Schools</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("IndexSecondaryProfiles", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "3" }, null)">Secondary Schools</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("IndexSpecialProfiles", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "4" }, null)">Special Schools</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("IndexAberdeenProfiles", "IndexAberdeenProfile", new { Area = "SchoolProfiles", sSchoolType = "5" }, null)">Aberdeen City</a>
+                    </li>
+                </ul>
+            </p>
+
+            <p>
+                Other Useful Links
+            </p>
+            <p>
+                <ul>
+                    <li>
+                        <a href="@Url.Action("SchoolWebsites", "IndexSchoolProfiles", new { Area = "SchoolProfiles" }, null)">School websites</a>
+                    </li>
+                    <li>
+                        <a href="http://www.educationscotland.gov.uk/inspectionandreview/index.asp">Education Scotland (Inspection and review)</a>
+                    </li>
+                    <li>
+                        <a href="http://www.gov.scot/Topics/Statistics/Browse/School-Education">Scottish Government Education Statistics</a>
+                    </li>
+                    <li>
+                        <a href="http://www.gov.scot/Topics/Statistics/Browse/Children/PubChildrenSocialWork">Children's Social Work Statistics</a>
+                    </li>
+                    <li>
+                        <a href="http://www.cem.org/">CEM-Centre for Evaluation & Monitorimg</a>
+                    </li>
+                    <li>
+                        <a href="http://www.educationscotland.gov.uk/parentzone/myschool/findaschool/index.asp">Parentzone Scotland</a>
+                    </li>
+                    <li>
+                        <a href="https://www.celcis.org/">Looked After Children in Scotland</a>
+                    </li>
+                    <li>
+                        <a href="http://communityplanningaberdeen.org.uk/">Community Planning Website</a>
+                    </li>
+                </ul>
+            </p>
+
+            <p>
+                If you have any queries regarding the data, please contact 
+            </p>
+            <p>
+                Hataichanok Saevanee
+            </p>
+            <p>
+                 
+            </p>
+            <p>
+                <i class="fa fa-envelope-o"></i>
+                <abbr title="Email">E</abbr>: <a href="mailto:HSaevanee@aberdeencity.gov.uk">HSaevanee@aberdeencity.gov.uk</a>
+
+            </p>
+        </div>
+    </div>
+    </div> <!--container-->
+</body>

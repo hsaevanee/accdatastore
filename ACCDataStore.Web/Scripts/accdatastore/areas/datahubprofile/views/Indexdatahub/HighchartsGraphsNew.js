@@ -4,9 +4,9 @@ var hGraphs = {
     benchmark: {},
     getData: function (callback, param) {
         var urls = {
-            mainChart: '/DatahubProfile/IndexDatahub/MainPieChartDataNew',
-            bigOlBarChart: '/DatahubProfile/IndexDatahub/getBarChartData',
-            monthsTrends: '/DatahubProfile/IndexDatahub/monthlyHistogramNew',
+            mainChart: sContextPath + 'DatahubProfile/IndexDatahub/MainPieChartDataNew',
+            bigOlBarChart: sContextPath + 'DatahubProfile/IndexDatahub/getBarChartData',
+            monthsTrends: sContextPath + 'DatahubProfile/IndexDatahub/monthlyHistogramNew',
             participatingBarChart: '/DatahubProfile/IndexDatahub/getBarChartDataNew',
             allSchoolComparison: '/DatahubProfile/IndexDatahub/getAllSchoolComparison',
             allIMDatazoneComparison: '/DatahubProfile/IndexDatahub/getAllIMDatazoneComparison',
@@ -65,7 +65,7 @@ var hGraphs = {
         var series = [], lineLength = 4, line = [], axis = [];
         if (hGraphs.cache.allSchoolComparison.data != null) {
             for (var i = 0; i < hGraphs.cache.allSchoolComparison.data.length; i++) {
-                series.push({ name: hGraphs.cache.allSchoolComparison.data[i].name, type: 'column', xAxis: 0, data: [] });
+                series.push({ name: hGraphs.cache.allSchoolComparison.data[i].name, type: 'column', xAxis: 1, data: [] });
                 for (var key in hGraphs.cache.allSchoolComparison.data[i]) {
                     if (key == type) {
                         series[i].data.push(hGraphs.cache.allSchoolComparison.data[i][key]);
@@ -77,7 +77,7 @@ var hGraphs = {
             line.push(hGraphs.cache.allSchoolComparison.councilAverage[type]);
             axis.push(i.toString());
         }
-        series.push({name: hGraphs.cache.allSchoolComparison.councilAverage.name + ' Average', type: 'line', xAxis: 1, data: line});
+        series.push({ name: hGraphs.cache.allSchoolComparison.councilAverage.name + ' Average', type: 'line', xAxis: 0, data: line });
         if (series.length > 0) {
             console.log(series);
             hGraphs.drawBarLine("#index-all-school-comparison-chart", series, [type], axis);
@@ -294,9 +294,6 @@ var hGraphs = {
                 text: 'People Participation Overview'
             },
             xAxis: [{
-                categories: axis1,
-                crosshair: true
-            }, {
                 categories: axis2, 
                 lineWidth: 0,
                 minorGridLineWidth: 0,
@@ -306,6 +303,9 @@ var hGraphs = {
                 },
                 minorTickLength: 0,
                 tickLength: 0
+            },{
+                categories: axis1,
+                crosshair: true
             }],
             yAxis: [{
                 min: 0,

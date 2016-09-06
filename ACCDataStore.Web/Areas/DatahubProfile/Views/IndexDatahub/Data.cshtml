@@ -58,7 +58,7 @@
                                     @*<td>@Html.DropDownListFor(m => m.selectedschoolcode, new SelectList(Model.ListSchoolNameData, "seedcode", "name"))</td>*@
                                     <td width="20%"><button onclick="return SubmitForm(this.id)" class="btn btn-primary" id="schoolsubmitButton" name="schoolsubmitButton" value="Search">Search</button></td>
                                     @*<td width="20%"><input type="submit" class="btn btn-primary" name="schoolsubmitButton" value="Search" /></td>*@
-
+                                    
                                     @*<td width="20%"><button class="btn btn-primary" id="schoolsubmitButton">Search</button></td>*@
                                 </tr>
                                 <tr>
@@ -127,6 +127,8 @@
         </div>
     </div>
 
+    <div style="margin: 50px 0px 50px 0px; border-top: solid lightgrey 1px">
+        <h2 style="margin: 30px 0px 60px 0px">@Model.selectionParams.councilName Data</h2>
         <!--Schools Overview-->
     <div class="row">
         <div class="col-md-12">
@@ -242,6 +244,36 @@
             </div>
         </div>
 
+        </div>
+
+        <div style="border-top: solid lightgrey 1px; margin: 50px 0px 50px 0px">
+            <h2 style="margin: 30px 0px 60px 0px">
+                @for (int i = 0; i < Model.selectionParams.school.Count; i++)
+                {
+                    @Model.selectionParams.school[i];
+                    if (i < Model.selectionParams.school.Count - 1)
+                    { 
+                        <span>, </span>
+                    }
+                    else
+                    {
+                        <span> </span>
+                    }
+                }
+                @for (int i = 0; i < Model.selectionParams.neighbourhood.Count; i++)
+                {
+                    @Model.selectionParams.neighbourhood[i];
+                    if (i < Model.selectionParams.neighbourhood.Count - 1)
+                    {
+                        <span>, </span>
+                    }
+                    else
+                    {
+                        <span> </span>
+                    }
+                }
+                Data
+            </h2>
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-primary text-center">
@@ -463,6 +495,8 @@
                 </div>
             </div>
         </div>
+            </div>
+
     </div>
 
     </div>

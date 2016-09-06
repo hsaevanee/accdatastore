@@ -77,31 +77,56 @@
                     </div>
                 </div>
             </div>*@
+            <div class="row top-buffer">
+                <div class="col-md-3 text-center">
+                    <div class="img-thumbnail">
+                        <img src="@Url.Content("~/Images/WIP.jpg")" alt="School Profile logo">
+                        <div class="caption">
+                            <h3>New School Profiles</h3>
+                            <p></p>
+                            <p>
+                                <a href="@Url.Action("Index", "IndexSchoolProfiles", new { Area = "SchoolProfiles" }, null)" class="btn btn-primary">Check out!</a>
+                            </p>
+                        </div>
+                </div>
+            </div>
+            </div>*@
             <div class="col-md-3 text-center">
                 <div class="img-thumbnail">
-                    <img src="@Url.Content("~/Images/insight_logo.jpg")" alt="insight_logo" >
+                        <img src="@Url.Content("~/Images/insight_logo.jpg")" alt="insight_logo">
                     <div class="caption">
                         <h3>Insight Profile</h3>
                         <p></p>
                         <p>
                             <a href="@Url.Action("Index", "InsightProfile", new { Area = "InsightProfile" }, null)" class="btn btn-primary">Check out!</a> @*<a href="#" class="btn btn-default">More Info</a>*@
+                            @*</p>
+                        </div>
+                    </div>
+                </div>*@
+                <div class="col-md-3 text-center">
+                    <div class="img-thumbnail">
+                        <img src="@Url.Content("~/Images/Aberdeen  Gaurtees logo.png")" alt="Aberdeen Gaurtees logo">
+                        <div class="caption">
+                            <h3>Data Hub</h3>
+                            <p></p>
+                            <p>
+                                <a href="@Url.Action("ScotlandIndex", "IndexDatahub", new { Area = "DatahubProfile" }, null)" class="btn btn-primary">Check out!</a> @*<a href="#" class="btn btn-default">More Info</a>*@
                         </p>
                     </div>
                 </div>
             </div>
             <div class="col-md-3 text-center">
                 <div class="img-thumbnail">
-                    <img src="@Url.Content("~/Images/Aberdeen  Gaurtees logo.png")" alt="Aberdeen Gaurtees logo" >
+                        <img src="@Url.Content("~/Images/pupils.jpg")" alt="pupils_logo">
                     <div class="caption">
-                        <h3>Data Hub</h3>
+                            <h3>Pupils Population</h3>
                         <p></p>
                         <p>
-                            <a href="@Url.Action("ScotlandIndex", "IndexDatahub", new { Area = "DatahubProfile" }, null)" class="btn btn-primary">Check out!</a> @*<a href="#" class="btn btn-default">More Info</a>*@
+                                <a href="@Url.Action("IndexHome", "IndexPupilsPopulation", new { Area = "PupilsPopulation" }, null)" class="btn btn-primary">Check out!</a>
                         </p>
                     </div>
                 </div>
             </div>
-
             <div class="col-md-3 text-center">
                 <div class="img-thumbnail">
                     <img src="@Url.Content("~/Images/AchievementLogo.png")" alt="Wider Achievement logo">
@@ -145,18 +170,7 @@
                 </div>
             </div>*@
 
-            <div class="col-md-3 text-center">
-                <div class="img-thumbnail">
-                    <img src="@Url.Content("~/Images/pupils.jpg")" alt="pupils_logo">
-                    <div class="caption">
-                        <h3>Pupils Population</h3>
-                        <p></p>
-                        <p>
-                            <a href="@Url.Action("IndexHome", "IndexPupilsPopulation", new { Area = "PupilsPopulation" }, null)" class="btn btn-primary">Check out!</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
+
 
             @*<div class="col-md-3 text-center">
                 <div class="img-thumbnail">

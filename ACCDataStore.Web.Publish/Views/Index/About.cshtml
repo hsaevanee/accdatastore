@@ -1,0 +1,216 @@
+﻿@section Header {
+    <!-- jQuery -->
+    <script src="~/Scripts/jquery.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<style type="text/css">
+    img {
+    width: 200px;
+    height: 150px;
+    }
+</style>
+
+}
+
+<body>
+    <!-- Page Content -->
+    <div class="container">
+        <!-- Page Heading/Breadcrumbs -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    About
+                </h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="@Url.Action("Index", "Index", new {  Area = "" ,id = "" }, null)">Home</a>
+                    </li>
+                    <li class="active">About</li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+        <!-- Intro Content -->
+        <div class="row">
+            <div class="col-md-6">
+                <img class="img-responsive" src="http://placehold.it/750x450" alt="">
+            </div>
+            <div class="col-md-6">
+                <h2>About Data Observatory</h2>
+                <p class="text-justify">
+                    A Data Observatory (also known as a Local Information System) is a form of information system built with business intelligence tools, designed with the capability to support statistical data, and the analysis of geospatial data.
+                    A Data Observatory also tends to offer common knowledge management functionality for storage and retrieval of unstructured data such as documents.
+                    Data Observatory deliver functionality to load, store, analyse and present statistical data that has a strong geographic reference.
+                    In most cases the data is structured as indicators and is linked to discrete geographic areas, for example numbers claiming unemployment benefit across wards in Scotland.
+                    The ability to present this data using data visualization tools like charts and maps is also a core feature of these systems.
+                </p>
+            </div>
+        </div>
+        <!-- Team Members -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="page-header">Our Team</h2>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="img-thumbnail">
+                    <img src="" height="216" alt="Euan">
+                    <div class="caption">
+                        <h4>Euan Couperwhite</h4>
+                        <h5>Chairman</h5>
+                        <p></p>
+                        <p>
+                            <a href="#" class="btn btn-primary">Check out!</a> @*<a href="#" class="btn btn-default">More Info</a>*@
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 text-center">
+                <div class="img-thumbnail">
+                    @*<img src="@Url.Content("~/Images/Do_Coyle.jpg")" alt="Do_Coyle">*@
+                    <img src="@Url.Content("~/Images/Do_Coyle.jpg")"  alt="Do_Coyle">
+
+                    <div class="caption">
+                        <h4>Professor Do Coyle</h4>
+                        <h5>Lead Academic/Researcher</h5>
+                        @*<p>Do Coyle’s work focuses on technology-enhanced learning especially in developing end-user tools for enhancing performance and practice (e.g. interactive video networked spaces linking classrooms, universities and workplaces in schools, vet practices and community organisations). Specialist in multi-disciplinary higher education and adult visual learning; blending workplace and academic learning; current and recent cross-disciplinary funding from AHRC Connected Communities, European initiatives, Esmee Fairbairn and Scottish Government. Products of research range from interactive digital tools for practitioner analysis of own work practices and co-creation of practice-based data bases with participants to enhance professional practice to on-line interactive needs analysis tools for professional training. Former co-director of University of Nottingham’s multimillion HEFCE funded Visual Learning Lab, Do currently supervises 6 PhD students and two European doctorates.
+                </p>*@
+                        <p>
+                            <a href="#" class="btn btn-primary">Check out!</a> @*<a href="#" class="btn btn-default">More Info</a>*@
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 text-center">
+                <div class="img-thumbnail">
+                    @*<img src="@Url.Content("~/Images/Kevin.jpeg")" alt="Kevin">*@
+                    <img src="@Url.Content("~/Images/Kevin.jpeg")" alt="Kevin">
+                    <div class="caption">
+                        <h4>Kevin Stelfox</h4>
+                        <h5>Company Supervisor</h5>
+                        <p></p>
+                        <p>
+                            <a href="#" class="btn btn-primary">Check out!</a> @*<a href="#" class="btn btn-default">More Info</a>*@
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 text-center">
+                <div class="img-thumbnail">
+                    @*<img src="@Url.Content("~/Images/Pamela_Bain.jpeg")" alt="Pamela">*@
+                    <img src="@Url.Content("~/Images/Pamela_Bain.jpeg")" alt="Pamela">
+
+                    <div class="caption">
+                        <h4>Pamela Bain</h4>
+                        <h5>Company Supervisor</h5>
+                        <p></p>
+                        <p>
+                            <a href="#" class="btn btn-primary">Check out!</a> @*<a href="#" class="btn btn-default">More Info</a>*@
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+            <div class="row">
+            <div class="col-md-3 text-center">
+                <div class="img-thumbnail">
+                    @*<img src="@Url.Content("~/Images/Ian_Heywood.jpg")" alt="Ian">*@
+                    <img src="@Url.Content("~/Images/Ian_Heywood.jpg")" alt="Ian">
+
+                    <div class="caption">
+                        <h4>Dr Ian Heywood</h4>
+                        <h5>Knowledge Base Supervisor</h5>
+                        <p></p>
+                        <p>
+                            <a href="#" class="btn btn-primary">Check out!</a> @*<a href="#" class="btn btn-default">More Info</a>*@
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 text-center">
+                <div class="img-thumbnail">
+                    @*<img src="@Url.Content("~/Images/bruce_scharlau.jpg")" alt="Bruce">*@
+                    <img src="@Url.Content("~/Images/bruce_scharlau.jpg")" alt="Bruce">
+
+                    <div class="caption">
+                        <h4>Dr Bruce Scharlau</h4>
+                        <h5>Knowledge Base Supervisor</h5>
+                        <p></p>
+                        <p>
+                            <a href="#" class="btn btn-primary">Check out!</a> @*<a href="#" class="btn btn-default">More Info</a>*@
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 text-center">
+                <div class="img-thumbnail">
+                    @*<img src="@Url.Content("~/Images/Jan2.png")" alt="Jan">*@
+                    <img src="@Url.Content("~/Images/Jan2.png")" alt="Jan">
+
+                    <div class="caption">
+                        <h4>Dr Hataichanok Saevanee</h4>
+                        <h5>KTP Associate</h5>
+                        <p></p>
+                        <p>
+                            <a href="#" class="btn btn-primary">Check out!</a> @*<a href="#" class="btn btn-default">More Info</a>*@
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+                <div class="col-md-3 text-center">
+                    <div class="img-thumbnail">
+                     </div>
+                </div>
+        </div>
+        <!-- /.row -->
+
+    </div>
+
+</body>
+
+@*<p align="center">
+        <img src="@Url.Content("~/Images/acc-logo.gif")" alt="Aberdeen City Council" width="130" height="108" />
+    </p>*@
+@*<h2 align="center"> Home</h2>
+        <p>
+            Welcome to Aberdeen data Observatory Project.
+            This website pulls together up-to-date information as the Digital Data Observatory Project for Aberdeen City Council.
+            The aim of this project is to provide an easy access to a wide range of information collected from local data source and can be analysed for enhanced decision-making based on a robust evidence based for decision makers.
+        </p>
+        <h2 align="center"> What is Data Observatory</h2>
+        <p>
+            A Data Observatory (also known as a Local Information System) is a form of information system built with business intelligence tools, designed with the capability to support statistical data, and the analysis of geospatial data.
+            A Data Observatory also tends to offer common knowledge management functionality for storage and retrieval of unstructured data such as documents.
+            Data Observatory deliver functionality to load, store, analyse and present statistical data that has a strong geographic reference.
+            In most cases the data is structured as indicators and is linked to discrete geographic areas, for example numbers claiming unemployment benefit across wards in Scotland.
+            The ability to present this data using data visualization tools like charts and maps is also a core feature of these systems.
+        </p>
+        <h2 align="center"> Feedback on Data Observatory </h2>
+
+        <h3 align="center" style="color:blue">
+            This site is a work in progress. We have released early, but good enough for you to start using day-to-day.<br>
+            Each time you come back you might see new features.<br>
+            You can help us by suggesting ideas/features that would help you in your work.<br>
+        </h3>
+
+
+        <p style="color:blue" align="center">
+            <b>
+                You can contact data observatory project team <br /><br />
+                a) by email to Jan at <a href="mailto:HSaevanee@aberdeencity.gov.uk">HSaevanee@aberdeencity.gov.uk</a> <br><br />
+                b) by visiting 2-N at Marischal Colleage, Broad Street, Aberdeen AB 10 1AR <br><br />
+            </b>
+        </p>
+    </div>*@
+
+
+

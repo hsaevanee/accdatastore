@@ -18,6 +18,59 @@ $(document).ready(function () {
         }
     });
 
+    $('#SIMDdatatable').DataTable({
+        paging: false,
+        "aaSorting": [[0, "asc"]],
+        dom: 'Bfrtip',
+        buttons: [
+       'copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5',   'print'
+        ]
+    });
+
+    $('#Ethnicdatatable').DataTable({
+        paging: false,
+        "aaSorting": [[0, "asc"]],
+        dom: 'Bfrtip',
+        buttons: [
+       'copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5', 'print'
+        ]
+    });
+
+    $('#Nationalitydatatable').DataTable({
+        paging: false,
+        "aaSorting": [[0, "asc"]],
+        dom: 'Bfrtip',
+        buttons: [
+       'copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5', 'print'
+        ]
+    });
+
+    $('#StdStagedatatable').DataTable({
+        paging: false,
+        "aaSorting": [[0, "asc"]],
+        dom: 'Bfrtip',
+        buttons: [
+       'copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5', 'print'
+        ]
+    });
+
+    $('#EALdatatable').DataTable({
+        paging: false,
+        "aaSorting": [[0, "asc"]],
+        dom: 'Bfrtip',
+        buttons: [
+       'copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5', 'print'
+        ]
+    });
+
+    $('#FSMdatatable').DataTable({
+        paging: false,
+        "aaSorting": [[0, "asc"]],
+        dom: 'Bfrtip',
+        buttons: [
+       'copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5', 'print'
+        ]
+    });
 
 });
 
