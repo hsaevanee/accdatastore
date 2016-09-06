@@ -17,7 +17,6 @@ $(document).ready(function () {
         maxHeight: 200,
         onChange: function (element, checked) {
             var selectedOptions = $('#selectedschoolcode option:selected');
-
             if (selectedOptions.length >= 4) {
                 // Disable all other checkboxes.
                 var nonSelectedOptions = $('#selectedschoolcode option').filter(function () {
@@ -37,6 +36,7 @@ $(document).ready(function () {
                     input.prop('disabled', false);
                     input.parent('li').addClass('disabled');
                 });
+                
             }
 
             selected = [];
@@ -48,10 +48,10 @@ $(document).ready(function () {
     }
     });
 
-    $('#schoolsubmitButton1').click(function () {
-        if (selected.length > 0) Test1(selected,'schools');
+    //$('#neighbourhoodssubmitButton').click(function () {
+    //    alert("schoolsubmitButton1");      
 
-    })
+    //})
 
 
     $('#selectedneighbourhoods').attr("multiple", "multiple");
@@ -100,10 +100,13 @@ $(document).ready(function () {
         }
     });
 
-    $('#neighbourhoodButton1').click(function () {
-        if (selectedN.length > 0) Test1(selectedN, 'neighbourhoods');
+    //$('#neighbourhoodssubmitButton').click(function () {
+        
+    //    if (selectedN.length == 0) {
+    //        alert("neighbourhoodButton1");
+    //    }
 
-    })
+    //})
     
     
     //selected_school = $('#selectedschoolcode :selected').val();
@@ -119,10 +122,28 @@ function goToCreateURL(object) {
     return object.href += code;
 }
 
-//function CheckFormat(number) {
-//    if(number.val() <=10)
-//        return number.replace("%s","*");;
-//}
+function SubmitForm(buttonID) {
+   
+    if (buttonID == "neighbourhoodssubmitButton") {
+        if (selectedN.length == 0) {
+            alert('Please select Neighbourhood');
+            return false;
+        } else {
+            return true;
+        }
+
+    } else if (buttonID == "schoolsubmitButton") {
+
+        if (selected.length == 0) {
+            alert('Please select School');
+            return false;
+        } else {
+            return true;
+        }
+
+
+    }
+}
 
 function Test(selected)
 {

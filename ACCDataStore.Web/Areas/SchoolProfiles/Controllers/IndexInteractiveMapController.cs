@@ -1,4 +1,6 @@
-﻿using ACCDataStore.Repository;
+﻿using ACCDataStore.Helpers.ORM;
+using ACCDataStore.Helpers.ORM.Helpers.Security;
+using ACCDataStore.Repository;
 using Common.Logging;
 using System;
 using System.Collections.Generic;
@@ -16,6 +18,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
 
         private IndexInteractiveMapController vmIndexAberdeenCityProfilesModel;
 
+        [AdminAuthentication]
+        [Transactional]
 
         // GET: SchoolProfiles/IndexInteractiveMap
         public ActionResult Index()

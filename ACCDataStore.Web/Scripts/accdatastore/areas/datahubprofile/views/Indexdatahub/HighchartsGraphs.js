@@ -121,7 +121,7 @@ var hGraphs = {
             },
             yAxis: {
                 title: {
-                    text: 'Student percentage (%)'
+                    text: 'People percentage (%)'
                 },
                 plotLines: [{
                     value: 0,
@@ -189,7 +189,7 @@ var hGraphs = {
                 height: 400
             },
             title: {
-                text: 'Student Participation Overview'
+                text: 'People Participation Overview'
             },
             xAxis: {
                 type: 'category',
@@ -205,7 +205,7 @@ var hGraphs = {
                 min: 0,
                 max: 100,
                 title: {
-                    text: 'Student percentage (%)'
+                    text: 'People percentage (%)'
                 }
             },
             legend: {

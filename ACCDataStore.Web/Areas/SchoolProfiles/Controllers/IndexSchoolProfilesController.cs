@@ -12,6 +12,8 @@ using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using ACCDataStore.Entity.SchoolProfiles.Census;
+using ACCDataStore.Helpers.ORM.Helpers.Security;
+using ACCDataStore.Helpers.ORM;
 
 namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
 {
@@ -47,8 +49,9 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             return View("SchoolWebsites");
         }
 
-        
 
+        [AdminAuthentication]
+        [Transactional]
         public ActionResult IndexSecondaryProfiles(string sSchoolType)
         {
 
@@ -67,7 +70,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             Session["vmIndexSecondarySchoolProfilesModel"] = vmIndexSecondarySchoolProfilesModel;
             return View("IndexSecondarySchool", vmIndexSecondarySchoolProfilesModel);
         }
-
+        [AdminAuthentication]
+        [Transactional]
         public ActionResult IndexSpecialProfiles(string sSchoolType)
         {
 
