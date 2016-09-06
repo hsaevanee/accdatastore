@@ -16,8 +16,9 @@ $(document).ready(function () {
         numberDisplayed: 2,
         maxHeight: 200,
         onChange: function (element, checked) {
-            var selectedOptions = $('#selectedschoolcode option:selected');
+            var allOptions = $('.mutliselect-container');
 
+            var selectedOptions = $('#selectedschoolcode option:selected');
             if (selectedOptions.length >= 4) {
                 // Disable all other checkboxes.
                 var nonSelectedOptions = $('#selectedschoolcode option').filter(function () {
@@ -25,6 +26,7 @@ $(document).ready(function () {
                 });
 
                 nonSelectedOptions.each(function () {
+ 
                     var input = $('input[value="' + $(this).val() + '"]');
                     input.prop('disabled', true);
                     input.parent('li').addClass('disabled');
@@ -40,11 +42,12 @@ $(document).ready(function () {
             }
 
             selected = [];
+
             $(selectedOptions).each(function (index, option) {
                 selected.push([$(this).val(), $(this).text()]);
             });
 
-            console.log(selected);
+            //console.log(selectedOptions);
     }
     });
 

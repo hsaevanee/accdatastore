@@ -2,6 +2,8 @@
 using ACCDataStore.Entity.SchoolProfiles;
 using ACCDataStore.Entity.SchoolProfiles.Census;
 using ACCDataStore.Entity.SchoolProfiles.InCAS;
+using ACCDataStore.Helpers.ORM;
+using ACCDataStore.Helpers.ORM.Helpers.Security;
 using ACCDataStore.Repository;
 using ACCDataStore.Web.Areas.SchoolProfiles.ViewModels.SchoolProfiles;
 using Common.Logging;
@@ -28,7 +30,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             this.vmIndexPrimarySchoolProfilesModel = new IndexPrimarySchoolProfilesViewModel();
 
         }
-
+        [AdminAuthentication]
+        [Transactional]
         public ActionResult IndexPrimaryProfiles(string sSchoolType)
         {
             //get data ready for set up profiles

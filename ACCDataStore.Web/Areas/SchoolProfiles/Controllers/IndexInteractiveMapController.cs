@@ -1,4 +1,6 @@
-﻿using ACCDataStore.Repository;
+﻿using ACCDataStore.Helpers.ORM;
+using ACCDataStore.Helpers.ORM.Helpers.Security;
+using ACCDataStore.Repository;
 using Common.Logging;
 using System;
 using System.Collections.Generic;
@@ -18,6 +20,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
 
 
         // GET: SchoolProfiles/IndexInteractiveMap
+        [AdminAuthentication]
+        [Transactional]
         public ActionResult Index()
         {
             return View("MapIndex");

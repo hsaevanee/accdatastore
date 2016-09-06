@@ -1,0 +1,282 @@
+﻿@model ACCDataStore.Web.Areas.InsightProfile.ViewModels.BenchmarkMeasure.BenchmarkMeasureViewModel
+@section Header {
+    @*<link rel="stylesheet" href="~/Content/accdatastore/areas/nationality/views/nationality/nationality.css" type="text/css" />
+    <script src="~/Scripts/accdatastore/areas/insightprofile/views/benchmarkmeasure/IndexLeaver.js"></script>
+    <script type="text/javascript" src="http://code.highcharts.com/modules/exporting.js"></script>*@
+
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.css" type="text/css" />
+<script src="~/Scripts/jquery.js"></script>
+<!-- Bootstrap Multiselect Plugin -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<link href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/css/bootstrap.min.css"
+      rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
+<link href="http://cdn.rawgit.com/davidstutz/bootstrap-multiselect/master/dist/css/bootstrap-multiselect.css"
+      rel="stylesheet" type="text/css" />
+<script src="http://cdn.rawgit.com/davidstutz/bootstrap-multiselect/master/dist/js/bootstrap-multiselect.js"
+        type="text/javascript"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/highcharts.js"></script>
+@*<script type="text/javascript" src="http://code.highcharts.com/modules/exporting.js"></script>*@
+<script src="~/Scripts/accdatastore/areas/insightprofile/views/benchmarkmeasure/IndexLeaver.js"></script>
+<script type="text/javascript" src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+}
+@{
+    ViewBag.Title = "Index";
+}
+
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="list-group">
+                    <a href="@Url.Action("IndexLeaverDestination", "BenchmarkMeasure", new { Area = "InsightProfile" }, null)" class="list-group-item">Data</a>
+                    <a href="@Url.Action("MapData", "BenchmarkMeasure", new { area = "InsightProfile" }, null)" class="list-group-item">Interactive Map</a>
+                </div>
+            </div>
+
+
+            <div class="col-md-10">
+                <h2>National Benchmarking Measure: Leaver Initial Destination</h2>
+                <div class="panel panel-primary text-center">
+                    <div class="panel-heading">
+                        <h4 class="panel-title" style="text-align: center"> Please Select Criteria</h4>
+                    </div>
+                    <div class="panel-body">
+
+                        @using (Html.BeginForm("GetIndexLeaverDestination", "BenchmarkMeasure", FormMethod.Post, new { area = "InsightProfile", model = @Model }))
+                        {
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-left">School Name</td>
+                                        <td colspan="3" class="text-left">@Html.DropDownListFor(m => m.selectedschoolcode, new SelectList(Model.ListSchoolNameData, "seedcode", "name"))</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="text-left">Gender</td>
+
+                                    @for (int i = 0; i < Model.ListGenderData.Count(); i++)
+                                    {
+                                            <td>
+                                                @Html.CheckBoxFor(m => m.ListGenderData[i].isSelected, new { id = "gender_" + i })
+                                                @Html.HiddenFor(m => m.ListGenderData[i].gendercode)
+                                                @Html.DisplayFor(m => m.ListGenderData[i].name)
+                                            </td>
+
+                                    }
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p><button id="buttonGetData" type="submit" class="btn btn-primary">Get Data!</button></p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+@if (Model.ListLeaverDestinationData != null)
+{
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary text-center">
+                <div class="panel-heading">
+                    <h4 class="panel-title">@Model.selectedschoolcode</h4>
+                    <h4 class="panel-title">% of Schools Leavers in a Positive Destination</h4>
+                </div>
+                <div class="panel-body">
+                    <form id="LeaverDestinationData">
+                        <table id="datatable" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th class="text-center">Academic Year</th>
+                                    @foreach (var gender in Model.ListGenderData)
+                                    {
+                                        if (gender.isSelected)
+                                        {
+                                            <th class="text-center">@gender.name</th>
+                                        }
+                                    }
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (var item in Model.ListLeaverDestinationData)
+                                {
+                                    <tr>
+                                        <td class="text-center">@item.centrename</td>
+                                        <td class="text-center">@item.academicyear</td>
+
+                                        @foreach (var selection in Model.ListGenderData)
+                                        {
+                                            if (selection.gendercode == 2 && selection.isSelected)
+                                            {
+                                                <td class="text-center">@String.Format("{0:#,0.00}", @item.PercentageFeMale)</td>
+                                            }
+                                            if (selection.gendercode == 1 && selection.isSelected)
+                                            {
+                                                <td class="text-center">@String.Format("{0:#,0.00}", @item.PercentageMale)</td>
+
+                                            }
+                                            if (selection.gendercode == 0 && selection.isSelected)
+                                            {
+                                                <td class="text-center">@String.Format("{0:#,0.00}", @item.PercentageAll)</td>
+
+                                            }
+                                        }
+
+                                    </tr>
+                                }
+                                @*<tr><td><button id="1" onclick='myChartFunction(this.id, "BarChart")'><label>Bar Chart</label></button></td></tr>
+                                <tr><td><button id="2" onclick='myChartFunction(this.id, "ColumnChart")'><label>Column Chart</label></button></td></tr>
+                                <tr><td>@Html.ActionLink("Export Excel", "ExportExcel", "BenchmarkMeasure", new { Area = "InsightProfile", sSchoolName = "" }, null)</td></tr>
+                                <tr><td>@Html.ActionLink("Interactive Map", "MapData", "BenchmarkMeasure", new { Area = "InsightProfile", sSchoolName = "" }, null)</td></tr>*@
+
+                            </tbody>
+                        </table>
+                        <ul class="list-inline">
+                            <li>
+                                <button id="1" class="btn btn-primary" onclick='myChartFunction(this.id, "BarChart")'><label>Bar Chart</label></button>
+                            </li>
+                            <li>
+                                <button id="2"  class="btn btn-primary" onclick='myChartFunction(this.id, "ColumnChart")'><label>Column Chart</label></button>
+                            </li>
+                            <li>
+                                @Html.ActionLink("Export Excel", "ExportExcel", "BenchmarkMeasure", new { Area = "InsightProfile", sSchoolName = "" }, null)
+                            </li>
+                        </ul>
+
+                        <script type="text/javascript">
+                            // Put your javascript code here
+                            $('#datatable').DataTable({
+                                paging: false
+                            });
+                        </script>
+                        <br />
+                        <div id="divChartContainer"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+    </div>
+</body>
+
+                    @*<div id="main">
+                @*<h2>National Benchmarking Measure: Leaver Initial Destination</h2>
+
+                    <h3>@Html.ActionLink("Interactive Map", "MapData", "BenchmarkMeasure", new { Area = "InsightProfile", sSchoolName = "" }, null)</h3>
+                    @using (Html.BeginForm("GetIndexLeaverDestination", "BenchmarkMeasure",FormMethod.Post, new { area = "InsightProfile" , model = @Model}))
+                    {
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th colspan="2">Please Select Criteria</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td width="200">School Name</td>
+                                    <td>@Html.DropDownListFor(m => m.selectedschoolcode, new SelectList(Model.ListSchoolNameData, "seedcode", "name"))</td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Gender</td>
+                                </tr>
+
+                    @* Display Gender 
+                @for (int i = 0; i < Model.ListGenderData.Count(); i++)
+                    {
+                        <tr>
+                            <td></td>
+                            <td>
+                                @Html.CheckBoxFor(m => m.ListGenderData[i].isSelected, new { id = "gender_" + i })
+                                @Html.HiddenFor(m => m.ListGenderData[i].gendercode)
+                                @Html.DisplayFor(m => m.ListGenderData[i].name)
+                            </td>
+                        </tr>
+                    }
+                                <tr>
+                                    <td colspan="2">
+                                        <button id="buttonGetData" type="submit">
+                                            Get Data
+                                        </button>
+                                    </td>
+                                </tr>
+                                @*<tr><td colspan="2"><button onclick='Getdestinationbreakdown()'><label>Get Destination Breakdown</label></button></td></tr>*@
+                @*</tbody>
+                            </table>
+                        }
+
+                    <br />
+                    @if (Model.ListLeaverDestinationData!=null) {
+                        <h2 style="text-align: center">@Model.selectedschoolcode</h2>
+                        <h2 style="text-align: center">% of Schools Leavers in a Positive Destination</h2>
+                        <br />
+                        <form id="LeaverDestinationData">
+                            <table id="datatable" class="display">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Academic Year</th>
+                                        @foreach (var gender in Model.ListGenderData)
+                                            {
+                                                if (gender.isSelected) {
+                                                    <th>@gender.name</th>
+                                                }
+                                            }
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach (var item in Model.ListLeaverDestinationData)
+                                    {
+                                        <tr>
+                                            <td align="left">@item.centrename</td>
+                                            <td align="center">@item.academicyear</td>
+
+                                            @foreach (var selection in Model.ListGenderData)
+                                            {
+                                                if (selection.gendercode == 2 && selection.isSelected)
+                                                {
+                                                    <td align="center">@String.Format("{0:#,0.00}", @item.PercentageFeMale)</td>
+                                                }
+                                                if (selection.gendercode == 1 && selection.isSelected)
+                                                {
+                                                    <td align="center">@String.Format("{0:#,0.00}", @item.PercentageMale)</td>
+
+                                                }
+                                                if (selection.gendercode == 0 && selection.isSelected)
+                                                {
+                                                    <td align="center">@String.Format("{0:#,0.00}", @item.PercentageAll)</td>
+
+                                                }
+                                            }
+
+                                        </tr>
+                                    }
+                                    <tr><td><button id="1" onclick='myChartFunction(this.id, "BarChart")'><label>Bar Chart</label></button></td></tr>
+                                    <tr><td><button id="2" onclick='myChartFunction(this.id, "ColumnChart")'><label>Column Chart</label></button></td></tr>
+                                    <tr><td>@Html.ActionLink("Export Excel", "ExportExcel", "BenchmarkMeasure", new { Area = "InsightProfile", sSchoolName = "" }, null)</td></tr>
+                                    <tr><td>@Html.ActionLink("Interactive Map", "MapData", "BenchmarkMeasure", new { Area = "InsightProfile", sSchoolName = "" }, null)</td></tr>
+
+                                </tbody>
+                          </table>
+                            <script type="text/javascript">
+                                // Put your javascript code here
+                                $('#datatable').DataTable({
+                                    paging: false
+                                });
+                            </script>
+                            <br />
+                            <div id="divChartContainer"></div>
+                        </form>
+
+                    }*@

@@ -113,7 +113,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             CurrentCouncil currentCouncil = Session["CurrentCouncil"] as CurrentCouncil;
             if (name == null)
             {
-                if (currentCouncil.name == null)
+                if (currentCouncil == null || currentCouncil.name == null)
                 {
                     return RedirectToAction("ScotlandIndex");
                 }
@@ -125,7 +125,8 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             }
             IList<School> allCouncils = GetListCouncilname();
             Session["Council"] = name;
-
+            IList<School> allSchoolList = Helper2.ByName(name).GetSchoolsList();
+            IList<School> allNeighbourhoodList = Helper2.ByName(name).GetIntermediateZonesList();
             //Declare variables we are going to use
             SummaryDataViewModel councilData = null;
             IList<SummaryDataViewModel> councilSchoolsData = null;
@@ -133,31 +134,24 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             List<PosNegSchoolList> tableSummaryIMDatazoneData = new List<PosNegSchoolList>();
 
             // To hold our current selection [city,month,year]
-            ViewModelParams pageViewModelParams = new ViewModelParams();
+            ViewModelParams pageViewModelParams = new ViewModelParams(new List<string>(), new List<string>(), name);
             if (Request["selectedschoolcode"] != null)
             {
                 pageViewModelParams.school = Request["selectedschoolcode"].Split(',').ToList<string>();
             }
-            else
-            {
-                pageViewModelParams.school = new List<string>();
-            }
+
             if (Request["selectedneighbourhoods"] != null)
             {
                 pageViewModelParams.neighbourhood = Request["selectedneighbourhoods"].Split(',').ToList<string>();
             }
-            else
-            {
-                pageViewModelParams.neighbourhood = new List<string>();
-            }
-            pageViewModelParams.councilName = name;
             Session["ViewModelParams"] = pageViewModelParams;
-
+            //pageViewModelParams.school = pageViewModelParams.school.Select(x => allSchoolList.Where(z => z.seedcode.Equals(x)).SingleOrDefault().name).ToList();
+            //pageViewModelParams.neighbourhood = pageViewModelParams.neighbourhood.Select(x => allNeighbourhoodList.Where(z => z.seedcode.Equals(x)).SingleOrDefault().name).ToList();
 
             //This is the container for all of the data we are going to send to the page (our view model)
             DatahubViewModel viewModel = new DatahubViewModel();
             viewModel.selectedcouncil = name;
-
+            viewModel.selectionParams = new ViewModelParams(pageViewModelParams.school.Select(x => allSchoolList.Where(z => z.seedcode.Equals(x)).SingleOrDefault().name).ToList(), pageViewModelParams.neighbourhood.Select(x => allNeighbourhoodList.Where(z => z.seedcode.Equals(x)).SingleOrDefault().name).ToList(), name);
             // Check if city name is valid [should also do other types of validation such as period validation]
             if(!Helper2.ValidateCouncilName(name)) {
                 var currentSession = Session["ViewModelParams"] as ViewModelParams;

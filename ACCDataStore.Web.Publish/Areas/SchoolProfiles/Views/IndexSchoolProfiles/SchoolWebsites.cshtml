@@ -1,0 +1,159 @@
+﻿ 
+@section Header {
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/highcharts.js"></script>   
+}
+@{
+    //SchoolProfile
+    ViewBag.Title = "School Websites";
+}
+
+<body>
+    <div class="container">
+    <div class="row">
+        @*<div class="col-md-3">
+            <a href="portfolio-item.html">
+                <img class="img-responsive img-hover" src="@Url.Content("~/Images/schoolprofile.png")" alt="">
+            </a>
+        </div>*@
+        <div class="col-md-12">
+            <h2>School Websites</h2>
+            <p>
+                <ul>
+                    <li>
+                        <a href="http://abbotswell.aberdeen.sch.uk/">Abbotswell School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.airyhall.aberdeen.sch.uk">Airyhall Primary School</a>
+                    </li>
+                    <li>
+                        <a href="http://ashleyroad.aberdeen.sch.uk/">Ashley Road School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.braehead.aberdeen.sch.uk/">Braehead Primary School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.bramblebrae.aberdeen.sch.uk/">Bramble Brae School</a>
+                    </li>
+                    <li>
+                        <a href="http://brimmond.aberdeen.sch.uk">Brimmond School</a>
+                    </li>
+                    <li>
+                        <a href="http://broomhill.aberdeen.sch.uk/">Broomhill School</a>
+                    </li>
+                    <li>
+                        <a href="http://charleston.aberdeen.sch.uk/">Charleston School</a>
+                    </li>
+                    <li>
+                        <a href="http://cornhill.aberdeen.sch.uk/">Cornhill Primary School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.culter.aberdeen.sch.uk">Culter School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.cultsprimary.aberdeen.sch.uk/">Cults Primary School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.danestone.aberdeen.sch.uk">Danestone Primary School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.dyce.aberdeen.sch.uk">Dyce School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.fernielea.aberdeen.sch.uk">Fernielea School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.ferryhill.aberdeen.sch.uk/">Ferryhill School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.forehill.aberdeen.sch.uk/">Forehill Primary School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.gilcomstoun.aberdeen.sch.uk/">Gilcomstoun School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.glashieburn.aberdeen.sch.uk">Glashieburn School</a>
+                    <li>
+                        <a href="http://www.greenbrae.aberdeen.sch.uk/">Greenbrae School</a>
+                    </li>
+                    <li>
+                        <a href="http://hanover.aberdeen.sch.uk/">Hanover Street School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.hazlehead-ps.aberdeen.sch.uk">Hazlehead Primary School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.heathryburn.aberdeen.sch.uk">Heathryburn School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.holyfamilyrc.aberdeen.sch.uk">Holy Family RC School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.kaimhill.aberdeen.sch.uk/">Kaimhill School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.kingsford.ik.org">Kingsford School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.kingswells.aberdeen.sch.uk">Kingswells School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.loirston.aberdeen.sch.uk">Loirston School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.manorpark.aberdeen.sch.uk/index.html">Manor Park School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.middletonpark.aberdeen.sch.uk/">Middletonpark School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.mileend.aberdeen.sch.uk">Mile End School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.milltimber.aberdeen.sch.uk">Milltimber School</a>
+                    </li>
+                    <li>
+                        <a href="http://muirfield.aberdeen.sch.uk/">Muirfield School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.quarryhill.aberdeen.sch.uk/">Quarryhill School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.riverbank.aberdeen.sch.uk/">Riverbank School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.scotstown.aberdeen.sch.uk/">Scotstown Primary School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.skenesquare.aberdeen.sch.uk/">Skene Square School</a>
+                    </li>
+                    <li>
+                        <a href="http://stjosephsprimary.aberdeen.sch.uk/">St Joseph's RC Primary School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.st-peters.aberdeen.sch.uk/">Saint Peter's School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.stoneywood.aberdeen.sch.uk/">Stoneywood School</a>
+                    </li>
+                    <li>
+                        <a href="http://sunnybank.aberdeen.sch.uk/">Sunnybank School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.tullosprimary.aberdeen.sch.uk/">Tullos Primary School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.walkerroad.aberdeen.sch.uk/">Walker Road School</a>
+                    </li>
+                    <li>
+                        <a href="http://www.westpark.aberdeen.sch.uk">Westpark School</a>
+                    </li>
+                    <li>
+                        <a href="http://woodside.aberdeen.sch.uk/">Woodside School</a>
+                    </li>
+                </ul>
+            </p>
+        </div>
+    </div>
+    </div> <!--container-->
+</body>
