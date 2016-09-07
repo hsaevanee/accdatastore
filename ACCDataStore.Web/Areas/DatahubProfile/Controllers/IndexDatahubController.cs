@@ -151,6 +151,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             //This is the container for all of the data we are going to send to the page (our view model)
             DatahubViewModel viewModel = new DatahubViewModel();
             viewModel.selectedcouncil = name;
+            viewModel.selectionParamsRaw = pageViewModelParams;
             viewModel.selectionParams = new ViewModelParams(pageViewModelParams.school.Select(x => allSchoolList.Where(z => z.seedcode.Equals(x)).SingleOrDefault().name).ToList(), pageViewModelParams.neighbourhood.Select(x => allNeighbourhoodList.Where(z => z.seedcode.Equals(x)).SingleOrDefault().name).ToList(), name);
             // Check if city name is valid [should also do other types of validation such as period validation]
             if(!Helper2.ValidateCouncilName(name)) {
@@ -359,84 +360,41 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             IList<School> listOfAllSchools = Helper2.ByName(selectionParams.councilName).GetSchoolsList();
             IList<School> listOfAllNeighbourhoods = Helper2.ByName(selectionParams.councilName).GetIntermediateZonesList();
             List<HistogramSeriesData> allseriesoutput = new List<HistogramSeriesData>();
+            string[] monthname = new string[12] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+            string seriesName = selectionParams.councilName;
+             
             //SummaryDataViewModel currentSchool = Session["chartSelectedSchool"] as SummaryDataViewModel;
             //SummaryDataViewModel currentIntZone = Session["chartSelectedNeighbour"] as SummaryDataViewModel;
-            int numberofseries = 1;
-            if (selectionParams == null)
-            {
-                selectionParams = new ViewModelParams();
-            }
-            if (selectionParams.school != null)
-            {
-                numberofseries += selectionParams.school.Count;
-            }
-            if (selectionParams.neighbourhood != null)
-            {
-                numberofseries += selectionParams.neighbourhood.Count;
-            }
-            for (int j = 0; j < numberofseries; j++)
-            {
-                List<SummaryDataViewModel> allMonths = new List<SummaryDataViewModel>();
-                string seriesName = selectionParams.councilName;
-                string currentSchool = null;
-                string currentIntZone = null;
-                string[] monthname = new string[12] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-                int indexofmonths = Array.IndexOf(monthname, DateTime.Now.ToString("MMM"));
-                indexofmonths = 7; // <-- Because we only have data up to August 2016
-                int year = int.Parse(DateTime.Now.ToString("yyyy")) - 1;
-                if (selectionParams.school != null && selectionParams.school.Count > 0 && j > 0)
-                {
-                    currentSchool = selectionParams.school[j - 1];
-                }
-                if (selectionParams.neighbourhood != null && selectionParams.neighbourhood.Count > 0 && j > 0)
-                {
-                    currentIntZone = selectionParams.neighbourhood[j - 1];
-                }
-                for (int i = 0; i < 12; i++)
-                {
-                    SummaryDataViewModel comparison = null;
-                    indexofmonths++;
-                    if (indexofmonths > 11)
-                    {
-                        indexofmonths = 0;
-                        year++;
-                    }
-                    
-                    if (selectionParams.school != null && selectionParams.school.Count > 0 && j > 0)
-                    {
-                        comparison = Helper2.ByName(selectionParams.councilName).GetSummaryDataForSingleSchool(currentSchool, indexofmonths + 1, year);
-                        //comparison = comparison.Where(x => !String.IsNullOrWhiteSpace(x.SEED_Code)).Where(x => x.SEED_Code.Equals(schoolSelection.seedcode)).ToList<DatahubDataObj>();
-                    }
-                    if (selectionParams.neighbourhood != null && selectionParams.neighbourhood.Count > 0 && j > 0)
-                    {
-                        comparison = Helper2.ByName(selectionParams.councilName).GetSummaryDataForSingleIntermediateZone(currentIntZone, indexofmonths + 1, year);
-                    }
-                    if (comparison == null)
-                    {
-                        comparison = Helper2.ByName(selectionParams.councilName).GetSummaryDataForCouncil(indexofmonths + 1, year);
-                    }
 
-                    allMonths.Add(comparison);
-                }
-                if (selectionParams.school != null && selectionParams.school.Count > 0 && j > 0)
+            //For Council
+
+            List<SummaryDataViewModel> allMonths = new List<SummaryDataViewModel>();
+            int indexofmonths = Array.IndexOf(monthname, DateTime.Now.ToString("MMM"));
+            indexofmonths = 7; // <-- Because we only have data up to August 2016
+            int year = int.Parse(DateTime.Now.ToString("yyyy")) - 1;
+            for (int i = 0; i < 12; i++)
+            {
+                SummaryDataViewModel comparison = null;
+                indexofmonths++;
+                if (indexofmonths > 11)
                 {
-                    seriesName = listOfAllSchools.Where(x => x.seedcode.Equals(currentSchool)).SingleOrDefault().name;
+                    indexofmonths = 0;
+                    year++;
                 }
-                if (selectionParams.neighbourhood != null && selectionParams.neighbourhood.Count > 0 && j > 0)
+                comparison = Helper2.ByName(selectionParams.councilName).GetSummaryDataForCouncil(indexofmonths + 1, year);
+                allMonths.Add(comparison);
+            }
+            HistogramSeriesData jsonOut = new HistogramSeriesData();
+            jsonOut.months = new List<string>();
+            jsonOut.participating = new List<double>();
+            jsonOut.notParticipating = new List<double>();
+            jsonOut.unknown = new List<double>();
+            jsonOut.name = seriesName;
+            foreach (SummaryDataViewModel month in allMonths)
+            {
+                //Get date
+                if (month != null)
                 {
-                    seriesName = listOfAllNeighbourhoods.Where(x => x.seedcode.Equals(currentIntZone)).SingleOrDefault().name;
-                }
-                HistogramSeriesData jsonOut = new HistogramSeriesData();
-                jsonOut.months = new List<string>();
-                jsonOut.participating = new List<double>();
-                jsonOut.notParticipating = new List<double>();
-                jsonOut.unknown = new List<double>();
-                jsonOut.name = seriesName;
-                foreach (SummaryDataViewModel month in allMonths)
-                {
-                    //Get date
-                    if (month != null)
-                    {
                     string currYear = month.dataYear.ToString();
                     int m = month.dataMonth;
                     string currMonthName = monthname[m - 1];
@@ -447,8 +405,74 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                     jsonOut.notParticipating.Add(month == null ? -1.00 : Math.Round((double)month.NotParticipating(), 2));
                     jsonOut.unknown.Add(month == null ? -1.00 : Math.Round((double)month.Percentage(month.allPupilsInUnknown), 2));
                 }
+            }
+            allseriesoutput.Add(jsonOut);
+
+            //For selected schools and neighbourhoods
+
+            foreach (var prop in selectionParams.GetType().GetProperties())
+            {
+                if (prop.Name != "councilName")
+                {
+                    foreach (string currentSeries in (List<string>)prop.GetValue(selectionParams))
+                    {
+                        allMonths = new List<SummaryDataViewModel>();
+                        indexofmonths = Array.IndexOf(monthname, DateTime.Now.ToString("MMM"));
+                        indexofmonths = 7; // <-- Because we only have data up to August 2016
+                        year = int.Parse(DateTime.Now.ToString("yyyy")) - 1;
+                        for (int i = 0; i < 12; i++)
+                        {
+                            SummaryDataViewModel comparison = null;
+                            indexofmonths++;
+                            if (indexofmonths > 11)
+                            {
+                                indexofmonths = 0;
+                                year++;
+                            }
+                            if (prop.Name == "school")
+                            {
+                                comparison = Helper2.ByName(selectionParams.councilName).GetSummaryDataForSingleSchool(currentSeries, indexofmonths + 1, year);
+                                //comparison = comparison.Where(x => !String.IsNullOrWhiteSpace(x.SEED_Code)).Where(x => x.SEED_Code.Equals(schoolSelection.seedcode)).ToList<DatahubDataObj>();
+                            }
+                            if (prop.Name == "neighbourhood")
+                            {
+                                comparison = Helper2.ByName(selectionParams.councilName).GetSummaryDataForSingleIntermediateZone(currentSeries, indexofmonths + 1, year);
+                            }
+                            allMonths.Add(comparison);
+                        }
+                        if (prop.Name == "school")
+                        {
+                            seriesName = listOfAllSchools.Where(x => x.seedcode.Equals(currentSeries)).SingleOrDefault().name;
+                        }
+                        if (prop.Name == "neighbourhood")
+                        {
+                            seriesName = listOfAllNeighbourhoods.Where(x => x.seedcode.Equals(currentSeries)).SingleOrDefault().name;
+                        }
+                        jsonOut = new HistogramSeriesData();
+                        jsonOut.months = new List<string>();
+                        jsonOut.participating = new List<double>();
+                        jsonOut.notParticipating = new List<double>();
+                        jsonOut.unknown = new List<double>();
+                        jsonOut.name = seriesName;
+                        foreach (SummaryDataViewModel month in allMonths)
+                        {
+                            //Get date
+                            if (month != null)
+                            {
+                                string currYear = month.dataYear.ToString();
+                                int m = month.dataMonth;
+                                string currMonthName = monthname[m - 1];
+                                string period = (currMonthName + "-" + currYear);
+
+                                jsonOut.months.Add(month == null ? "" : period);
+                                jsonOut.participating.Add(month == null ? -1.00 : Math.Round((double)month.Participating(), 2));
+                                jsonOut.notParticipating.Add(month == null ? -1.00 : Math.Round((double)month.NotParticipating(), 2));
+                                jsonOut.unknown.Add(month == null ? -1.00 : Math.Round((double)month.Percentage(month.allPupilsInUnknown), 2));
+                            }
+                        }
+                        allseriesoutput.Add(jsonOut);
+                    }
                 }
-                allseriesoutput.Add(jsonOut);
             }
             wrapper.chart = allseriesoutput;
             timer.Stop();

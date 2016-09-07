@@ -117,6 +117,13 @@ $(document).ready(function () {
     //if (selected_school != null && selected_school != "") { FunctiongetDetail(selected_school, "school"); };
     //if (selected_neighbourhood != null && selected_neighbourhood != "") { FunctiongetDetail(selected_neighbourhood, "neighbourhood"); };
     //FunctiongetDetail("asd", "school");
+
+    $('#selectedschoolcode').multiselect('select', selectionParams.school);
+    $('#selectedschoolcode').multiselect('refresh');
+
+    $('#selectedneighbourhoods').multiselect('select', selectionParams.neighbourhood);
+    $('#selectedneighbourhoods').multiselect('refresh');
+
 });
 
 function goToCreateURL(object) {

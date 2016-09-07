@@ -39,5 +39,6 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.ViewModels.Datahub
         public IEnumerable<SelectListItem> AvailableCouncis { get; set; }
         public IList<SummaryDataViewModel> ListSelectionData { get; set; }
         public ViewModelParams selectionParams { get; set; }
+        public ViewModelParams selectionParamsRaw { get; set; }
     }
 }

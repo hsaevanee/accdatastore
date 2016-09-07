@@ -32,6 +32,9 @@
     <script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/ComparisonsIndex.js"></script>
 <script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/IndexdatahubProfile.js"></script>
 <script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/HighchartsGraphsNew.js"></script>
+<script>
+    var selectionParams = @Html.Raw(Json.Encode(Model.selectionParamsRaw))
+</script>
 }
  
 @{

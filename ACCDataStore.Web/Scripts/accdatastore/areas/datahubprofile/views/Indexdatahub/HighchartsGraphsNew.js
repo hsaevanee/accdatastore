@@ -80,7 +80,6 @@ var hGraphs = {
         }
         series.push({ name: hGraphs.cache.allSchoolComparison.councilAverage.name + ' Average', type: 'line', xAxis: 0, data: line });
         if (series.length > 0) {
-            console.log(series);
             hGraphs.drawBarLine("#index-all-school-comparison-chart", series, [type], axis);
         }
         //document.getElementById('beckmark-all-school-bar-ajax').innerHTML = Date.now() - hGraphs.benchmark.allSchoolComparison;
@@ -188,7 +187,8 @@ var hGraphs = {
             plotOptions: {
                 line: {
                     dataLabels: {
-                        enabled: true
+                        enabled: true,
+                        format: '{point.y:.1f}%'
                     },
                     enableMouseTracking: false
                 }
