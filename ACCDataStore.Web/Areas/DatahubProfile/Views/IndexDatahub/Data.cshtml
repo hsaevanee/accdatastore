@@ -44,6 +44,24 @@
 <body>
     <div class="container">
             <!-- Content Row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary text-center">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">About</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>
+                            This data represents the percentage of people that achieve positive
+                            destinations in terms of their career goals. You can select a specific
+                            location or school to view the data, or you can see the overall city statistics.
+                            You can also view data related to any particular person by name.
+                            Clicking either of the items in graph legends will turn that series of data on and off.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     <div class="row">
         <div class="col-md-6">
             <div class="panel panel-primary text-center">
@@ -111,29 +129,8 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-primary text-center">
-                <div class="panel-heading">
-                    <h3 class="panel-title">About</h3>
-                </div>
-                <div class="panel-body">
-                    <p>
-                        This data represents the percentage of people that achieve positive
-                        destinations in term of their career goals. You can select a specific
-                        location or school to view the data, or you can see the over city stastistics.
-                        You can also view data related to any particular person by name.
-                        Clicking either of the items in graph legends will turn that series of data on and off.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-        <div style="border-top: solid lightgrey 1px; margin: 50px 0px 50px 0px">
-            <h2 style="margin: 30px 0px 60px 0px">
+         <div style="border-top: solid lightgrey 1px; margin: 20px 0px 50px 0px">
+            <h2 style="margin: 30px 0px 30px 0px">
                 @for (int i = 0; i < Model.selectionParams.school.Count; i++)
                 {
                     @Model.selectionParams.school[i];
@@ -398,8 +395,8 @@
 
     </div>
 
-        <div style="margin: 50px 0px 50px 0px; border-top: solid lightgrey 1px">
-            <h2 style="margin: 30px 0px 60px 0px">
+        <div style="margin: 20px 0px 20px 0px; border-top: solid lightgrey 1px">
+            <h2 style="margin: 30px 0px 30px 0px">
                 @if (Model.selectionParams.school.Count > 0 || Model.selectionParams.neighbourhood.Count > 0)
                 {
                     @Model.selectionParams.councilName; 
@@ -424,10 +421,10 @@
                                                 School Name
                                             </th>
                                             <th class="text-center">
-                                                % Participating
+                                                % Positive Destinations
                                             </th>
                                             <th class="text-center">
-                                                % Non-Participating
+                                                % Non-Positive Destinations
                                             </th>
                                             <th class="text-center">
                                                 % Unknown
@@ -458,8 +455,8 @@
                             </div>
                         </div>
                         <div>
-                            <button onclick="hGraphs.switchAllSchoolComparison('participating')">Participating</button>
-                            <button onclick="hGraphs.switchAllSchoolComparison('notParticipating')">Not Participating</button>
+                            <button onclick="hGraphs.switchAllSchoolComparison('participating')">Positive Destinations</button>
+                            <button onclick="hGraphs.switchAllSchoolComparison('notParticipating')">Non-Positive Destinations</button>
                             <button onclick="hGraphs.switchAllSchoolComparison('unknown')">Unknown</button>
                         </div>
                         <div id="index-all-school-comparison-chart"></div>
@@ -484,10 +481,10 @@
                                                 Neighbourhood Name
                                             </th>
                                             <th class="text-center">
-                                                % Participating
+                                                % Positive Destinations
                                             </th>
                                             <th class="text-center">
-                                                % Non-Participating
+                                                % Non-Positive Destinations
                                             </th>
                                             <th class="text-center">
                                                 % Unknown
@@ -518,8 +515,8 @@
                             </div>
                         </div>
                         <div>
-                            <button onclick="hGraphs.switchAllIMDatazoneComparison('participating')">Participating</button>
-                            <button onclick="hGraphs.switchAllIMDatazoneComparison('notParticipating')">Not Participating</button>
+                            <button onclick="hGraphs.switchAllIMDatazoneComparison('participating')">Positive Destinations</button>
+                            <button onclick="hGraphs.switchAllIMDatazoneComparison('notParticipating')">Non-Positive Destinations</button>
                             <button onclick="hGraphs.switchAllIMDatazoneComparison('unknown')">Unknown</button>
                         </div>
                         <div id="index-all-IMDatazone-comparison-chart"></div>
