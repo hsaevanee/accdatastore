@@ -68,13 +68,14 @@ var hGraphs = {
                 series.push({ name: hGraphs.cache.allSchoolComparison.data[i].name, type: 'column', xAxis: 1, data: [] });
                 for (var key in hGraphs.cache.allSchoolComparison.data[i]) {
                     if (key == type) {
-                        series[i].data.push(hGraphs.cache.allSchoolComparison.data[i][key]);
+                        series[i].data.push(Math.round(hGraphs.cache.allSchoolComparison.data[i][key]*100)/100);
                     }
                 }
             }
         }
+        
         for (var i = 0; i < lineLength; i++) {
-            line.push(hGraphs.cache.allSchoolComparison.councilAverage[type]);
+            line.push(Math.round(hGraphs.cache.allSchoolComparison.councilAverage[type]*100)/100);
             axis.push(i.toString());
         }
         series.push({ name: hGraphs.cache.allSchoolComparison.councilAverage.name + ' Average', type: 'line', xAxis: 0, data: line });
@@ -268,7 +269,7 @@ var hGraphs = {
                 borderWidth: 0
             },
             tooltip: {
-                pointFormat: "Number of students: <b>{point.y:.1f}</b>"
+                pointFormat: "People: <b>{point.y:.1f}%</b>"
             },
             series: data,
             dataLabels: {
@@ -323,7 +324,8 @@ var hGraphs = {
                 }
             }],
             tooltip: {
-                shared: true
+                shared: false,
+                pointFormat: "People: <b>{point.y:.1f}%</b>"
             },
             legend: {
                 layout: 'vertical',

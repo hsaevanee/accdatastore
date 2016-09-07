@@ -139,7 +139,16 @@
                     <li>
                         <h1 class="page-header">
                             Data Hub Statistics:
-                            <small>City Wide</small>
+                            <small>@{ string Council = Session["Council"] as string;
+                                      if (Council != null)
+                                      {
+                                        <span>@Council</span>
+                                      }
+                                      else
+                                      {
+                                          <span>Scotland</span>
+                                      }
+                                       }Wide</small>
                         </h1>
                     </li>
                     <li class="text-right">

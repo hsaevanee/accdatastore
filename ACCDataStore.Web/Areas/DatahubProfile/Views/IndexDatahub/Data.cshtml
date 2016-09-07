@@ -127,124 +127,7 @@
         </div>
     </div>
 
-    <div style="margin: 50px 0px 50px 0px; border-top: solid lightgrey 1px">
-        <h2 style="margin: 30px 0px 60px 0px">@Model.selectionParams.councilName Data</h2>
-        <!--Schools Overview-->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-primary text-center">
-                <div class="panel-heading">
-                    <h3 class="panel-title">@Model.selectedcouncil Schools Overview</h3>
-                </div>
-                <div class="panel-body">
-                    <div class="table-responsive">
-                        <table id="summaryDatatable" class="table table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th class="text-left">
-                                        School Name
-                                    </th>
-                                    <th class="text-center">
-                                        % Participating
-                                    </th>
-                                    <th class="text-center">
-                                        % Non-Participating
-                                    </th>
-                                    <th class="text-center">
-                                        % Unknown
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var School in Model.summaryTableData)
-                                {
-                                    <tr>
-                                        <td class="text-left">
-                                            @School.name
-                                        </td>
-                                        <td class="text-center">
-                                            @String.Format("{0:#,0.00}", @School.participating)
-                                        </td>
-                                        <td class="text-center">
-                                            @String.Format("{0:#,0.00}", @School.notParticipating)
-                                        </td>
-                                        <td class="text-center">
-                                            @String.Format("{0:#,0.00}", @School.unknown)
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div>
-                    <button onclick="hGraphs.switchAllSchoolComparison('participating')">Participating</button>
-                    <button onclick="hGraphs.switchAllSchoolComparison('notParticipating')">Not Participating</button>
-                    <button onclick="hGraphs.switchAllSchoolComparison('unknown')">Unknown</button>
-                </div>
-                <div id="index-all-school-comparison-chart"></div>
-            </div>
-        </div>
-    </div>
-        <!--Neighbourhoods Overview-->
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-primary text-center">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">@Model.selectedcouncil Neighbourhoods Overview</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="table-responsive">
-                            <table id="summaryNeighbourhoodDatatable" class="table table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th class="text-left">
-                                            Neighbourhood Name
-                                        </th>
-                                        <th class="text-center">
-                                            % Participating
-                                        </th>
-                                        <th class="text-center">
-                                            % Non-Participating
-                                        </th>
-                                        <th class="text-center">
-                                            % Unknown
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var School in Model.summaryNeighboursTableData)
-                                    {
-                                        <tr>
-                                            <td class="text-left">
-                                                @School.name
-                                            </td>
-                                            <td class="text-center">
-                                                @String.Format("{0:#,0.00}", @School.participating)
-                                            </td>
-                                            <td class="text-center">
-                                                @String.Format("{0:#,0.00}", @School.notParticipating)
-                                            </td>
-                                            <td class="text-center">
-                                                @String.Format("{0:#,0.00}", @School.unknown)
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div>
-                        <button onclick="hGraphs.switchAllIMDatazoneComparison('participating')">Participating</button>
-                        <button onclick="hGraphs.switchAllIMDatazoneComparison('notParticipating')">Not Participating</button>
-                        <button onclick="hGraphs.switchAllIMDatazoneComparison('unknown')">Unknown</button>
-                    </div>
-                    <div id="index-all-IMDatazone-comparison-chart"></div>
-                </div>
-            </div>
-        </div>
-
-        </div>
+    
 
         <div style="border-top: solid lightgrey 1px; margin: 50px 0px 50px 0px">
             <h2 style="margin: 30px 0px 60px 0px">
@@ -272,7 +155,15 @@
                         <span> </span>
                     }
                 }
-                Data
+                @if (Model.selectionParams.neighbourhood.Count > 0 || Model.selectionParams.school.Count > 0)
+                {
+                    <span>Data</span>
+                }
+                else
+                {
+                     @Model.selectionParams.councilName;
+                    <span>Data</span>
+                }
             </h2>
     <div class="row">
         <div class="col-md-12">
@@ -498,6 +389,136 @@
             </div>
 
     </div>
+
+        <div style="margin: 50px 0px 50px 0px; border-top: solid lightgrey 1px">
+            <h2 style="margin: 30px 0px 60px 0px">
+                @if (Model.selectionParams.school.Count > 0 || Model.selectionParams.neighbourhood.Count > 0)
+                {
+                    @Model.selectionParams.councilName; 
+                    <span>Data</span>
+                }
+            
+            </h2>
+            <!--Schools Overview-->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">@Model.selectedcouncil Schools Overview</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table id="summaryDatatable" class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th class="text-left">
+                                                School Name
+                                            </th>
+                                            <th class="text-center">
+                                                % Participating
+                                            </th>
+                                            <th class="text-center">
+                                                % Non-Participating
+                                            </th>
+                                            <th class="text-center">
+                                                % Unknown
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var School in Model.summaryTableData)
+                                        {
+                                            <tr>
+                                                <td></td>
+                                                <td class="text-left">
+                                                    @School.name
+                                                </td>
+                                                <td class="text-center">
+                                                    @String.Format("{0:#,0.00}", @School.participating)
+                                                </td>
+                                                <td class="text-center">
+                                                    @String.Format("{0:#,0.00}", @School.notParticipating)
+                                                </td>
+                                                <td class="text-center">
+                                                    @String.Format("{0:#,0.00}", @School.unknown)
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div>
+                            <button onclick="hGraphs.switchAllSchoolComparison('participating')">Participating</button>
+                            <button onclick="hGraphs.switchAllSchoolComparison('notParticipating')">Not Participating</button>
+                            <button onclick="hGraphs.switchAllSchoolComparison('unknown')">Unknown</button>
+                        </div>
+                        <div id="index-all-school-comparison-chart"></div>
+                    </div>
+                </div>
+            </div>
+            <!--Neighbourhoods Overview-->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">@Model.selectedcouncil Neighbourhoods Overview</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table id="summaryNeighbourhoodDatatable" class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th class="text-left">
+                                                Neighbourhood Name
+                                            </th>
+                                            <th class="text-center">
+                                                % Participating
+                                            </th>
+                                            <th class="text-center">
+                                                % Non-Participating
+                                            </th>
+                                            <th class="text-center">
+                                                % Unknown
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var School in Model.summaryNeighboursTableData)
+                                        {
+                                            <tr>
+                                                <td></td>
+                                                <td class="text-left">
+                                                    @School.name
+                                                </td>
+                                                <td class="text-center">
+                                                    @String.Format("{0:#,0.00}", @School.participating)
+                                                </td>
+                                                <td class="text-center">
+                                                    @String.Format("{0:#,0.00}", @School.notParticipating)
+                                                </td>
+                                                <td class="text-center">
+                                                    @String.Format("{0:#,0.00}", @School.unknown)
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div>
+                            <button onclick="hGraphs.switchAllIMDatazoneComparison('participating')">Participating</button>
+                            <button onclick="hGraphs.switchAllIMDatazoneComparison('notParticipating')">Not Participating</button>
+                            <button onclick="hGraphs.switchAllIMDatazoneComparison('unknown')">Unknown</button>
+                        </div>
+                        <div id="index-all-IMDatazone-comparison-chart"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
 
     </div>
 

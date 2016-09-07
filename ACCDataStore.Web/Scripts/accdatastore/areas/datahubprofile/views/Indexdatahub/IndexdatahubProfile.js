@@ -1,8 +1,7 @@
 ﻿
 $(document).ready(function () {
   
-
-    $('#summaryDatatable').DataTable({
+    var table1 = $('#summaryDatatable').DataTable({
         dom: 'Bfrtip',
         "scrollY": "200px",
         "scrollCollapse": true,
@@ -26,12 +25,12 @@ $(document).ready(function () {
     });
 
 
-    $('#summaryNeighbourhoodDatatable').DataTable({
+    var table2 = $('#summaryNeighbourhoodDatatable').DataTable({
         dom: 'Bfrtip',
         "scrollY": "200px",
         "scrollCollapse": true,
         paging: false,
-        "order": [],
+        "order": [[1, 'asc']],
         buttons: {
             buttons: [
                 'copyHtml5', 'excelHtml5', 'csvHtml5', {
@@ -48,6 +47,19 @@ $(document).ready(function () {
             ]
         }
     });
+
+    table1.on('order.dt search.dt', function () {
+        table1.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+            cell.innerHTML = i + 1;
+        });
+    }).draw();
+
+    table2.on('order.dt search.dt', function () {
+        table2.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+            cell.innerHTML = i + 1;
+        });
+    }).draw();
+
 });
 
 function goToCreateURL(object) {
