@@ -75,6 +75,7 @@
                 <table class="table table-bordered" id="scotland-all-councils">
                     <thead>
                         <tr>
+                            <th>#</th>
                             <th class="text-center">Council</th>
                             <th class="text-center">Positive</th>
                             <th class="text-center">Non-Positive</th>
@@ -85,6 +86,7 @@
                         @foreach (var data in Model.allCouncilTable)
                         {
                             <tr>
+                                <td></td>
                                 <td>
                                     @if (data.name == "Aberdeen City" || data.name == "Glasgow City" || data.name == "Aberdeenshire")
                                     {
