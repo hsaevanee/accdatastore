@@ -242,7 +242,7 @@ var hGraphs = {
                 height: 400
             },
             title: {
-                text: 'People Participation Overview'
+                text: 'People Destination Overview'
             },
             xAxis: {
                 type: 'category',
@@ -268,7 +268,7 @@ var hGraphs = {
                 borderWidth: 0
             },
             tooltip: {
-                pointFormat: "Number of students: <b>{point.y:.1f}</b>"
+                pointFormat: "Number of People: <b>{point.y:.1f}</b>"
             },
             series: data,
             dataLabels: {
@@ -291,7 +291,7 @@ var hGraphs = {
                 zoomType: 'xy'
             },
             title: {
-                text: 'People Participation Overview'
+                text: 'People Destination Overview'
             },
             xAxis: [{
                 categories: axis2, 

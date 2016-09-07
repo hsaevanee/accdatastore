@@ -87,7 +87,7 @@ function loadDataTable() {
                         }
                     },
                     header: true,
-                    title: 'All Council Participation'
+                    title: 'All Council Destinations'
                 }, 'print',
             ]
         }
