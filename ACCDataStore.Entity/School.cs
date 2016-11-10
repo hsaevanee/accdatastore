@@ -11,6 +11,12 @@ namespace ACCDataStore.Entity
         public string seedcode { get; set; }
         public string name { get; set; }
         public string schooltype { get; set; }
+        public string hmie_report { get; set; }
+        public string website_link { get; set; }
+        public double costperpupil { get; set; }
+        public Nullable<DateTime> hmieLastReport { get; set; }
+        public int schoolCapacity { get; set; }
+
 
         public School() { }
 
@@ -27,5 +33,20 @@ namespace ACCDataStore.Entity
             this.name = name;
             this.schooltype = schooltype;
         }
+
+        public string getHimeReportDate() {
+
+            if (this.hmieLastReport.HasValue)
+            {
+                return this.hmieLastReport.Value.Day + "/" + this.hmieLastReport.Value.Month + "/" + this.hmieLastReport.Value.Year;
+            }
+            else { 
+            
+                return "N/A";
+            
+            }
+        
+        }
+
     }
 }

@@ -68,6 +68,7 @@
     <Compile Include="Mapping\MSAccess\SchoolProfiles\NationalIdentityMap.cs" />
     <Compile Include="SchoolProfiles\Census\AaeAttendanceObj.cs" />
     <Compile Include="SchoolProfiles\Census\ExclusionStudentObj.cs" />
+    <Compile Include="SchoolProfiles\Census\SchoolForecastObj.cs" />
     <Compile Include="SchoolProfiles\DataSeries.cs" />
     <Compile Include="SchoolProfiles\EnglishLevel.cs" />
     <Compile Include="SchoolProfiles\EthnicBackground.cs" />
@@ -96,6 +97,8 @@
     <Compile Include="SchoolProfiles\InCAS\InCASObj.cs" />
     <Compile Include="SchoolProfiles\Mapping\Census\AaaeAttendance2007Map.cs" />
     <Compile Include="SchoolProfiles\Mapping\Census\SchStudent2008Map.cs" />
+    <Compile Include="SchoolProfiles\Mapping\Census\SchoolRollForecastMap.cs" />
+    <Compile Include="SchoolProfiles\Mapping\Census\SchStudent2016Map.cs" />
     <Compile Include="SchoolProfiles\Mapping\InCAS\InCAS2015Map.cs" />
     <Compile Include="SchoolProfiles\Mapping\InCAS\InCAS2014Map.cs" />
     <Compile Include="SchoolProfiles\Mapping\InCAS\InCAS2013Map.cs" />

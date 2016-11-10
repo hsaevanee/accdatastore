@@ -15,5 +15,6 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.ViewModels.SchoolProfiles
         public List<Year> listYear { get; set; }
         public DataTable dataTableSchool { get; set; }
         public DataTable dataTableCity { get; set; }
+        public DataTable dataTable { get; set; }
     }
 }

@@ -18,10 +18,18 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+    @RenderSection("style", required: false)
     <link href="~/Content/bootstrap.min.css" rel="stylesheet">
     <script src="~/Scripts/accdatastore/views/global.js"></script>
     <script src="~/Scripts/jquery-2.1.1.min.js"></script>
+
+    <script type="text/javascript" src="~/bower_components/angular/angular.min.js"></script>
+    <script type="text/javascript" src="~/bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+    <script type="text/javascript" src="~/bower_components/angular-route/angular-route.min.js"></script>
+    <script type="text/javascript" src="~/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+    @*<script type="text/javascript" src="~/bower_components/highcharts/highcharts.js"></script>
+    <script type="text/javascript" src="~/bower_components/highcharts-ng/dist/highcharts-ng.min.js"></script>*@
+    @RenderSection("scripts", required: false)
     <script>
         var sContextPath = '@Url.Content("~")';
     </script>
@@ -50,20 +58,20 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Data Categories<b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="@Url.Action("Compareable", "IndexSchoolProfile", new { Area = "SchoolProfile" }, null)">School Profile</a>
+                                <a href="@Url.Action("Index", "IndexSchoolProfiles", new { Area = "SchoolProfiles" }, null)">School Profile</a>
                             </li>
-                            <li>
-                                <a href="@Url.Action("Index", "InsightProfile", new { Area = "InsightProfile" }, null)">Insight Data</a>
-                            </li>
+                            @*<li>
+                <a href="@Url.Action("Index", "InsightProfile", new { Area = "InsightProfile" }, null)">Insight Data</a>
+            </li>*@
                             <li>
                                 <a href="@Url.Action("IndexHome", "IndexDatahub", new { Area = "DatahubProfile" }, null)">DataHub Data</a>
                             </li>
                             <li>
                                 <a href="@Url.Action("IndexHome", "WiderAchievement", new { Area = "Achievement" }, null)">Achievement Data</a>
                             </li>
-                            <li>
+                            @*<li>
                                 <a href="@Url.Action("IndexHome", "IndexPupilsPopulation", new { Area = "PupilsPopulation" }, null)">Pupils Population</a>
-                            </li>
+                            </li>*@
                         </ul>
                     </li>
                     @*<li>
@@ -127,8 +135,8 @@
                 </h1>
                 <ol class="breadcrumb">
                     @*<li>
-                        <a href="@Url.Action("Index", "Index", new { Area = "" }, null)">Home</a>
-                    </li>*@
+                            <a href="@Url.Action("Index", "Index", new { Area = "" }, null)">Home</a>
+                        </li>*@
                     <li>
                         <a href="@Url.Action("Index", "IndexSchoolProfiles", new { Area = "SchoolProfiles" }, null)">Home</a>
                     </li>
@@ -150,25 +158,26 @@
                 </ol>
             </div>
         </div>
-        </div>
-        <div>
-            @RenderBody()
-        </div>
-        <!-- Footer -->
-        <div class="container">
-            <hr>
-            <footer>
-                <div class="row">
-                    <div class="col-lg-12">
-                        @*<p>Copyright &copy; Your Website 2014</p>*@
-                        <p>Feedback Contact:-  <a href="mailto:HSaevanee@aberdeencity.gov.uk">HSaevanee@aberdeencity.gov.uk</a></p>
-                    </div>
+    </div>
+    <div>
+        @RenderBody()
+    </div>
+    <!-- Footer -->
+    <div class="container">
+        <hr>
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p class="text-center">Aberdeen City Council is not responsible for the content or accuracy of the data contained in any external sites.</p>
+                    @*<p>Copyright &copy; Your Website 2014</p>*@
+                    <p class="text-right"> Data Observatory Feedback Contact:-  <a href="mailto:HSaevanee@aberdeencity.gov.uk">HSaevanee@aberdeencity.gov.uk</a></p>
                 </div>
-            </footer>
-        </div>
+            </div>
+        </footer>
+    </div>
 
-        <div id="divSpinner" class="modal" style="display: none;">
-        </div>
+    <div id="divSpinner" class="modal" style="display: none;">
+    </div>
 
 </body>
 </html>

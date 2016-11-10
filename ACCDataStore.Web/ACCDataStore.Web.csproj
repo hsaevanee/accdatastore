@@ -165,10 +165,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bower_components\angular\angular-csp.css" />
-    <Content Include="bower_components\angular\angular.js" />
+    <Content Include="bower_components\angular-route\angular-route.min.js" />
+    <Content Include="bower_components\angular-sanitize\angular-sanitize.min.js" />
+    <Content Include="bower_components\angular-ui-router\release\angular-ui-router.min.js" />
     <Content Include="bower_components\angular\angular.min.js" />
-    <Content Include="bower_components\angular\index.js" />
+    <Content Include="bower_components\highcharts-ng\dist\highcharts-ng.min.js" />
+    <Content Include="bower_components\highcharts\highcharts.js" />
     <Content Include="Content\accdatastore\areas\DatahubProfile\views\datahub\datahub.css" />
     <Content Include="Content\accdatastore\areas\nationality\views\nationality\nationality.css" />
     <Content Include="Content\accdatastore\views\global.css" />
@@ -229,15 +231,32 @@
     <Content Include="Images\acc-logo.gif" />
     <Content Include="Images\AchievementLogo.png" />
     <Content Include="Images\bruce_scharlau.JPG" />
+    <Content Include="Images\CEM.PNG" />
+    <Content Include="Images\collaborative_planning.png" />
+    <Content Include="Images\community_planning_aberdeen.png" />
+    <Content Include="Images\covalent.png" />
     <Content Include="Images\Do_Coyle.jpg" />
+    <Content Include="Images\education.jpg" />
+    <Content Include="Images\Finance.png" />
     <Content Include="Images\forecast.jpg" />
+    <Content Include="Images\glow.png" />
     <Content Include="Images\Ian_Heywood.jpg" />
+    <Content Include="Images\ics.jpg" />
+    <Content Include="Images\improvementservice.png" />
     <Content Include="Images\insight_logo.jpg" />
+    <Content Include="Images\IS_Avatar.png" />
     <Content Include="Images\Jan2.png" />
     <Content Include="Images\Kevin.jpeg" />
+    <Content Include="Images\knowledgehub.png" />
+    <Content Include="Images\lumessetalent.png" />
+    <Content Include="Images\management.jpg" />
     <Content Include="Images\Pamela_Bain.jpeg" />
+    <Content Include="Images\Performance.jpg" />
     <Content Include="Images\pupils.jpg" />
     <Content Include="Images\schoolprofile.png" />
+    <Content Include="Images\scottish.jpg" />
+    <Content Include="Images\seemis.png" />
+    <Content Include="Images\seemislogo.png" />
     <Content Include="Images\Skilldevelopmentlogo.png" />
     <Content Include="Images\spinner.gif" />
     <Content Include="Images\WIP.jpg" />
@@ -269,6 +288,7 @@
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\IndexSchoolProfile.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\LoadMutiselect.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\MapIndex.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\Data.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\Trending.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Language\LevelOfEnglish.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Language\MapIndex.js" />
@@ -277,8 +297,9 @@
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\SIMD\SIMD.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\StudentStage\MapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\StudentStage\StudentStage.js" />
-    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\WiderAchievement\IndexWiderAchievement.js" />
-    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\WiderAchievement\MapIndex.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\test\app.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\test\controller.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\test\service.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\Curriculum\Curriculum.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\Curriculum\MapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\EthnicBackground\EthnicBackground2.js" />
@@ -371,6 +392,7 @@
     <Compile Include="Areas\SchoolProfiles\Controllers\IndexInteractiveMapController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\IndexPrimaryProfileController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\IndexSchoolProfilesController.cs" />
+    <Compile Include="Areas\SchoolProfiles\Controllers\TestController.cs" />
     <Compile Include="Areas\SchoolProfiles\SchoolProfilesAreaRegistration.cs" />
     <Compile Include="Areas\SchoolProfiles\ViewModels\SchoolProfiles\BaseSchoolProfilesViewModel.cs" />
     <Compile Include="Areas\SchoolProfiles\ViewModels\SchoolProfiles\IndexPrimarySchoolProfilesViewModel.cs" />
@@ -517,12 +539,6 @@
     <Content Include="Areas\Authorisation\Views\IndexAuthorisation\Index.cshtml" />
     <Content Include="Areas\Authorisation\Views\IndexAuthorisation\Login.cshtml" />
     <Content Include="bower.json" />
-    <Content Include="bower_components\angular\.bower.json" />
-    <Content Include="bower_components\angular\angular.min.js.gzip" />
-    <Content Include="bower_components\angular\angular.min.js.map" />
-    <Content Include="bower_components\angular\bower.json" />
-    <Content Include="bower_components\angular\package.json" />
-    <Content Include="bower_components\angular\README.md" />
     <Content Include="Areas\PupilsPopulation\Views\IndexPupilsPopulation\Home.cshtml" />
     <Content Include="Areas\SchoolProfiles\Views\IndexSchoolProfiles\Home.cshtml" />
     <Content Include="Areas\SchoolProfiles\Views\IndexPrimaryProfile\IndexPrimarySchool.cshtml" />
@@ -543,11 +559,20 @@
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Data.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Index2 - Copy.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\_DataTables.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\IndexPrimaryProfile\data.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\Test\Index.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\IndexPrimaryProfile\_showdata.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\IndexPrimaryProfile\IndexPrimarySchool - Copy.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\IndexSchoolProfiles\IndexSpecialSchool - Copy.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\About.cshtml" />
     <Content Include="Views\Index\Contact.cshtml" />
     <Content Include="Views\Index\DataCentre.cshtml" />
+    <Content Include="Views\Index\Finance.cshtml" />
+    <Content Include="Views\Index\Management.cshtml" />
+    <Content Include="Views\Index\PandP.cshtml" />
+    <Content Include="Views\Index\Education.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

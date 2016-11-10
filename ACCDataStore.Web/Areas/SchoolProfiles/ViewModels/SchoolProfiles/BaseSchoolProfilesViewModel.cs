@@ -19,6 +19,10 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.ViewModels.SchoolProfiles
         public DataTable dataTableLookedAfter{ get; set; }
         public DataTable dataTableAttendance { get; set; }
         public DataTable dataTableExclusion { get; set; }
+        public DataTable dataTableBudget { get; set; }
+        public DataTable dataTableSchoolRoll { get; set; }
+        public DataTable dataTableSIMDDecile { get; set; }
+        public DataTable dataTableSchoolRollForecast { get; set; }
 
         public List<Year> listYears { get; set; }
         public Year selectedYear { get; set; }
@@ -32,6 +36,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.ViewModels.SchoolProfiles
         public Dictionary<string, string> DicFreeMeal { get; set; }
         public Dictionary<string, string> DicLookedAfter{ get; set; }
         public Dictionary<string, string> DicAttendance{ get; set; }
+        public Dictionary<string, string> DicSIMDDecile { get; set; }
 
         public List<StudentObj> listAllPupils { get; set; }
         public List<DataSeries> listDataSeriesEnglishLevel { get; set; }
@@ -42,11 +47,17 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.ViewModels.SchoolProfiles
         public List<DataSeries> listDataSeriesLookedAfter{ get; set; }
         public List<DataSeries> listDataSeriesAttendance { get; set; }
         public List<DataSeries> listDataSeriesExclusion { get; set; }
+        public List<DataSeries> listDataSeriesBudget { get; set; }
+        public List<DataSeries> listDataSeriesSchoolRoll { get; set; }
+        public List<DataSeries> listDataSeriesSIMDDecile { get; set; }
+        public List<DataSeries> listDataSeriesSchoolRollForecast { get; set; }
 
         public string profiletitle;
         public bool? showTableAttendance = null;
         public bool? showTableExclusion = null;
         //public List<StudentObj> listPupils { get; set; }
+
+        
 
     }
 }

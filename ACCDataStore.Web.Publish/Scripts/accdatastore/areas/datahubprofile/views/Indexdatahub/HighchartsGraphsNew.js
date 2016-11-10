@@ -7,10 +7,10 @@ var hGraphs = {
             mainChart: sContextPath + 'DatahubProfile/IndexDatahub/MainPieChartDataNew',
             bigOlBarChart: sContextPath + 'DatahubProfile/IndexDatahub/getBarChartData',
             monthsTrends: sContextPath + 'DatahubProfile/IndexDatahub/monthlyHistogramNew',
-            participatingBarChart: '/DatahubProfile/IndexDatahub/getBarChartDataNew',
-            allSchoolComparison: '/DatahubProfile/IndexDatahub/getAllSchoolComparison',
-            allIMDatazoneComparison: '/DatahubProfile/IndexDatahub/getAllIMDatazoneComparison',
-            scotlandIndexLine: '/DatahubProfile/IndexDatahub/GetScotlandLineGraph'
+            participatingBarChart: sContextPath + 'DatahubProfile/IndexDatahub/getBarChartDataNew',
+            allSchoolComparison: sContextPath + 'DatahubProfile/IndexDatahub/getAllSchoolComparison',
+            allIMDatazoneComparison: sContextPath + 'DatahubProfile/IndexDatahub/getAllIMDatazoneComparison',
+            scotlandIndexLine: sContextPath + 'DatahubProfile/IndexDatahub/GetScotlandLineGraph'
         };
         $.get(urls[callback],
             function (data) {
@@ -68,18 +68,18 @@ var hGraphs = {
                 series.push({ name: hGraphs.cache.allSchoolComparison.data[i].name, type: 'column', xAxis: 1, data: [] });
                 for (var key in hGraphs.cache.allSchoolComparison.data[i]) {
                     if (key == type) {
-                        series[i].data.push(hGraphs.cache.allSchoolComparison.data[i][key]);
+                        series[i].data.push(Math.round(hGraphs.cache.allSchoolComparison.data[i][key]*100)/100);
                     }
                 }
             }
         }
+        
         for (var i = 0; i < lineLength; i++) {
-            line.push(hGraphs.cache.allSchoolComparison.councilAverage[type]);
+            line.push(Math.round(hGraphs.cache.allSchoolComparison.councilAverage[type]*100)/100);
             axis.push(i.toString());
         }
         series.push({ name: hGraphs.cache.allSchoolComparison.councilAverage.name + ' Average', type: 'line', xAxis: 0, data: line });
         if (series.length > 0) {
-            console.log(series);
             hGraphs.drawBarLine("#index-all-school-comparison-chart", series, [type], axis);
         }
         //document.getElementById('beckmark-all-school-bar-ajax').innerHTML = Date.now() - hGraphs.benchmark.allSchoolComparison;
@@ -174,7 +174,7 @@ var hGraphs = {
             },
             yAxis: {
                 title: {
-                    text: 'Student percentage (%)'
+                    text: 'People percentage (%)'
                 },
                 plotLines: [{
                     value: 0,
@@ -187,7 +187,8 @@ var hGraphs = {
             plotOptions: {
                 line: {
                     dataLabels: {
-                        enabled: true
+                        enabled: true,
+                        format: '{point.y:.1f}%'
                     },
                     enableMouseTracking: false
                 }
@@ -242,7 +243,7 @@ var hGraphs = {
                 height: 400
             },
             title: {
-                text: 'Student Participation Overview'
+                text: 'People Destination Overview'
             },
             xAxis: {
                 type: 'category',
@@ -258,7 +259,7 @@ var hGraphs = {
                 min: 0,
                 max: 100,
                 title: {
-                    text: 'Student percentage (%)'
+                    text: 'People percentage (%)'
                 }
             },
             legend: {
@@ -268,7 +269,7 @@ var hGraphs = {
                 borderWidth: 0
             },
             tooltip: {
-                pointFormat: "Number of students: <b>{point.y:.1f}</b>"
+                pointFormat: "People: <b>{point.y:.1f}%</b>"
             },
             series: data,
             dataLabels: {
@@ -291,7 +292,7 @@ var hGraphs = {
                 zoomType: 'xy'
             },
             title: {
-                text: 'Student Participation Overview'
+                text: 'People Destination Overview'
             },
             xAxis: [{
                 categories: axis2, 
@@ -316,14 +317,15 @@ var hGraphs = {
                     }
                 },
                 title: {
-                    text: 'Student percentage (%)',
+                    text: 'People percentage (%)',
                     style: {
                         color: Highcharts.getOptions().colors[1]
                     }
                 }
             }],
             tooltip: {
-                shared: true
+                shared: false,
+                pointFormat: "People: <b>{point.y:.1f}%</b>"
             },
             legend: {
                 layout: 'vertical',

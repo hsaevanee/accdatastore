@@ -4,12 +4,12 @@
         nonSelectedText: '--- Please Select School ---',
         maxHeight: 200,
         enableFiltering: true,
-        numberDisplayed: 3,
+        numberDisplayed: 2,
         onDropdownShow: function (event) {
             var selectedOptions = $('#listSelectedSchoolname option:selected');
             if (selectedOptions.length == 0) {
                 $('#buttonGetData').prop('disabled', true);
-            } else if (selectedOptions.length >= 3) {
+            } else if (selectedOptions.length >= 2) {
                 // Disable all other checkboxes.
                 var nonSelectedOptions = $('#listSelectedSchoolname option').filter(function () {
                     return !$(this).is(':selected');
@@ -38,7 +38,7 @@
             var selectedOptions = $('#listSelectedSchoolname option:selected');
             if (selectedOptions.length == 0) {
                 $('#buttonGetData').prop('disabled', true);
-            } else if (selectedOptions.length >= 3) {
+            } else if (selectedOptions.length >= 2) {
                 // Disable all other checkboxes.
                 var nonSelectedOptions = $('#listSelectedSchoolname option').filter(function () {
                     return !$(this).is(':selected');
@@ -66,5 +66,6 @@
     $('#listSelectedSchoolname').multiselect('select', selectid);
 
     $('#listSelectedSchoolname').multiselect('refresh');
+   
 
 });

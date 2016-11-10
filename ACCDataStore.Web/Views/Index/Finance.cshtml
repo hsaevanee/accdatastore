@@ -1,0 +1,82 @@
+﻿@section Header {
+    <!-- jQuery -->
+    <script src="~/Scripts/jquery.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<style type="text/css">
+    img {
+    width: 250px;
+    height: 150px;
+    }
+</style>
+
+}
+
+<body>
+    <!-- Page Content -->
+    <div class="container">
+        <!-- Page Heading/Breadcrumbs -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Finance
+                </h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="@Url.Action("Index", "Index", new {  Area = "" ,id = "" }, null)">Home</a>
+                    </li>
+                    <li class="active">Finance</li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+        <!-- Team Members -->
+        <div class="row">
+            <div class="col-md-3 text-center">
+                <div class="img-rounded">
+                    <a href="http://melrose:8410/cp/jsp/system/login.jsp" target="_blank"><img src="@Url.Content("~/Images/collaborative_planning.png")" height="216" alt=""></a> 
+                </div>
+                <div class="caption">
+                    <h4><a href="http://melrose:8410/cp/jsp/system/login.jsp" target="_blank">Collaborative Planning</a> </h4>
+                </div>
+            </div>
+
+            <div class="col-md-3 text-center">
+                <div class="img-rounded">
+                    <a href="http://melrose:8888/forms/frmservlet?config=efin41" target="_blank"><img src="" height="216" alt=""></a>
+                </div>
+                <div class="caption">
+                    <h4><a href="http://melrose:8888/forms/frmservlet?config=efin41" target="_blank">eFinancials</a></h4>
+                </div>
+            </div>
+
+            <div class="col-md-3 text-center">
+                <div class="img-rounded">
+                    <a href="http://melrose:8210/eanalyser/" target="_blank"><img src="@Url.Content("~/Images/collaborative_planning.png")" height="216" alt=""></a>
+                </div>
+                <div class="caption">
+                    <h4><a href="http://melrose:8210/eanalyser/" target="_blank">eAnalyser</a></h4>
+                </div>
+            </div>
+
+            <div class="col-md-3 text-center">
+                <div class="img-rounded">
+                    <a href="http://128.1.112.12:8602/InfoViewApp/logon.jsp " target="_blank"><img src="" height="216" alt=""></a>
+                </div>
+                <div class="caption">
+                    <h4><a href="http://128.1.112.12:8602/InfoViewApp/logon.jsp " target="_blank">InfoView (BOXI)</a></h4>
+                </div>
+            </div>
+
+       </div>
+    </div>
+
+</body>
+
+
+
+
+

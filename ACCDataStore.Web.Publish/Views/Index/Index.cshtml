@@ -20,7 +20,7 @@
     <!-- Page Content -->
     <div class="container">
         <!-- Jumbotron Header -->
-        <header class="jumbotron hero-spacer">
+        @*<header class="jumbotron hero-spacer">
             <h1>Welcome!</h1>
             <p style="text-align:justify">
                 to Aberdeen data Observatory Project.
@@ -33,146 +33,135 @@
                 Each time you come back you might see new features.<br>
                 You can help us by suggesting ideas/features that would help you in your work.<br>
             </p>
-
-            @*<p align="center">
-                <a href="mailto:HSaevanee@aberdeencity.gov.uk">HSaevanee@aberdeencity.gov.uk</a> 
-                <a href="@Url.Action("Index", "Index", new { id = "about" }, null)" class="btn btn-primary btn-large">More details!</a>
-            </p>*@
             <p align="center">
                 <i class="fa fa-envelope-o"></i>
                 <abbr title="Email">E</abbr>: <a href="mailto:HSaevanee@aberdeencity.gov.uk">HSaevanee@aberdeencity.gov.uk</a>
             </p>
-        </header>
-        <hr>
+        </header>*@
         <!-- Title -->
         <div class="row">
             <div class="col-lg-12">
-                <h3>Latest Datasets</h3>
+                <h3>Latest Updates</h3>
             </div>
         </div>
         <!-- /.row -->
         <!-- Page Features -->
         <div class="row text-center">
-            @*<div class="col-md-3">
-                <div class="img-thumbnail">
-                    <img src="@Url.Content("~/Images/schoolprofile.png")" alt="SchoolProfile_logo" >
-                    <div class=" caption">
-                        <h3>School Profile</h3>
-                        <p></p>
-                        <p>
-                            <a href="@Url.Action("Compareable", "IndexSchoolProfile", new { Area = "SchoolProfile" }, null)" class="btn btn-primary">Check out!</a> @*<a href="#" class="btn btn-default">More Info</a>*@
-                        @*</p>
-                    </div>
+            <div class="col-md-3 text-center">
+                <div class="img-rounded">
+                    <a href="@Url.Action("Index", "IndexSchoolProfiles", new { Area = "SchoolProfiles" }, null)">
+                    <img src="@Url.Content("~/Images/WIP.jpg")" alt="School Profile logo">
+                    </a>
+                                     
                 </div>
-            </div>*@
-            <div class="row top-buffer">
-                <div class="col-md-3 text-center">
-                    <div class="img-thumbnail">
-                        <img src="@Url.Content("~/Images/WIP.jpg")" alt="School Profile logo">
-                        <div class="caption">
-                            <h3>New School Profiles</h3>
-                            <p></p>
-                            <p>
-                                <a href="@Url.Action("Index", "IndexSchoolProfiles", new { Area = "SchoolProfiles" }, null)" class="btn btn-primary">Check out!</a>
-                            </p>
-                        </div>
-                    </div>
+                <div class="caption">
+                    <h4><a href="@Url.Action("Index", "IndexSchoolProfiles", new { Area = "SchoolProfiles" }, null)">School Profiles</a></h4>
                 </div>
+            </div>            
                 @*<div class="col-md-3 text-center">
-                    <div class="img-thumbnail">
-                        <img src="@Url.Content("~/Images/insight_logo.jpg")" alt="insight_logo">
-                        <div class="caption">
-                            <h3>Insight Profile</h3>
-                            <p></p>
-                            <p>
-                                <a href="@Url.Action("Index", "InsightProfile", new { Area = "InsightProfile" }, null)" class="btn btn-primary">Check out!</a> @*<a href="#" class="btn btn-default">More Info</a>*@
-                            @*</p>
-                        </div>
+                    <div class="img-rounded">
+                        <a href="@Url.Action("IndexHome", "IndexDatahub", new { Area = "DatahubProfile" }, null)">
+                            <img src="@Url.Content("~/Images/Aberdeen  Gaurtees logo.png")" alt="Aberdeen Gaurtees logo">
+                        </a>
+                        
                     </div>
-                </div>*@
-                <div class="col-md-3 text-center">
-                    <div class="img-thumbnail">
-                        <img src="@Url.Content("~/Images/Aberdeen  Gaurtees logo.png")" alt="Aberdeen Gaurtees logo">
-                        <div class="caption">
-                            <h3>Data Hub</h3>
-                            <p></p>
-                            <p>
-                                <a href="@Url.Action("ScotlandIndex", "IndexDatahub", new { Area = "DatahubProfile" }, null)" class="btn btn-primary">Check out!</a> @*<a href="#" class="btn btn-default">More Info</a>*@
-                            </p>
-                        </div>
+                    <div class="caption">
+                        <h4><a href="@Url.Action("IndexHome", "IndexDatahub", new { Area = "DatahubProfile" }, null)">Data Hub</a></h4>
                     </div>
-                </div>
-                <div class="col-md-3 text-center">
-                    <div class="img-thumbnail">
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="img-rounded">
+                    <a href="@Url.Action("IndexHome", "IndexPupilsPopulation", new { Area = "PupilsPopulation" }, null)">
                         <img src="@Url.Content("~/Images/pupils.jpg")" alt="pupils_logo">
-                        <div class="caption">
-                            <h3>Pupils Population</h3>
-                            <p></p>
-                            <p>
-                                <a href="@Url.Action("IndexHome", "IndexPupilsPopulation", new { Area = "PupilsPopulation" }, null)" class="btn btn-primary">Check out!</a>
-                            </p>
-                        </div>
-                    </div>
+                    </a>
                 </div>
-                <div class="col-md-3 text-center">
-                    <div class="img-thumbnail">
-                        <img src="@Url.Content("~/Images/AchievementLogo.png")" alt="Wider Achievement logo">
-                        <div class="caption">
-                            <h3>Wider Achievement</h3>
-                            <p></p>
-                            <p>
-                                <a href="@Url.Action("IndexHome", "WiderAchievement", new { Area = "Achievement" }, null)" class="btn btn-primary">Check out!</a>
-                            </p>
-                        </div>
-                    </div>
+                <div class="caption">
+                    <h4><a href="@Url.Action("IndexHome", "IndexPupilsPopulation", new { Area = "PupilsPopulation" }, null)">Pupils Population</a></h4>
                 </div>
             </div>
-        <!-- /.row -->
-
-        <!-- Title -->
-        @*<div class="row top-buffer">
             <div class="col-md-3 text-center">
-                <div class="img-thumbnail">
-                    <img src="@Url.Content("~/Images/WIP.jpg")" alt="School Profile logo">
-                    <div class="caption">
-                        <h3>New School Profiles</h3>
-                        <p></p>
-                        <p>
-                            <a href="@Url.Action("Index", "IndexSchoolProfiles", new { Area = "SchoolProfiles" }, null)" class="btn btn-primary">Check out!</a>
-                        </p>
-                    </div>
+                <div class="img-rounded">
+                    <a href="@Url.Action("IndexHome", "WiderAchievement", new { Area = "Achievement" }, null)">
+                        <img src="@Url.Content("~/Images/AchievementLogo.png")" alt="Wider Achievement logo">
+                    </a>
+                    
+                </div>
+                <div class="caption">
+                    <h4><a href="@Url.Action("IndexHome", "WiderAchievement", new { Area = "Achievement" }, null)">Wider Achievement</a></h4>
                 </div>
             </div>*@
-
-            @*<div class="col-md-3 text-center">
-                <div class="img-thumbnail">
-                    <img src="@Url.Content("~/Images/forecast.jpg")" alt="School Roll Forecast logo">
-                    <div class="caption">
-                        <h3>SchoolRollForecast</h3>
-                        <p></p>
-                        <p>
-                            <a href="@Url.Action("Index", "IndexSchoolRollForecast", new { Area = "SchoolRollForecast" }, null)" class="btn btn-primary">Check out!</a>
-                        </p>
-                    </div>
-                </div>
-            </div>*@
-
-
-
-            @*<div class="col-md-3 text-center">
-                <div class="img-thumbnail">
-                    <img src="@Url.Content("~/Images/pupils.jpg")" alt="pupils_logo">
-                    <div class="caption">
-                        <h3>Scrum hub</h3>
-                        <p></p>
-                        <p>
-                            <a href="@Url.Action("Index", "ScrumHub", new { Area = "ScrumHub" }, null)" class="btn btn-primary">Check out!</a>
-                        </p>
-                    </div>
-                </div>
-            </div>*@
-
         </div>
+        <!-- /.row -->
+        <hr />
+        <!-- Title -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>Resources</h3>
+            </div>
+        </div>
+
+        <div class="row text-center">
+            <div class="col-md-3 text-center">
+                <div class="img-rounded">                   
+                    <a href="http://communityplanningaberdeen.org.uk/ " target="_blank"><img src="@Url.Content("~/Images/community_planning_aberdeen.png")" alt=""></a>
+                </div>
+                <div class="caption">
+                    <h4><a href="http://communityplanningaberdeen.org.uk/ " target="_blank">Community Planning Aberdeen</a></h4>
+                </div>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="img-rounded">
+                    <a href="@Url.Action("Index", "Index", new { Area = "", id = "education" }, null)"><img src="@Url.Content("~/Images/education.jpg")" )" alt=""></a>
+                </div>
+                <div class="caption">
+                    <h4><a href="@Url.Action("Index", "Index", new { Area = "", id = "education" }, null)">Education</a></h4>
+                </div>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="img-rounded">
+                    <a href="@Url.Action("Index", "Index", new { Area = "", id = "finance" }, null)"><img src="@Url.Content("~/Images/Finance.png")" alt=""></a>                 
+                </div>
+                <div class="caption">
+                    <h4><a href="@Url.Action("Index", "Index", new { Area = "", id = "finance" }, null)">Finance</a></h4>
+                </div>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="img-rounded">
+                    <a href="http://www.aberdeengettingitright.org.uk" target="_blank"><img src="@Url.Content("~/Images/pupils.jpg")" alt=""></a>
+                </div>
+                <div class="caption">
+                    <h4><a href="http://www.aberdeengettingitright.org.uk" target="_blank">Integrated Children’s Services</a></h4>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12"><p></p>
+            </div>
+        </div>
+
+        <div class="row text-center">
+            <div class="col-md-3 text-center">
+                <div class="img-rounded">
+                    <a href="@Url.Action("Index", "Index", new { Area = "", id = "management" }, null)" target="_blank"><img src="@Url.Content("~/Images/management.jpg")" alt=""></a>
+                </div>
+                <div class="caption">
+                    <h4><a href="@Url.Action("Index", "Index", new { Area = "", id = "management" }, null)" target="_blank" >Management</a></h4>
+                </div>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="img-rounded">
+                    <a href="@Url.Action("Index", "Index", new { Area = "", id = "pandp" }, null)" target="_blank"><img src="@Url.Content("~/Images/Performance.jpg")" alt=""></a>
+                    
+                </div>
+                <div class="caption">
+                    <h4><a href="@Url.Action("Index", "Index", new { Area = "", id = "pandp" }, null)" target="_blank">Performance and Information</a></h4>
+                </div>
+            </div>
+            
+        </div>
+        
 
 
 
@@ -180,40 +169,7 @@
 
 </body>
 
-        @*<p align="center">
-                <img src="@Url.Content("~/Images/acc-logo.gif")" alt="Aberdeen City Council" width="130" height="108" />
-            </p>*@
-        @*<h2 align="center"> Home</h2>
-        <p>
-            Welcome to Aberdeen data Observatory Project.
-            This website pulls together up-to-date information as the Digital Data Observatory Project for Aberdeen City Council.
-            The aim of this project is to provide an easy access to a wide range of information collected from local data source and can be analysed for enhanced decision-making based on a robust evidence based for decision makers.
-        </p>
-        <h2 align="center"> What is Data Observatory</h2>
-        <p>
-            A Data Observatory (also known as a Local Information System) is a form of information system built with business intelligence tools, designed with the capability to support statistical data, and the analysis of geospatial data.
-            A Data Observatory also tends to offer common knowledge management functionality for storage and retrieval of unstructured data such as documents.
-            Data Observatory deliver functionality to load, store, analyse and present statistical data that has a strong geographic reference.
-            In most cases the data is structured as indicators and is linked to discrete geographic areas, for example numbers claiming unemployment benefit across wards in Scotland.
-            The ability to present this data using data visualization tools like charts and maps is also a core feature of these systems.
-        </p>
-        <h2 align="center"> Feedback on Data Observatory </h2>
-
-        <h3 align="center" style="color:blue">
-            This site is a work in progress. We have released early, but good enough for you to start using day-to-day.<br>
-            Each time you come back you might see new features.<br>
-            You can help us by suggesting ideas/features that would help you in your work.<br>
-        </h3>
-
-
-        <p style="color:blue" align="center">
-            <b>
-                You can contact data observatory project team <br /><br />
-                a) by email to Jan at <a href="mailto:HSaevanee@aberdeencity.gov.uk">HSaevanee@aberdeencity.gov.uk</a> <br><br />
-                b) by visiting 2-N at Marischal Colleage, Broad Street, Aberdeen AB 10 1AR <br><br />
-            </b>
-        </p>
-    </div>*@
+       
 
 
 

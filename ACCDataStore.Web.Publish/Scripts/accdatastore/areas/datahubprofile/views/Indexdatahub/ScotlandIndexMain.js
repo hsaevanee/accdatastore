@@ -70,7 +70,7 @@ function initMap()
 }
 
 function loadDataTable() {
-    $('#scotland-all-councils').DataTable({
+    var scotlandTable = $('#scotland-all-councils').DataTable({
         dom: 'Bfrtip',
         "scrollY": "400px",
         "scrollCollapse": true,
@@ -87,9 +87,15 @@ function loadDataTable() {
                         }
                     },
                     header: true,
-                    title: 'All Council Participation'
+                    title: 'All Council Destinations'
                 }, 'print',
             ]
         }
     });
+
+    scotlandTable.on('order.dt search.dt', function () {
+        scotlandTable.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+            cell.innerHTML = i + 1;
+        });
+    }).draw();
 }

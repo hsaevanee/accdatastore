@@ -27,7 +27,7 @@ namespace ACCDataStore.Entity
                         this.academicyear = "2010/2011";
                         break;
                     case "2011":
-                        this.academicyear = "2011/2010";
+                        this.academicyear = "2011/2012";
                         break;
                     case "2012":
                         this.academicyear = "2012/2013";
@@ -40,6 +40,9 @@ namespace ACCDataStore.Entity
                         break;
                     case "2015":
                         this.academicyear = "2015/2016";
+                        break;
+                    case "2016":
+                        this.academicyear = "2016/2017";
                         break;
                 }
             }

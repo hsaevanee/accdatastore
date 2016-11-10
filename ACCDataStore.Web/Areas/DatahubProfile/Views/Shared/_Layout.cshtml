@@ -63,22 +63,22 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Data Categories<b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="@Url.Action("Compareable", "IndexSchoolProfile", new { Area = "SchoolProfile" }, null)">School Profile</a>
+                                <a href="@Url.Action("Index", "IndexSchoolProfiles", new { Area = "SchoolProfiles" }, null)">School Profile</a>
                             </li>
-                            <li>
-                                <a href="@Url.Action("Index", "InsightProfile", new { Area = "InsightProfile" }, null)">Insight Data</a>
-                            </li>
+                            @*<li>
+                <a href="@Url.Action("Index", "InsightProfile", new { Area = "InsightProfile" }, null)">Insight Data</a>
+            </li>*@
                             <li>
                                 <a href="@Url.Action("IndexHome", "IndexDatahub", new { Area = "DatahubProfile" }, null)">DataHub Data</a>
                             </li>
                             <li>
                                 <a href="@Url.Action("IndexHome", "WiderAchievement", new { Area = "Achievement" }, null)">Achievement Data</a>
                             </li>
-                            <li>
+                            @*<li>
                                 <a href="@Url.Action("IndexHome", "IndexPupilsPopulation", new { Area = "PupilsPopulation" }, null)">Pupils Population</a>
-                            </li>
+                            </li>*@
                         </ul>
-                    </li>
+                   </li>
                     @*<li>
                         <a href="@Url.Action("Index", "Index", new { Area = "", id = "about" }, null)">About</a>
                     </li>*@

@@ -32,6 +32,9 @@
     <script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/ComparisonsIndex.js"></script>
 <script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/IndexdatahubProfile.js"></script>
 <script src="~/Scripts/accdatastore/areas/datahubprofile/views/Indexdatahub/HighchartsGraphsNew.js"></script>
+<script>
+    var selectionParams = @Html.Raw(Json.Encode(Model.selectionParamsRaw))
+</script>
 }
  
 @{
@@ -41,6 +44,24 @@
 <body>
     <div class="container">
             <!-- Content Row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary text-center">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">About</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>
+                            This data represents the percentage of people that achieve positive
+                            destinations in terms of their career goals. You can select a specific
+                            location or school to view the data, or you can see the overall city statistics.
+                            You can also view data related to any particular person by name.
+                            Clicking either of the items in graph legends will turn that series of data on and off.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     <div class="row">
         <div class="col-md-6">
             <div class="panel panel-primary text-center">
@@ -56,15 +77,15 @@
                                     <td width="40%">School</td>
                                     <td>@Html.DropDownList("selectedschoolcode", new SelectList(Model.ListSchoolNameData, "seedcode", "name"))</td>                                 
                                     @*<td>@Html.DropDownListFor(m => m.selectedschoolcode, new SelectList(Model.ListSchoolNameData, "seedcode", "name"))</td>*@
+                                    <td width="20%"><button onclick="return SubmitForm(this.id)" class="btn btn-primary" id="schoolsubmitButton" name="schoolsubmitButton" value="Search">Search</button></td>
+                                    @*<td width="20%"><input type="submit" class="btn btn-primary" name="schoolsubmitButton" value="Search" /></td>*@
                                     
-                                    <td width="20%"><input type="submit" class="btn btn-primary" name="schoolsubmitButton" value="Search" /></td>
-
                                     @*<td width="20%"><button class="btn btn-primary" id="schoolsubmitButton">Search</button></td>*@
                                 </tr>
                                 <tr>
                                     <td width="40%">Neighbourhoods</td>
                                     <td>@Html.DropDownList("selectedneighbourhoods", new SelectList(Model.ListNeighbourhoodsName, "seedcode", "name"))</td>
-                                    <td width="20%"><input type="submit" class="btn btn-primary"  name="neighbourhoodssubmitButton" value="Search" /></td>
+                                    <td width="20%"><button onclick="return SubmitForm(this.id)" class="btn btn-primary" id="neighbourhoodssubmitButton" name="neighbourhoodssubmitButton" value="Search">Search</button></td>
                                     @*<td width="20%"><button class="btn btn-primary" id="neighbourhoodButton">Search</button></td>*@
                                 </tr>
                             </tbody>
@@ -80,7 +101,7 @@
         <div class="col-md-6">
             <div class="panel panel-primary text-center">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Search pupils by Name</h3>
+                    <h3 class="panel-title">Search People by Name</h3>
                 </div>
                 <div class="panel-body">
 @using (Html.BeginForm("SearchpupilbyName", "IndexDatahub", new { area = "DatahubProfile" }))
@@ -108,147 +129,50 @@
         </div>
     </div>
 
+         <div style="border-top: solid lightgrey 1px; margin: 20px 0px 50px 0px">
+            <h2 style="margin: 30px 0px 30px 0px">
+                @for (int i = 0; i < Model.selectionParams.school.Count; i++)
+                {
+                    @Model.selectionParams.school[i];
+                    if (i < Model.selectionParams.school.Count - 1)
+                    { 
+                        <span>, </span>
+                    }
+                    else
+                    {
+                        <span> </span>
+                    }
+                }
+                @for (int i = 0; i < Model.selectionParams.neighbourhood.Count; i++)
+                {
+                    @Model.selectionParams.neighbourhood[i];
+                    if (i < Model.selectionParams.neighbourhood.Count - 1)
+                    {
+                        <span>, </span>
+                    }
+                    else
+                    {
+                        <span> </span>
+                    }
+                }
+                @if (Model.selectionParams.neighbourhood.Count > 0 || Model.selectionParams.school.Count > 0)
+                {
+                    <span>Data</span>
+                }
+                else
+                {
+                     @Model.selectionParams.councilName;
+                    <span>Data</span>
+                }
+            </h2>
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-primary text-center">
                 <div class="panel-heading">
-                    <h3 class="panel-title">About</h3>
+                    <h3 class="panel-title">People Overview</h3>
                 </div>
                 <div class="panel-body">
-                    <p>
-                        This data represents the percentage of students that achieve positive
-                        destinations in term of their career goals. You can select a specific
-                        location or school to view the data, or you can see the over city stastistics.
-                        You can also view data related to any particular student by name.
-                        Clicking either of the items in graph legends will turn that series of data on and off.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-        <!--Schools Overview-->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-primary text-center">
-                <div class="panel-heading">
-                    <h3 class="panel-title">@Model.selectedcouncil Schools Overview</h3>
-                </div>
-                <div class="panel-body">
-                    <div class="table-responsive">
-                        <table id="summaryDatatable" class="table table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th class="text-left">
-                                        School Name
-                                    </th>
-                                    <th class="text-center">
-                                        % Participating
-                                    </th>
-                                    <th class="text-center">
-                                        % Non-Participating
-                                    </th>
-                                    <th class="text-center">
-                                        % Unknown
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var School in Model.summaryTableData)
-                                {
-                                    <tr>
-                                        <td class="text-left">
-                                            @School.name
-                                        </td>
-                                        <td class="text-center">
-                                            @String.Format("{0:#,0.00}", @School.participating)
-                                        </td>
-                                        <td class="text-center">
-                                            @String.Format("{0:#,0.00}", @School.notParticipating)
-                                        </td>
-                                        <td class="text-center">
-                                            @String.Format("{0:#,0.00}", @School.unknown)
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div>
-                    <button onclick="hGraphs.switchAllSchoolComparison('participating')">Participating</button>
-                    <button onclick="hGraphs.switchAllSchoolComparison('notParticipating')">Not Participating</button>
-                    <button onclick="hGraphs.switchAllSchoolComparison('unknown')">Unknown</button>
-                </div>
-                <div id="index-all-school-comparison-chart"></div>
-            </div>
-        </div>
-    </div>
-        <!--Neighbourhoods Overview-->
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-primary text-center">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">@Model.selectedcouncil Neighbourhoods Overview</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="table-responsive">
-                            <table id="summaryNeighbourhoodDatatable" class="table table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th class="text-left">
-                                            Neighbourhood Name
-                                        </th>
-                                        <th class="text-center">
-                                            % Participating
-                                        </th>
-                                        <th class="text-center">
-                                            % Non-Participating
-                                        </th>
-                                        <th class="text-center">
-                                            % Unknown
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var School in Model.summaryNeighboursTableData)
-                                    {
-                                        <tr>
-                                            <td class="text-left">
-                                                @School.name
-                                            </td>
-                                            <td class="text-center">
-                                                @String.Format("{0:#,0.00}", @School.participating)
-                                            </td>
-                                            <td class="text-center">
-                                                @String.Format("{0:#,0.00}", @School.notParticipating)
-                                            </td>
-                                            <td class="text-center">
-                                                @String.Format("{0:#,0.00}", @School.unknown)
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div>
-                        <button onclick="hGraphs.switchAllIMDatazoneComparison('participating')">Participating</button>
-                        <button onclick="hGraphs.switchAllIMDatazoneComparison('notParticipating')">Not Participating</button>
-                        <button onclick="hGraphs.switchAllIMDatazoneComparison('unknown')">Unknown</button>
-                    </div>
-                    <div id="index-all-IMDatazone-comparison-chart"></div>
-                </div>
-            </div>
-        </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-primary text-center">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Student Overview</h3>
-                </div>
-                <div class="panel-body">
+                    <p>This gives an Overview of People Destinations within @Model.selectedcouncil and selected area(s)</p>
                     @if (Model.selectedschool != null)
                     {
                         <div id="datahub-index-specificpiechart" style="width: 50%; float: left"></div>
@@ -265,9 +189,6 @@
     </div>
 
 
-
-
-
 @if (Model.ListSelectionData != null)
 { 
     <div class="row">
@@ -277,6 +198,7 @@
                     <h4 class="panel-title text-center"> Opportunities for All Clients</h4>
                 </div>
                 <div class="panel-body">
+                    <p>This gives an Overview of People by Age and Gender within @Model.selectedcouncil and selected area(s)</p>
                     <table class="table table-bordered table-hover" id="OpportunitiesForAllClientsTable">
                         <thead>
                             <tr>
@@ -284,11 +206,11 @@
                                 <th class="text-center" width="10%">All Clients*</th>
                                 <th class="text-center" width="10%">Males</th>
                                 <th class="text-center" width="10%">Females</th>
-                                <th class="text-center" width="10%">Pupils 15</th>
-                                <th class="text-center" width="10%">Pupils 16</th>
-                                <th class="text-center" width="10%">Pupils 17</th>
-                                <th class="text-center" width="10%">Pupils 18</th>
-                                <th class="text-center" width="10%">Pupils 19</th>
+                                <th class="text-center" width="10%">People 15</th>
+                                <th class="text-center" width="10%">People 16</th>
+                                <th class="text-center" width="10%">People 17</th>
+                                <th class="text-center" width="10%">People 18</th>
+                                <th class="text-center" width="10%">People 19</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -323,13 +245,14 @@
                     <h4 class="panel-title text-center"> Current Positive Destinations</h4>
                 </div>
                 <div class="panel-body">
+                    <p>This gives a breakdown of current positive desitinations within @Model.selectedcouncil and selected area(s)</p>
                     <div class="col-md-12">
                         <table class="table table-bordered table-hover" id="CurrentPositiveDestintionsTable1">
                             <thead>
                                 <tr>
                                     <th class="text-center"></th>
                                     <th class="text-center">School Pupils</th>
-                                    <th class="text-center">School Pupils In Trainsitions</th>
+                                    <th class="text-center">School Pupils In Transition</th>
                                     <th class="text-center">Activity Agreement</th>
                                     <th class="text-center">Employability Fund Stage 2</th>
                                     <th class="text-center">Employability Fund Stage 3</th>
@@ -407,6 +330,7 @@
                     <h4 class="panel-title text-center"> Non Positive Destinations</h4>
                 </div>
                 <div class="panel-body">
+                    <p>This gives a breakdown of current non-positive desitinations and unknown within @Model.selectedcouncil and selected area(s)</p>
                     <div class="col-md-12">
                         <table class="table table-bordered table-hover" id="NonPositiveDestinationsTable">
                             <thead>
@@ -457,15 +381,149 @@
                     <h4 style="margin: 0; text-align: center">@Model.selectedcouncil Monthly Trends</h4>
                 </div>
                 <div class="panel-body">
+                    <p class ="text-center">This is the trend chart showing 12 month data for @Model.selectedcouncil and selected area(s)</p>
                     <div style="text-align: center">
-                        <button onclick="hGraphs.switchMonthsTrends('participating')">Participating</button>
-                        <button onclick="hGraphs.switchMonthsTrends('notParticipating')">Not Participating</button>
+                        <button onclick="hGraphs.switchMonthsTrends('participating')">Positive Destinations</button>
+                        <button onclick="hGraphs.switchMonthsTrends('notParticipating')">Non-Positive Destinations</button>
                         <button onclick="hGraphs.switchMonthsTrends('unknown')">Unknown</button>
                     </div>
                     <div id="month-trend-histogram"></div>
                 </div>
             </div>
         </div>
+            </div>
+
+    </div>
+
+        <div style="margin: 20px 0px 20px 0px; border-top: solid lightgrey 1px">
+            <h2 style="margin: 30px 0px 30px 0px">
+                @if (Model.selectionParams.school.Count > 0 || Model.selectionParams.neighbourhood.Count > 0)
+                {
+                    @Model.selectionParams.councilName; 
+                    <span>Data</span>
+                }
+            
+            </h2>
+            <!--Schools Overview-->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">@Model.selectedcouncil Schools Overview</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table id="summaryDatatable" class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th class="text-left">
+                                                School Name
+                                            </th>
+                                            <th class="text-center">
+                                                % Positive Destinations
+                                            </th>
+                                            <th class="text-center">
+                                                % Non-Positive Destinations
+                                            </th>
+                                            <th class="text-center">
+                                                % Unknown
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var School in Model.summaryTableData)
+                                        {
+                                            <tr>
+                                                <td></td>
+                                                <td class="text-left">
+                                                    @School.name
+                                                </td>
+                                                <td class="text-center">
+                                                    @String.Format("{0:#,0.00}", @School.participating)
+                                                </td>
+                                                <td class="text-center">
+                                                    @String.Format("{0:#,0.00}", @School.notParticipating)
+                                                </td>
+                                                <td class="text-center">
+                                                    @String.Format("{0:#,0.00}", @School.unknown)
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div>
+                            <button onclick="hGraphs.switchAllSchoolComparison('participating')">Positive Destinations</button>
+                            <button onclick="hGraphs.switchAllSchoolComparison('notParticipating')">Non-Positive Destinations</button>
+                            <button onclick="hGraphs.switchAllSchoolComparison('unknown')">Unknown</button>
+                        </div>
+                        <div id="index-all-school-comparison-chart"></div>
+                    </div>
+                </div>
+            </div>
+            <!--Neighbourhoods Overview-->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">@Model.selectedcouncil Neighbourhoods Overview</h3>
+                        </div>
+                        <div class="panel-body">
+                            <p>This gives an Overview of Destinations of People in all neighbourhood(s) within @Model.selectedcouncil</p>
+                            <div class="table-responsive">
+                                <table id="summaryNeighbourhoodDatatable" class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th class="text-left">
+                                                Neighbourhood Name
+                                            </th>
+                                            <th class="text-center">
+                                                % Positive Destinations
+                                            </th>
+                                            <th class="text-center">
+                                                % Non-Positive Destinations
+                                            </th>
+                                            <th class="text-center">
+                                                % Unknown
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var School in Model.summaryNeighboursTableData)
+                                        {
+                                            <tr>
+                                                <td></td>
+                                                <td class="text-left">
+                                                    @School.name
+                                                </td>
+                                                <td class="text-center">
+                                                    @String.Format("{0:#,0.00}", @School.participating)
+                                                </td>
+                                                <td class="text-center">
+                                                    @String.Format("{0:#,0.00}", @School.notParticipating)
+                                                </td>
+                                                <td class="text-center">
+                                                    @String.Format("{0:#,0.00}", @School.unknown)
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div>
+                            <button onclick="hGraphs.switchAllIMDatazoneComparison('participating')">Positive Destinations</button>
+                            <button onclick="hGraphs.switchAllIMDatazoneComparison('notParticipating')">Non-Positive Destinations</button>
+                            <button onclick="hGraphs.switchAllIMDatazoneComparison('unknown')">Unknown</button>
+                        </div>
+                        <div id="index-all-IMDatazone-comparison-chart"></div>
+                    </div>
+        </div>
+            </div>
+
     </div>
 
     </div>

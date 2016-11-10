@@ -7,10 +7,10 @@ var hGraphs = {
             mainChart: sContextPath + 'DatahubProfile/IndexDatahub/MainPieChartDataNew',
             bigOlBarChart: sContextPath + 'DatahubProfile/IndexDatahub/getBarChartData',
             monthsTrends: sContextPath + 'DatahubProfile/IndexDatahub/monthlyHistogramNew',
-            participatingBarChart: '/DatahubProfile/IndexDatahub/getBarChartDataNew',
-            allSchoolComparison: '/DatahubProfile/IndexDatahub/getAllSchoolComparison',
-            allIMDatazoneComparison: '/DatahubProfile/IndexDatahub/getAllIMDatazoneComparison',
-            scotlandIndexLine: '/DatahubProfile/IndexDatahub/GetScotlandLineGraph'
+            participatingBarChart: sContextPath + 'DatahubProfile/IndexDatahub/getBarChartDataNew',
+            allSchoolComparison: sContextPath + 'DatahubProfile/IndexDatahub/getAllSchoolComparison',
+            allIMDatazoneComparison: sContextPath + 'DatahubProfile/IndexDatahub/getAllIMDatazoneComparison',
+            scotlandIndexLine: sContextPath + 'DatahubProfile/IndexDatahub/GetScotlandLineGraph'
         };
         $.get(urls[callback],
             function (data) {

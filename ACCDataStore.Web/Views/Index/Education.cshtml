@@ -1,0 +1,161 @@
+﻿@section Header {
+    <!-- jQuery -->
+    <script src="~/Scripts/jquery.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+    <style type="text/css">
+        img {
+            width: 200px;
+            height: 150px;
+        }
+    </style>
+
+}
+
+<body>
+    <!-- Page Content -->
+    <div class="container">
+        <!-- Page Heading/Breadcrumbs -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Education
+                </h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="@Url.Action("index", "Index" , new { area="" ,id="" }, null)">Home</a>
+                    </li>
+                    <li class="active">Education</li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+        <!-- Team Members -->
+        <div class="row">
+            <div class="col-md-3 text-center">
+                <div class="img-rounded">
+                    <a href="@Url.Action("Index", "IndexSchoolProfiles", new { Area = "SchoolProfiles" }, null)">
+                        <img src="@Url.Content("~/Images/WIP.jpg")" alt="School Profile logo">
+                    </a>
+
+                </div>
+                <div class="caption">
+                    <h4><a href="@Url.Action("Index", "IndexSchoolProfiles", new { Area = "SchoolProfiles" }, null)">School Profiles</a></h4>
+                </div>
+            </div>    
+            <div class="col-md-3 text-center">
+                <div class="img-rounded">
+                    <a href="@Url.Action("IndexHome", "IndexDatahub", new { Area = "DatahubProfile" }, null)">
+                        <img src="@Url.Content("~/Images/Aberdeen  Gaurtees logo.png")" alt="Aberdeen Gaurtees logo">
+                    </a>
+
+                </div>
+                <div class="caption">
+                    <h4><a href="@Url.Action("IndexHome", "IndexDatahub", new { Area = "DatahubProfile" }, null)">Data Hub</a></h4>
+                </div>
+            </div>
+
+            <div class="col-md-3 text-center">
+                <div class="img-rounded">
+                    <a href="@Url.Action("IndexHome", "WiderAchievement", new { Area = "Achievement" }, null)">
+                        <img src="@Url.Content("~/Images/AchievementLogo.png")" alt="Wider Achievement logo">
+                    </a>
+
+                </div>
+                <div class="caption">
+                    <h4><a href="@Url.Action("IndexHome", "WiderAchievement", new { Area = "Achievement" }, null)">Wider Achievement</a></h4>
+                </div>
+            </div>
+                 
+        </div>
+        <div class="row">
+            <div class="col-md-3 text-center">
+                <div class="img-rounded">
+                    <a href="http://www.abernet.org/" target="_blank"><img src="@Url.Content("~/Images/acc-logo.gif")" alt=""></a>
+                </div>
+                <div class="caption">
+                    <h4><a href="http://www.abernet.org/" target="_blank">Abernet</a> </h4>
+                </div>
+            </div>
+
+            <div class="col-md-3 text-center">
+                <div class="img-rounded">
+                    <a href="https://secure.glowscotland.org.uk/login/" target="_blank"><img src="@Url.Content("~/Images/glow.png")" height="216" alt=""></a>
+                    
+                </div>
+                <div class="caption">
+                    <h4><a href="https://secure.glowscotland.org.uk/login/" target="_blank">Glow</a></h4>
+                </div>
+            </div>
+
+            <div class="col-md-3 text-center">
+                <div class="img-rounded">
+                    <a href="https://insight.scotxed.net/Account/ChooseIdentityProvider?ReturnUrl=%2f" target="_blank"><img src="@Url.Content("~/Images/insight_logo.jpg")" height="216" alt=""></a>
+                </div>
+                <div class="caption">
+                    <h4><a href="https://insight.scotxed.net/Account/ChooseIdentityProvider?ReturnUrl=%2f" target="_blank">Insight</a></h4>
+                </div>
+            </div>
+
+            <div class="col-md-3 text-center">
+                <div class="img-rounded">
+                    <a href="http://acc-intranet.seemis.org/pub/" target="_blank"><img src="@Url.Content("~/Images/seemislogo.png")" height="216" alt=""></a>
+                </div>
+                <div class="caption">
+                    <h4><a href="http://acc-intranet.seemis.org/pub/" target="_blank">SEEMIS</a></h4>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+        <!-- Title -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>Value Added Assessments</h3>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-3 text-center">
+                <div class="img-rounded">
+                    <a href="https://primary.cemcentre.org/PIPSPlusNet/Login.aspx " target="_blank"><img src="@Url.Content("~/Images/CEM.png")" height="216" alt=""></a>
+                </div>
+                <div class="caption">
+                    <h4><a href="https://primary.cemcentre.org/PIPSPlusNet/Login.aspx " target="_blank">CEM Primary (ASPECTS & PIPS)</a> </h4>
+                </div>
+            </div>
+
+            <div class="col-md-3 text-center">
+                <div class="img-rounded">
+                    <a href="https://primary.cemcentre.org/InCASPlusNet/Login.aspx?ReturnUrl=%2fInCASPlusNet%2f" target="_blank"><img src="@Url.Content("~/Images/CEM.png")" height="216" alt=""></a>
+                </div>
+                <div class="caption">
+                    <h4><a href="https://primary.cemcentre.org/InCASPlusNet/Login.aspx?ReturnUrl=%2fInCASPlusNet%2f" target="_blank">CEM Primary (InCAS) </a> </h4>
+                </div>
+            </div>
+
+            <div class="col-md-3 text-center">
+                <div class="img-rounded">
+                    <a href="https://css.cemcentre.org/SecondaryPlusNet/Login.aspx?ReturnUrl=%2fSecondaryPlusNet%2f" target="_blank"><img src="@Url.Content("~/Images/CEM.png")" height="216" alt=""></a> 
+                </div>
+                <div class="caption">
+                    <h4><a href="https://css.cemcentre.org/SecondaryPlusNet/Login.aspx?ReturnUrl=%2fSecondaryPlusNet%2f" target="_blank">CEM Secondary (MidYis & SOSCA) </a> </h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+
+
+
+
+

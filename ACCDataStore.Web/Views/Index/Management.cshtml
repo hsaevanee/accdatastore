@@ -1,0 +1,73 @@
+﻿@section Header {
+    <!-- jQuery -->
+    <script src="~/Scripts/jquery.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<style type="text/css">
+    img {
+    width: 200px;
+    height: 150px;
+    }
+</style>
+
+}
+
+<body>
+    <!-- Page Content -->
+    <div class="container">
+        <!-- Page Heading/Breadcrumbs -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Management
+                </h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="@Url.Action("Index", "Index", new {  Area = "" ,id = "" }, null)">Home</a>
+                    </li>
+                    <li class="active">Management</li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+        <!-- Team Members -->
+        <div class="row">
+            <div class="col-md-3 text-center">
+                <div class="img-rounded">
+                    <a href="http://www.acc-oil.net/" target="_blank"><img src="@Url.Content("~/Images/acc-logo.gif")" alt=""></a>
+                </div>
+                <div class="caption">
+                    <h4><a href="http://www.acc-oil.net/" target="_blank">OIL</a> </h4>
+                </div>
+            </div>
+
+            <div class="col-md-3 text-center">
+                <div class="img-rounded">
+                    <a href="http://thezone/CorpServices/humanresource/Login.aspx" target="_blank"><img src="@Url.Content("~/Images/acc-logo.gif")" alt=""></a>
+                </div>
+                <div class="caption">
+                    <h4><a href="http://thezone/CorpServices/humanresource/Login.aspx" target="_blank">YourHR </a></h4>
+                </div>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="img-rounded">
+                    <a href="https://emea5.lumessetalentlink.com/tlk/pages/restricted/hostpage.jsp" target="_blank"><img src="@Url.Content("~/Images/lumessetalent.png")" alt=""></a>
+                </div>
+                <div class="caption">
+                    <h4><a href="https://emea5.lumessetalentlink.com/tlk/pages/restricted/hostpage.jsp" target="_blank"> Talent Link </a></h4>
+                </div>
+            </div>
+      </div>
+
+       
+    </div>
+
+</body>
+
+
+
+
+
