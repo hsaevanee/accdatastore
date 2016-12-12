@@ -21,13 +21,13 @@ namespace ACCDataStore.Web.Controllers
 
         public ActionResult Index(string id)
         {
-            var eGeneralSettings = TS.Core.Helper.ConvertHelper.XmlFile2Object(HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"), typeof(GeneralCounter)) as GeneralCounter;
+            var eGeneralSettings = ACCDataStore.Core.Helper.ConvertHelper.XmlFile2Object(HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"), typeof(GeneralCounter)) as GeneralCounter;
 
             // just git test
             if (id == null)
             {
                 eGeneralSettings.HomepgCounter++;
-                TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
+                ACCDataStore.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
 
                 var vmIndex = new IndexViewModel();
                 vmIndex.ApplicationName = HttpContext.Application["APP_NAME"] as string;
@@ -40,54 +40,54 @@ namespace ACCDataStore.Web.Controllers
                 if (id.ToLower().Equals("theteam"))
                 {
                     eGeneralSettings.TeampgCounter++;
-                    TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
+                    ACCDataStore.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
                     return View("theTeam");
                 }
                 else if (id.ToLower().Equals("about"))
                 {
                     eGeneralSettings.TeampgCounter++;
-                    TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
+                    ACCDataStore.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
                     return View("About");
                 }
                 else if (id.ToLower().Equals("contact"))
                 {
                     eGeneralSettings.TeampgCounter++;
-                    TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
+                    ACCDataStore.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
                     return View("Contact");
                 }
                 else if (id.ToLower().Equals("datacentre"))
                 {
                     eGeneralSettings.TeampgCounter++;
-                    TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
+                    ACCDataStore.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
                     return View("DataCentre");
                 }
                 else if (id.ToLower().Equals("finance"))
                 {
                     eGeneralSettings.TeampgCounter++;
-                    TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
+                    ACCDataStore.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
                     return View("Finance");
                 }
                 else if (id.ToLower().Equals("management"))
                 {
                     eGeneralSettings.TeampgCounter++;
-                    TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
+                    ACCDataStore.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
                     return View("Management");
                 }
                 else if (id.ToLower().Equals("education"))
                 {
                     eGeneralSettings.TeampgCounter++;
-                    TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
+                    ACCDataStore.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
                     return View("Education");
                 }
                 else if (id.ToLower().Equals("pandp"))
                 {
                     eGeneralSettings.TeampgCounter++;
-                    TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
+                    ACCDataStore.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
                     return View("PandP");
                 }
                 else {
                     eGeneralSettings.HomepgCounter++;
-                    TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
+                    ACCDataStore.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
 
                     var vmIndex = new IndexViewModel();
                     vmIndex.ApplicationName = HttpContext.Application["APP_NAME"] as string;

@@ -58,5 +58,14 @@ namespace ACCDataStore.Entity
         public Year()
         {
         }
+
+        public object GetJson()
+        {
+            return new
+            {
+                Year = this.year,
+                Academicyear = this.academicyear
+            };
+        }
     }
 }

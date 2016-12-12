@@ -12,20 +12,28 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.ViewModels.SchoolProfiles
     public class BaseSchoolProfilesViewModel  
     {
         public DataTable dataTableNationality { get; set; }
+        public DataTable dataTableNationalityHistory { get; set; }
         public DataTable dataTableStage { get; set; }
+        public DataTable dataTableStageHistory { get; set; }
         public DataTable dataTableEnglishLevel { get; set; }
+        public DataTable dataTableEnglishLevelHistory { get; set; }
         public DataTable dataTableEthnicBackground { get; set; }
+        public DataTable dataTableEthnicBackgroundHistory { get; set; }
         public DataTable dataTableFreeSchoolMeal { get; set; }
         public DataTable dataTableLookedAfter{ get; set; }
+        public DataTable dataTableLookedAfterHistory { get; set; }
         public DataTable dataTableAttendance { get; set; }
         public DataTable dataTableExclusion { get; set; }
         public DataTable dataTableBudget { get; set; }
         public DataTable dataTableSchoolRoll { get; set; }
         public DataTable dataTableSIMDDecile { get; set; }
         public DataTable dataTableSchoolRollForecast { get; set; }
+        public DataTable dataTableCSP { get; set; }
+        public DataTable dataTableIEP { get; set; }
 
         public List<Year> listYears { get; set; }
         public Year selectedYear { get; set; }
+        public string stringYear { get; set; }
         public List<School> listSchoolname { get; set; }
         public List<School> listSelectedSchoolname { get; set; }
 
@@ -40,6 +48,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.ViewModels.SchoolProfiles
 
         public List<StudentObj> listAllPupils { get; set; }
         public List<DataSeries> listDataSeriesEnglishLevel { get; set; }
+        public List<DataSeries> listDataSeriesHistoryEnglishLevel { get; set; }
         public List<DataSeries> listDataSeriesEthnicBackground { get; set; }
         public List<DataSeries> listDataSeriesNationality { get; set; }
         public List<DataSeries> listDataSeriesStage { get; set; }
@@ -51,6 +60,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.ViewModels.SchoolProfiles
         public List<DataSeries> listDataSeriesSchoolRoll { get; set; }
         public List<DataSeries> listDataSeriesSIMDDecile { get; set; }
         public List<DataSeries> listDataSeriesSchoolRollForecast { get; set; }
+        public List<DataSeries> listDataSeriesCSP { get; set; }
+        public List<DataSeries> listDataSeriesIEP { get; set; }
 
         public string profiletitle;
         public bool? showTableAttendance = null;

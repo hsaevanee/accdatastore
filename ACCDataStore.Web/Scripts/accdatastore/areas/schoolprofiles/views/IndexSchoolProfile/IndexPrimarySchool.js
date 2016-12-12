@@ -4,6 +4,7 @@ $(document).ready(function () {
     $('#SchoolRollDatatable').DataTable({
         dom: 'Bfrtip',
         paging: false,
+        "scrollY": false,
         "order": [],
         "columnDefs": [{
             "targets": 'no-sort',
@@ -26,9 +27,37 @@ $(document).ready(function () {
         }
     });
 
-    $('#AttendanceDatatable').DataTable({
+    $('#SchoolRollForecastDatatable').DataTable({
         dom: 'Bfrtip',
         paging: false,
+        "scrollY": false,
+        "order": [],
+        "columnDefs": [{
+            "targets": 'no-sort',
+            "orderable": false,
+        }],
+        buttons: {
+            buttons: [
+                'copyHtml5', 'csvHtml5', {
+                    extend: 'pdfHtml5',
+                    orientation: 'portrait',
+                    exportOptions: {
+                        modifier: {
+                            page: 'current'
+                        }
+                    },
+                    header: true,
+                    title: 'School Roll ' + year
+                }, 'print',
+            ]
+        }
+    });
+
+
+    $('table.displayAttendancetable').DataTable({
+        dom: 'Bfrtip',
+        paging: false,
+        "scrollY": false,
         "order": [],
         "columnDefs": [{
             "targets": 'no-sort',
@@ -52,9 +81,10 @@ $(document).ready(function () {
     });
 
 
-    $('#ExclusionDatatable').DataTable({
+    $('table.displayExclusiontable').DataTable({
         dom: 'Bfrtip',
         paging: false,
+        "scrollY": false,
         "order": [],
         "columnDefs": [{
             "targets": 'no-sort',
@@ -77,9 +107,10 @@ $(document).ready(function () {
         }
     });
 
-    $('#FreeMealDatatable').DataTable({
+    $('table.displayFSMtable').DataTable({
         dom: 'Bfrtip',
         paging: false,
+        "scrollY": false,
         "order": [],
         "columnDefs": [{
             "targets": 'no-sort',
@@ -102,9 +133,10 @@ $(document).ready(function () {
         }
     });
 
-    $('#PIPSDatatable').DataTable({
+    $('table.displayPIPtable').DataTable({
         dom: 'Bfrtip',
         paging: false,
+        "scrollY": false,
         "order": [],
         "columnDefs": [{
             "targets": 'no-sort',
@@ -145,7 +177,7 @@ $(document).ready(function () {
         }
     });
 
-    $('#SIMDDatatable').DataTable({
+    $('table.displaySIMDtable').DataTable({
         dom: 'Bfrtip',
         "scrollY": "380px",
         "scrollCollapse": true,
@@ -163,9 +195,10 @@ $(document).ready(function () {
         }
     });
 
-    $('#LookedAfterDatatable').DataTable({
+    $('table.displayLookedAftertable').DataTable({
         dom: 'Bfrtip',
         paging: false,
+        "scrollY": false,
         "order": [],
         "columnDefs": [{
             "targets": 'no-sort',
@@ -188,9 +221,10 @@ $(document).ready(function () {
         }
     });
 
-    $('#StageDatatable').DataTable({
+    $('table.displayStagetable').DataTable({
         dom: 'Bfrtip',
         paging: false,
+        "scrollY": false,
         "order": [],
         "columnDefs": [{
             "targets": 'no-sort',
@@ -213,9 +247,7 @@ $(document).ready(function () {
         }
     });
 
-
-
-    $('#Ethnicdatatable').DataTable({
+    $('table.displayEthnictable').DataTable({
         dom: 'Bfrtip',
         paging: false,
         "scrollY": "380px",
@@ -241,35 +273,11 @@ $(document).ready(function () {
         }
     });
 
-    $('#Ethnicdatatable2').DataTable({
-        dom: 'Bfrtip',
-        paging: false,
-        "scrollY": "380px",
-        "order": [],
-        "columnDefs": [{
-            "targets": 'no-sort',
-            "orderable": false,
-        }],
-        buttons: {
-            buttons: [
-                'copyHtml5', 'csvHtml5', {
-                    extend: 'pdfHtml5',
-                    orientation: 'landscape',
-                    exportOptions: {
-                        modifier: {
-                            page: 'current'
-                        }
-                    },
-                    header: true,
-                    title: 'Ethnicity for ' + year
-                }, 'print',
-            ]
-        }
-    });
 
-    $('#Nationalitydatatable').DataTable({
+    $('table.displayNationalitytable').DataTable({
         dom: 'Bfrtip',
         paging: false,
+        "scrollY": false,
         "order": [],
         "columnDefs": [{
             "targets": 'no-sort',
@@ -292,7 +300,7 @@ $(document).ready(function () {
         }
     });
 
-    $('#EnglishLevelDatatable').DataTable({
+    $('table.displayEnglishLeveltable').DataTable({
         dom: 'Bfrtip',
         paging: false,
         "scrollY": false,
@@ -318,31 +326,7 @@ $(document).ready(function () {
         }
     })
 
-    $('#EnglishLevelDatatable2').DataTable({
-        dom: 'Bfrtip',
-        paging: false,
-        "scrollY": false,
-        "order": [[0, 'asc']],
-        "columnDefs": [{
-            "targets": 'no-sort',
-            "orderable": false,
-        }],
-        buttons: {
-            buttons: [
-                'copyHtml5', 'csvHtml5', {
-                    extend: 'pdfHtml5',
-                    orientation: 'landscape',
-                    exportOptions: {
-                        modifier: {
-                            page: 'current'
-                        }
-                    },
-                    header: true,
-                    title: 'English Level for ' + year
-                }, 'print',
-            ]
-        }
-    })
+   
 
     //DrawTempGraph();
     DrawEnglishLevelGraph();
@@ -439,6 +423,10 @@ function requestData() {
 
 
 function DrawNationlityGraph() {
+    Highcharts.setOptions({
+        colors: ['#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4']
+    });
+
     var data = {
         table: 'Nationalitydatatable',
         switchRowsAndColumns: true
@@ -491,6 +479,10 @@ function DrawNationlityGraph() {
 
 
 function DrawEnglishLevelGraph() {
+    Highcharts.setOptions({
+        colors: ['#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4']
+    });
+
     var data = {
         table: 'EnglishLevelDatatable',
         switchRowsAndColumns: true
@@ -548,6 +540,11 @@ function DrawEnglishLevelGraph() {
 
 
 function DrawSIMDGraph() {
+
+    Highcharts.setOptions({
+        colors: ['#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4']
+    });
+
     var data = {
         table: 'SIMDDatatable',
         switchRowsAndColumns: true
@@ -599,6 +596,9 @@ function DrawSIMDGraph() {
 }
 
 function DrawSchoolRollForecastGraph() {
+    Highcharts.setOptions({
+        colors: ['#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4']
+    });
     var data = {
         table: 'SchoolRollForecastDatatable',
         switchRowsAndColumns: true

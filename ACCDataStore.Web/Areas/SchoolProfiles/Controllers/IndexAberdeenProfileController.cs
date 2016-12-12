@@ -1,6 +1,5 @@
 ﻿using ACCDataStore.Entity;
 using ACCDataStore.Entity.SchoolProfiles;
-using ACCDataStore.Entity.SchoolProfiles.Census;
 using ACCDataStore.Helpers.ORM;
 using ACCDataStore.Helpers.ORM.Helpers.Security;
 using ACCDataStore.Repository;
@@ -68,10 +67,11 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
              
             List<Year> templistYears = vmIndexAberdeenCityProfilesModel.listYears;
 
-            if (Request["selectedYear"] != null)
+            if (Request["stringYear"] != null)
             {
                 yesrIsSelected = true;
-                string year = Request["selectedYear"].ToString();
+                string year = Request["stringYear"].ToString();
+                vmIndexAberdeenCityProfilesModel.stringYear = year;
                 selectedYear = templistYears.Where(x => x.year.Contains(year)).FirstOrDefault();
             }
 

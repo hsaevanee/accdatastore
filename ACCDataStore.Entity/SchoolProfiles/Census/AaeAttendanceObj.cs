@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACCDataStore.Entity.SchoolProfiles.Census
+namespace ACCDataStore.Entity.SchoolProfiles
 {
     public class AaeAttendanceObj:BaseEntity
     {

@@ -1,6 +1,5 @@
 ﻿using ACCDataStore.Entity;
 using ACCDataStore.Entity.SchoolProfiles;
-using ACCDataStore.Entity.SchoolProfiles.Census;
 using ACCDataStore.Repository;
 using ACCDataStore.Web.Controllers;
 using Common.Logging;
@@ -16,6 +15,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
     public class BaseSchoolProfileController : BaseController
     {
         private static ILog log = LogManager.GetLogger(typeof(BaseSchoolProfileController));
+
         // GET: SchoolProfiles/BaseSchoolProfile
         protected Dictionary<string, string> GetDicEhtnicBG(IGenericRepository2nd rpGeneric2nd)
         {
@@ -76,6 +76,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             dictionary.Add("01", "Looked After At Home");
 
             dictionary.Add("02", "Looked After Away From Home");
+
+            dictionary.Add("99", "N/A");
 
             return dictionary;
 
@@ -167,6 +169,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             dictionary.Add("8", "8");
             dictionary.Add("9", "9");
             dictionary.Add("10", "10");
+            dictionary.Add("99", "99");
             return dictionary;
 
         }
@@ -203,16 +206,69 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         protected List<Year> GetListYear()
         {
             List<Year> temp = new List<Year>();
-            temp.Add(new Year("2016"));
-            temp.Add(new Year("2015"));
-            temp.Add(new Year("2014"));
-            temp.Add(new Year("2013"));
-            temp.Add(new Year("2012"));
             temp.Add(new Year("2011"));
-            temp.Add(new Year("2010"));
-            temp.Add(new Year("2009"));
-            temp.Add(new Year("2008"));
+            temp.Add(new Year("2012"));
+            temp.Add(new Year("2013"));
+            temp.Add(new Year("2014"));
+            temp.Add(new Year("2015"));
+            temp.Add(new Year("2016"));
+ 
+            //temp.Add(new Year("2010"));
+            //temp.Add(new Year("2009"));
+            //temp.Add(new Year("2008"));
             return temp;
+
+        }
+
+        protected List<ViewObj> GetListViewObj(IGenericRepository2nd rpGeneric2nd, string sSchoolType, string datatitle)
+        {
+            List<ViewObj> listResult = new List<ViewObj>();
+            string query = "";
+            switch (datatitle)
+            {
+                case "eal":
+                    query = "Select * from summary_levelofenglish where schooltype = " + sSchoolType;
+                    break;
+                case "ethnicbackground":
+                    query = "Select * from summary_ethnicbackground where schooltype = " + sSchoolType;
+                    break;
+                case "stage":
+                    query = "Select * from summary_studentstage where schooltype = " + sSchoolType;
+                    break;
+                case"nationality":
+                    query = "Select * from summary_nationality where schooltype = " + sSchoolType;
+                    break;
+                case "needtype":
+                    //to calculate IEP CSP
+                    query = "Select * from summary_studentneed where schooltype = " + sSchoolType;
+                    break;
+                case "lookedafter":
+                    //to calculate IEP CSP
+                    query = "Select * from summary_studentlookedafter where schooltype = " + sSchoolType;
+                    break;
+                case "simd":
+                    //to calculate IEP CSP
+                    query = "Select * from summary_simd where schooltype = " + sSchoolType;
+                    break;
+            }
+
+            var listtemp = rpGeneric2nd.FindByNativeSQL(query);
+            foreach (var itemrow in listtemp)
+            {
+                if (itemrow != null)
+                {
+                    ViewObj temp = new ViewObj();
+                    temp.year = new Year(itemrow[0].ToString());
+                    temp.seedcode = itemrow[1].ToString();
+                    temp.schooltype = itemrow[2].ToString();
+                    temp.code = itemrow[3].ToString();
+                    temp.count = Convert.ToInt16(itemrow[4].ToString());
+                    listResult.Add(temp);
+                }
+            }
+
+
+            return listResult;
 
         }
 
@@ -925,7 +981,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             return dataobj;
         }
 
-        protected List<AaeAttendanceObj> GetAaeAttendanceLists(IGenericRepository2nd rpGeneric2nd, string sSchoolType, Year year, List<School> schools, List<StudentObj> listAllPupils)
+        protected List<AaeAttendanceObj> GetAaeAttendanceLists(IGenericRepository2nd rpGeneric2nd, string sSchoolType, Year year, List<School> schools, List<StudentObj> listPupilData)
         {
             List<AaeAttendanceObj> listResult = new List<AaeAttendanceObj>();
             //List<AaeAttendanceObjT> listResult2 = new List<AaeAttendanceObjT>();
@@ -986,6 +1042,94 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             return listData;
 
 
+        }
+
+        protected List<StudentNeedObj> GetStudentNeedLists(IGenericRepository2nd rpGeneric2nd, string sSchoolType, Year year)
+        {
+            List<StudentNeedObj> listResult = new List<StudentNeedObj>();
+            switch (year.year)
+            {
+                case "2010":
+                    listResult = rpGeneric2nd.FindAll<StudentNeed2010>().ToList<StudentNeedObj>();
+                    break;
+                case "2011":
+                    listResult = rpGeneric2nd.FindAll<StudentNeed2011>().ToList<StudentNeedObj>();
+                    break;
+                case "2012":
+                    listResult = rpGeneric2nd.FindAll<StudentNeed2012>().ToList<StudentNeedObj>();
+                    break;
+                case "2013":
+                    listResult = rpGeneric2nd.FindAll<StudentNeed2013>().ToList<StudentNeedObj>();
+                    break;
+                case "2014":
+                    listResult = rpGeneric2nd.FindAll<StudentNeed2014>().ToList<StudentNeedObj>();
+                    break;
+                case "2015":
+                    listResult = rpGeneric2nd.FindAll<StudentNeed2015>().ToList<StudentNeedObj>();
+                    break;
+                case "2016":
+                    listResult = rpGeneric2nd.FindAll<StudentNeed2016>().ToList<StudentNeedObj>();
+                    break;
+            }
+
+            List<StudentNeedObj> listData = new List<StudentNeedObj>();
+            if (sSchoolType.Equals("2"))
+            {
+                //select only primary pupils
+                listData = listResult.Where(x => (x.StudentStage.StartsWith("P")) && (x.StudentStatus.Equals("01"))).ToList();
+            }
+            else if (sSchoolType.Equals("3"))
+            {
+                //select only secondary pupils
+                listData = listResult.Where(x => (x.StudentStage.StartsWith("S")) && (x.StudentStatus.Equals("01"))).ToList();
+                listData = listData.Where(x => !x.StudentStage.Equals("SP")).ToList(); // excluded special schoool
+
+            }
+            else if (sSchoolType.Equals("4"))
+            {
+                //select only special pupils
+                listData = listResult.Where(x => (x.StudentStage.Equals("SP")) && (x.StudentStatus.Equals("01"))).ToList();
+            }
+            else if (sSchoolType.Equals("5")) // pupils for aberdeen city
+            {
+                //select all pupils in Aberdeen
+                listData = listResult.Where(x => x.StudentStatus.Equals("01")).ToList();
+            }
+   
+            return listData;
+
+
+        }
+
+        protected List<DataSeries> GetIEPDataSeries(string datatitle, List<StudentNeedObj> listPupilData, List<School> listSelectedSchool, Year iyear, string schooltype)
+        {
+            List<DataSeries> listobject = new List<DataSeries>();
+            return listobject;
+        }
+
+        protected List<DataSeries> GetCSPDataSeries(string datatitle, List<StudentNeedObj> listPupilData, List<School> listSelectedSchool, Year iyear, string schooltype)
+        {
+            List<DataSeries> listobject = new List<DataSeries>();
+            List<StudentNeedObj> listtempPupilData = new List<StudentNeedObj>();
+            int sum = 0, cspPupils =0;
+            List<ObjectDetail> listResultwithPercentage = new List<ObjectDetail>();
+
+            foreach (School item in listSelectedSchool)
+            {
+                //select data for each school
+                listtempPupilData = listPupilData.Where(x => x.SeedCode.ToString().Equals(item.seedcode)).ToList();
+                sum = listtempPupilData.Count;
+                cspPupils = listtempPupilData.Where(x => x.NeedType.Equals("01")).Count();
+                listResultwithPercentage.Add(new ObjectDetail { itemcode = "CSP", liststudents = null, count = cspPupils, percentage = sum != 0 ? (cspPupils / sum) * 100 : 0 });
+                listobject.Add(new DataSeries { dataSeriesNames = "CSP", school = item, year = iyear, listdataitems = listResultwithPercentage, checkSumPercentage = (double)listResultwithPercentage.Select(r => r.percentage).Sum(), checkSumCount = (int)listResultwithPercentage.Select(r => r.count).Sum() });
+            }
+
+            //calculate for aberdeen city
+            listResultwithPercentage = new List<ObjectDetail>();
+            listResultwithPercentage.Add(new ObjectDetail { itemcode = "CSP", liststudents = null, count = cspPupils, percentage = sum != 0 ? (cspPupils / sum) * 100 : 0 });
+            listobject.Add(new DataSeries { dataSeriesNames = "CSP", school = new School("Aberdeen City", "Aberdeen City"), year = iyear, listdataitems = listResultwithPercentage, checkSumPercentage = (double)listResultwithPercentage.Select(r => r.percentage).Sum(), checkSumCount = (int)listResultwithPercentage.Select(r => r.count).Sum() });               
+
+            return listobject;
         }
 
         protected List<DataSeries> GetAaeAttendanceDataSeries(string datatitle, List<AaeAttendanceObj> listPupilData, List<School> listSelectedSchool, Year iyear, string schooltype)
@@ -1110,6 +1254,9 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     listResult = rpGeneric2nd.FindAll<ExclusionStudent2014>().ToList<ExclusionStudentObj>();
                     break;
                 case "2015":
+                    listResult = new List<ExclusionStudentObj>();
+                    break;
+                case "2016":
                     listResult = new List<ExclusionStudentObj>();
                     break;
             }
@@ -1389,6 +1536,39 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
 
             return listobject;
         }
+        /*
+        protected List<DataSeries> GetEnglishLevelDataSeriesFromSummary(List<ViewObj> listPupilData, List<School> listSelectedSchool, Year iyear, string schooltype)
+        {
+            List<DataSeries> listobject = new List<DataSeries>();
+            List<StudentObj> listtempPupilData = new List<StudentObj>();
+
+            double sum = 0.0;
+            List<ObjectDetail> listResultwithPercentage = new List<ObjectDetail>();
+
+            //calculate individual school
+            foreach (School item in listSelectedSchool)
+            {
+                sum = 0.0;
+                //select primary pupils for selected school
+                listtempPupilData = listPupilData.Where(x => x.SeedCode.ToString().Equals(item.seedcode)).ToList();
+                var listResult = listtempPupilData.GroupBy(x => new { x.SeedCode, x.LevelOfEnglish }).Select(y => new { SeedCode = y.Key.SeedCode.ToString(), Code = y.Key.LevelOfEnglish, list = y.ToList(), count = y.ToList().Count() }).ToList();
+                sum = (double)listResult.Select(r => r.count).Sum();
+                listResultwithPercentage = listResult.Select(y => new ObjectDetail { itemcode = y.Code, liststudents = y.list, count = y.count, percentage = sum != 0 ? (y.count / sum) * 100 : 0 }).ToList();
+                listobject.Add(new DataSeries { dataSeriesNames = "Level Of English", school = item, year = iyear, listdataitems = listResultwithPercentage, checkSumPercentage = (double)listResultwithPercentage.Select(r => r.percentage).Sum(), checkSumCount = (int)listResultwithPercentage.Select(r => r.count).Sum() });
+            }
+
+            // get data for all primary schools
+            sum = 0.0;
+            var listResultforAll = listPupilData.GroupBy(x => x.LevelOfEnglish).Select(y => new { Code = y.Key, list = y.ToList(), count = y.ToList().Count() }).ToList();
+            //calculate the total number of pupils in Aberdeen
+            sum = (double)listResultforAll.Select(r => r.count).Sum();
+            listResultwithPercentage = listResultforAll.Select(y => new ObjectDetail { itemcode = y.Code, liststudents = y.list, count = y.count, percentage = sum != 0 ? (y.count / sum) * 100 : 0 }).ToList();
+
+            listobject.Add(new DataSeries { dataSeriesNames = "Level Of English", school = GetSchoolbyType(schooltype), year = iyear, listdataitems = listResultwithPercentage, checkSumPercentage = (double)listResultwithPercentage.Select(r => r.percentage).Sum(), checkSumCount = (int)listResultwithPercentage.Select(r => r.count).Sum() });
+
+            return listobject;
+        }
+         * */
 
         protected List<DataSeries> GetLookAfterDataSeries(List<StudentObj> listPupilData, List<School> listSelectedSchool, Year iyear, string schooltype)
         {
@@ -1514,10 +1694,10 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             return listobject;
         }
 
-        protected List<DataSeries> GetStageDataSeries(List<StudentObj> listPupilData, List<School> listSelectedSchool, Year iyear, string schooltype)
+        protected List<DataSeries> GetStageDataSeries(List<ViewObj> listPupilData, List<School> listSelectedSchool, Year iyear, string schooltype)
         {
             List<DataSeries> listobject = new List<DataSeries>();
-            List<StudentObj> listtempPupilData = new List<StudentObj>();
+            List<ViewObj> listtempPupilData = new List<ViewObj>();
 
             double sum = 0.0;
             List<ObjectDetail> listResultwithPercentage = new List<ObjectDetail>();
@@ -1527,20 +1707,105 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             {
                 sum = 0.0;
                 //select primary pupils for selected school
-                listtempPupilData = listPupilData.Where(x => x.SeedCode.ToString().Equals(item.seedcode)).ToList();
-                var listResult = listtempPupilData.GroupBy(x => new { x.SeedCode, x.StudentStage }).Select(y => new { SeedCode = y.Key.SeedCode.ToString(), Code = y.Key.StudentStage.ToString(), list = y.ToList(), count = y.ToList().Count() }).ToList();
+                var listResult = listPupilData.Where(x => x.seedcode.ToString().Equals(item.seedcode) && x.year.year.Equals(iyear.year)).ToList();                
                 sum = (double)listResult.Select(r => r.count).Sum(); //include 99
-                listResultwithPercentage = listResult.Select(y => new ObjectDetail { itemcode = y.Code, liststudents = y.list, count = y.count, percentage = sum != 0 ? (y.count / sum) * 100 : 0 }).ToList();
+                listResultwithPercentage = listResult.Select(y => new ObjectDetail { itemcode = y.code, liststudents = null, count = y.count, percentage = sum != 0 ? (y.count / sum) * 100 : 0 }).ToList();
                 listobject.Add(new DataSeries { dataSeriesNames = "Stage", school = item, year = iyear, listdataitems = listResultwithPercentage, checkSumPercentage = (double)listResultwithPercentage.Select(r => r.percentage).Sum(), checkSumCount = (int)listResultwithPercentage.Select(r => r.count).Sum() });
             }
 
             // get data for all primary schools
             sum = 0.0;
-            var listResultforAll = listPupilData.GroupBy(x => x.StudentStage).Select(y => new { Code = y.Key.ToString(), list = y.ToList(), count = y.ToList().Count() }).ToList();
+            var listResultforAll = listPupilData.GroupBy(x => x.code).Select(y => new { Code = y.Key.ToString(), list = y.ToList(), count = y.ToList().Count() }).ToList();
             sum = (double)listResultforAll.Select(r => r.count).Sum();
-            listResultwithPercentage = listResultforAll.Select(y => new ObjectDetail { itemcode = y.Code, liststudents = y.list, count = y.count, percentage = sum != 0 ? (y.count / sum) * 100 : 0 }).ToList();
+            listResultwithPercentage = listResultforAll.Select(y => new ObjectDetail { itemcode = y.Code, liststudents = null, count = y.count, percentage = sum != 0 ? (y.count / sum) * 100 : 0 }).ToList();
             listobject.Add(new DataSeries { dataSeriesNames = "Stage", school = GetSchoolbyType(schooltype), year = iyear, listdataitems = listResultwithPercentage, checkSumPercentage = (double)listResultwithPercentage.Select(r => r.percentage).Sum(), checkSumCount = (int)listResultwithPercentage.Select(r => r.count).Sum() });
 
+            return listobject;
+        }
+
+        protected List<DataSeries> GetHistoricEALObjDataSeries(List<ViewObj> listPupilData, List<School> listSelectedSchool, Dictionary<string, string> dictionary, List<Year> listyear, string schooltype)
+        {
+            List<DataSeries> listobject = new List<DataSeries>();
+            List<ViewObj> listtempPupilData = new List<ViewObj>();
+            List<ObjectDetail> foo = new List<ObjectDetail>();
+
+            foreach (var item in dictionary)
+            {
+
+                foo.Add(new ObjectDetail(item.Key, 0));
+
+            }
+
+            double sum = 0.0;
+            List<ObjectDetail> listResultwithPercentage = new List<ObjectDetail>();
+
+
+            foreach (Year iyear in listyear)
+            {
+                //calculate individual school
+                foreach (School item in listSelectedSchool)
+                {
+                    sum = 0.0;
+                    //select primary pupils for selected school
+                    var listResult = listPupilData.Where(x => x.seedcode.ToString().Equals(item.seedcode) && x.year.year.Equals(iyear.year)).ToList();
+
+                    //listResult.AddRange(foo.Where(x => listResult.All(p1 => !p1.code.Equals(x.code))));
+                    
+                    
+                    sum = (double)listResult.Select(r => r.count).Sum(); //include 99
+                    listResultwithPercentage = listResult.Select(y => new ObjectDetail { itemcode = y.code, liststudents = null, count = y.count, percentage = sum != 0 ? (y.count / sum) * 100 : 0 }).ToList();
+
+                    listResultwithPercentage.AddRange(foo.Where(x => listResultwithPercentage.All(p1 => !p1.itemcode.Equals(x.itemcode))));
+
+
+                    listobject.Add(new DataSeries { dataSeriesNames = "EAL", school = item, year = iyear, listdataitems = listResultwithPercentage, checkSumPercentage = (double)listResultwithPercentage.Select(r => r.percentage).Sum(), checkSumCount = (int)listResultwithPercentage.Select(r => r.count).Sum() });
+                }
+
+                // get data for all primary schools
+                sum = 0.0;
+                //select data only this year
+                listtempPupilData = listPupilData.Where(x => x.year.year.Equals(iyear.year)).ToList();
+                var listResultforAll = listtempPupilData.GroupBy(x => x.code).Select(y => new { Code = y.Key.ToString(), list = y.ToList(), count = y.ToList().Count() }).ToList();
+                sum = (double)listResultforAll.Select(r => r.count).Sum();
+                listResultwithPercentage = listResultforAll.Select(y => new ObjectDetail { itemcode = y.Code, liststudents = null, count = y.count, percentage = sum != 0 ? (y.count / sum) * 100 : 0 }).ToList();
+                listobject.Add(new DataSeries { dataSeriesNames = "Stage", school = GetSchoolbyType(schooltype), year = iyear, listdataitems = listResultwithPercentage, checkSumPercentage = (double)listResultwithPercentage.Select(r => r.percentage).Sum(), checkSumCount = (int)listResultwithPercentage.Select(r => r.count).Sum() });
+
+            }
+            return listobject;
+        }
+
+        protected List<DataSeries> GetHistoricViewObjDataSeries(List<ViewObj> listPupilData, List<School> listSelectedSchool, List<Year> listyear, string schooltype)
+        {
+            List<DataSeries> listobject = new List<DataSeries>();
+            List<ViewObj> listtempPupilData = new List<ViewObj>();
+
+            double sum = 0.0;
+            List<ObjectDetail> listResultwithPercentage = new List<ObjectDetail>();
+
+
+            foreach (Year iyear in listyear)
+            {
+                //calculate individual school
+                foreach (School item in listSelectedSchool)
+                {
+                    sum = 0.0;
+                    //select primary pupils for selected school
+                    var listResult = listPupilData.Where(x => x.seedcode.ToString().Equals(item.seedcode) && x.year.year.Equals(iyear.year)).ToList();
+                    sum = (double)listResult.Select(r => r.count).Sum(); //include 99
+                    listResultwithPercentage = listResult.Select(y => new ObjectDetail { itemcode = y.code, liststudents = null, count = y.count, percentage = sum != 0 ? (y.count / sum) * 100 : 0 }).ToList();
+                    listobject.Add(new DataSeries { dataSeriesNames = "Stage", school = item, year = iyear, listdataitems = listResultwithPercentage, checkSumPercentage = (double)listResultwithPercentage.Select(r => r.percentage).Sum(), checkSumCount = (int)listResultwithPercentage.Select(r => r.count).Sum() });
+                }
+
+                // get data for all primary schools
+                sum = 0.0;
+                //select data only this year
+                listtempPupilData = listPupilData.Where(x => x.year.year.Equals(iyear.year)).ToList();
+                var listResultforAll = listtempPupilData.GroupBy(x => x.code).Select(y => new { Code = y.Key.ToString(), list = y.ToList(), count = y.ToList().Count() }).ToList();
+                sum = (double)listResultforAll.Select(r => r.count).Sum();
+                listResultwithPercentage = listResultforAll.Select(y => new ObjectDetail { itemcode = y.Code, liststudents = null, count = y.count, percentage = sum != 0 ? (y.count / sum) * 100 : 0 }).ToList();
+                listobject.Add(new DataSeries { dataSeriesNames = "Stage", school = GetSchoolbyType(schooltype), year = iyear, listdataitems = listResultwithPercentage, checkSumPercentage = (double)listResultwithPercentage.Select(r => r.percentage).Sum(), checkSumCount = (int)listResultwithPercentage.Select(r => r.count).Sum() });
+
+                }
             return listobject;
         }
 
@@ -1582,5 +1847,6 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
 
             return listobject;
         }
+
     }
 }

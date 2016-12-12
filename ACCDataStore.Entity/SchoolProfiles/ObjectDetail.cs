@@ -10,11 +10,29 @@ namespace ACCDataStore.Entity.SchoolProfiles
     public class ObjectDetail: BaseEntity
 
     {
-        public List<StudentObj> liststudents;
-        public string itemcode; // Code 
-        public int count; //length of pupils list
-        public double percentage;
-        public double percentageFemale;
-        public double percentageMale;
+        public List<StudentObj> liststudents { get; set; }
+        public string itemcode { get; set; } // Code 
+        public int count { get; set; } //length of pupils list
+        public double percentage { get; set; }
+        public int schoolroll { get; set; }
+        public double percentageFemale { get; set; }
+        public double percentageMale { get; set; }
+
+        public ObjectDetail(string itemcode, int count)
+        {
+            this.itemcode = itemcode;
+            this.count = 0;
+
+        }
+
+        public ObjectDetail()
+        {
+            this.itemcode = itemcode;
+            this.count = 0;
+
+        }
     }
+
+
+
 }

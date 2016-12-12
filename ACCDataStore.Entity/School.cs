@@ -17,7 +17,6 @@ namespace ACCDataStore.Entity
         public Nullable<DateTime> hmieLastReport { get; set; }
         public int schoolCapacity { get; set; }
 
-
         public School() { }
 
         public School(string seedcode, string name)
@@ -48,5 +47,29 @@ namespace ACCDataStore.Entity
         
         }
 
+        public object GetJson()
+        {
+            return new
+            {
+                SeedCode = this.seedcode,
+                Name = this.name
+            };
+        }
+
+        public object GetSchoolDetailJson()
+        {
+            return new
+            {
+                SeedCode = this.seedcode,
+                Name = this.name,
+                Hmiereport = this.hmie_report,
+                website = this.website_link,
+                Costperpupil = this.costperpupil,
+                hmieLastReport = getHimeReportDate()
+            };
+        }
+
     }
+
+
 }

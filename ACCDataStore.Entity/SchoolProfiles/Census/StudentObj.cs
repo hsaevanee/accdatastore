@@ -62,6 +62,7 @@ namespace ACCDataStore.Entity.SchoolProfiles
         public virtual string MainHomeLanguage { get; set; }
         public virtual string LevelOfEnglish { get; set; }
         public virtual int SIMD_Decile { get; set; }
+
     }
 
     public class SchStudent2008 : StudentObj

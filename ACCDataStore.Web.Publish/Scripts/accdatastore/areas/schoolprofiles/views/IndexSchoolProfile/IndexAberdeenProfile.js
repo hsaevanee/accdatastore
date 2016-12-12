@@ -10,7 +10,7 @@ $(document).ready(function () {
         }],
         buttons: {
             buttons: [
-                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                'copyHtml5', 'csvHtml5', {
                     extend: 'pdfHtml5',
                     orientation: 'portrait',
                     exportOptions: {
@@ -36,7 +36,7 @@ $(document).ready(function () {
         }],
         buttons: {
             buttons: [
-                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                'copyHtml5', 'csvHtml5', {
                     extend: 'pdfHtml5',
                     orientation: 'portrait',
                     exportOptions: {
@@ -61,7 +61,7 @@ $(document).ready(function () {
         }],
         buttons: {
             buttons: [
-                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                'copyHtml5', 'csvHtml5', {
                     extend: 'pdfHtml5',
                     orientation: 'portrait',
                     exportOptions: {
@@ -86,7 +86,7 @@ $(document).ready(function () {
         }],
         buttons: {
             buttons: [
-                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                'copyHtml5','csvHtml5', {
                     extend: 'pdfHtml5',
                     orientation: 'portrait',
                     exportOptions: {
@@ -111,7 +111,7 @@ $(document).ready(function () {
         }],
         buttons: {
             buttons: [
-                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                'copyHtml5', 'csvHtml5', {
                     extend: 'pdfHtml5',
                     orientation: 'portrait',
                     exportOptions: {
@@ -137,7 +137,7 @@ $(document).ready(function () {
         }],
         buttons: {
             buttons: [
-                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                'copyHtml5', 'csvHtml5', {
                     extend: 'pdfHtml5',
                     orientation: 'landscape',
                     exportOptions: {
@@ -163,7 +163,7 @@ $(document).ready(function () {
         }],
         buttons: {
             buttons: [
-                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                'copyHtml5', 'csvHtml5', {
                     extend: 'pdfHtml5',
                     orientation: 'landscape',
                     exportOptions: {
@@ -188,7 +188,7 @@ $(document).ready(function () {
         }],
         buttons: {
             buttons: [
-                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                'copyHtml5', 'csvHtml5', {
                     extend: 'pdfHtml5',
                     orientation: 'portrait',
                     exportOptions: {
@@ -214,7 +214,7 @@ $(document).ready(function () {
         }],
         buttons: {
             buttons: [
-                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                'copyHtml5', 'csvHtml5', {
                     extend: 'pdfHtml5',
                     orientation: 'landscape',
                     exportOptions: {
@@ -240,7 +240,7 @@ $(document).ready(function () {
         }],
         buttons: {
             buttons: [
-                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                'copyHtml5', 'csvHtml5', {
                     extend: 'pdfHtml5',
                     orientation: 'landscape',
                     exportOptions: {

@@ -11,7 +11,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
-using ACCDataStore.Entity.SchoolProfiles.Census;
 using ACCDataStore.Helpers.ORM.Helpers.Security;
 using ACCDataStore.Helpers.ORM;
 
@@ -33,7 +32,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             this.vmIndexPrimarySchoolProfilesModel = new IndexPrimarySchoolProfilesViewModel();
             this.vmIndexSecondarySchoolProfilesModel = new IndexSecondarySchoolProfilesViewModel();
             this.vmIndexSpecialSchoolProfilesModel = new IndexSecondarySchoolProfilesViewModel();
-
+            
         }
 
         // GET: SchoolProfiles/IndexSchoolProfiles
@@ -120,10 +119,11 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 listSelectedSchoolname = templistSchoolname.Where(x => templistSelectedSchoolname.Any(y => y.Contains(x.seedcode))).ToList();
             }
 
-            if (Request["selectedYear"] != null)
+            if (Request["stringYear"] != null)
             {
                 yesrIsSelected = true;
-                string year = Request["selectedYear"].ToString();
+                string year = Request["stringYear"].ToString();
+                vmIndexSecondarySchoolProfilesModel.stringYear = year;
                 selectedYear = templistYears.Where(x => x.year.Contains(year)).FirstOrDefault();
             }
 
@@ -237,10 +237,11 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 listSelectedSchoolname = templistSchoolname.Where(x => templistSelectedSchoolname.Any(y => y.Contains(x.seedcode))).ToList();
             }
 
-            if (Request["selectedYear"] != null)
+            if (Request["stringYear"] != null)
             {
                 yesrIsSelected = true;
-                string year = Request["selectedYear"].ToString();
+                string year = Request["stringYear"].ToString();
+                vmIndexSpecialSchoolProfilesModel.stringYear = year;
                 selectedYear = templistYears.Where(x => x.year.Contains(year)).FirstOrDefault();
             }
 

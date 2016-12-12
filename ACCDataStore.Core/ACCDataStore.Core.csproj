@@ -44,6 +44,7 @@
     <Compile Include="Helper\ConvertHelper.cs" />
     <Compile Include="Helper\DatabaseHelper.cs" />
     <Compile Include="Helper\DateTimeHelper.cs" />
+    <Compile Include="Helper\NumberFormatHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

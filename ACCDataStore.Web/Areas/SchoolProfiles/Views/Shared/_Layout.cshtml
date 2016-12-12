@@ -19,16 +19,24 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     @RenderSection("style", required: false)
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet">
-    <script src="~/Scripts/accdatastore/views/global.js"></script>
-    <script src="~/Scripts/jquery-2.1.1.min.js"></script>
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css">
+    <link rel="stylesheet" href="~/bower_components/angular-ui-select/dist/select.min.css">
+    <link rel="stylesheet" href="~/bower_components/angular-datatables/dist/css/angular-datatables.min.css">
+    <script type="text/javascript" src="~/Scripts/accdatastore/views/global.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
 
     <script type="text/javascript" src="~/bower_components/angular/angular.min.js"></script>
     <script type="text/javascript" src="~/bower_components/angular-sanitize/angular-sanitize.min.js"></script>
     <script type="text/javascript" src="~/bower_components/angular-route/angular-route.min.js"></script>
     <script type="text/javascript" src="~/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
-    @*<script type="text/javascript" src="~/bower_components/highcharts/highcharts.js"></script>
-    <script type="text/javascript" src="~/bower_components/highcharts-ng/dist/highcharts-ng.min.js"></script>*@
+    <script type="text/javascript" src="~/bower_components/angular-ui-select/dist/select.min.js"></script>
+    <script type="text/javascript" src="~/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="~/bower_components/angular-datatables/dist/angular-datatables.min.js"></script> 
+    <script type="text/javascript" src="~/bower_components/highcharts/highcharts.js"></script>
+    <script type="text/javascript" src="~/bower_components/highcharts/highcharts-3d.js"></script>
+    @*<script type="text/javascript" src="~/bower_components/highcharts/modules/exporting.js"></script>*@
+    <script type="text/javascript" src="~/bower_components/highcharts-ng/dist/highcharts-ng.min.js"></script>
     @RenderSection("scripts", required: false)
     <script>
         var sContextPath = '@Url.Content("~")';
@@ -141,19 +149,19 @@
                         <a href="@Url.Action("Index", "IndexSchoolProfiles", new { Area = "SchoolProfiles" }, null)">Home</a>
                     </li>
                     <li>
-                        <a href="@Url.Action("IndexPrimaryProfiles", "IndexPrimaryProfile", new { Area = "SchoolProfiles", sSchoolType = "2" }, null)">Primary Schools</a>
+                        <a href="@Url.Action("Index", "PrimarySchoolProfile", new { Area = "SchoolProfiles"}, null)">Primary Schools</a>
                     </li>
-                    <li>
-                        <a href="@Url.Action("IndexSecondaryProfiles", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "3" }, null)">Secondary Schools</a>
+                    <li>Secondary Schools
+                        @*<a href="@Url.Action("IndexSecondaryProfiles", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "3" }, null)">Secondary Schools</a>*@
                     </li>
-                    <li>
-                        <a href="@Url.Action("IndexSpecialProfiles", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "4" }, null)">Special Schools</a>
+                    <li>Special Schools
+                        @*<a href="@Url.Action("IndexSpecialProfiles", "IndexSchoolProfiles", new { Area = "SchoolProfiles", sSchoolType = "4" }, null)">Special Schools</a>*@
                     </li>
-                    <li>
-                        <a href="@Url.Action("IndexAberdeenProfiles", "IndexAberdeenProfile", new { Area = "SchoolProfiles", sSchoolType = "5" }, null)">Aberdeen City</a>
+                    <li>Aberdeen City
+                        @*<a href="@Url.Action("IndexAberdeenProfiles", "IndexAberdeenProfile", new { Area = "SchoolProfiles", sSchoolType = "5" }, null)">Aberdeen City</a>*@
                     </li>
-                    <li>
-                        <a href="@Url.Action("Index", "IndexInteractiveMap", new { Area = "SchoolProfiles" }, null)">Interactive Map</a>
+                    <li>Interactive Map
+                        @*<a href="@Url.Action("Index", "IndexInteractiveMap", new { Area = "SchoolProfiles" }, null)">Interactive Map</a>*@
                     </li>
                 </ol>
             </div>

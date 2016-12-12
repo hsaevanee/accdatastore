@@ -6,7 +6,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace TS.Core.Helper
+namespace ACCDataStore.Core.Helper
 {
     public class ConvertHelper
     {

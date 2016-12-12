@@ -113,6 +113,11 @@
     <Reference Include="Rotativa">
       <HintPath>..\packages\Rotativa.1.6.4\lib\net40\Rotativa.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -125,6 +130,10 @@
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.2\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Mvc, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -165,12 +174,25 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bower_components\angular-bootstrap\ui-bootstrap-csp.css" />
+    <Content Include="bower_components\angular-bootstrap\ui-bootstrap.min.js" />
+    <Content Include="bower_components\angular-datatables\dist\angular-datatables.min.js" />
+    <Content Include="bower_components\angular-datatables\dist\css\angular-datatables.min.css" />
     <Content Include="bower_components\angular-route\angular-route.min.js" />
     <Content Include="bower_components\angular-sanitize\angular-sanitize.min.js" />
     <Content Include="bower_components\angular-ui-router\release\angular-ui-router.min.js" />
+    <Content Include="bower_components\angular-ui-select\dist\select.min.css" />
+    <Content Include="bower_components\angular-ui-select\dist\select.min.js" />
+    <Content Include="bower_components\angular\angular.js" />
     <Content Include="bower_components\angular\angular.min.js" />
+    <Content Include="bower_components\bootstrap\dist\css\bootstrap.min.css" />
+    <Content Include="bower_components\bootstrap\dist\js\bootstrap.min.js" />
+    <Content Include="bower_components\datatables.net\js\jquery.dataTables.min.js" />
     <Content Include="bower_components\highcharts-ng\dist\highcharts-ng.min.js" />
+    <Content Include="bower_components\highcharts\highcharts-3d.js" />
     <Content Include="bower_components\highcharts\highcharts.js" />
+    <Content Include="bower_components\highcharts\modules\exporting.js" />
+    <Content Include="bower_components\jquery\dist\jquery.min.js" />
     <Content Include="Content\accdatastore\areas\DatahubProfile\views\datahub\datahub.css" />
     <Content Include="Content\accdatastore\areas\nationality\views\nationality\nationality.css" />
     <Content Include="Content\accdatastore\views\global.css" />
@@ -262,6 +284,9 @@
     <Content Include="Images\WIP.jpg" />
     <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\accdatastore\areas\authorisation\Login.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\DataHub\app.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\DataHub\controller.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\DataHub\service.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\ComparisonsIndex.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\CouncilSelector.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\HeatMapIndex.js" />
@@ -294,6 +319,9 @@
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Language\MapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Nationality\MapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Nationality\Nationality.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\PrimarySchool\app.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\PrimarySchool\controller.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\PrimarySchool\service.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\SIMD\SIMD.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\StudentStage\MapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\StudentStage\StudentStage.js" />
@@ -355,6 +383,8 @@
     <Compile Include="Areas\Authorisation\AuthorisationAreaRegistration.cs" />
     <Compile Include="Areas\Authorisation\Controllers\IndexAuthorisationController.cs" />
     <Compile Include="Areas\Authorisation\ViewModels\IndexAuthorisation\IndexViewModel.cs" />
+    <Compile Include="Areas\DatahubProfile\Controllers\BaseDataHubController.cs" />
+    <Compile Include="Areas\DatahubProfile\Controllers\DataHubController.cs" />
     <Compile Include="Areas\DatahubProfile\Controllers\IndexDatahubController.cs" />
     <Compile Include="Areas\DatahubProfile\DatahubProfileAreaRegistration.cs" />
     <Compile Include="Areas\DatahubProfile\Controllers\Helpers\SummaryDataHelperCity.cs" />
@@ -392,6 +422,7 @@
     <Compile Include="Areas\SchoolProfiles\Controllers\IndexInteractiveMapController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\IndexPrimaryProfileController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\IndexSchoolProfilesController.cs" />
+    <Compile Include="Areas\SchoolProfiles\Controllers\PrimarySchoolProfileController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\TestController.cs" />
     <Compile Include="Areas\SchoolProfiles\SchoolProfilesAreaRegistration.cs" />
     <Compile Include="Areas\SchoolProfiles\ViewModels\SchoolProfiles\BaseSchoolProfilesViewModel.cs" />
@@ -564,6 +595,8 @@
     <Content Include="Areas\SchoolProfiles\Views\IndexPrimaryProfile\_showdata.cshtml" />
     <Content Include="Areas\SchoolProfiles\Views\IndexPrimaryProfile\IndexPrimarySchool - Copy.cshtml" />
     <Content Include="Areas\SchoolProfiles\Views\IndexSchoolProfiles\IndexSpecialSchool - Copy.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\PrimarySchoolProfile\Index.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\DataHub\Index.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\About.cshtml" />
@@ -584,6 +617,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Achievement\Models\" />
     <Folder Include="Areas\Authorisation\Models\" />
+    <Folder Include="Areas\DatahubProfile\Views\BaseDataHub\" />
     <Folder Include="Areas\DatahubProfile\Views\IndexDatahub\Map\" />
     <Folder Include="Areas\InsightProfile\Models\" />
     <Folder Include="Areas\Nationality\Models\" />
@@ -600,6 +634,10 @@
     <ProjectReference Include="..\ACCDataStore.Core\ACCDataStore.Core.csproj">
       <Project>{1089dbbb-7b0b-482b-aae0-d40cc98d8d75}</Project>
       <Name>ACCDataStore.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ACCDataStore.Entity.RenderObject\ACCDataStore.Entity.RenderObject.csproj">
+      <Project>{88628c45-bfd4-4ab4-b356-8a7bd1306cab}</Project>
+      <Name>ACCDataStore.Entity.RenderObject</Name>
     </ProjectReference>
     <ProjectReference Include="..\ACCDataStore.Entity\ACCDataStore.Entity.csproj">
       <Project>{8a578ae3-a65b-4ebf-afd0-458c455c408a}</Project>

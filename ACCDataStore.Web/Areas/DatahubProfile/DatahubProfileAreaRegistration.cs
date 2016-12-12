@@ -14,6 +14,8 @@ namespace ACCDataStore.Web.Areas.DatahubProfile
 
         public override void RegisterArea(AreaRegistrationContext context) 
         {
+            context.Routes.MapMvcAttributeRoutes();
+
             context.MapRoute(
                 "DatahubProfile_default",
                 "DatahubProfile/{controller}/{action}/{id}",

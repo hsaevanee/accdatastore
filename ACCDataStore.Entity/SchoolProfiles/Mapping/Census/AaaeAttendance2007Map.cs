@@ -1,4 +1,4 @@
-﻿using ACCDataStore.Entity.SchoolProfiles.Census;
+﻿using ACCDataStore.Entity.SchoolProfiles;
 using FluentNHibernate.Mapping;
 using System;
 using System.Collections.Generic;

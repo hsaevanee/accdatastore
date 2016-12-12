@@ -69,6 +69,17 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
                     
                     return RedirectToAction("Index", "Index", new { Area = "", id = "" });
                 }
+                else if (vmIndex.Username.Equals("UserSchoolProfile", StringComparison.CurrentCultureIgnoreCase) && vmIndex.Password.Equals("schoolprofile", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    // store user session for 'admin' user
+                    var eUsers = new Users();
+                    eUsers.UserID = 1; // just simulate
+                    eUsers.UserName = "UserSchoolProfile";
+                    eUsers.IsAdministrator = true; // 'admin' is admin user
+                    Session["SessionUser"] = eUsers;
+                    //ValidateUser("admin", "admin");
+                    return RedirectToAction("Index", "Index", new { Area = "", id = "" });
+                }
                 else if (vmIndex.Username.Equals("admin", StringComparison.CurrentCultureIgnoreCase) && vmIndex.Password.Equals("adminhatai1232498!", StringComparison.CurrentCultureIgnoreCase))
                 {
                     // store user session for 'admin' user

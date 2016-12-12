@@ -1,5 +1,31 @@
 ﻿
 $(document).ready(function () {
+
+    $('#SchoolRollDatatable').DataTable({
+        dom: 'Bfrtip',
+        paging: false,
+        "order": [],
+        "columnDefs": [{
+            "targets": 'no-sort',
+            "orderable": false,
+        }],
+        buttons: {
+            buttons: [
+                'copyHtml5', 'csvHtml5', {
+                    extend: 'pdfHtml5',
+                    orientation: 'portrait',
+                    exportOptions: {
+                        modifier: {
+                            page: 'current'
+                        }
+                    },
+                    header: true,
+                    title: 'School Roll ' + year
+                }, 'print',
+            ]
+        }
+    });
+
     $('#AttendanceDatatable').DataTable({
         dom: 'Bfrtip',
         paging: false,
@@ -10,7 +36,7 @@ $(document).ready(function () {
         }],
         buttons: {
             buttons: [
-                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                'copyHtml5', 'csvHtml5', {
                     extend: 'pdfHtml5',
                     orientation: 'portrait',
                     exportOptions: {
@@ -36,7 +62,7 @@ $(document).ready(function () {
         }],
         buttons: {
             buttons: [
-                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                'copyHtml5', 'csvHtml5', {
                     extend: 'pdfHtml5',
                     orientation: 'portrait',
                     exportOptions: {
@@ -61,7 +87,7 @@ $(document).ready(function () {
         }],
         buttons: {
             buttons: [
-                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                'copyHtml5', 'csvHtml5', {
                     extend: 'pdfHtml5',
                     orientation: 'portrait',
                     exportOptions: {
@@ -86,7 +112,7 @@ $(document).ready(function () {
         }],
         buttons: {
             buttons: [
-                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                'copyHtml5', 'csvHtml5', {
                     extend: 'pdfHtml5',
                     orientation: 'portrait',
                     exportOptions: {
@@ -111,7 +137,7 @@ $(document).ready(function () {
         }],
         buttons: {
             buttons: [
-                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                'copyHtml5', 'csvHtml5', {
                     extend: 'pdfHtml5',
                     orientation: 'portrait',
                     exportOptions: {
@@ -137,7 +163,7 @@ $(document).ready(function () {
         }],
         buttons: {
             buttons: [
-                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                'copyHtml5', 'csvHtml5', {
                     extend: 'pdfHtml5',
                     orientation: 'landscape',
                     exportOptions: {
@@ -163,7 +189,7 @@ $(document).ready(function () {
         }],
         buttons: {
             buttons: [
-                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                'copyHtml5', 'csvHtml5', {
                     extend: 'pdfHtml5',
                     orientation: 'landscape',
                     exportOptions: {
@@ -188,7 +214,7 @@ $(document).ready(function () {
         }],
         buttons: {
             buttons: [
-                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                'copyHtml5', 'csvHtml5', {
                     extend: 'pdfHtml5',
                     orientation: 'portrait',
                     exportOptions: {
@@ -214,7 +240,7 @@ $(document).ready(function () {
         }],
         buttons: {
             buttons: [
-                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                'copyHtml5', 'csvHtml5', {
                     extend: 'pdfHtml5',
                     orientation: 'landscape',
                     exportOptions: {
@@ -240,7 +266,7 @@ $(document).ready(function () {
         }],
         buttons: {
             buttons: [
-                'copyHtml5', 'excelHtml5', 'csvHtml5', {
+                'copyHtml5', 'csvHtml5', {
                     extend: 'pdfHtml5',
                     orientation: 'landscape',
                     exportOptions: {

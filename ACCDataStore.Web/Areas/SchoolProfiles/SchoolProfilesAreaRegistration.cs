@@ -14,6 +14,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles
 
         public override void RegisterArea(AreaRegistrationContext context) 
         {
+            context.Routes.MapMvcAttributeRoutes();
+
             context.MapRoute(
                 "SchoolProfiles_default",
                 "SchoolProfiles/{controller}/{action}/{id}",

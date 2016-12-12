@@ -61,5 +61,10 @@ namespace ACCDataStore.Entity.SchoolProfiles
         public virtual string KSW2A { get; set; }
         public virtual string KSW3 { get; set; }
         public virtual string cemID { get; set; }
+        public virtual string year { get; set; }
+    }
+
+    public class PIPS : PIPSObj
+    {
     }
 }

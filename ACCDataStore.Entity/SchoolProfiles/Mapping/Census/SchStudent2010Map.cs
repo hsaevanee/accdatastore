@@ -64,6 +64,7 @@ namespace ACCDataStore.Entity.SchoolProfiles.Mapping
             Map(x => x.MainHomeLanguage);
             Map(x => x.LevelOfEnglish);
             Map(x => x.SIMD_Decile);
+
         }
 
 

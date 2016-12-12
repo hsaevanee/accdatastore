@@ -36,7 +36,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         //public ActionResult Index()
         //{
         //    //SetDefaultCounter();
-        //    var eGeneralSettings = TS.Core.Helper.ConvertHelper.XmlFile2Object(HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"), typeof(GeneralCounter)) as GeneralCounter;
+        //    var eGeneralSettings = ACCDataStore.Core.Helper.ConvertHelper.XmlFile2Object(HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"), typeof(GeneralCounter)) as GeneralCounter;
         //    eGeneralSettings.SiteCounter++;
         //    TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
 
@@ -111,9 +111,9 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         public ActionResult Index()
         {
             //SetDefaultCounter();
-            var eGeneralSettings = TS.Core.Helper.ConvertHelper.XmlFile2Object(HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"), typeof(GeneralCounter)) as GeneralCounter;
+            var eGeneralSettings = ACCDataStore.Core.Helper.ConvertHelper.XmlFile2Object(HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"), typeof(GeneralCounter)) as GeneralCounter;
             eGeneralSettings.SiteCounter++;
-            TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
+            ACCDataStore.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
 
             //var vmIndex = new IndexViewModel();
             //var result = this.rpGeneric.FindAll<StudentSIMD>();
@@ -186,9 +186,9 @@ namespace ACCDataStore.Web.Areas.SchoolProfile.Controllers
         public ActionResult Compareable()
         {
             //SetDefaultCounter();
-            var eGeneralSettings = TS.Core.Helper.ConvertHelper.XmlFile2Object(HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"), typeof(GeneralCounter)) as GeneralCounter;
+            var eGeneralSettings = ACCDataStore.Core.Helper.ConvertHelper.XmlFile2Object(HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"), typeof(GeneralCounter)) as GeneralCounter;
             eGeneralSettings.SchProfilepgCounter++;
-            TS.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
+            ACCDataStore.Core.Helper.ConvertHelper.Object2XmlFile(eGeneralSettings, HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"));
 
             var vmIndex2SchoolProfile = new Index2SchoolProfileViewModel();
 
