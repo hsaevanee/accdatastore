@@ -61,7 +61,9 @@
     <Compile Include="ChartData.cs" />
     <Compile Include="DatahubProfile\Entities\AllSchools.cs" />
     <Compile Include="DatahubProfile\Entities\ChartData.cs" />
+    <Compile Include="DatahubProfile\Entities\DatahubCentre.cs" />
     <Compile Include="DatahubProfile\Entities\DataHubData.cs" />
+    <Compile Include="DatahubProfile\Entities\DataSetDate.cs" />
     <Compile Include="DatahubProfile\Entities\GenericData.cs" />
     <Compile Include="DatahubProfile\Entities\PupilsDataHubObj.cs" />
     <Compile Include="DatahubProfile\Entities\SummaryData.cs" />
@@ -87,6 +89,8 @@
     <Compile Include="SchoolProfiles\Census\Entity\NationalityIdentity.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SchoolPIPSTransform.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SchoolPIPSTransformRow.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\SPAttendance.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\SPExclusion.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SPPIPS.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SchoolRoll.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SPInCAS.cs" />

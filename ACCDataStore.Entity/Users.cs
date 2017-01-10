@@ -13,5 +13,7 @@ namespace ACCDataStore.Entity
         public virtual string Password { get; set; }
         public virtual string FullName { get; set; }
         public virtual bool IsAdministrator { get; set; }
+        public virtual bool IsScoolAdministrator { get; set; }
+        public virtual bool IsDataHubAdministrator { get; set; }
     }
 }

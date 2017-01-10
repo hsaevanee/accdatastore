@@ -13,13 +13,40 @@
     @*<script src="~/Scripts/accdatastore/views/global.js"></script>
     <script src="~/Scripts/jquery-2.1.1.min.js"></script>*@
     @*<script src="~/Scripts/highcharts.js"></script>*@
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet">
+    @*<link href="~/Content/bootstrap.min.css" rel="stylesheet">*@
     @*<script src="~/Scripts/accdatastore/views/global.js"></script>*@
-    <script src="~/Scripts/jquery-2.1.1.min.js"></script>
+    @*<script src="~/Scripts/jquery-2.1.1.min.js"></script>
+    <script>
+        var sContextPath = '@Url.Content("~")';
+    </script>*@
+
+    @*@RenderSection("Header")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")*@
+
+    @RenderSection("style", required: false)
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css">
+    <link rel="stylesheet" href="~/bower_components/angular-ui-select/dist/select.min.css">
+    <link rel="stylesheet" href="~/bower_components/angular-datatables/dist/css/angular-datatables.min.css">
+    <script type="text/javascript" src="~/Scripts/accdatastore/views/global.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="~/bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="~/bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+    <script type="text/javascript" src="~/bower_components/angular-route/angular-route.min.js"></script>
+    <script type="text/javascript" src="~/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script type="text/javascript" src="~/bower_components/angular-ui-select/dist/select.min.js"></script>
+    <script type="text/javascript" src="~/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="~/bower_components/angular-datatables/dist/angular-datatables.min.js"></script>
+    <script type="text/javascript" src="~/bower_components/highcharts/highcharts.js"></script>
+    <script type="text/javascript" src="~/bower_components/highcharts/highcharts-3d.js"></script>
+    @*<script type="text/javascript" src="~/bower_components/highcharts/modules/exporting.js"></script>*@
+    <script type="text/javascript" src="~/bower_components/highcharts-ng/dist/highcharts-ng.min.js"></script>
+    @RenderSection("scripts", required: false)
     <script>
         var sContextPath = '@Url.Content("~")';
     </script>
-
     @RenderSection("Header")
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -156,7 +183,7 @@
                         <a href="@Url.Action("IndexHome", "IndexDatahub", new { Area = "DatahubProfile" }, null)">Home</a>
                     </li>
                     <li>
-                        <a href="@Url.Action("ScotlandIndex", "IndexDatahub", new { Area = "DatahubProfile" }, null)">Data</a>
+                        <a href="@Url.Action("Index", "Datahub", new { Area = "DatahubProfile" }, null)">Data</a>
                     </li>
                     @{
                         string council = Session["Council"] as string;
@@ -176,16 +203,16 @@
 
 
                     }
-                    @*<li>
-                        <a href="@Url.Action("MapData", "IndexDatahub", new { Area = "DatahubProfile" }, null)">Interactive Map</a>
+                    <li>Interactive Map
+                        @*<a href="@Url.Action("MapData", "IndexDatahub", new { Area = "DatahubProfile" }, null)">Interactive Map</a>*@
                     </li>
-                    <li>
-                        <a href="@Url.Action("HeatMapData", "IndexDatahub", new { Area = "DatahubProfile", sSchoolName = "" }, null)">Interactive HeatMap</a>
-                    </li>*@
+                    <li>Interactive HeatMap
+                        @*<a href="@Url.Action("HeatMapData", "IndexDatahub", new { Area = "DatahubProfile", sSchoolName = "" }, null)">Interactive HeatMap</a>*@
+                    </li>
                 </ol>
             </div>
         </div>
-        <marquee>Last updated data is 22 July 2016</marquee>
+        <marquee>Last updated data is 22 December 2016</marquee>
     </div>
                 @*<div id="main">
                     <div id="banners">

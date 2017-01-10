@@ -250,6 +250,14 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     //to calculate IEP CSP
                     query = "Select * from summary_simd where schooltype = " + sSchoolType;
                     break;
+                case "attendance":
+                    //to calculate IEP CSP
+                    query = "Select * from summary_attendance where schooltype = " + sSchoolType;
+                    break;
+                case "schoolroll":
+                    //to calculate IEP CSP
+                    query = "Select * from summary_schoolroll where schooltype = " + sSchoolType;
+                    break;
             }
 
             var listtemp = rpGeneric2nd.FindByNativeSQL(query);
@@ -262,7 +270,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     temp.seedcode = itemrow[1].ToString();
                     temp.schooltype = itemrow[2].ToString();
                     temp.code = itemrow[3].ToString();
-                    temp.count = Convert.ToInt16(itemrow[4].ToString());
+                    temp.count = Convert.ToInt32(itemrow[4].ToString());
                     listResult.Add(temp);
                 }
             }

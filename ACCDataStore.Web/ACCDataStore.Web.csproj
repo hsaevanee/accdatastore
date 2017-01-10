@@ -282,6 +282,7 @@
     <Content Include="Images\Skilldevelopmentlogo.png" />
     <Content Include="Images\spinner.gif" />
     <Content Include="Images\WIP.jpg" />
+    <Content Include="Resources\Download\loading.gif" />
     <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\accdatastore\areas\authorisation\Login.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\DataHub\app.js" />
@@ -322,7 +323,13 @@
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\PrimarySchool\app.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\PrimarySchool\controller.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\PrimarySchool\service.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\SecondarySchool\app.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\SecondarySchool\controller.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\SecondarySchool\service.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\SIMD\SIMD.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\SpecialSchool\app.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\SpecialSchool\controller.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\SpecialSchool\service.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\StudentStage\MapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\StudentStage\StudentStage.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\test\app.js" />
@@ -418,11 +425,14 @@
     <Compile Include="Areas\PupilsPopulation\PupilsPopulationAreaRegistration.cs" />
     <Compile Include="Areas\PupilsPopulation\ViewModels\Pupils05\Pupils05Data.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\BaseSchoolProfileController.cs" />
+    <Compile Include="Areas\SchoolProfiles\Controllers\BaseSchoolProfilesController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\IndexAberdeenProfileController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\IndexInteractiveMapController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\IndexPrimaryProfileController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\IndexSchoolProfilesController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\PrimarySchoolProfileController.cs" />
+    <Compile Include="Areas\SchoolProfiles\Controllers\SecondarySchoolProfileController.cs" />
+    <Compile Include="Areas\SchoolProfiles\Controllers\SpecialSchoolProfileController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\TestController.cs" />
     <Compile Include="Areas\SchoolProfiles\SchoolProfilesAreaRegistration.cs" />
     <Compile Include="Areas\SchoolProfiles\ViewModels\SchoolProfiles\BaseSchoolProfilesViewModel.cs" />
@@ -484,7 +494,9 @@
     <Compile Include="Helpers\ORM\TransactionAttribute.cs" />
     <Compile Include="Helpers\ORM\TransactionFilter.cs" />
     <Compile Include="Helpers\Security\AdminAuthenticationAttribute.cs" />
+    <Compile Include="Helpers\Security\DatahubAuthenticationAttribute.cs" />
     <Compile Include="Helpers\Security\GenericAuthenticationAttribute.cs" />
+    <Compile Include="Helpers\Security\SchoolAuthenticationAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\IndexViewModel.cs" />
   </ItemGroup>
@@ -597,6 +609,8 @@
     <Content Include="Areas\SchoolProfiles\Views\IndexSchoolProfiles\IndexSpecialSchool - Copy.cshtml" />
     <Content Include="Areas\SchoolProfiles\Views\PrimarySchoolProfile\Index.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\DataHub\Index.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\SecondarySchoolProfile\Index.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\SpecialSchoolProfile\Index.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\About.cshtml" />
@@ -623,6 +637,7 @@
     <Folder Include="Areas\Nationality\Models\" />
     <Folder Include="Areas\PupilsPopulation\Models\" />
     <Folder Include="Areas\SchoolProfiles\Models\" />
+    <Folder Include="Areas\SchoolProfiles\Views\BaseSchoolProfiles\" />
     <Folder Include="Areas\SchoolProfiles\Views\BaseSchoolProfile\" />
     <Folder Include="Areas\SchoolProfile\Models\" />
     <Folder Include="Areas\SchoolRollForecast\Models\" />

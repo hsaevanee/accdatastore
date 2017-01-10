@@ -23,7 +23,8 @@ namespace ACCDataStore.Entity.Mapping.MSAccess
             Map(x => x.gender);
             Map(x => x.award2013);
             Map(x => x.award2014);
-            Map(x => x.award2015);      
+            Map(x => x.award2015);
+            Map(x => x.award2016);  
         }
     }
 }

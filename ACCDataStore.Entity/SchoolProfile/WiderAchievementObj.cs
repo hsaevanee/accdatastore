@@ -19,6 +19,7 @@ namespace ACCDataStore.Entity.SchoolProfile
         public virtual int award2013 { get; set; }
         public virtual int award2014 { get; set; }
         public virtual int award2015 { get; set; }
+        public virtual int award2016 { get; set; }
 
     }
 }

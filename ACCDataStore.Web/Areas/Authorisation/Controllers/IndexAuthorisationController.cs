@@ -69,13 +69,28 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
                     
                     return RedirectToAction("Index", "Index", new { Area = "", id = "" });
                 }
-                else if (vmIndex.Username.Equals("UserSchoolProfile", StringComparison.CurrentCultureIgnoreCase) && vmIndex.Password.Equals("schoolprofile", StringComparison.CurrentCultureIgnoreCase))
+                else if (vmIndex.Username.Equals("useracademic", StringComparison.CurrentCultureIgnoreCase) && vmIndex.Password.Equals("accschools3241", StringComparison.CurrentCultureIgnoreCase))
                 {
                     // store user session for 'admin' user
                     var eUsers = new Users();
                     eUsers.UserID = 1; // just simulate
-                    eUsers.UserName = "UserSchoolProfile";
-                    eUsers.IsAdministrator = true; // 'admin' is admin user
+                    eUsers.UserName = "useracademic";
+                    eUsers.IsScoolAdministrator = true; // 'admin' is admin user
+                    eUsers.IsAdministrator = false;
+                    eUsers.IsDataHubAdministrator = false;
+                    Session["SessionUser"] = eUsers;
+                    //ValidateUser("admin", "admin");
+                    return RedirectToAction("Index", "Index", new { Area = "", id = "" });
+                }
+                else if (vmIndex.Username.Equals("userdatahub", StringComparison.CurrentCultureIgnoreCase) && vmIndex.Password.Equals("accdatahub4787", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    // store user session for 'admin' user
+                    var eUsers = new Users();
+                    eUsers.UserID = 1; // just simulate
+                    eUsers.UserName = "userdatahub";
+                    eUsers.IsScoolAdministrator = false; // 'admin' is admin user
+                    eUsers.IsAdministrator = false;
+                    eUsers.IsDataHubAdministrator = true;
                     Session["SessionUser"] = eUsers;
                     //ValidateUser("admin", "admin");
                     return RedirectToAction("Index", "Index", new { Area = "", id = "" });
@@ -86,7 +101,9 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
                     var eUsers = new Users();
                     eUsers.UserID = 1; // just simulate
                     eUsers.UserName = "admin";
-                    eUsers.IsAdministrator = true; // 'admin' is admin user
+                    eUsers.IsScoolAdministrator = true; // 'admin' is admin user
+                    eUsers.IsAdministrator = true;
+                    eUsers.IsDataHubAdministrator = true;
                     Session["SessionUser"] = eUsers;
                     //ValidateUser("admin", "admin");
                     return RedirectToAction("Index", "Index", new { Area = "", id = "" });

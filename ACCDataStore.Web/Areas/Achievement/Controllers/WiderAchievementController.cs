@@ -142,6 +142,7 @@ namespace ACCDataStore.Web.Areas.Achievement.Controllers
                                 award2013 = x.Sum(y => y.award2013),
                                 award2014 = x.Sum(y => y.award2014),
                                 award2015 = x.Sum(y => y.award2015),
+                                award2016 = x.Sum(y => y.award2016),
                             }).ToList();
 
                         }
@@ -213,6 +214,7 @@ namespace ACCDataStore.Web.Areas.Achievement.Controllers
                     award2013 = x.Sum(y => y.award2013),
                     award2014 = x.Sum(y => y.award2014),
                     award2015 = x.Sum(y => y.award2015),
+                    award2016 = x.Sum(y => y.award2016),
                 }).ToList();
 
             }
@@ -305,6 +307,7 @@ namespace ACCDataStore.Web.Areas.Achievement.Controllers
             dtResult.Columns.Add("2013-2014", typeof(double));
             dtResult.Columns.Add("2014-2015", typeof(double));
             dtResult.Columns.Add("2015-2016", typeof(double));
+            dtResult.Columns.Add("2016-2017", typeof(double));
 
             var transformObject = new
             {
@@ -316,6 +319,7 @@ namespace ACCDataStore.Web.Areas.Achievement.Controllers
                 Col6 = listWiderAchievementData.Select(x => x.award2013).ToList(),
                 Col7 = listWiderAchievementData.Select(x => x.award2014).ToList(),
                 Col8 = listWiderAchievementData.Select(x => x.award2015).ToList(),
+                Col9 = listWiderAchievementData.Select(x => x.award2016).ToList(),
             };
 
             for (var i = 0; i < listWiderAchievementData.Count; i++)
@@ -328,7 +332,8 @@ namespace ACCDataStore.Web.Areas.Achievement.Controllers
                     transformObject.Col5[i],
                     transformObject.Col6[i],
                     transformObject.Col7[i],
-                    transformObject.Col8[i]
+                    transformObject.Col8[i],
+                    transformObject.Col9[i]
                     );
             }
             return dtResult;
@@ -338,7 +343,7 @@ namespace ACCDataStore.Web.Areas.Achievement.Controllers
         {
             var workbook = new XLWorkbook();
             var worksheet = workbook.Worksheets.Add("Sheet 1");
-            worksheet.Cell("A1").Value = "Wider Achievement Framework Data 2013-2015"; // use cell address in range
+            worksheet.Cell("A1").Value = "Wider Achievement Framework Data 2013-2016"; // use cell address in range
             worksheet.Cell("A1").Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
             worksheet.Range("A1:H1").Merge();
             worksheet.Cell("D2").Value = "Citywide Totals";
