@@ -44,6 +44,27 @@ namespace ACCDataStore.Entity
                     case "2016":
                         this.academicyear = "2016/17";
                         break;
+                    case "2017":
+                        this.academicyear = "2017/18";
+                        break;
+                    case "2018":
+                        this.academicyear = "2018/19";
+                        break;
+                    case "2019":
+                        this.academicyear = "2019/20";
+                        break;
+                    case "2020":
+                        this.academicyear = "2020/21";
+                        break;
+                    case "2021":
+                        this.academicyear = "2021/22";
+                        break;
+                    case "2022":
+                        this.academicyear = "2022/23";
+                        break;
+                    case "2023":
+                        this.academicyear = "2023/24";
+                        break;
                 }
             }
         }

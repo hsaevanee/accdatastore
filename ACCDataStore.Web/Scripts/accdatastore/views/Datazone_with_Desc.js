@@ -1,4 +1,4 @@
-﻿var datazonejsondata = {
+﻿{
     "type": "FeatureCollection",
     "features": [
         {

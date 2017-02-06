@@ -23,6 +23,11 @@
 
     //}
 
+    $scope.doTabClick = function () {
+        $timeout(function () {
+            $scope.$broadcast('highchartsng.reflow');
+        }, 10);
+    }
 
     $scope.doGetData = function () {
         var listSeedCode = [];

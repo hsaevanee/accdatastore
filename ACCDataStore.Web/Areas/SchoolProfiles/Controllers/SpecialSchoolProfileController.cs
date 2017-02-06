@@ -1,6 +1,9 @@
 ﻿using ACCDataStore.Core.Helper;
 using ACCDataStore.Entity;
+using ACCDataStore.Entity.RenderObject.Charts.SplineCharts;
 using ACCDataStore.Entity.SchoolProfiles.Census.Entity;
+using ACCDataStore.Helpers.ORM;
+using ACCDataStore.Helpers.ORM.Helpers.Security;
 using ACCDataStore.Repository;
 using Common.Logging;
 using System;
@@ -22,6 +25,9 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             this.rpGeneric2nd = rpGeneric2nd;
         }
 
+
+        [SchoolAuthentication]
+        [Transactional]
         // GET: SchoolProfiles/SpecialSchool
         public ActionResult Index()
         {
@@ -56,6 +62,9 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             }
         }
 
+
+        [SchoolAuthentication]
+        [Transactional]
         [HttpGet]
         [Route("SchoolProfiles/SpecialSchoolProfile/GetData")]
         public JsonResult GetData([System.Web.Http.FromUri] List<string> listSeedCode, [System.Web.Http.FromUri] string sYear) // get selected list of school's id
@@ -119,8 +128,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 tempSchool.SchoolRollForecast = GetSchoolRollForecastData(rpGeneric2nd, school);
                 tempSchool.listSIMD = GetHistoricalSIMDData(rpGeneric2nd, sSchoolType, school.seedcode, listYear);
                 tempSchool.SIMD = tempSchool.listSIMD.Where(x => x.YearInfo.year.Equals("2016")).FirstOrDefault();
-                //tempSchool.listFSM = GetHistoricalFSMData(school.seedcode);
-                //tempSchool.FSM = tempSchool.listFSM.Where(x => x.year.year.Equals("2016")).FirstOrDefault();
+                tempSchool.listFSM = GetHistoricalFSMDataSpecial(rpGeneric2nd, school.seedcode, listYear);
+                tempSchool.FSM = tempSchool.listFSM.Where(x => x.year.year.Equals(selectedyear.year)).FirstOrDefault();
                 tempSchool.listStudentNeed = GetHistoricalStudentNeed(rpGeneric2nd, sSchoolType, school.seedcode, tempSchool.SchoolRoll, listYear);
                 tempSchool.StudentNeed = tempSchool.listStudentNeed.Where(x => x.year.year.Equals(selectedyear.year)).FirstOrDefault();
                 tempSchool.listAttendance = GetHistoricalAttendanceData(rpGeneric2nd, sSchoolType, school, listYear);
@@ -162,8 +171,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             if (school.seedcode.Equals("1002"))
             {
 
-                string tablename = "sch_student_t_" + year.year;
-                var listResult = rpGeneric2nd.FindByNativeSQL("Select 000 as total,  count(*) from " + tablename + " where Studentstatus = 01 and schooltype=4");
+                var listResult = rpGeneric2nd.FindByNativeSQL("Select 000 as total, sum(Count) from summary_schoolroll where schooltype=4 and year = " + year.year);
                 if (listResult != null)
                 {
                     foreach (var itemRow in listResult)
@@ -182,9 +190,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             }
             else
             {
-
-                string tablename = "sch_student_t_" + year.year;
-                var listResult = rpGeneric2nd.FindByNativeSQL("Select 000 as total, count(*) from " + tablename + " where Studentstatus = 01 and schooltype=4 and seedcode =" + school.seedcode);
+                var listResult = rpGeneric2nd.FindByNativeSQL("Select 000 as total, sum(Count) from summary_schoolroll where schooltype=4 and year = " + year.year + " and seedcode =" + school.seedcode);
                 if (listResult != null)
                 {
                     foreach (var itemRow in listResult)
@@ -205,5 +211,83 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
 
             return SchoolRoll;
         }
+
+        //Get SchoolRoll data
+        private new SPSchoolRollForecast GetSchoolRollForecastData(IGenericRepository2nd rpGeneric2nd, School school)
+        {
+
+            SPSchoolRollForecast SchoolRollForecast = new SPSchoolRollForecast();
+            List<GenericSchoolData> tempdataActualnumber = new List<GenericSchoolData>();
+
+            //get actual number 
+            var listResult = rpGeneric2nd.FindByNativeSQL("Select * from summary_schoolroll where seedcode = " + school.seedcode);
+            if (listResult != null)
+            {
+                foreach (var itemRow in listResult)
+                {
+                    if (itemRow != null)
+                    {
+                        tempdataActualnumber.Add(new GenericSchoolData(new Year(itemRow[0].ToString()).academicyear, NumberFormatHelper.ConvertObjectToFloat(itemRow[4])));
+                    }
+                }
+            }
+
+            SchoolRollForecast.ListActualSchoolRoll = tempdataActualnumber;
+
+            return SchoolRollForecast;
+        }
+
+        // SchoolRoll Forecast Chart
+        private new SplineCharts GetChartSchoolRollForecast(List<SPSchool> listSchool) // query from database and return charts object
+        {
+
+            var eSplineCharts = new SplineCharts();
+            eSplineCharts.SetDefault(false);
+            eSplineCharts.title.text = " School Roll ";
+            eSplineCharts.yAxis.title.text = "Number of Pupils";
+            eSplineCharts.series = new List<ACCDataStore.Entity.RenderObject.Charts.SplineCharts.series>();
+            //finding subject index to query data from list
+
+            if (listSchool != null && listSchool.Count > 0)
+            {
+                eSplineCharts.xAxis.categories = listSchool[0].SchoolRollForecast.ListActualSchoolRoll.Select(x => x.Code).ToList(); // year on xAxis
+                eSplineCharts.yAxis.title = new Entity.RenderObject.Charts.Generic.title() { text = "Number of Pupils" };
+
+                foreach (var eSchool in listSchool)
+                {
+                    if (!eSchool.SeedCode.Equals("1002"))
+                    {
+                        var listSeriesActual = eSchool.SchoolRollForecast.ListActualSchoolRoll.Select(x => float.Parse(x.sPercent) == 0 ? null : (float?)float.Parse(x.sPercent)).ToList();
+
+                        eSplineCharts.series.Add(new ACCDataStore.Entity.RenderObject.Charts.SplineCharts.series()
+                        {
+                            name = eSchool.SchoolName,
+                            color = "#24CBE5",
+                            lineWidth = 2,
+                            data = listSeriesActual,
+                            visible = true
+                        });
+
+                    }
+
+
+                }
+            }
+
+            eSplineCharts.plotOptions.spline.marker = new ACCDataStore.Entity.RenderObject.Charts.Generic.marker()
+            {
+                enabled = true
+            };
+
+            eSplineCharts.options.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
+            {
+                enabled = true,
+                filename = "export"
+            };
+            //eSplineCharts.options.chart.options3d = new Entity.RenderObject.Charts.Generic.options3d() { enabled = true, alpha = 10, beta = 10 }; // enable 3d charts
+
+            return eSplineCharts;
+        }
+
     }
 }

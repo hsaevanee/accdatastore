@@ -41,7 +41,7 @@
     <script type="text/javascript" src="~/bower_components/angular-datatables/dist/angular-datatables.min.js"></script>
     <script type="text/javascript" src="~/bower_components/highcharts/highcharts.js"></script>
     <script type="text/javascript" src="~/bower_components/highcharts/highcharts-3d.js"></script>
-    @*<script type="text/javascript" src="~/bower_components/highcharts/modules/exporting.js"></script>*@
+    <script type="text/javascript" src="~/bower_components/ngmap/build/scripts/ng-map.min.js"></script>
     <script type="text/javascript" src="~/bower_components/highcharts-ng/dist/highcharts-ng.min.js"></script>
     @RenderSection("scripts", required: false)
     <script>
@@ -92,26 +92,14 @@
                             <li>
                                 <a href="@Url.Action("Index", "IndexSchoolProfiles", new { Area = "SchoolProfiles" }, null)">School Profile</a>
                             </li>
-                            @*<li>
-                <a href="@Url.Action("Index", "InsightProfile", new { Area = "InsightProfile" }, null)">Insight Data</a>
-            </li>*@
                             <li>
                                 <a href="@Url.Action("IndexHome", "IndexDatahub", new { Area = "DatahubProfile" }, null)">DataHub Data</a>
                             </li>
                             <li>
                                 <a href="@Url.Action("IndexHome", "WiderAchievement", new { Area = "Achievement" }, null)">Achievement Data</a>
                             </li>
-                            @*<li>
-                                <a href="@Url.Action("IndexHome", "IndexPupilsPopulation", new { Area = "PupilsPopulation" }, null)">Pupils Population</a>
-                            </li>*@
                         </ul>
-                   </li>
-                    @*<li>
-                        <a href="@Url.Action("Index", "Index", new { Area = "", id = "about" }, null)">About</a>
-                    </li>*@
-                    @*<li>
-                            <a href="@Url.Action("Index", "Index", new { Area = "", id = "theTeam" }, null)">The Team</a>
-                        </li>*@
+                    </li>
                     <li>
                         <a href="@Url.Action("Index", "Index", new {  Area = "" ,id = "datacentre" }, null)">Data Centre</a>
                     </li>
@@ -172,7 +160,7 @@
                          }
                          else
                          {
-                            <span>Scotland</span>
+                            <span>Aberdeen City</span>
                          }
                     }Wide
                 </small>
@@ -203,8 +191,8 @@
 
 
                     }
-                    <li>Interactive Map
-                        @*<a href="@Url.Action("MapData", "IndexDatahub", new { Area = "DatahubProfile" }, null)">Interactive Map</a>*@
+                    <li>
+                        <a href="@Url.Action("Index", "Map", new { Area = "DatahubProfile" }, null)">Interactive Map</a>
                     </li>
                     <li>Interactive HeatMap
                         @*<a href="@Url.Action("HeatMapData", "IndexDatahub", new { Area = "DatahubProfile", sSchoolName = "" }, null)">Interactive HeatMap</a>*@
@@ -212,7 +200,7 @@
                 </ol>
             </div>
         </div>
-        <marquee>Last updated data is 22 December 2016</marquee>
+        <marquee>Last updated data is 25 January 2017</marquee>
     </div>
                 @*<div id="main">
                     <div id="banners">

@@ -193,8 +193,11 @@
     <Content Include="bower_components\highcharts\highcharts.js" />
     <Content Include="bower_components\highcharts\modules\exporting.js" />
     <Content Include="bower_components\jquery\dist\jquery.min.js" />
+    <Content Include="bower_components\ngmap\build\scripts\ng-map.js" />
+    <Content Include="bower_components\ngmap\build\scripts\ng-map.min.js" />
     <Content Include="Content\accdatastore\areas\DatahubProfile\views\datahub\datahub.css" />
     <Content Include="Content\accdatastore\areas\nationality\views\nationality\nationality.css" />
+    <Content Include="Content\accdatastore\areas\SchoolProfiles\SchoolProfile.css" />
     <Content Include="Content\accdatastore\views\global.css" />
     <Content Include="Content\bootstrap-multiselect.css" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -298,10 +301,16 @@
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\MapMain.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\Pupilslist.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Indexdatahub\ScotlandIndexMain.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Map\app.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Map\controller.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Map\service.js" />
     <Content Include="Scripts\accdatastore\areas\insightprofile\views\benchmarkmeasure\IndexLeaver.js" />
     <Content Include="Scripts\accdatastore\areas\insightprofile\views\benchmarkmeasure\MapLeaverDestinationIndex.js" />
     <Content Include="Scripts\accdatastore\areas\nationality\views\nationality\nationality.js" />
     <Content Include="Scripts\accdatastore\areas\pupilspopulation\views\population\HeatMapIndex.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\CitySchool\app.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\CitySchool\controller.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\CitySchool\service.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Curriculum\Curriculum.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Curriculum\MapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\EthnicBackground\EthnicBackground.js" />
@@ -393,6 +402,7 @@
     <Compile Include="Areas\DatahubProfile\Controllers\BaseDataHubController.cs" />
     <Compile Include="Areas\DatahubProfile\Controllers\DataHubController.cs" />
     <Compile Include="Areas\DatahubProfile\Controllers\IndexDatahubController.cs" />
+    <Compile Include="Areas\DatahubProfile\Controllers\MapController.cs" />
     <Compile Include="Areas\DatahubProfile\DatahubProfileAreaRegistration.cs" />
     <Compile Include="Areas\DatahubProfile\Controllers\Helpers\SummaryDataHelperCity.cs" />
     <Compile Include="Areas\DatahubProfile\Controllers\Helpers\SummaryDataHelper.cs" />
@@ -426,6 +436,7 @@
     <Compile Include="Areas\PupilsPopulation\ViewModels\Pupils05\Pupils05Data.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\BaseSchoolProfileController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\BaseSchoolProfilesController.cs" />
+    <Compile Include="Areas\SchoolProfiles\Controllers\CitySchoolProfileController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\IndexAberdeenProfileController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\IndexInteractiveMapController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\IndexPrimaryProfileController.cs" />
@@ -611,6 +622,8 @@
     <Content Include="Areas\DatahubProfile\Views\DataHub\Index.cshtml" />
     <Content Include="Areas\SchoolProfiles\Views\SecondarySchoolProfile\Index.cshtml" />
     <Content Include="Areas\SchoolProfiles\Views\SpecialSchoolProfile\Index.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\CitySchoolProfile\Index.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\Map\Index.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\About.cshtml" />

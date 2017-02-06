@@ -14,6 +14,7 @@ namespace ACCDataStore.Helpers.ORM.Helpers.Security
     {
         public void OnAuthentication(AuthenticationContext filterContext)
         {
+
             var eUsers = filterContext.HttpContext.Session["SessionUser"] as Users;
             if (eUsers != null && eUsers.IsDataHubAdministrator)
             {
@@ -24,9 +25,10 @@ namespace ACCDataStore.Helpers.ORM.Helpers.Security
                 // no right access, return to login page
                 if (filterContext.HttpContext.Request.IsAjaxRequest())
                 {
-                    filterContext.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    filterContext.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;  //401
                     filterContext.HttpContext.Response.SuppressFormsAuthenticationRedirect = true;
                     filterContext.HttpContext.Response.End();
+                     
                 }
                 else
                 {

@@ -1,0 +1,44 @@
+﻿@section Header {
+    @*<link rel="stylesheet" href="~/Content/accds/areas/school_profiles/primary_school/index.css" />*@
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/datahubprofile/views/Map/app.js"></script>
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/datahubprofile/views/Map/controller.js"></script>
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/datahubprofile/views/Map/service.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDryCUbMmTBoPQ2o0FsBDg6OnvlFsnCU4Q"></script>
+    <script src="~/Scripts/accdatastore/views/Neighbourhoods.js"></script>
+    <style>
+        #map {
+            height: 420px;
+            width: 70%;
+        }
+
+        .infoWindowContent {
+            font-size: 14px !important;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
+    </style>
+}
+
+
+<div ng-app="MapApp">
+    <div ui-view>
+    </div>
+
+    <script id="templates/index.html" type="text/ng-template">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12" align="left">
+                    <div id="map">
+                    </div>
+                    <div id="class" ng-repeat="marker in markers | orderBy : 'title'">
+                        <a href="#" ng-click="openInfoWindow($event, marker)">{{marker.title}}</a>
+                    </div>
+
+                </div>
+            </div>
+         </div>
+    
+
+    </script>
+
+</div>
