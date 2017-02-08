@@ -6,9 +6,11 @@ using ACCDataStore.Entity.SchoolProfiles;
 using ACCDataStore.Entity.SchoolProfiles.Census.Entity;
 using ACCDataStore.Repository;
 using ACCDataStore.Web.Controllers;
+using ClosedXML.Excel;
 using Common.Logging;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -2001,5 +2003,88 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
 
             return listFSM.OrderBy(x => x.year.year).ToList();
         }
+
+        protected string[] ExportDataToXLSX(string tablename, List<SPSchool> listSchool)
+        {
+            var workbook = new XLWorkbook();
+            var dtNow = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+ 
+           // var dtResult = ProcessExportDataFormat(listReportData, listDeviceParams, nAggregateType, eUserDataTableHdr);
+
+            var sWorksheetName = "test";
+            var worksheet = workbook.Worksheets.Add(sWorksheetName);
+
+            worksheet.Cell(1, 1).Value = "Test";
+            //worksheet.Cell(2, 1).Value = eDeviceList.NameWithDesc;
+            //worksheet.Cell(3, 1).Value = sDateTimeFrom + " - " + sDateTimeTo + " " + "[" + GetEnumDescription((AGGREGATE_TYPE)nAggregateType) + "]";
+            //worksheet.Cell(4, 1).InsertTable(dtResult);
+
+            //var nLastCellColumn = dtResult.Columns.Count;
+            //worksheet.Range(1, 1, 1, nLastCellColumn).Merge();
+            //worksheet.Range(2, 1, 2, nLastCellColumn).Merge();
+            //worksheet.Range(3, 1, 3, nLastCellColumn).Merge();
+            //worksheet.Range(4, 1, 4, nLastCellColumn).Merge();
+
+            //worksheet.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+            //worksheet.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+
+            worksheet.Tables.FirstOrDefault().ShowAutoFilter = false;
+            worksheet.Rows().AdjustToContents();
+            worksheet.Columns().AdjustToContents();
+
+            var sFileName = "test.xlsx";
+            var sFilePath = HttpContext.Server.MapPath(@"~\download\" + sFileName);
+            workbook.SaveAs(sFilePath);
+
+            return new string[] { "download/" + sFileName, sFileName };
+        }
+
+        //private DataTable ProcessExportDataFormat(IList<object[]> listData, IList<DeviceParams> listDeviceParams, int nAggregateType, UserDataTableHdr eUserDataTableHdr)
+        //{
+        //    var dataResult = new DataTable();
+        //    try
+        //    {
+        //        if (listData != null && listData.Count > 0)
+        //        {
+        //            var dicDIColumn = new Dictionary<int, DeviceParams>();
+        //            if (listDeviceParams != null && listDeviceParams.Count > 0)
+        //            {
+        //                var dicDeviceParams = Session["SessionDicDeviceParams"] as Dictionary<string, DeviceParams>;
+        //                for (var i = 0; i < listDeviceParams.Count + 1; i++)
+        //                {
+        //                    dataResult.Columns.Add(i == 0 ? "Date Time" : listDeviceParams[i - 1].FldName);
+        //                }
+        //            }
+        //            else
+        //            {
+        //                foreach (var itemColumn in listData[0])
+        //                {
+        //                    dataResult.Columns.Add();
+        //                }
+        //            }
+        //            foreach (var oRow in listData)
+        //            {
+        //                // date time
+        //                oRow[0] = ProcessDataFormatDateTime(Convert.ToDateTime(oRow[0]), nAggregateType, eUserDataTableHdr);
+        //                dataResult.Rows.Add(oRow);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            if (listDeviceParams != null && listDeviceParams.Count > 0)
+        //            {
+        //                for (var i = 0; i < listDeviceParams.Count + 1; i++)
+        //                {
+        //                    dataResult.Columns.Add(i == 0 ? "Date Time" : listDeviceParams[i - 1].FldName);
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        log.Error(ex, ex.Message);
+        //    }
+        //    return dataResult;
+        //}
     }
 }

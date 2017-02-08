@@ -188,6 +188,7 @@
     <Content Include="bower_components\bootstrap\dist\css\bootstrap.min.css" />
     <Content Include="bower_components\bootstrap\dist\js\bootstrap.min.js" />
     <Content Include="bower_components\datatables.net\js\jquery.dataTables.min.js" />
+    <Content Include="bower_components\highcharts-ng\dist\highcharts-ng.js" />
     <Content Include="bower_components\highcharts-ng\dist\highcharts-ng.min.js" />
     <Content Include="bower_components\highcharts\highcharts-3d.js" />
     <Content Include="bower_components\highcharts\highcharts.js" />
