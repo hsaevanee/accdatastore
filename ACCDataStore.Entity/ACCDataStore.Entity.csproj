@@ -73,9 +73,11 @@
     <Compile Include="DatahubProfile\Mappings\DatahubDataGlasgowMap.cs" />
     <Compile Include="DatahubProfile\Mappings\PupilsDataHubMap.cs" />
     <Compile Include="DatahubProfile\Mappings\SummaryDataMap.cs" />
+    <Compile Include="Mapping\RightMp.cs" />
     <Compile Include="MonthOnMonthOverview\Models\MonthOnMonthObj.cs" />
     <Compile Include="Mapping\MSAccess\SchoolProfiles\EnglishLevelMap.cs" />
     <Compile Include="Mapping\MSAccess\SchoolProfiles\NationalIdentityMap.cs" />
+    <Compile Include="PupilsPopulation\ERCentre.cs" />
     <Compile Include="SchoolProfiles\CensusObj.cs" />
     <Compile Include="SchoolProfiles\Census\AaeAttendanceObj.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\BaseSchoolProfile.cs" />
@@ -89,8 +91,10 @@
     <Compile Include="SchoolProfiles\Census\Entity\NationalityIdentity.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SchoolPIPSTransform.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SchoolPIPSTransformRow.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\SPCfElevel.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SPAttendance.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SPExclusion.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\SPMiDYIS.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SPPIPS.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SchoolRoll.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SPInCAS.cs" />

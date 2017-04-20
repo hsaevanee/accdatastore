@@ -188,12 +188,13 @@
     <Content Include="bower_components\bootstrap\dist\css\bootstrap.min.css" />
     <Content Include="bower_components\bootstrap\dist\js\bootstrap.min.js" />
     <Content Include="bower_components\datatables.net\js\jquery.dataTables.min.js" />
-    <Content Include="bower_components\highcharts-ng\dist\highcharts-ng.js" />
+    <Content Include="bower_components\file-saver\FileSaver.js" />
     <Content Include="bower_components\highcharts-ng\dist\highcharts-ng.min.js" />
     <Content Include="bower_components\highcharts\highcharts-3d.js" />
     <Content Include="bower_components\highcharts\highcharts.js" />
     <Content Include="bower_components\highcharts\modules\exporting.js" />
     <Content Include="bower_components\jquery\dist\jquery.min.js" />
+    <Content Include="bower_components\json-export-excel\dest\json-export-excel.js" />
     <Content Include="bower_components\ngmap\build\scripts\ng-map.js" />
     <Content Include="bower_components\ngmap\build\scripts\ng-map.min.js" />
     <Content Include="Content\accdatastore\areas\DatahubProfile\views\datahub\datahub.css" />
@@ -308,6 +309,9 @@
     <Content Include="Scripts\accdatastore\areas\insightprofile\views\benchmarkmeasure\IndexLeaver.js" />
     <Content Include="Scripts\accdatastore\areas\insightprofile\views\benchmarkmeasure\MapLeaverDestinationIndex.js" />
     <Content Include="Scripts\accdatastore\areas\nationality\views\nationality\nationality.js" />
+    <Content Include="Scripts\accdatastore\areas\pupilspopulation\views\earlylearningchildcare\map-index\app.js" />
+    <Content Include="Scripts\accdatastore\areas\pupilspopulation\views\earlylearningchildcare\map-index\controller.js" />
+    <Content Include="Scripts\accdatastore\areas\pupilspopulation\views\earlylearningchildcare\map-index\service.js" />
     <Content Include="Scripts\accdatastore\areas\pupilspopulation\views\population\HeatMapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\CitySchool\app.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\CitySchool\controller.js" />
@@ -333,6 +337,9 @@
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\PrimarySchool\app.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\PrimarySchool\controller.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\PrimarySchool\service.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Query\app.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Query\controller.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Query\service.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\SecondarySchool\app.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\SecondarySchool\controller.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\SecondarySchool\service.js" />
@@ -361,7 +368,7 @@
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\StudentStage\StudentStage.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\WiderAchievement\IndexWiderAchievement.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\WiderAchievement\MapIndex.js" />
-    <Content Include="Scripts\accdatastore\areas\ScrumHub\Views\scrum_charts.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\ScrumHub\Views\scrum_charts.js" />
     <Content Include="Scripts\accdatastore\areas\widerAchievement\IndexWiderAchievement.js" />
     <Content Include="Scripts\accdatastore\areas\widerAchievement\MapIndex.js" />
     <Content Include="Scripts\accdatastore\views\DZGlasgow.js" />
@@ -432,6 +439,7 @@
     <Compile Include="Areas\Nationality\NationalityAreaRegistration.cs" />
     <Compile Include="Areas\Nationality\ViewModels\IndexNationality\IndexViewModel.cs" />
     <Compile Include="Areas\Nationality\ViewModels\Nationality\NationalityViewModel.cs" />
+    <Compile Include="Areas\PupilsPopulation\Controllers\EarlyLearningChildCareController.cs" />
     <Compile Include="Areas\PupilsPopulation\Controllers\IndexPupilsPopulationController.cs" />
     <Compile Include="Areas\PupilsPopulation\PupilsPopulationAreaRegistration.cs" />
     <Compile Include="Areas\PupilsPopulation\ViewModels\Pupils05\Pupils05Data.cs" />
@@ -443,6 +451,7 @@
     <Compile Include="Areas\SchoolProfiles\Controllers\IndexPrimaryProfileController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\IndexSchoolProfilesController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\PrimarySchoolProfileController.cs" />
+    <Compile Include="Areas\SchoolProfiles\Controllers\QueryController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\SecondarySchoolProfileController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\SpecialSchoolProfileController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\TestController.cs" />
@@ -625,6 +634,8 @@
     <Content Include="Areas\SchoolProfiles\Views\SpecialSchoolProfile\Index.cshtml" />
     <Content Include="Areas\SchoolProfiles\Views\CitySchoolProfile\Index.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\Map\Index.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\Query\Index.cshtml" />
+    <Content Include="Areas\PupilsPopulation\Views\EarlyLearningChildCare\Index.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\About.cshtml" />

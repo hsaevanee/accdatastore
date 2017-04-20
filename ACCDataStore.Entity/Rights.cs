@@ -11,7 +11,7 @@ namespace ACCDataStore.Entity
         public virtual Users Users { get; set; }
         public virtual int SheetID { get; set; }
         public virtual int GroupID { get; set; }
-        //public virtual Category Category { get; set; }
+        public virtual int CategoryID { get; set; }
         //public virtual LocationInfo LocationInfo { get; set; }
         //public virtual SiteInfo SiteInfo { get; set; }
         //public virtual DeviceList DeviceList { get; set; }

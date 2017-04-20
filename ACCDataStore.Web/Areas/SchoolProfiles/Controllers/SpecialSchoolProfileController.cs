@@ -128,9 +128,9 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 tempSchool.SchoolRollForecast = GetSchoolRollForecastData(rpGeneric2nd, school);
                 tempSchool.listSIMD = GetHistoricalSIMDData(rpGeneric2nd, sSchoolType, school.seedcode, listYear);
                 tempSchool.SIMD = tempSchool.listSIMD.Where(x => x.YearInfo.year.Equals("2016")).FirstOrDefault();
-                tempSchool.listFSM = GetHistoricalFSMDataSpecial(rpGeneric2nd, school.seedcode, listYear);
+                tempSchool.listFSM = GetHistoricalFSMData(rpGeneric2nd, school.seedcode, listYear, sSchoolType);
                 tempSchool.FSM = tempSchool.listFSM.Where(x => x.year.year.Equals(selectedyear.year)).FirstOrDefault();
-                tempSchool.listStudentNeed = GetHistoricalStudentNeed(rpGeneric2nd, sSchoolType, school.seedcode, tempSchool.SchoolRoll, listYear);
+                tempSchool.listStudentNeed = GetHistoricalStudentNeed(rpGeneric2nd, sSchoolType, school.seedcode,listYear);
                 tempSchool.StudentNeed = tempSchool.listStudentNeed.Where(x => x.year.year.Equals(selectedyear.year)).FirstOrDefault();
                 tempSchool.listAttendance = GetHistoricalAttendanceData(rpGeneric2nd, sSchoolType, school, listYear);
                 tempSchool.SPAttendance = tempSchool.listAttendance.Where(x => x.YearInfo.year.Equals(selectedyear.year)).FirstOrDefault();
@@ -154,11 +154,14 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 ChartIEP = GetChartStudentNeedIEP(listSchool),
                 ChartCSP = GetChartStudentNeedCSP(listSchool),
                 ChartLookedAfter = GetChartLookedAfter(listSchool),
+                ChartAttendance = GetChartAttendance(listSchool, "Attendance"),
                 ChartAuthorisedAbsence = GetChartAttendance(listSchool, "Authorised Absence"),
                 ChartUnauthorisedAbsence = GetChartAttendance(listSchool, "Unauthorised Absence"),
                 ChartTotalAbsence = GetChartAttendance(listSchool, "Total Absence"),
                 ChartNumberofDaysLostExclusion = GetChartExclusion(listSchool, "Number of Days Lost Per 1000 Pupils Through Exclusions"),
                 ChartNumberofExclusionRFR = GetChartExclusion(listSchool, "Number of Removals from the Register"),
+                ChartNumberofExclusionTemporary = GetChartExclusion(listSchool, "Number of Temporary Exclusions"),
+                ChartFSM = GetChartFSM(listSchool)
             };
         }
 
@@ -284,6 +287,55 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 enabled = true,
                 filename = "export"
             };
+            //eSplineCharts.options.chart.options3d = new Entity.RenderObject.Charts.Generic.options3d() { enabled = true, alpha = 10, beta = 10 }; // enable 3d charts
+
+            return eSplineCharts;
+        }
+
+        // FSM Chart
+        private SplineCharts GetChartFSM(List<SPSchool> listSchool) // query from database and return charts object
+        {
+
+            var eSplineCharts = new SplineCharts();
+            eSplineCharts.SetDefault(false);
+            eSplineCharts.title.text = "Free School Meal";
+            eSplineCharts.series = new List<ACCDataStore.Entity.RenderObject.Charts.SplineCharts.series>();
+
+            string[] colors = { "#ED561B", "#DDDF00", "#24CBE5", "#64E572", "#FF9655", "#FFF263", "#6AF9C4" };
+            int indexcolour = 0;
+
+            if (listSchool != null && listSchool.Count > 0)
+            {
+                eSplineCharts.xAxis.categories = listSchool[0].listFSM.Select(x => x.year.academicyear).ToList(); // year on xAxis
+                eSplineCharts.yAxis.title = new Entity.RenderObject.Charts.Generic.title() { text = "% of SP Roll Registered for FSM" };
+
+                foreach (var eSchool in listSchool)
+                {
+                    var listSeriesStart = eSchool.listFSM.Select(x => x.GenericSchoolData.sPercent.Equals("n/a") ? null : (float?)float.Parse(x.GenericSchoolData.sPercent)).ToList();
+
+                    eSplineCharts.series.Add(new ACCDataStore.Entity.RenderObject.Charts.SplineCharts.series()
+                    {
+                        name = eSchool.SchoolName,
+                        color = colors[indexcolour],
+                        lineWidth = 2,
+                        data = listSeriesStart,
+                        visible = true
+                    });
+
+                    indexcolour++;
+                }
+            }
+            eSplineCharts.plotOptions.spline.marker = new ACCDataStore.Entity.RenderObject.Charts.Generic.marker()
+            {
+                enabled = true
+            };
+
+            eSplineCharts.options.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
+            {
+                enabled = true,
+                filename = "export"
+            };
+
             //eSplineCharts.options.chart.options3d = new Entity.RenderObject.Charts.Generic.options3d() { enabled = true, alpha = 10, beta = 10 }; // enable 3d charts
 
             return eSplineCharts;

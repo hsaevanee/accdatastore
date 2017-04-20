@@ -56,6 +56,18 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
         {
             try
             {
+                //bool isuservalid = ValidateUser(vmIndex.Username, vmIndex.Password);
+
+                //if (isuservalid)
+                //{
+                //    //read right from database and set to eUsers
+                //    Users eUsers = this.rpGeneric2nd.Find<Users>(" From Users where UserName = :userName ", new string[] { "userName" }, new object[] { vmIndex.Username }).FirstOrDefault();
+                //    Rights eRight = this.rpGeneric2nd.Find<Rights>(" From Rights where UserID = :userID ", new string[] { "userID" }, new object[] { eUsers.UserID}).FirstOrDefault();
+
+                //}
+                //else {
+                //    return RedirectToAction("Index", "IndexAuthorisation", new { Area = "Authorisation", id = "" });
+                //}
 
                 // user logined
                 if (vmIndex.Username.Equals("demo", StringComparison.CurrentCultureIgnoreCase) && vmIndex.Password.Equals("demo", StringComparison.CurrentCultureIgnoreCase))
@@ -69,7 +81,7 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
                     
                     return RedirectToAction("Index", "Index", new { Area = "", id = "" });
                 }
-                else if (vmIndex.Username.Equals("useracademic", StringComparison.CurrentCultureIgnoreCase) && vmIndex.Password.Equals("accschools3241", StringComparison.CurrentCultureIgnoreCase))
+                else if (vmIndex.Username.Equals("useracademic", StringComparison.CurrentCultureIgnoreCase) && vmIndex.Password.Equals("Ado3241!", StringComparison.CurrentCultureIgnoreCase))
                 {
                     // store user session for 'admin' user
                     var eUsers = new Users();
@@ -82,7 +94,7 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
                     //ValidateUser("admin", "admin");
                     return RedirectToAction("Index", "Index", new { Area = "", id = "" });
                 }
-                else if (vmIndex.Username.Equals("userdatahub", StringComparison.CurrentCultureIgnoreCase) && vmIndex.Password.Equals("accdatahub4787", StringComparison.CurrentCultureIgnoreCase))
+                else if (vmIndex.Username.Equals("userdatahub", StringComparison.CurrentCultureIgnoreCase) && vmIndex.Password.Equals("Ado4787!", StringComparison.CurrentCultureIgnoreCase))
                 {
                     // store user session for 'admin' user
                     var eUsers = new Users();
@@ -95,7 +107,7 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
                     //ValidateUser("admin", "admin");
                     return RedirectToAction("Index", "Index", new { Area = "", id = "" });
                 }
-                else if (vmIndex.Username.Equals("admin", StringComparison.CurrentCultureIgnoreCase) && vmIndex.Password.Equals("adminhatai1232498!", StringComparison.CurrentCultureIgnoreCase))
+                else if (vmIndex.Username.Equals("admin", StringComparison.CurrentCultureIgnoreCase) && vmIndex.Password.Equals("admin2209!", StringComparison.CurrentCultureIgnoreCase))
                 {
                     // store user session for 'admin' user
                     var eUsers = new Users();
@@ -142,19 +154,20 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
 
         }
 
-        private bool ValidateUser(string userName, string password)
+        private bool ValidateUser(string username, string password)
         {
 
             bool isValid = false;
 
             var listResultMySQL2 = this.rpGeneric2nd.FindAll<Users>();
 
-            var listResultMySQL21 = this.rpGeneric2nd.Find<Users>(" from Users where Users.UserName = :userName ", new string[] { "userName" }, new object[] { "Jan" });
+            Users eUsers = this.rpGeneric2nd.Find<Users>(" From Users where UserName = :userName ", new string[] { "userName" }, new object[] { username }).FirstOrDefault();
 
+            if (eUsers != null && eUsers.Password.Equals(password))
+            {
 
-
-            //Users eUsers = this.rpGeneric2nd.Find<Users>(" from Users where Users.UserName = :userName ", new string[] { "userName" }, new object[] { userName }).FirstOrDefault(); 
-
+                isValid = true;
+            }
             return isValid;
         }
 

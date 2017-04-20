@@ -142,7 +142,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 tempSchool.SPAttendance = tempSchool.listAttendance.Where(x => x.YearInfo.year.Equals(selectedyear.year)).FirstOrDefault();
                 tempSchool.listExclusion = GetHistoricalExclusionData(rpGeneric2nd, school.schooltype, school, listYear);
                 tempSchool.SPExclusion = tempSchool.listExclusion.Where(x => x.YearInfo.year.Equals(selectedyear.year)).FirstOrDefault();
-
+                tempSchool.listSPCfElevel = GetHistoricalCfELevelData(rpGeneric2nd, school.schooltype, school.seedcode, listYear);
+                tempSchool.SPCfElevel = tempSchool.listSPCfElevel.Where(x => x.year.year.Equals(selectedyear.year)).FirstOrDefault();
                 listSchoolData.Add(tempSchool);
             }
             return listSchoolData;
@@ -160,11 +161,13 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 ChartIEP = GetChartStudentNeedIEP(listSchool),
                 ChartCSP = GetChartStudentNeedCSP(listSchool),
                 ChartLookedAfter = GetChartLookedAfter(listSchool),
+                ChartAttendance = GetChartAttendance(listSchool, "Attendance"),
                 ChartAuthorisedAbsence = GetChartAttendance(listSchool, "Authorised Absence"),
                 ChartUnauthorisedAbsence = GetChartAttendance(listSchool, "Unauthorised Absence"),
                 ChartTotalAbsence = GetChartAttendance(listSchool, "Total Absence"),
                 ChartNumberofDaysLostExclusion = GetChartExclusion(listSchool, "Number of Days Lost Per 1000 Pupils Through Exclusions"),
                 ChartNumberofExclusionRFR = GetChartExclusion(listSchool, "Number of Removals from the Register"),
+                ChartNumberofExclusionTemporary = GetChartExclusion(listSchool, "Number of Temporary Exclusions")
             };
         }
 
@@ -216,8 +219,10 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                             SchoolRoll = new SchoolRoll();
                             SchoolRoll.year = year;
                             SchoolRoll.capacity = school.schoolCapacity;
-                            SchoolRoll.schoolroll = Convert.ToInt16(itemRow[1].ToString());
+                            SchoolRoll.schoolroll = Convert.ToInt16(itemRow[1].ToString());//NumberFormatHelper.FormatNumber(school.costperpupil, 1).ToString();    
                             SchoolRoll.percent = 0.00F;
+                            //SchoolRoll.spercent = NumberFormatHelper.FormatNumber(itemRow[1], 1).ToString();
+                            SchoolRoll.sschoolroll = NumberFormatHelper.FormatNumber(itemRow[1], 0).ToString();  
                         }
                     }
                 }
@@ -237,6 +242,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                             SchoolRoll.capacity = school.schoolCapacity;
                             SchoolRoll.schoolroll = Convert.ToInt16(itemRow[1].ToString());
                             SchoolRoll.percent = 0.00F;
+                            //SchoolRoll.spercent = NumberFormatHelper.FormatNumber(itemRow[1], 1).ToString();
+                            SchoolRoll.sschoolroll = NumberFormatHelper.FormatNumber(itemRow[1], 0).ToString();  
                         }
                     }
                 }
@@ -264,7 +271,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     {
                         if (itemRow != null)
                         {
-                            tempdataActualnumber.Add(new GenericSchoolData(new Year(itemRow[0].ToString()).academicyear, NumberFormatHelper.ConvertObjectToFloat(itemRow[3])));
+                            tempdataActualnumber.Add(new GenericSchoolData(new Year(itemRow[0].ToString()).academicyear, itemRow[3]==null? 0: Convert.ToInt32(itemRow[3].ToString())));
                         }
                     }
                 }
@@ -280,7 +287,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     {
                         if (itemRow != null)
                         {
-                            tempdataActualnumber.Add(new GenericSchoolData(new Year(itemRow[0].ToString()).academicyear, NumberFormatHelper.ConvertObjectToFloat(itemRow[3])));
+                            tempdataActualnumber.Add(new GenericSchoolData(new Year(itemRow[0].ToString()).academicyear, itemRow[3] == null ? 0 : Convert.ToInt32(itemRow[3].ToString())));
                         }
                     }
                 }
@@ -312,7 +319,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 {
                     if (!eSchool.SeedCode.Equals("1002"))
                     {
-                        var listSeriesActual = eSchool.SchoolRollForecast.ListActualSchoolRoll.Select(x => float.Parse(x.sPercent) == 0 ? null : (float?)float.Parse(x.sPercent)).ToList();
+                        var listSeriesActual = eSchool.SchoolRollForecast.ListActualSchoolRoll.Select(x => float.Parse(x.sCount) == 0 ? null : (float?)float.Parse(x.sCount)).ToList();
 
                         eSplineCharts.series.Add(new ACCDataStore.Entity.RenderObject.Charts.SplineCharts.series()
                         {
@@ -430,6 +437,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         Code = y.Key.ToString(),
                         Name = DictStage[y.Key.ToString()],
                         count = y.Select(a => a.count).Sum(),
+                        sCount = NumberFormatHelper.FormatNumber(y.Select(a => a.count).Sum(), 0).ToString(),
                         sum = total,
                         Percent = total != 0 ? (y.Select(a => a.count).Sum() * 100.00F / total) : 0.00F,
                         sPercent = total != 0 ? NumberFormatHelper.FormatNumber((y.Select(a => a.count).Sum() * 100.00F / total), 1).ToString() : NumberFormatHelper.FormatNumber((float)0.00, 1).ToString()
@@ -439,6 +447,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     StudentStage.YearInfo = year;
                     StudentStage.ListGenericSchoolData = groupedList;
                     StudentStage.totalschoolroll = total;
+                    StudentStage.stotalschoolroll = NumberFormatHelper.FormatNumber(total, 0).ToString();
                     listStudentStage.Add(StudentStage);
                 }
 
@@ -1028,7 +1037,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         }
 
         //Historical StudentNeed
-        private new List<StudentNeed> GetHistoricalStudentNeed(IGenericRepository2nd rpGeneric2nd, string sSchoolType, string seedcode, SchoolRoll schoolroll, List<Year> listyear)
+        private List<StudentNeed> GetHistoricalStudentNeed(IGenericRepository2nd rpGeneric2nd, string sSchoolType, string seedcode, SchoolRoll schoolroll, List<Year> listyear)
         {
             StudentNeed StudentNeed = new StudentNeed(); ;
             List<StudentNeed> listStudentNeed = new List<StudentNeed>();
@@ -1048,6 +1057,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         Code = "02",
                         Name = "IEP",
                         count = totalcount,
+                        sCount = NumberFormatHelper.FormatNumber(totalcount, 0).ToString(),
                         sum = schoolroll.schoolroll,
                         Percent = schoolroll.schoolroll != 0 ? (totalcount * 100.00F / schoolroll.schoolroll) : 0.0F,
                         sPercent = NumberFormatHelper.FormatNumber((schoolroll.schoolroll != 0 ? (totalcount * 100.00F / schoolroll.schoolroll) : 0.00F), 1).ToString()
@@ -1058,6 +1068,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         Code = "01",
                         Name = "CSP",
                         count = totalcount,
+                        sCount = NumberFormatHelper.FormatNumber(totalcount, 0).ToString(),
                         sum = schoolroll.schoolroll,
                         Percent = schoolroll.schoolroll != 0 ? (totalcount * 100.00F / schoolroll.schoolroll) : 0.0F,
                         sPercent = NumberFormatHelper.FormatNumber((schoolroll.schoolroll != 0 ? (totalcount * 100.00F / schoolroll.schoolroll) : 0.00F), 1).ToString()
@@ -1078,6 +1089,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         Code = "02",
                         Name = "IEP",
                         count = totalcount,
+                        sCount = NumberFormatHelper.FormatNumber(totalcount, 0).ToString(),
                         sum = schoolroll.schoolroll,
                         Percent = schoolroll.schoolroll != 0 ? (totalcount * 100.00F / schoolroll.schoolroll) : 0.0F,
                         sPercent = NumberFormatHelper.FormatNumber((schoolroll.schoolroll != 0 ? (totalcount * 100.00F / schoolroll.schoolroll) : 0.00F), 1).ToString()
@@ -1088,6 +1100,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         Code = "01",
                         Name = "CSP",
                         count = totalcount,
+                        sCount = NumberFormatHelper.FormatNumber(totalcount, 0).ToString(),
                         sum = schoolroll.schoolroll,
                         Percent = schoolroll.schoolroll != 0 ? (totalcount * 100.00F / schoolroll.schoolroll) : 0.0F,
                         sPercent = NumberFormatHelper.FormatNumber((schoolroll.schoolroll != 0 ? (totalcount * 100.00F / schoolroll.schoolroll) : 0.00F), 1).ToString()
@@ -1105,7 +1118,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         {
             List<SPExclusion> listExclusion = new List<SPExclusion>();
             List<GenericSchoolData> tempdata = new List<GenericSchoolData>();
-            List<GenericSchoolData> foo = new List<GenericSchoolData>() { new GenericSchoolData("0", "Not Removed From Register"), new GenericSchoolData("1", "Removed From Register") };
+            List<GenericSchoolData> foo = new List<GenericSchoolData>() { new GenericSchoolData("0", "Temporary Exclusions"), new GenericSchoolData("1", "Removed From Register") };
             SPExclusion SPExclusion = new SPExclusion();
             GenericSchoolData tempobj = new GenericSchoolData();
             string queryExclusion, querySchoolRoll = "";
@@ -1132,7 +1145,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     {
                         if (itemRow != null)
                         {
-                            tempobj = new GenericSchoolData(itemRow[2].ToString(), itemRow[2].ToString().Equals("0") ? "Not Removed From Register" : "Removed From Register");
+                            tempobj = new GenericSchoolData(itemRow[2].ToString(), itemRow[2].ToString().Equals("0") ? "Temporary Exclusions" : "Removed From Register");
                             tempobj.count = Convert.ToInt16(itemRow[3].ToString());
                             tempobj.sum = Convert.ToInt16(itemRow[4].ToString());
                             tempobj.Percent = Convert.ToInt16(itemRow[3].ToString());
@@ -1161,7 +1174,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     tempobj.Percent = tempobj.count / 2.0F / schoolroll * 1000.0F;
                     tempobj.sPercent = NumberFormatHelper.FormatNumber(tempobj.Percent, 1).ToString();
                     //tempdata.Add(tempobj);
-                    SPExclusion.ListGenericSchoolData = new List<GenericSchoolData>() { tempdata.Where(x => x.Code.Equals("1")).First(), tempobj };
+                    SPExclusion.ListGenericSchoolData = new List<GenericSchoolData>() { tempdata.Where(x => x.Code.Equals("0")).First(), tempdata.Where(x => x.Code.Equals("1")).First(), tempobj };
                     listExclusion.Add(SPExclusion);
                 }
 
@@ -1250,50 +1263,28 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         {
             List<FreeSchoolMeal> listFSM = new List<FreeSchoolMeal>();
 
-            if (seedcode.Equals("1002"))
-            {
-                List<FreeSchoolMeal> Temp1 = GetHistoricalFSMDataPrimary(rpGeneric2nd, "1002", listyear);
-                List<FreeSchoolMeal> Temp2 = GetHistoricalFSMDataSecondary(rpGeneric2nd, "1002", listyear);
-                List<FreeSchoolMeal> Temp3 = GetHistoricalFSMDataSpecial(rpGeneric2nd, "1002", listyear);
-                int i=0;
-                foreach (Year year in listyear)
-                {
-                    FreeSchoolMeal temp = new FreeSchoolMeal();
-                    int sumcount = Temp1[i].GenericSchoolData.count + Temp2[i].GenericSchoolData.count + Temp3[i].GenericSchoolData.count;
-                    int SumSum = Temp1[i].GenericSchoolData.sum + Temp2[i].GenericSchoolData.sum + Temp3[i].GenericSchoolData.sum;
-                    temp.year = year;
-                    temp.GenericSchoolData = new GenericSchoolData()
-                        {
-                            Code = "1",
-                            count = sumcount,
-                            Value = "",
-                            sum = SumSum,
-                            Name = "Free School Meals Registered",
-                            Percent = (sumcount * 100.00F / SumSum),
-                            sPercent = NumberFormatHelper.FormatNumber((sumcount * 100.00F / SumSum), 1).ToString()
-                        };
-                    listFSM.Add(temp);
-                    i++;    
-                    
-                }
-            }
-            else
-            {
-                if (sSchoolType.Equals("2")) {
-                    listFSM = GetHistoricalFSMDataPrimary(rpGeneric2nd, "1002", listyear);
-                }
-                else if (sSchoolType.Equals("3"))
-                {
-                    listFSM = GetHistoricalFSMDataSecondary(rpGeneric2nd, "1002", listyear);
-                }
-                else if (sSchoolType.Equals("4"))
-                {
-                    listFSM = GetHistoricalFSMDataSpecial(rpGeneric2nd, "1002", listyear);
-                }
-
-            }
+            listFSM = GetHistoricalFSMData(rpGeneric2nd, "1002", listyear, sSchoolType);
 
             return listFSM.OrderBy(x => x.year.year).ToList();
+        }
+
+        //Historical Free School Meal Registered data
+        private List<SPCfElevel> GetHistoricalCfELevelData(IGenericRepository2nd rpGeneric2nd, string sSchoolType, string seedcode, List<Year> listyear)
+        {
+            List<SPCfElevel> listSPCfElevel = new List<SPCfElevel>();
+
+            if (sSchoolType.Equals("2")){
+
+                listSPCfElevel = GetHistoricalPrimaryCfeLevelData(rpGeneric2nd, "1002", sSchoolType);
+            }
+            else if (sSchoolType.Equals("3"))
+            {
+                listSPCfElevel = GetHistoricalSecondaryCfeLevelData(rpGeneric2nd, "1002", sSchoolType);
+            }
+
+ 
+
+            return listSPCfElevel.OrderBy(x => x.year.year).ToList();
         }
 
     }

@@ -812,8 +812,9 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             int indexColor = 0;
             var eColumnCharts = new ColumnCharts();
             eColumnCharts.SetDefault(false);
-            eColumnCharts.title.text = "Scottish Index of Multiple Deprivation 2016/2017";
-            eColumnCharts.yAxis.title.text = "% of pupils in Each Decile";
+            eColumnCharts.title.text = "Scottish Index of Multiple Deprivation";
+            eColumnCharts.subtitle.text = "% of pupils in Each Decile (Census 2016)";
+            eColumnCharts.yAxis.title.text = "% of pupils";
             //eColumnCharts.yAxis.min = 0;
             //eColumnCharts.yAxis.max = 100;
             //eColumnCharts.yAxis.tickInterval = 20;
@@ -1191,7 +1192,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         {
             List<SPExclusion> listExclusion = new List<SPExclusion>();
             List<GenericSchoolData> tempdata = new List<GenericSchoolData>();
-            List<GenericSchoolData> foo = new List<GenericSchoolData>() { new GenericSchoolData("0", "Not Removed From Register"), new GenericSchoolData("1", "Removed From Register") };
+            List<GenericSchoolData> foo = new List<GenericSchoolData>() { new GenericSchoolData("0", "Temporary Exclusions"), new GenericSchoolData("1", "Removed From Register") };
             SPExclusion SPExclusion = new SPExclusion();
             GenericSchoolData tempobj = new GenericSchoolData();
             string queryExclusion, querySchoolRoll = "";
@@ -1218,7 +1219,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     {
                         if (itemRow != null)
                         {
-                            tempobj = new GenericSchoolData(itemRow[2].ToString(), itemRow[2].ToString().Equals("0") ? "Not Removed From Register" : "Removed From Register");
+                            tempobj = new GenericSchoolData(itemRow[2].ToString(), itemRow[2].ToString().Equals("0") ? "Temporary Exclusions" : "Removed From Register");
                             tempobj.count = Convert.ToInt16(itemRow[3].ToString());
                             tempobj.sum = Convert.ToInt16(itemRow[4].ToString());
                             tempobj.Percent = Convert.ToInt16(itemRow[3].ToString());
@@ -1247,7 +1248,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     tempobj.Percent = schoolroll==0? 0.00F: tempobj.count / 2.0F / schoolroll * 1000.0F;
                     tempobj.sPercent = NumberFormatHelper.FormatNumber(tempobj.Percent, 1).ToString();
                     //tempdata.Add(tempobj);
-                    SPExclusion.ListGenericSchoolData = new List<GenericSchoolData>() { tempdata.Where(x => x.Code.Equals("1")).First(), tempobj };
+                    SPExclusion.ListGenericSchoolData = new List<GenericSchoolData>() { tempdata.Where(x => x.Code.Equals("0")).First(), tempdata.Where(x => x.Code.Equals("1")).First(), tempobj };
                     listExclusion.Add(SPExclusion);
                 }
 
@@ -1257,7 +1258,6 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
 
             return listExclusion.OrderBy(x => x.YearInfo.year).ToList();
         }
-
 
         // Exclusion Chart
         protected SplineCharts GetChartExclusion(List<SPSchool> listSchool, string dataset) // query from database and return charts object
@@ -1270,7 +1270,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             eSplineCharts.series = new List<ACCDataStore.Entity.RenderObject.Charts.SplineCharts.series>();
 
             //finding subject index to query data from list
-            string[] arraySubject = { "Number of Removals from the Register", "Number of Days Lost Per 1000 Pupils Through Exclusions" };
+            string[] arraySubject = { "Number of Temporary Exclusions", "Number of Removals from the Register", "Number of Days Lost Per 1000 Pupils Through Exclusions" };
             int indexsubject = Array.FindIndex(arraySubject, item => item.Equals(dataset));
 
             if (listSchool != null && listSchool.Count > 0)
@@ -1315,17 +1315,30 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         }
 
         //Historical StudentNeed
-        protected List<StudentNeed> GetHistoricalStudentNeed(IGenericRepository2nd rpGeneric2nd, string sSchoolType, string seedcode, SchoolRoll schoolroll, List<Year> listyear)
+        protected List<StudentNeed> GetHistoricalStudentNeed(IGenericRepository2nd rpGeneric2nd, string sSchoolType, string seedcode, List<Year> listyear)
         {
             StudentNeed StudentNeed = new StudentNeed(); ;
             List<StudentNeed> listStudentNeed = new List<StudentNeed>();
+            int yschoolroll = 0;
 
             List<ViewObj> listViewObj = GetListViewObj(rpGeneric2nd, sSchoolType, "needtype");
-
+            
             if (seedcode.Equals("1002"))
             {
                 foreach (Year year in listyear)
                 {
+                    var listResultSchoolRoll = rpGeneric2nd.FindByNativeSQL("Select Year, sum(Count) from summary_schoolroll where  SchoolType=" + sSchoolType + " and year = " + year.year);
+                    if (listResultSchoolRoll != null)
+                    {
+                        foreach (var itemRow in listResultSchoolRoll)
+                        {
+                            if (itemRow != null)
+                            {
+                                yschoolroll = Convert.ToInt16(itemRow[1].ToString());
+                            }
+                        }
+                    }
+
                     StudentNeed = new StudentNeed();
                     StudentNeed.year = year;
                     var listresult = listViewObj.Where(x => x.year.year.Equals(year.year)).ToList();
@@ -1335,9 +1348,10 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         Code = "02",
                         Name = "IEP",
                         count = totalcount,
-                        sum = schoolroll.schoolroll,
-                        Percent = schoolroll.schoolroll != 0 ? (totalcount * 100.00F / schoolroll.schoolroll) : 0.0F,
-                        sPercent = NumberFormatHelper.FormatNumber((schoolroll.schoolroll != 0 ? (totalcount * 100.00F / schoolroll.schoolroll) : 0.00F), 1).ToString()
+                        sCount = NumberFormatHelper.FormatNumber(totalcount, 0).ToString(),
+                        sum = yschoolroll,
+                        Percent = yschoolroll != 0 ? (totalcount * 100.00F / yschoolroll) : 0.0F,
+                        sPercent = NumberFormatHelper.FormatNumber((yschoolroll != 0 ? (totalcount * 100.00F / yschoolroll) : 0.00F), 1).ToString()
                     };
                     totalcount = listresult.Where(x => x.code.Equals("01")).Select(x => x.count).Sum();
                     StudentNeed.CSP = new GenericSchoolData()
@@ -1345,9 +1359,10 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         Code = "01",
                         Name = "CSP",
                         count = totalcount,
-                        sum = schoolroll.schoolroll,
-                        Percent = schoolroll.schoolroll != 0 ? (totalcount * 100.00F / schoolroll.schoolroll) : 0.0F,
-                        sPercent = NumberFormatHelper.FormatNumber((schoolroll.schoolroll != 0 ? (totalcount * 100.00F / schoolroll.schoolroll) : 0.00F), 1).ToString()
+                        sCount = NumberFormatHelper.FormatNumber(totalcount, 0).ToString(),
+                        sum = yschoolroll,
+                        Percent = yschoolroll != 0 ? (totalcount * 100.00F / yschoolroll) : 0.0F,
+                        sPercent = NumberFormatHelper.FormatNumber((yschoolroll != 0 ? (totalcount * 100.00F / yschoolroll) : 0.00F), 1).ToString()
                     };
                     listStudentNeed.Add(StudentNeed);
                 }
@@ -1356,6 +1371,17 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             {
                 foreach (Year year in listyear)
                 {
+                    var listResultSchoolRoll = rpGeneric2nd.FindByNativeSQL("Select Year, Count from summary_schoolroll where  SchoolType=" + sSchoolType + " and year = " + year.year + " and seedcode = " + seedcode);
+                    if (listResultSchoolRoll != null)
+                    {
+                        foreach (var itemRow in listResultSchoolRoll)
+                        {
+                            if (itemRow != null)
+                            {
+                                yschoolroll = Convert.ToInt16(itemRow[1].ToString());
+                            }
+                        }
+                    }
                     StudentNeed = new StudentNeed();
                     var listresult = listViewObj.Where(x => x.year.year.Equals(year.year) && x.seedcode.Equals(seedcode)).ToList();
                     StudentNeed.year = year;
@@ -1365,9 +1391,10 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         Code = "02",
                         Name = "IEP",
                         count = totalcount,
-                        sum = schoolroll.schoolroll,
-                        Percent = schoolroll.schoolroll != 0 ? (totalcount * 100.00F / schoolroll.schoolroll) : 0.0F,
-                        sPercent = NumberFormatHelper.FormatNumber((schoolroll.schoolroll != 0 ? (totalcount * 100.00F / schoolroll.schoolroll) : 0.00F), 1).ToString()
+                        sCount = NumberFormatHelper.FormatNumber(totalcount, 0).ToString(),
+                        sum = yschoolroll,
+                        Percent = yschoolroll != 0 ? (totalcount * 100.00F / yschoolroll) : 0.0F,
+                        sPercent = NumberFormatHelper.FormatNumber((yschoolroll != 0 ? (totalcount * 100.00F / yschoolroll) : 0.00F), 1).ToString()
                     };
                     totalcount = listresult.Where(x => x.code.Equals("01")).Select(x => x.count).Sum();
                     StudentNeed.CSP = new GenericSchoolData()
@@ -1375,9 +1402,10 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         Code = "01",
                         Name = "CSP",
                         count = totalcount,
-                        sum = schoolroll.schoolroll,
-                        Percent = schoolroll.schoolroll != 0 ? (totalcount * 100.00F / schoolroll.schoolroll) : 0.0F,
-                        sPercent = NumberFormatHelper.FormatNumber((schoolroll.schoolroll != 0 ? (totalcount * 100.00F / schoolroll.schoolroll) : 0.00F), 1).ToString()
+                        sCount = NumberFormatHelper.FormatNumber(totalcount, 0).ToString(),
+                        sum = yschoolroll,
+                        Percent = yschoolroll != 0 ? (totalcount * 100.00F / yschoolroll) : 0.0F,
+                        sPercent = NumberFormatHelper.FormatNumber((yschoolroll != 0 ? (totalcount * 100.00F / yschoolroll) : 0.00F), 1).ToString()
                     };
                     listStudentNeed.Add(StudentNeed);
                 }
@@ -1477,16 +1505,16 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     {
                         for (int i = 3; i <= 17; i++)
                         {
-                            if (i <= 10)
+                            if (i <= 11)
                             {
                                 tempdataActualnumber.Add(new GenericSchoolData(new Year((i + 2005).ToString()).academicyear, NumberFormatHelper.ConvertObjectToFloat(itemRow[i])));
-                                tempdataForecastnumber.Add(new GenericSchoolData(new Year((i + 2005).ToString()).academicyear.ToString(), 0F));
+                                tempdataForecastnumber.Add(new GenericSchoolData(new Year((i + 2005).ToString()).academicyear.ToString(), 0));
 
                             }
                             else
                             {
                                 tempdataForecastnumber.Add(new GenericSchoolData(new Year((i + 2005).ToString()).academicyear, NumberFormatHelper.ConvertObjectToFloat(itemRow[i])));
-                                tempdataActualnumber.Add(new GenericSchoolData(new Year((i + 2005).ToString()).academicyear, 0F));
+                                tempdataActualnumber.Add(new GenericSchoolData(new Year((i + 2005).ToString()).academicyear, 0));
 
                             }
                         }
@@ -1594,6 +1622,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         Code = y.Key.ToString(),
                         Name = DictStage[y.Key.ToString()],
                         count = y.Select(a => a.count).Sum(),
+                        sCount = NumberFormatHelper.FormatNumber(y.Select(a => a.count).Sum(), 0).ToString(),
                         sum = total,
                         Percent = total != 0 ? (y.Select(a => a.count).Sum() * 100.00F / total) : 0.00F,
                         sPercent = total != 0 ? NumberFormatHelper.FormatNumber((y.Select(a => a.count).Sum() * 100.00F / total), 1).ToString() : NumberFormatHelper.FormatNumber((float)0.00, 1).ToString()
@@ -1603,6 +1632,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     StudentStage.YearInfo = year;
                     StudentStage.ListGenericSchoolData = groupedList;
                     StudentStage.totalschoolroll = total;
+                    StudentStage.stotalschoolroll = NumberFormatHelper.FormatNumber(total, 0).ToString();
                     listStudentStage.Add(StudentStage);
                 }
             }
@@ -1617,6 +1647,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         Code = y.code,
                         Name = DictStage[y.code],
                         count = y.count,
+                        sCount = NumberFormatHelper.FormatNumber(y.count, 0).ToString(),
                         sum = total,
                         Percent = total != 0 ? (y.count * 100.00F / total) : 0.00F,
                         sPercent = NumberFormatHelper.FormatNumber((total != 0 ? (y.count * 100.00F / total) : 0.00F), 1).ToString()
@@ -1626,6 +1657,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     StudentStage.YearInfo = year;
                     StudentStage.ListGenericSchoolData = groupedList;
                     StudentStage.totalschoolroll = total;
+                    StudentStage.stotalschoolroll = NumberFormatHelper.FormatNumber(total, 0).ToString();
                     listStudentStage.Add(StudentStage);
                 }
 
@@ -1633,383 +1665,124 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
 
             return listStudentStage.OrderBy(x => x.YearInfo.year).ToList();
         }
-
         //Historical Free School Meal Registered data
-        protected List<FreeSchoolMeal> GetHistoricalFSMDataPrimary(IGenericRepository2nd rpGeneric2nd, string seedcode, List<Year> listyear)
+        protected List<FreeSchoolMeal> GetHistoricalFSMData(IGenericRepository2nd rpGeneric2nd, string seedcode, List<Year> listyear, string schooltype)
         {
             List<FreeSchoolMeal> listFSM = new List<FreeSchoolMeal>();
-            List<GenericSPFSM> tempdata = new List<GenericSPFSM>();
             FreeSchoolMeal SPFSM = new FreeSchoolMeal();
-            GenericSPFSM temp;
-            //List<Year> listyear = new List<Year>() { new Year("2015"), new Year("2016") };
 
-            if (seedcode.Equals("1002"))
+
+            foreach (Year year in listyear)
             {
-                foreach (Year year in listyear)
+                SPFSM = new FreeSchoolMeal();
+                var listResult = rpGeneric2nd.FindByNativeSQL("SELECT year,studentStage, stdroll, fsm, count FROM accdatastore.summary_fsm2 where schooltype= " + schooltype + " and year = " + year.year + " and seedcode = " + seedcode);
+                if (listResult != null && listResult.Count >0 )
                 {
-                    SPFSM = new FreeSchoolMeal();
-                    var listResult = rpGeneric2nd.FindByNativeSQL("SELECT year, StudentStage, code, sum(count) FROM accdatastore.summary_fsm where SchoolType=2 and Year = " + year.year + " group by year, StudentStage, code");
-                    if (listResult != null)
+                    foreach (var itemRow in listResult)
                     {
-                        tempdata = new List<GenericSPFSM>();
-                        foreach (var itemRow in listResult)
+                        if (itemRow != null)
                         {
-                            if (itemRow != null)
-                            {
-                                temp = new GenericSPFSM(itemRow[1].ToString(), itemRow[2].ToString(), Convert.ToInt16(itemRow[3].ToString()));
-                                tempdata.Add(temp);
-                            }
-                        }
-                        int totalschoolroll = tempdata.Select(x => x.count).Sum();
+                            SPFSM = new FreeSchoolMeal();
+                            GenericSchoolData tempdata = new GenericSchoolData();
+                            tempdata.Code = itemRow[1].ToString();
+                            tempdata.count = itemRow[3] == null ? 0 : Convert.ToInt16(itemRow[3].ToString());
+                            tempdata.sum = itemRow[2]== null ? 0 : Convert.ToInt16(itemRow[2].ToString());
+                            tempdata.Percent = itemRow[4] == null ? 0 : (float)Convert.ToDouble(itemRow[4].ToString());
+                            tempdata.sPercent = itemRow[4] == null ? "n/a" : NumberFormatHelper.FormatNumber(Convert.ToDouble(itemRow[4].ToString()), 1).ToString();
 
-                        if (Convert.ToInt32(year.year)>=2015)
-                        {
-                            var groupedList = tempdata.Where(x => x.Code.Equals("1") && (x.Studentstage.Equals("P4") || x.Studentstage.Equals("P5") || x.Studentstage.Equals("P6") || x.Studentstage.Equals("P7"))).Select(y => new GenericSPFSM
-                            {
-                                Code = y.Code,
-                                Studentstage = y.Studentstage,
-                                count = y.count,
-                                sum = totalschoolroll,
-                                Percent = (y.count * 100.00F / tempdata.Select(x => x.count).Sum()),
-                                sPercent = NumberFormatHelper.FormatNumber((y.count * 100.00F / tempdata.Select(x => x.count).Sum()), 1).ToString()
-
-                            }).ToList();
                             SPFSM.year = year;
-                            SPFSM.GenericSchoolData = new GenericSchoolData()
-                            {
-                                Code = "1",
-                                count = groupedList.Select(x => x.count).Sum(),
-                                Value = "",
-                                sum = totalschoolroll,
-                                Name = "Free School Meals Registered",
-                                Percent = groupedList.Select(x => x.Percent).Sum(),
-                                sPercent = NumberFormatHelper.FormatNumber(groupedList.Select(x => Convert.ToDouble(x.sPercent)).Sum(), 1).ToString()
-                            };
+                            SPFSM.GenericSchoolData = tempdata;
 
-                        }else{
-                            var groupedList = tempdata.Where(x => x.Code.Equals("1")).Select(y => new GenericSPFSM
-                            {
-                                Code = y.Code,
-                                Studentstage = y.Studentstage,
-                                count = y.count,
-                                sum = totalschoolroll,
-                                Percent = (y.count * 100.00F / tempdata.Select(x => x.count).Sum()),
-                                sPercent = NumberFormatHelper.FormatNumber((y.count * 100.00F / tempdata.Select(x => x.count).Sum()), 1).ToString()
-
-                            }).ToList();
-                            SPFSM.year = year;
-                            SPFSM.GenericSchoolData = new GenericSchoolData()
-                            {
-                                Code = "1",
-                                count = groupedList.Select(x => x.count).Sum(),
-                                Value = "",
-                                sum = totalschoolroll,
-                                Name = "Free School Meals Registered",
-                                Percent = groupedList.Select(x => x.Percent).Sum(),
-                                sPercent = NumberFormatHelper.FormatNumber(groupedList.Select(x => Convert.ToDouble(x.sPercent)).Sum(), 1).ToString()
-                            };
                         }
-                    }
-                    listFSM.Add(SPFSM);
-                }
+                        //else {
+                        //    SPFSM = new FreeSchoolMeal();
+                        //    GenericSchoolData tempdata = new GenericSchoolData();
+                        //    tempdata.Code = "P4-P7";
+                        //    tempdata.Percent = 0.0F;
+                        //    tempdata.sPercent = "n/a";
 
-            }
-            else
-            {
-                foreach (Year year in listyear)
-                {
-
-                    SPFSM = new FreeSchoolMeal();
-                    var listResult = rpGeneric2nd.FindByNativeSQL("SELECT year, StudentStage, code, sum(count) FROM accdatastore.summary_fsm where SchoolType=2 and Year = " + year.year + " and seedcode = " + seedcode + " group by year, StudentStage, code");
-                    if (listResult != null)
-                    {
-                        tempdata = new List<GenericSPFSM>();
-                        foreach (var itemRow in listResult)
-                        {
-                            if (itemRow != null)
-                            {
-                                temp = new GenericSPFSM(itemRow[1].ToString(), itemRow[2].ToString(), Convert.ToInt16(itemRow[3].ToString()));
-                                tempdata.Add(temp);
-                            }
-                        }
-                        int totalschoolroll = tempdata.Select(x => x.count).Sum();
-                        if (Convert.ToInt32(year.year) >= 2015)
-                        {
-                            var groupedList = tempdata.Where(x => x.Code.Equals("1") && (x.Studentstage.Equals("P4") || x.Studentstage.Equals("P5") || x.Studentstage.Equals("P6") || x.Studentstage.Equals("P7"))).Select(y => new GenericSPFSM
-                            {
-                                Code = y.Code,
-                                Studentstage = y.Studentstage,
-                                count = y.count,
-                                sum = totalschoolroll,
-                                Percent = (y.count * 100.00F / tempdata.Select(x => x.count).Sum()),
-                                sPercent = NumberFormatHelper.FormatNumber((y.count * 100.00F / tempdata.Select(x => x.count).Sum()), 1).ToString()
-
-                            }).ToList();
-                            SPFSM.year = year;
-                            SPFSM.GenericSchoolData = new GenericSchoolData()
-                            {
-                                Code = "1",
-                                count = groupedList.Select(x => x.count).Sum(),
-                                Value = "",
-                                sum = totalschoolroll,
-                                Name = "Free School Meals Registered",
-                                Percent = groupedList.Select(x => x.Percent).Sum(),
-                                sPercent = NumberFormatHelper.FormatNumber(groupedList.Select(x => Convert.ToDouble(x.sPercent)).Sum(), 1).ToString()
-                            };
+                        //    SPFSM.year = year;
+                        //    SPFSM.GenericSchoolData = tempdata;
                         
-                        }else{
-                            var groupedList = tempdata.Where(x => x.Code.Equals("1")).Select(y => new GenericSPFSM
-                            {
-                                Code = y.Code,
-                                Studentstage = y.Studentstage,
-                                count = y.count,
-                                sum = totalschoolroll,
-                                Percent = (y.count * 100.00F / tempdata.Select(x => x.count).Sum()),
-                                sPercent = NumberFormatHelper.FormatNumber((y.count * 100.00F / tempdata.Select(x => x.count).Sum()), 1).ToString()
-
-                            }).ToList();
-                            SPFSM.year = year;
-                            SPFSM.GenericSchoolData = new GenericSchoolData()
-                            {
-                                Code = "1",
-                                count = groupedList.Select(x => x.count).Sum(),
-                                Value = "",
-                                sum = totalschoolroll,
-                                Name = "Free School Meals Registered",
-                                Percent = groupedList.Select(x => x.Percent).Sum(),
-                                sPercent = NumberFormatHelper.FormatNumber(groupedList.Select(x => Convert.ToDouble(x.sPercent)).Sum(), 1).ToString()
-                            };
-                        }
-
-
-
-
-                        
-
-                        //SPFSM.ListGenericSchoolData = groupedList;
+                        //}
+                        listFSM.Add(SPFSM);
                     }
+
+                }
+                else {
+                    SPFSM = new FreeSchoolMeal();
+                    GenericSchoolData tempdata = new GenericSchoolData();
+                    tempdata.Code = schooltype.Equals("2") ? "P4-P7" : schooltype.Equals("3")? "S1-S6" :schooltype.Equals("4")? "SP": "All";
+                    tempdata.Percent = 0.0F;
+                    tempdata.sPercent = "n/a";
+                    SPFSM.year = year;
+                    SPFSM.GenericSchoolData = tempdata;
                     listFSM.Add(SPFSM);
+                
                 }
 
             }
+
+            //if (listResult != null)
+            //{
+               
+            //    foreach (var itemRow in listResult)
+            //    {
+            //        if (itemRow != null)
+            //        {
+            //            SPFSM = new FreeSchoolMeal();
+            //            GenericSchoolData tempdata = new GenericSchoolData();
+            //            tempdata.Code = itemRow[1].ToString();
+            //            tempdata.count = itemRow[3].ToString() == null ? 0 : Convert.ToInt16(itemRow[3].ToString());
+            //            tempdata.sum = itemRow[2].ToString() == null ? 0 : Convert.ToInt16(itemRow[2].ToString());
+            //            tempdata.Percent = itemRow[4].ToString() == null ? 0 : (float)Convert.ToDouble(itemRow[4].ToString());
+            //            tempdata.sPercent = itemRow[4].ToString() == null ? "n/a" : NumberFormatHelper.FormatNumber(Convert.ToDouble(itemRow[4].ToString()), 1).ToString();
+
+            //            SPFSM.year = new Year(itemRow[0].ToString());
+            //            SPFSM.GenericSchoolData = tempdata;
+            //            //SPFSM.GenericSchoolData = new GenericSchoolData()
+            //            //{
+            //            //    Code = itemRow[1].ToString(),
+            //            //    count = itemRow[3].ToString() == null ? 0 : Convert.ToInt16(itemRow[3].ToString()),
+            //            //    Value = "",
+            //            //    sum = itemRow[2].ToString()== null ? 0 : Convert.ToInt16(itemRow[2].ToString()),
+            //            //    Name = "Free School Meals Registered",
+            //            //    Percent = itemRow[4].ToString() == null ? 0 : Convert.ToInt16(itemRow[4].ToString()),
+            //            //    sPercent = NumberFormatHelper.FormatNumber(itemRow[4].ToString() == null ? 0 : Convert.ToDouble(itemRow[4].ToString()), 1).ToString()
+            //            //};
+            //        }
+            //        listFSM.Add(SPFSM);
+
+            //    }
+            
+            //}
+
+
+            
+
 
             return listFSM.OrderBy(x => x.year.year).ToList();
         }
 
-        //Historical Free School Meal Registered data
-        protected List<FreeSchoolMeal> GetHistoricalFSMDataSecondary(IGenericRepository2nd rpGeneric2nd, string seedcode, List<Year> listyear)
+        protected string[] ExportDataToXLSX(IGenericRepository2nd rpGeneric2nd, List<School> listSeedCode, string sYear, string tablename)
         {
-            List<FreeSchoolMeal> listFSM = new List<FreeSchoolMeal>();
-            List<GenericSPFSM> tempdata = new List<GenericSPFSM>();
-            FreeSchoolMeal SPFSM = new FreeSchoolMeal();
-            GenericSPFSM temp;
+            var listYear = GetListYear();
+            var dtResult = new DataTable();
 
-            if (seedcode.Equals("1002"))
+            foreach (School school in listSeedCode)
             {
-                foreach (Year year in listyear)
+                switch (tablename)
                 {
-                    SPFSM = new FreeSchoolMeal();
-                    var listResult = rpGeneric2nd.FindByNativeSQL("SELECT year, StudentStage, code, sum(count) FROM accdatastore.summary_fsm where SchoolType=3 and Year = " + year.year + " group by year, StudentStage, code");
-                    if (listResult != null)
-                    {
-                        tempdata = new List<GenericSPFSM>();
-                        foreach (var itemRow in listResult)
-                        {
-                            if (itemRow != null)
-                            {
-                                temp = new GenericSPFSM(itemRow[1].ToString(), itemRow[2].ToString(), Convert.ToInt16(itemRow[3].ToString()));
-                                tempdata.Add(temp);
-                            }
-                        }
-                        int totalschoolroll = tempdata.Select(x => x.count).Sum();
-
-                        var groupedList = tempdata.Where(x => x.Code.Equals("1")).Select(y => new GenericSPFSM
-                        {
-                            Code = y.Code,
-                            Studentstage = y.Studentstage,
-                            count = y.count,
-                            sum = totalschoolroll,
-                            Percent = (y.count * 100.00F / tempdata.Select(x => x.count).Sum()),
-                            sPercent = NumberFormatHelper.FormatNumber((y.count * 100.00F / tempdata.Select(x => x.count).Sum()), 1).ToString()
-
-                        }).ToList();
-                        SPFSM.year = year;
-                        SPFSM.GenericSchoolData = new GenericSchoolData()
-                        {
-                            Code = "1",
-                            count = groupedList.Select(x => x.count).Sum(),
-                            Value = "",
-                            sum = totalschoolroll,
-                            Name = "Free School Meals Registered",
-                            Percent = groupedList.Select(x => x.Percent).Sum(),
-                            sPercent = NumberFormatHelper.FormatNumber(groupedList.Select(x => Convert.ToDouble(x.sPercent)).Sum(), 1).ToString()
-                        };
-                        //SPFSM.ListGenericSchoolData = groupedList;
-                    }
-                    listFSM.Add(SPFSM);
+                    case "nationality":
+                        List<NationalityIdentity> listNationalityIdentity = GetHistoricalNationalityData(rpGeneric2nd, "2", school.seedcode, listYear);
+                        //dtResult = ProcessExportDataFormat(listNationalityIdentity);
+                        break;
                 }
-
-            }
-            else
-            {
-                foreach (Year year in listyear)
-                {
-                    SPFSM = new FreeSchoolMeal();
-                    var listResult = rpGeneric2nd.FindByNativeSQL("SELECT year, StudentStage, code, sum(count) FROM accdatastore.summary_fsm where SchoolType=3 and Year = " + year.year + " and seedcode = " + seedcode + " group by year, StudentStage, code");
-                    if (listResult != null)
-                    {
-                        tempdata = new List<GenericSPFSM>();
-                        foreach (var itemRow in listResult)
-                        {
-                            if (itemRow != null)
-                            {
-                                temp = new GenericSPFSM(itemRow[1].ToString(), itemRow[2].ToString(), Convert.ToInt16(itemRow[3].ToString()));
-                                tempdata.Add(temp);
-                            }
-                        }
-                        int totalschoolroll = tempdata.Select(x => x.count).Sum();
-                        var groupedList = tempdata.Where(x => x.Code.Equals("1")).Select(y => new GenericSPFSM
-                        {
-                            Code = y.Code,
-                            Studentstage = y.Studentstage,
-                            count = y.count,
-                            sum = totalschoolroll,
-                            Percent = (y.count * 100.00F / tempdata.Select(x => x.count).Sum()),
-                            sPercent = NumberFormatHelper.FormatNumber((y.count * 100.00F / tempdata.Select(x => x.count).Sum()), 1).ToString()
-
-                        }).ToList();
-                        SPFSM.year = year;
-                        SPFSM.GenericSchoolData = new GenericSchoolData()
-                        {
-                            Code = "1",
-                            count = groupedList.Select(x => x.count).Sum(),
-                            Value = "",
-                            sum = totalschoolroll,
-                            Name = "Free School Meals Registered",
-                            Percent = groupedList.Select(x => x.Percent).Sum(),
-                            sPercent = NumberFormatHelper.FormatNumber(groupedList.Select(x => Convert.ToDouble(x.sPercent)).Sum(), 1).ToString()
-                        };
-
-                        //SPFSM.ListGenericSchoolData = groupedList;
-                    }
-                    listFSM.Add(SPFSM);
-                }
-
             }
 
-            return listFSM.OrderBy(x => x.year.year).ToList();
-        }
-
-        //Historical Free School Meal Registered data
-        protected List<FreeSchoolMeal> GetHistoricalFSMDataSpecial(IGenericRepository2nd rpGeneric2nd, string seedcode, List<Year> listyear)
-        {
-            List<FreeSchoolMeal> listFSM = new List<FreeSchoolMeal>();
-            List<GenericSPFSM> tempdata = new List<GenericSPFSM>();
-            FreeSchoolMeal SPFSM = new FreeSchoolMeal();
-            GenericSPFSM temp;
-
-            if (seedcode.Equals("1002"))
-            {
-                foreach (Year year in listyear)
-                {
-                    SPFSM = new FreeSchoolMeal();
-                    var listResult = rpGeneric2nd.FindByNativeSQL("SELECT year, StudentStage, code, sum(count) FROM accdatastore.summary_fsm where SchoolType=4 and Year = " + year.year + " group by year, StudentStage, code");
-                    if (listResult != null)
-                    {
-                        tempdata = new List<GenericSPFSM>();
-                        foreach (var itemRow in listResult)
-                        {
-                            if (itemRow != null)
-                            {
-                                temp = new GenericSPFSM(itemRow[1].ToString(), itemRow[2].ToString(), Convert.ToInt16(itemRow[3].ToString()));
-                                tempdata.Add(temp);
-                            }
-                        }
-                        int totalschoolroll = tempdata.Select(x => x.count).Sum();
-
-                        var groupedList = tempdata.Where(x => x.Code.Equals("1")).Select(y => new GenericSPFSM
-                        {
-                            Code = y.Code,
-                            Studentstage = y.Studentstage,
-                            count = y.count,
-                            sum = totalschoolroll,
-                            Percent = (y.count * 100.00F / tempdata.Select(x => x.count).Sum()),
-                            sPercent = NumberFormatHelper.FormatNumber((y.count * 100.00F / tempdata.Select(x => x.count).Sum()), 1).ToString()
-
-                        }).ToList();
-                        SPFSM.year = year;
-                        SPFSM.GenericSchoolData = new GenericSchoolData()
-                        {
-                            Code = "1",
-                            count = groupedList.Select(x => x.count).Sum(),
-                            Value = "",
-                            sum = totalschoolroll,
-                            Name = "Free School Meals Registered",
-                            Percent = groupedList.Select(x => x.Percent).Sum(),
-                            sPercent = NumberFormatHelper.FormatNumber(groupedList.Select(x => Convert.ToDouble(x.sPercent)).Sum(), 1).ToString()
-                        };
-                        //SPFSM.ListGenericSchoolData = groupedList;
-                    }
-                    listFSM.Add(SPFSM);
-                }
-
-            }
-            else
-            {
-                foreach (Year year in listyear)
-                {
-                    SPFSM = new FreeSchoolMeal();
-                    var listResult = rpGeneric2nd.FindByNativeSQL("SELECT year, StudentStage, code, sum(count) FROM accdatastore.summary_fsm where SchoolType=4 and Year = " + year.year + " and seedcode = " + seedcode + " group by year, StudentStage, code");
-                    if (listResult != null)
-                    {
-                        tempdata = new List<GenericSPFSM>();
-                        foreach (var itemRow in listResult)
-                        {
-                            if (itemRow != null)
-                            {
-                                temp = new GenericSPFSM(itemRow[1].ToString(), itemRow[2].ToString(), Convert.ToInt16(itemRow[3].ToString()));
-                                tempdata.Add(temp);
-                            }
-                        }
-                        int totalschoolroll = tempdata.Select(x => x.count).Sum();
-                        var groupedList = tempdata.Where(x => x.Code.Equals("1")).Select(y => new GenericSPFSM
-                        {
-                            Code = y.Code,
-                            Studentstage = y.Studentstage,
-                            count = y.count,
-                            sum = totalschoolroll,
-                            Percent = (y.count * 100.00F / tempdata.Select(x => x.count).Sum()),
-                            sPercent = NumberFormatHelper.FormatNumber((y.count * 100.00F / tempdata.Select(x => x.count).Sum()), 1).ToString()
-
-                        }).ToList();
-                        SPFSM.year = year;
-                        SPFSM.GenericSchoolData = new GenericSchoolData()
-                        {
-                            Code = "1",
-                            count = groupedList.Select(x => x.count).Sum(),
-                            Value = "",
-                            sum = totalschoolroll,
-                            Name = "Free School Meals Registered",
-                            Percent = groupedList.Select(x => x.Percent).Sum(),
-                            sPercent = NumberFormatHelper.FormatNumber(groupedList.Select(x => Convert.ToDouble(x.sPercent)).Sum(), 1).ToString()
-                        };
-
-                        //SPFSM.ListGenericSchoolData = groupedList;
-                    }
-                    listFSM.Add(SPFSM);
-                }
-
-            }
-
-            return listFSM.OrderBy(x => x.year.year).ToList();
-        }
-
-        protected string[] ExportDataToXLSX(string tablename, List<SPSchool> listSchool)
-        {
             var workbook = new XLWorkbook();
             var dtNow = DateTime.Now.ToString("yyyyMMdd_HHmmss");
- 
-           // var dtResult = ProcessExportDataFormat(listReportData, listDeviceParams, nAggregateType, eUserDataTableHdr);
+
 
             var sWorksheetName = "test";
             var worksheet = workbook.Worksheets.Add(sWorksheetName);
@@ -2028,7 +1801,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             //worksheet.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
             //worksheet.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
 
-            worksheet.Tables.FirstOrDefault().ShowAutoFilter = false;
+           // worksheet.Tables.FirstOrDefault().ShowAutoFilter = false;
             worksheet.Rows().AdjustToContents();
             worksheet.Columns().AdjustToContents();
 
@@ -2039,52 +1812,319 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             return new string[] { "download/" + sFileName, sFileName };
         }
 
-        //private DataTable ProcessExportDataFormat(IList<object[]> listData, IList<DeviceParams> listDeviceParams, int nAggregateType, UserDataTableHdr eUserDataTableHdr)
-        //{
-        //    var dataResult = new DataTable();
-        //    try
-        //    {
-        //        if (listData != null && listData.Count > 0)
-        //        {
-        //            var dicDIColumn = new Dictionary<int, DeviceParams>();
-        //            if (listDeviceParams != null && listDeviceParams.Count > 0)
-        //            {
-        //                var dicDeviceParams = Session["SessionDicDeviceParams"] as Dictionary<string, DeviceParams>;
-        //                for (var i = 0; i < listDeviceParams.Count + 1; i++)
-        //                {
-        //                    dataResult.Columns.Add(i == 0 ? "Date Time" : listDeviceParams[i - 1].FldName);
-        //                }
-        //            }
-        //            else
-        //            {
-        //                foreach (var itemColumn in listData[0])
-        //                {
-        //                    dataResult.Columns.Add();
-        //                }
-        //            }
-        //            foreach (var oRow in listData)
-        //            {
-        //                // date time
-        //                oRow[0] = ProcessDataFormatDateTime(Convert.ToDateTime(oRow[0]), nAggregateType, eUserDataTableHdr);
-        //                dataResult.Rows.Add(oRow);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            if (listDeviceParams != null && listDeviceParams.Count > 0)
-        //            {
-        //                for (var i = 0; i < listDeviceParams.Count + 1; i++)
-        //                {
-        //                    dataResult.Columns.Add(i == 0 ? "Date Time" : listDeviceParams[i - 1].FldName);
-        //                }
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        log.Error(ex, ex.Message);
-        //    }
-        //    return dataResult;
-        //}
+        private DataTable ProcessExportDataFormat(IList<object[]> listData)
+        {
+            var dataResult = new DataTable();
+            //try
+            //{
+            //    if (listData != null && listData.Count > 0)
+            //    {
+            //        var dicDIColumn = new Dictionary<int, DeviceParams>();
+            //        if (listDeviceParams != null && listDeviceParams.Count > 0)
+            //        {
+            //            var dicDeviceParams = Session["SessionDicDeviceParams"] as Dictionary<string, DeviceParams>;
+            //            for (var i = 0; i < listDeviceParams.Count + 1; i++)
+            //            {
+            //                dataResult.Columns.Add(i == 0 ? "Date Time" : listDeviceParams[i - 1].FldName);
+            //            }
+            //        }
+            //        else
+            //        {
+            //            foreach (var itemColumn in listData[0])
+            //            {
+            //                dataResult.Columns.Add();
+            //            }
+            //        }
+            //        foreach (var oRow in listData)
+            //        {
+            //            // date time
+            //            oRow[0] = ProcessDataFormatDateTime(Convert.ToDateTime(oRow[0]), nAggregateType, eUserDataTableHdr);
+            //            dataResult.Rows.Add(oRow);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        if (listDeviceParams != null && listDeviceParams.Count > 0)
+            //        {
+            //            for (var i = 0; i < listDeviceParams.Count + 1; i++)
+            //            {
+            //                dataResult.Columns.Add(i == 0 ? "Date Time" : listDeviceParams[i - 1].FldName);
+            //            }
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    log.Error(ex, ex.Message);
+            //}
+            return dataResult;
+        }
+
+        //Historical InCAS data
+        protected List<SPCfElevel> GetHistoricalSecondaryCfeLevelData(IGenericRepository2nd rpGeneric2nd, string seedcode, string schooltype)
+        {
+            List<SPCfElevel> listSPCfelevel = new List<SPCfElevel>();
+            SPCfElevel tSPCfelevel = new SPCfElevel();
+            List<GenericSchoolData> temp = new List<GenericSchoolData>();
+
+            //get actual number 
+            string query = "Select * from summary_secondary_cfe where seedcode =" + seedcode + " and SchoolType = " + schooltype;
+            var listResult = rpGeneric2nd.FindByNativeSQL(query);
+            if (listResult != null)
+            {
+                foreach (var itemRow in listResult)
+                {
+                    if (itemRow != null)
+                    {
+                        tSPCfelevel = new SPCfElevel();
+                        tSPCfelevel.year = new Year(itemRow[0].ToString());
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[3])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[5])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[7])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[9])));
+                        tSPCfelevel.ListThirdlevel = temp;
+
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[4])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[6])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[8])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[10])));
+                        tSPCfelevel.ListForthlevel = temp;
+
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[11])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[13])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[15])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[17])));
+                        tSPCfelevel.SIMDQ1_3Dlevel = temp;
+
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[12])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[14])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[16])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[18])));
+                        tSPCfelevel.SIMDQ1_4level = temp;
+
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[19])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[21])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[23])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[25])));
+                        tSPCfelevel.SIMDQ2_3Dlevel = temp;
+
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[20])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[22])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[24])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[26])));
+                        tSPCfelevel.SIMDQ2_4level = temp;
+
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[27])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[29])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[31])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[33])));
+                        tSPCfelevel.SIMDQ3_3Dlevel = temp;
+
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[28])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[30])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[32])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[34])));
+                        tSPCfelevel.SIMDQ3_4level = temp;
+
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[35])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[37])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[39])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[41])));
+                        tSPCfelevel.SIMDQ4_3Dlevel = temp;
+
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[36])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[38])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[40])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[42])));
+                        tSPCfelevel.SIMDQ4_4level = temp;
+
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[43])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[45])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[47])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[49])));
+                        tSPCfelevel.SIMDQ5_3Dlevel = temp;
+
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[44])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[46])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[48])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[50])));
+                        tSPCfelevel.SIMDQ5_4level = temp;
+
+                        listSPCfelevel.Add(tSPCfelevel);
+                    }
+                }
+            }
+
+
+
+            return listSPCfelevel.OrderBy(x => x.year.year).ToList(); ;
+        }
+
+        //Historical InCAS data
+        protected List<SPCfElevel> GetHistoricalPrimaryCfeLevelData(IGenericRepository2nd rpGeneric2nd, string seedcode, string schooltype)
+        {
+            List<SPCfElevel> listSPCfelevel = new List<SPCfElevel>();
+            SPCfElevel tSPCfelevel = new SPCfElevel();
+            List<GenericSchoolData> temp = new List<GenericSchoolData>();
+
+            //get actual number 
+            string query = "Select * from summary_primary_cfe where seedcode =" + seedcode + " and SchoolType = " + schooltype;
+            var listResult = rpGeneric2nd.FindByNativeSQL(query);
+            if (listResult != null)
+            {
+                foreach (var itemRow in listResult)
+                {
+                    if (itemRow != null)
+                    {
+                        tSPCfelevel = new SPCfElevel();
+                        tSPCfelevel.year = new Year(itemRow[0].ToString());
+
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[3])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[4])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[5])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[6])));
+                        tSPCfelevel.P1EarlyLevel = temp;
+
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[7])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[8])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[9])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[10])));
+                        tSPCfelevel.P4FirstLevel = temp;
+
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[11])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[12])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[13])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[14])));
+                        tSPCfelevel.P7SecondLevel = temp;
+
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[15])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[16])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[17])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[18])));
+                        tSPCfelevel.P1EarlyLevelQ1 = temp;
+
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[19])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[20])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[21])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[22])));
+                        tSPCfelevel.P1EarlyLevelQ2 = temp;
+
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[23])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[24])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[25])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[26])));
+                        tSPCfelevel.P1EarlyLevelQ3 = temp;
+
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[27])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[28])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[29])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[30])));
+                        tSPCfelevel.P1EarlyLevelQ4 = temp;
+
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[31])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[32])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[33])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[34])));
+                        tSPCfelevel.P1EarlyLevelQ5 = temp;
+
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[35])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[36])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[37])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[38])));
+                        tSPCfelevel.P4FirstLevelQ1 = temp;
+
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[39])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[40])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[41])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[42])));
+                        tSPCfelevel.P4FirstLevelQ2 = temp;
+
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[43])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[44])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[45])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[46])));
+                        tSPCfelevel.P4FirstLevelQ3 = temp;
+
+
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[47])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[48])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[49])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[50])));
+                        tSPCfelevel.P4FirstLevelQ4 = temp;
+
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[51])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[52])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[53])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[54])));
+                        tSPCfelevel.P4FirstLevelQ5 = temp;
+
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[55])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[56])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[57])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[58])));
+                        tSPCfelevel.P7SecondLevelQ1 = temp;
+
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[59])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[60])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[61])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[62])));
+                        tSPCfelevel.P7SecondLevelQ2 = temp;
+
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[63])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[64])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[65])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[66])));
+                        tSPCfelevel.P7SecondLevelQ3 = temp;
+
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[67])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[68])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[69])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[70])));
+                        tSPCfelevel.P7SecondLevelQ4 = temp;
+
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[71])));
+                        temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[72])));
+                        temp.Add(new GenericSchoolData("Listening & Talking", NumberFormatHelper.ConvertObjectToFloat(itemRow[73])));
+                        temp.Add(new GenericSchoolData("Numeracy", NumberFormatHelper.ConvertObjectToFloat(itemRow[74])));
+                        tSPCfelevel.P7SecondLevelQ5 = temp;
+
+                        listSPCfelevel.Add(tSPCfelevel);
+                    }
+                }
+            }
+
+            return listSPCfelevel.OrderBy(x => x.year.year).ToList(); ;
+        }
+
     }
 }

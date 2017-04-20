@@ -20,7 +20,7 @@
     "angular-ui-router": "^0.3.1",
     "angular-sanitize": "^1.5.8",
     "highcharts": "^4.2.7",
-    "highcharts-ng": "^1.0.0",
+    "highcharts-ng": "^0.0.13",
     "jquery": "^3.1.1",
     "datatables.net": "^1.10.12",
     "datatables.net-dt": "^1.10.12",
@@ -37,6 +37,8 @@
     "bootstrap": "^3.3.7",
     "angular-bootstrap": "^2.2.0",
     "angular-ui-select": "^0.19.5",
-    "angular-datatables": "^0.5.5"
+    "angular-datatables": "^0.5.5",
+    "ngmap": "^1.17.8",
+    "json-export-excel": "ng-json-export-excel#^1.0.2"
   }
 }

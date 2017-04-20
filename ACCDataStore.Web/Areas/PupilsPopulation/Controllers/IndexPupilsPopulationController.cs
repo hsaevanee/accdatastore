@@ -23,8 +23,8 @@ namespace ACCDataStore.Web.Areas.PupilsPopulation.Controllers
             this.rpGeneric = rpGeneric;
         }
 
-        [AdminAuthentication]
-        [Transactional]
+        //[AdminAuthentication]
+        //[Transactional]
         public ActionResult IndexHome()
         {
             //var eGeneralSettings = ACCDataStore.Core.Helper.ConvertHelper.XmlFile2Object(HttpContext.Server.MapPath("~/Config/GeneralSettings.xml"), typeof(GeneralCounter)) as GeneralCounter;
