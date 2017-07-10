@@ -98,6 +98,8 @@
     <Compile Include="SchoolProfiles\Census\Entity\SPPIPS.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SchoolRoll.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SPInCAS.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\SPCfEReport.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\SPReport.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SPSchoolRollForecast.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SPSchool.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SPSIMD.cs" />

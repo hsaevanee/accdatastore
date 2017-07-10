@@ -14,6 +14,8 @@ namespace ACCDataStore.Web.Areas.Authorisation
 
         public override void RegisterArea(AreaRegistrationContext context) 
         {
+            context.Routes.MapMvcAttributeRoutes();
+
             context.MapRoute(
                 "Authorisation_default",
                 "Authorisation/{controller}/{action}/{id}",

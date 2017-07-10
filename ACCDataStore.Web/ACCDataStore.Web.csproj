@@ -172,6 +172,7 @@
     <Reference Include="WebGrease">
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="bower_components\angular-bootstrap\ui-bootstrap-csp.css" />
@@ -289,7 +290,10 @@
     <Content Include="Images\WIP.jpg" />
     <Content Include="Resources\Download\loading.gif" />
     <Content Include="Rotativa\wkhtmltopdf.exe" />
+    <Content Include="Scripts\accdatastore\areas\authorisation\app.js" />
+    <Content Include="Scripts\accdatastore\areas\authorisation\controller.js" />
     <Content Include="Scripts\accdatastore\areas\authorisation\Login.js" />
+    <Content Include="Scripts\accdatastore\areas\authorisation\service.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\DataHub\app.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\DataHub\controller.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\DataHub\service.js" />
@@ -349,9 +353,6 @@
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\SpecialSchool\service.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\StudentStage\MapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\StudentStage\StudentStage.js" />
-    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\test\app.js" />
-    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\test\controller.js" />
-    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\test\service.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\Curriculum\Curriculum.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\Curriculum\MapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\EthnicBackground\EthnicBackground2.js" />
@@ -452,9 +453,9 @@
     <Compile Include="Areas\SchoolProfiles\Controllers\IndexSchoolProfilesController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\PrimarySchoolProfileController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\QueryController.cs" />
+    <Compile Include="Areas\SchoolProfiles\Controllers\ReportsController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\SecondarySchoolProfileController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\SpecialSchoolProfileController.cs" />
-    <Compile Include="Areas\SchoolProfiles\Controllers\TestController.cs" />
     <Compile Include="Areas\SchoolProfiles\SchoolProfilesAreaRegistration.cs" />
     <Compile Include="Areas\SchoolProfiles\ViewModels\SchoolProfiles\BaseSchoolProfilesViewModel.cs" />
     <Compile Include="Areas\SchoolProfiles\ViewModels\SchoolProfiles\IndexPrimarySchoolProfilesViewModel.cs" />
@@ -624,7 +625,6 @@
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Index2 - Copy.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\_DataTables.cshtml" />
     <Content Include="Areas\SchoolProfiles\Views\IndexPrimaryProfile\data.cshtml" />
-    <Content Include="Areas\SchoolProfiles\Views\Test\Index.cshtml" />
     <Content Include="Areas\SchoolProfiles\Views\IndexPrimaryProfile\_showdata.cshtml" />
     <Content Include="Areas\SchoolProfiles\Views\IndexPrimaryProfile\IndexPrimarySchool - Copy.cshtml" />
     <Content Include="Areas\SchoolProfiles\Views\IndexSchoolProfiles\IndexSpecialSchool - Copy.cshtml" />
@@ -664,6 +664,7 @@
     <Folder Include="Areas\SchoolProfiles\Models\" />
     <Folder Include="Areas\SchoolProfiles\Views\BaseSchoolProfiles\" />
     <Folder Include="Areas\SchoolProfiles\Views\BaseSchoolProfile\" />
+    <Folder Include="Areas\SchoolProfiles\Views\Reports\" />
     <Folder Include="Areas\SchoolProfile\Models\" />
     <Folder Include="Areas\SchoolRollForecast\Models\" />
     <Folder Include="Content\accdatastore\areas\Authorisation\" />

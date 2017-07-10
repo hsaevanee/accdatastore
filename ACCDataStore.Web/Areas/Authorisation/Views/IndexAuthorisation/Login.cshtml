@@ -1,19 +1,19 @@
 ﻿@model ACCDataStore.Web.Areas.Authorisation.ViewModels.IndexViewModel
 @using System.Data;
- 
+
 @section Header {
     @*<link rel="stylesheet" href="~/Content/accdatastore/areas/nationality/views/nationality/nationality.css" type="text/css" />*@
     @*<script src="~/Scripts/accdatastore/areas/schoolprofile/views/IndexSchoolProfile/Index2SchoolProfile.js"></script>*@
-<script src="~/Scripts/highcharts.js"></script>
+    <script src="~/Scripts/highcharts.js"></script>
 
-<!-- Bootstrap Multiselect Plugin -->
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
-<script src="~/Scripts/jquery.js"></script>
-<script type="text/javascript" src="/Scripts/bootstrap.min.js"></script>
-<script src="~/Scripts/bootstrap-multiselect.js" type="text/javascript"></script>
-<link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" type="text/css" />
-<script src="~/Scripts/accdatastore/areas/authorisation/Login.js" type="text/javascript"></script>
+    <!-- Bootstrap Multiselect Plugin -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/jquery.js"></script>
+    <script type="text/javascript" src="/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/bootstrap-multiselect.js" type="text/javascript"></script>
+    <link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/accdatastore/areas/authorisation/Login.js" type="text/javascript"></script>
 }
 @{
     ViewBag.Title = "Login";
@@ -66,14 +66,14 @@
                                         </div>
                                     </div>
                                     @*<div class="form-group">
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="text-center">
-                                                    <a href="http://phpoll.com/recover" tabindex="5" class="forgot-password">Forgot Password?</a>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="text-center">
+                                                        <a href="http://phpoll.com/recover" tabindex="5" class="forgot-password">Forgot Password?</a>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>*@
+                                        </div>*@
                                 </form>
                                 <form id="register-form" action="@Url.Action("Register", "IndexAuthorisation", new { area = "Authorisation" })" method="post" role="form" style="display: none;">
                                     <div class="form-group">
@@ -139,6 +139,5 @@
                 </div>
             </div>
         </div>
-    </div>    
+    </div>
 </body>
-

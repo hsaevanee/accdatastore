@@ -9,6 +9,7 @@ using Common.Logging;
 using ACCDataStore.Repository;
 using System.Web.Security;
 using System.Security.Cryptography;
+using ACCDataStore.Helpers.ORM;
 
 namespace ACCDataStore.Web.Areas.Authorisation.Controllers
 {
@@ -56,12 +57,12 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
         {
             try
             {
-                //bool isuservalid = ValidateUser(vmIndex.Username, vmIndex.Password);
+                bool isuservalid = ValidateUser(vmIndex.Username, vmIndex.Password);
 
                 //if (isuservalid)
                 //{
                 //    //read right from database and set to eUsers
-                //    Users eUsers = this.rpGeneric2nd.Find<Users>(" From Users where UserName = :userName ", new string[] { "userName" }, new object[] { vmIndex.Username }).FirstOrDefault();
+                    //Users eUsers = this.rpGeneric2nd.Find<Users>(" From Users where UserName = :userName ", new string[] { "userName" }, new object[] { vmIndex.Username }).FirstOrDefault();
                 //    Rights eRight = this.rpGeneric2nd.Find<Rights>(" From Rights where UserID = :userID ", new string[] { "userID" }, new object[] { eUsers.UserID}).FirstOrDefault();
 
                 //}
@@ -70,6 +71,16 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
                 //}
 
                 // user logined
+
+
+                var sKey = "IloveWine";
+                var sTextRaw = "Boss1232498!";
+                var sTextEncrypt = EncryptString(sTextRaw, sKey);
+                var sTextDecrypt = DecryptString(sTextEncrypt, sKey);
+
+                IList<Users> listUsers = this.rpGeneric2nd.Find<Users>(" from Users where UserName = :UserName ", new string[] { "UserName" }, new object[] {"Jan" }).ToList(); 
+
+
                 if (vmIndex.Username.Equals("demo", StringComparison.CurrentCultureIgnoreCase) && vmIndex.Password.Equals("demo", StringComparison.CurrentCultureIgnoreCase))
                 {
                     // store user session for 'demo' user
@@ -78,7 +89,11 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
                     eUsers.UserName = "demo";
                     eUsers.IsAdministrator = false; // 'demo' is just normal user, not admin
                     Session["SessionUser"] = eUsers;
-                    
+
+                    //ViewData["VDFriend"] = "Deepak K Gupta";
+                    //ViewBag.VBFriend = "Deepak K Gupta";
+                    //TempData["TDFriend"] = "Deepak K Gupta";
+
                     return RedirectToAction("Index", "Index", new { Area = "", id = "" });
                 }
                 else if (vmIndex.Username.Equals("useracademic", StringComparison.CurrentCultureIgnoreCase) && vmIndex.Password.Equals("Ado3241!", StringComparison.CurrentCultureIgnoreCase))
@@ -92,7 +107,9 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
                     eUsers.IsDataHubAdministrator = false;
                     Session["SessionUser"] = eUsers;
                     //ValidateUser("admin", "admin");
-                    return RedirectToAction("Index", "Index", new { Area = "", id = "" });
+                    //Redirect page to previous page
+                    //Redirect(ControllerContext.HttpContext.Request.UrlReferrer.ToString()); 
+                    return RedirectToAction("Index", "IndexSchoolProfiles", new { Area = "SchoolProfiles", id = "" });
                 }
                 else if (vmIndex.Username.Equals("userdatahub", StringComparison.CurrentCultureIgnoreCase) && vmIndex.Password.Equals("Ado4787!", StringComparison.CurrentCultureIgnoreCase))
                 {
@@ -105,9 +122,9 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
                     eUsers.IsDataHubAdministrator = true;
                     Session["SessionUser"] = eUsers;
                     //ValidateUser("admin", "admin");
-                    return RedirectToAction("Index", "Index", new { Area = "", id = "" });
+                    return RedirectToAction("Index", "Datahub", new { Area = "DatahubProfile", id = "" });
                 }
-                else if (vmIndex.Username.Equals("admin", StringComparison.CurrentCultureIgnoreCase) && vmIndex.Password.Equals("admin2209!", StringComparison.CurrentCultureIgnoreCase))
+                else if (vmIndex.Username.Equals("admin", StringComparison.CurrentCultureIgnoreCase) && vmIndex.Password.Equals("admin1980!", StringComparison.CurrentCultureIgnoreCase))
                 {
                     // store user session for 'admin' user
                     var eUsers = new Users();
@@ -132,6 +149,82 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("Authorisation/IndexAuthorisation/ProcessLogin")]
+        [Transactional]
+        public JsonResult ProcessLogin(Users eUsers)
+        {
+            var nErrorType = -1;
+            var sErrorMessage = "";
+
+            //try
+            //{
+            //    var sUserName = eUsers.UserName;
+            //    var sPassword = eUsers.Password;
+
+            //    IList<Users> listUsers = this.rpGeneric.Find<Users>(" from Users where UserName = :UserName ", new string[] { "UserName" }, new object[] { sUserName });
+
+            //    if (listUsers != null && listUsers.Count > 0)
+            //    {
+            //        var sPasswordDecrypt = EncryptString(listUsers[0].Password, "xxxx");
+
+            //        if (sPasswordDecrypt.Equals(sPassword, StringComparison.Ordinal))
+            //        {
+            //            eUsers = listUsers[0];
+            //            if (eUsers.IsActive)
+            //            {
+            //                string sRemoteAddress = Request.UserHostAddress;
+
+            //                eUsers.IsLogOn = true;
+            //                eUsers.LastLog = DateTime.Now;
+            //                eUsers.RemoteIP = Request.UserHostAddress;
+            //                this.rpGeneric.SaveOrUpdate<Users>(eUsers);
+            //                IList<Rights> listRights = this.rpGeneric.Find<Rights>(" from Rights where UserID = :UserID ", new string[] { "UserID" }, new object[] { eUsers.UserID });
+            //                SetSessionLoginedUser(eUsers, listRights);
+
+            //                return Json(new
+            //                {
+            //                    RedirectUrl = GetRedirectUrl(),
+            //                    IsRedirect = true,
+            //                    ErrorType = nErrorType,
+            //                    ErrorMessage = sErrorMessage
+            //                }, JsonRequestBehavior.AllowGet);
+            //            }
+            //            else
+            //            {
+            //                nErrorType = 3;
+            //                sErrorMessage = "This account has been disabled. Please contact system administrator.";
+            //            }
+            //        }
+            //        else
+            //        {
+            //            nErrorType = 1;
+            //            sErrorMessage = "Invalid password";
+            //        }
+            //    }
+            //    else
+            //    {
+            //        nErrorType = 0;
+            //        sErrorMessage = "Invalid username";
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    nErrorType = 2;
+            //    sErrorMessage = ex.Message;
+            //    log.Error(ex.Message, ex);
+            //}
+
+            return Json(new
+            {
+                RedirectUrl = "",
+                IsRedirect = false,
+                ErrorType = nErrorType,
+                ErrorMessage = sErrorMessage
+            }, JsonRequestBehavior.AllowGet);
+
+        }
+
         public ActionResult Logout(IndexViewModel vmIndex)
         {
             FormsAuthentication.SignOut();
@@ -139,20 +232,20 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Register(IndexViewModel vmIndex)
-        {
-            try
-            {
+        //public ActionResult Register(IndexViewModel vmIndex)
+        //{
+        //    try
+        //    {
+        //        this.rpGeneric2nd.SaveOrUpdate<User>(eUser);
+        //        return RedirectToAction("Index");
+        //     }
+        //    catch (Exception ex)
+        //    {
+        //        log.Error(ex.Message, ex);
+        //        return RedirectToAction("Index");
+        //    }
 
-                return RedirectToAction("Index");
-             }
-            catch (Exception ex)
-            {
-                log.Error(ex.Message, ex);
-                return RedirectToAction("Index");
-            }
-
-        }
+        //}
 
         private bool ValidateUser(string username, string password)
         {

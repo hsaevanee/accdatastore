@@ -764,7 +764,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                             count = y.Select(a => a.count).Sum(),
                             sum = total,
                             Percent = total != 0 ? (y.Select(a => a.count).Sum() * 100.00F / total) : 0.00F,
-                            sPercent = total != 0 ? NumberFormatHelper.FormatNumber((y.Select(a => a.count).Sum() * 100.00F / total), 1).ToString() : NumberFormatHelper.FormatNumber((float)0.00, 1).ToString()
+                            sPercent = total != 0 ? NumberFormatHelper.FormatNumber((y.Select(a => a.count).Sum() * 100.00F / total), 1).ToString() : NumberFormatHelper.FormatNumber((float)0.00, 1).ToString(),
+                            sCount = NumberFormatHelper.FormatNumber(y.Select(a => a.count).Sum(), 0).ToString()
                         }).ToList();
                         groupedList.AddRange(foo.Where(x => groupedList.All(p1 => !p1.Code.Equals(x.Code))));
                         SPSIMD = new SPSIMD();
@@ -789,7 +790,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                             count = y.count,
                             sum = total,
                             Percent = total != 0 ? (y.count * 100.00F / total) : 0.00F,
-                            sPercent = NumberFormatHelper.FormatNumber((total != 0 ? (y.count * 100.00F / total) : 0.00F), 1).ToString()
+                            sPercent = NumberFormatHelper.FormatNumber((total != 0 ? (y.count * 100.00F / total) : 0.00F), 1).ToString(),
+                            sCount = NumberFormatHelper.FormatNumber(y.count, 0).ToString()
                         }).ToList();
                         groupedList.AddRange(foo.Where(x => groupedList.All(p1 => !p1.Code.Equals(x.Code))));
                         SPSIMD = new SPSIMD();
@@ -1197,6 +1199,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             GenericSchoolData tempobj = new GenericSchoolData();
             string queryExclusion, querySchoolRoll = "";
             int schoolroll = 0;
+            string yearNodata = "2016";
 
             foreach (Year year in listyear)
             {
@@ -1207,12 +1210,12 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 }
                 else
                 {
-                    queryExclusion = "SELECT Year, Seedcode, Code, sum(Count), sum(Sum)  FROM summary_exclusion where  SchoolType= " + sSchoolType + "  and year = " + year.year + " and seedcode = " + school.seedcode + " group by Year, Code;";
+                    queryExclusion = "SELECT Year, Seedcode, Code, sum(Count), sum(Sum)  FROM summary_exclusion where  SchoolType= " + sSchoolType + "  and year = " + year.year + " and seedcode = " + school.seedcode + " group by Year, Code";
                     querySchoolRoll = "Select Year, Count from summary_schoolroll where  SchoolType=" + sSchoolType + " and year = " + year.year + " and seedcode = " + school.seedcode;
                 }
 
                 var listResult = rpGeneric2nd.FindByNativeSQL(queryExclusion);
-                if (listResult != null)
+                if (listResult.Count > 0)
                 {
                     tempdata = new List<GenericSchoolData>();
                     foreach (var itemRow in listResult)
@@ -1221,6 +1224,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         {
                             tempobj = new GenericSchoolData(itemRow[2].ToString(), itemRow[2].ToString().Equals("0") ? "Temporary Exclusions" : "Removed From Register");
                             tempobj.count = Convert.ToInt16(itemRow[3].ToString());
+                            tempobj.sCount = NumberFormatHelper.FormatNumber(tempobj.count, 0).ToString();
                             tempobj.sum = Convert.ToInt16(itemRow[4].ToString());
                             tempobj.Percent = Convert.ToInt16(itemRow[3].ToString());
                             tempobj.sPercent = NumberFormatHelper.FormatNumber(tempobj.Percent, 1).ToString();
@@ -1244,11 +1248,51 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     SPExclusion.YearInfo = new Year(year.year);
                     tempobj = new GenericSchoolData("2", "Number of days per 1000 pupils lost to exclusions");
                     tempobj.count = tempdata.Sum(x => x.sum);  //Sum length of exclusion
+                    tempobj.sCount = NumberFormatHelper.FormatNumber(tempobj.count, 0).ToString();
                     tempobj.sum = schoolroll;   //school Roll
-                    tempobj.Percent = schoolroll==0? 0.00F: tempobj.count / 2.0F / schoolroll * 1000.0F;
+                    tempobj.Percent = schoolroll == 0 ? 0.00F : tempobj.count / 2.0F / schoolroll * 1000.0F;
                     tempobj.sPercent = NumberFormatHelper.FormatNumber(tempobj.Percent, 1).ToString();
                     //tempdata.Add(tempobj);
                     SPExclusion.ListGenericSchoolData = new List<GenericSchoolData>() { tempdata.Where(x => x.Code.Equals("0")).First(), tempdata.Where(x => x.Code.Equals("1")).First(), tempobj };
+                    listExclusion.Add(SPExclusion);
+                }
+                else {
+
+                    tempdata = new List<GenericSchoolData>();
+                    tempdata.Add(new GenericSchoolData()
+                    {
+                        Name = "Temporary Exclusions",
+                        Code = "0",
+                        count = 0,
+                        sCount = year.year.Equals(yearNodata)? "n/a":"0",
+                        sum = 0,
+                        Percent = year.year.Equals(yearNodata) ? null : (float?)0.0,
+                        sPercent = year.year.Equals(yearNodata) ? "n/a" : "0.0",
+                    });
+                    tempdata.Add(new GenericSchoolData()
+                    {
+                        Name = "Removed From Register",
+                        Code = "1",
+                        count = 0,
+                        sCount = year.year.Equals(yearNodata) ? "n/a" : "0",
+                        sum = 0,
+                        Percent = year.year.Equals(yearNodata) ? null : (float?)0.0,
+                        sPercent = year.year.Equals(yearNodata) ? "n/a" : "0.0",
+                    });
+                    tempdata.Add(new GenericSchoolData()
+                    {
+                        Name = "Number of days per 1000 pupils lost to exclusions",
+                        Code = "2",
+                        count = 0,
+                        sCount = year.year.Equals(yearNodata) ? "n/a" : "0",
+                        sum = 0,
+                        Percent = year.year.Equals(yearNodata) ? null : (float?)0.0,
+                        sPercent = year.year.Equals(yearNodata) ? "n/a" : "0.0",
+                    });
+
+                    SPExclusion = new SPExclusion();
+                    SPExclusion.YearInfo = new Year(year.year);
+                    SPExclusion.ListGenericSchoolData = tempdata;
                     listExclusion.Add(SPExclusion);
                 }
 
@@ -1278,7 +1322,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
 
                 foreach (var eSchool in listSchool)
                 {
-                    var listSeries = eSchool.listExclusion.Select(x => (float?)float.Parse(x.ListGenericSchoolData[indexsubject].sPercent)).ToList();
+                    var listSeries = eSchool.listExclusion.Select(x => (float?)x.ListGenericSchoolData[indexsubject].Percent).ToList();
 
                     eSplineCharts.series.Add(new ACCDataStore.Entity.RenderObject.Charts.SplineCharts.series()
                     {
@@ -1364,6 +1408,17 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         Percent = yschoolroll != 0 ? (totalcount * 100.00F / yschoolroll) : 0.0F,
                         sPercent = NumberFormatHelper.FormatNumber((yschoolroll != 0 ? (totalcount * 100.00F / yschoolroll) : 0.00F), 1).ToString()
                     };
+                    totalcount = listresult.Where(x => x.code.Equals("06")).Select(x => x.count).Sum();
+                    StudentNeed.ChildPlan = new GenericSchoolData()
+                    {
+                        Code = "06",
+                        Name = "ChildPlan",
+                        count = totalcount,
+                        sCount = NumberFormatHelper.FormatNumber(totalcount, 0).ToString(),
+                        sum = yschoolroll,
+                        Percent = yschoolroll != 0 ? (totalcount * 100.00F / yschoolroll) : 0.0F,
+                        sPercent = NumberFormatHelper.FormatNumber((yschoolroll != 0 ? (totalcount * 100.00F / yschoolroll) : 0.00F), 1).ToString()
+                    };
                     listStudentNeed.Add(StudentNeed);
                 }
             }
@@ -1401,6 +1456,17 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     {
                         Code = "01",
                         Name = "CSP",
+                        count = totalcount,
+                        sCount = NumberFormatHelper.FormatNumber(totalcount, 0).ToString(),
+                        sum = yschoolroll,
+                        Percent = yschoolroll != 0 ? (totalcount * 100.00F / yschoolroll) : 0.0F,
+                        sPercent = NumberFormatHelper.FormatNumber((yschoolroll != 0 ? (totalcount * 100.00F / yschoolroll) : 0.00F), 1).ToString()
+                    };
+                    totalcount = listresult.Where(x => x.code.Equals("06")).Select(x => x.count).Sum();
+                    StudentNeed.ChildPlan = new GenericSchoolData()
+                    {
+                        Code = "06",
+                        Name = "ChildPlan",
                         count = totalcount,
                         sCount = NumberFormatHelper.FormatNumber(totalcount, 0).ToString(),
                         sum = yschoolroll,
@@ -2124,6 +2190,327 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             }
 
             return listSPCfelevel.OrderBy(x => x.year.year).ToList(); ;
+        }
+
+        //Historical InCAS data
+        protected List<SPCfEReport> GetPrimaryCfeLevelDataforReport(IGenericRepository2nd rpGeneric2nd, string seedcode, string schooltype)
+        {
+            List<SPCfEReport> listSPCfelevel = new List<SPCfEReport>();
+            SPCfEReport tSPCfelevel = new SPCfEReport();
+            List<GenericSchoolData> temp = new List<GenericSchoolData>();
+            SPReport tempSPreport = new SPReport();
+
+            //get actual number 
+            string query = "Select * from summary_primary_cfe_report where seedcode =" + seedcode + " and SchoolType = " + schooltype;
+            var listResult = rpGeneric2nd.FindByNativeSQL(query);
+            if (listResult != null)
+            {
+                foreach (var itemRow in listResult)
+                {
+                    if (itemRow != null)
+                    {
+                        tSPCfelevel = new SPCfEReport();
+                        tSPCfelevel.P1 = new List<SPReport>();
+                        tSPCfelevel.P4 = new List<SPReport>();
+                        tSPCfelevel.P7 = new List<SPReport>();
+                        tSPCfelevel.year = new Year(itemRow[0].ToString());
+
+                        tempSPreport = new SPReport();
+                        tempSPreport.code = "ER";
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("ALL", NumberFormatHelper.ConvertObjectToFloat(itemRow[3])));
+                        temp.Add(new GenericSchoolData("FSM", NumberFormatHelper.ConvertObjectToFloat(itemRow[4])));
+                        temp.Add(new GenericSchoolData("LAC", NumberFormatHelper.ConvertObjectToFloat(itemRow[5])));
+                        temp.Add(new GenericSchoolData("30M", NumberFormatHelper.ConvertObjectToFloat(itemRow[6])));
+                        temp.Add(new GenericSchoolData("40M", NumberFormatHelper.ConvertObjectToFloat(itemRow[7])));
+                        temp.Add(new GenericSchoolData("30L", NumberFormatHelper.ConvertObjectToFloat(itemRow[8])));
+                        tempSPreport.listdata = temp;
+                        tSPCfelevel.P1.Add(tempSPreport);
+
+                        tempSPreport = new SPReport();
+                        tempSPreport.code = "EW";
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("ALL", NumberFormatHelper.ConvertObjectToFloat(itemRow[9])));
+                        temp.Add(new GenericSchoolData("FSM", NumberFormatHelper.ConvertObjectToFloat(itemRow[10])));
+                        temp.Add(new GenericSchoolData("LAC", NumberFormatHelper.ConvertObjectToFloat(itemRow[11])));
+                        temp.Add(new GenericSchoolData("30M", NumberFormatHelper.ConvertObjectToFloat(itemRow[12])));
+                        temp.Add(new GenericSchoolData("40M", NumberFormatHelper.ConvertObjectToFloat(itemRow[13])));
+                        temp.Add(new GenericSchoolData("30L", NumberFormatHelper.ConvertObjectToFloat(itemRow[14])));
+                        tempSPreport.listdata = temp;
+                        tSPCfelevel.P1.Add(tempSPreport);
+
+                        tempSPreport = new SPReport();
+                        tempSPreport.code = "ELT";
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("ALL", NumberFormatHelper.ConvertObjectToFloat(itemRow[15])));
+                        temp.Add(new GenericSchoolData("FSM", NumberFormatHelper.ConvertObjectToFloat(itemRow[16])));
+                        temp.Add(new GenericSchoolData("LAC", NumberFormatHelper.ConvertObjectToFloat(itemRow[17])));
+                        temp.Add(new GenericSchoolData("30M", NumberFormatHelper.ConvertObjectToFloat(itemRow[18])));
+                        temp.Add(new GenericSchoolData("40M", NumberFormatHelper.ConvertObjectToFloat(itemRow[19])));
+                        temp.Add(new GenericSchoolData("30L", NumberFormatHelper.ConvertObjectToFloat(itemRow[20])));
+                        tempSPreport.listdata = temp;
+                        tSPCfelevel.P1.Add(tempSPreport);
+
+                        tempSPreport = new SPReport();
+                        tempSPreport.code = "N";
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("ALL", NumberFormatHelper.ConvertObjectToFloat(itemRow[21])));
+                        temp.Add(new GenericSchoolData("FSM", NumberFormatHelper.ConvertObjectToFloat(itemRow[22])));
+                        temp.Add(new GenericSchoolData("LAC", NumberFormatHelper.ConvertObjectToFloat(itemRow[23])));
+                        temp.Add(new GenericSchoolData("30M", NumberFormatHelper.ConvertObjectToFloat(itemRow[24])));
+                        temp.Add(new GenericSchoolData("40M", NumberFormatHelper.ConvertObjectToFloat(itemRow[25])));
+                        temp.Add(new GenericSchoolData("30L", NumberFormatHelper.ConvertObjectToFloat(itemRow[26])));
+                        tempSPreport.listdata = temp;
+                        tSPCfelevel.P1.Add(tempSPreport);
+
+                        tempSPreport = new SPReport();
+                        tempSPreport.code = "ER";
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("ALL", NumberFormatHelper.ConvertObjectToFloat(itemRow[27])));
+                        temp.Add(new GenericSchoolData("FSM", NumberFormatHelper.ConvertObjectToFloat(itemRow[28])));
+                        temp.Add(new GenericSchoolData("LAC", NumberFormatHelper.ConvertObjectToFloat(itemRow[29])));
+                        temp.Add(new GenericSchoolData("30M", NumberFormatHelper.ConvertObjectToFloat(itemRow[30])));
+                        temp.Add(new GenericSchoolData("40M", NumberFormatHelper.ConvertObjectToFloat(itemRow[31])));
+                        temp.Add(new GenericSchoolData("30L", NumberFormatHelper.ConvertObjectToFloat(itemRow[32])));
+                        tempSPreport.listdata = temp;
+                        tSPCfelevel.P4.Add(tempSPreport);
+
+                        tempSPreport = new SPReport();
+                        tempSPreport.code = "EW";
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("ALL", NumberFormatHelper.ConvertObjectToFloat(itemRow[33])));
+                        temp.Add(new GenericSchoolData("FSM", NumberFormatHelper.ConvertObjectToFloat(itemRow[34])));
+                        temp.Add(new GenericSchoolData("LAC", NumberFormatHelper.ConvertObjectToFloat(itemRow[35])));
+                        temp.Add(new GenericSchoolData("30M", NumberFormatHelper.ConvertObjectToFloat(itemRow[36])));
+                        temp.Add(new GenericSchoolData("40M", NumberFormatHelper.ConvertObjectToFloat(itemRow[37])));
+                        temp.Add(new GenericSchoolData("30L", NumberFormatHelper.ConvertObjectToFloat(itemRow[38])));
+                        tempSPreport.listdata = temp;
+                        tSPCfelevel.P4.Add(tempSPreport);
+
+                        tempSPreport = new SPReport();
+                        tempSPreport.code = "ELT";
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("ALL", NumberFormatHelper.ConvertObjectToFloat(itemRow[39])));
+                        temp.Add(new GenericSchoolData("FSM", NumberFormatHelper.ConvertObjectToFloat(itemRow[40])));
+                        temp.Add(new GenericSchoolData("LAC", NumberFormatHelper.ConvertObjectToFloat(itemRow[41])));
+                        temp.Add(new GenericSchoolData("30M", NumberFormatHelper.ConvertObjectToFloat(itemRow[42])));
+                        temp.Add(new GenericSchoolData("40M", NumberFormatHelper.ConvertObjectToFloat(itemRow[43])));
+                        temp.Add(new GenericSchoolData("30L", NumberFormatHelper.ConvertObjectToFloat(itemRow[44])));
+                        tempSPreport.listdata = temp;
+                        tSPCfelevel.P4.Add(tempSPreport);
+
+                        tempSPreport = new SPReport();
+                        tempSPreport.code = "N";
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("ALL", NumberFormatHelper.ConvertObjectToFloat(itemRow[45])));
+                        temp.Add(new GenericSchoolData("FSM", NumberFormatHelper.ConvertObjectToFloat(itemRow[46])));
+                        temp.Add(new GenericSchoolData("LAC", NumberFormatHelper.ConvertObjectToFloat(itemRow[47])));
+                        temp.Add(new GenericSchoolData("30M", NumberFormatHelper.ConvertObjectToFloat(itemRow[48])));
+                        temp.Add(new GenericSchoolData("40M", NumberFormatHelper.ConvertObjectToFloat(itemRow[49])));
+                        temp.Add(new GenericSchoolData("30L", NumberFormatHelper.ConvertObjectToFloat(itemRow[50])));
+                        tempSPreport.listdata = temp;
+                        tSPCfelevel.P4.Add(tempSPreport);
+
+                        tempSPreport = new SPReport();
+                        tempSPreport.code = "ER";
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("ALL", NumberFormatHelper.ConvertObjectToFloat(itemRow[51])));
+                        temp.Add(new GenericSchoolData("FSM", NumberFormatHelper.ConvertObjectToFloat(itemRow[52])));
+                        temp.Add(new GenericSchoolData("LAC", NumberFormatHelper.ConvertObjectToFloat(itemRow[53])));
+                        temp.Add(new GenericSchoolData("30M", NumberFormatHelper.ConvertObjectToFloat(itemRow[54])));
+                        temp.Add(new GenericSchoolData("40M", NumberFormatHelper.ConvertObjectToFloat(itemRow[55])));
+                        temp.Add(new GenericSchoolData("30L", NumberFormatHelper.ConvertObjectToFloat(itemRow[56])));
+                        tempSPreport.listdata = temp;
+                        tSPCfelevel.P7.Add(tempSPreport);
+
+                        tempSPreport = new SPReport();
+                        tempSPreport.code = "EW";
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("ALL", NumberFormatHelper.ConvertObjectToFloat(itemRow[57])));
+                        temp.Add(new GenericSchoolData("FSM", NumberFormatHelper.ConvertObjectToFloat(itemRow[58])));
+                        temp.Add(new GenericSchoolData("LAC", NumberFormatHelper.ConvertObjectToFloat(itemRow[59])));
+                        temp.Add(new GenericSchoolData("30M", NumberFormatHelper.ConvertObjectToFloat(itemRow[60])));
+                        temp.Add(new GenericSchoolData("40M", NumberFormatHelper.ConvertObjectToFloat(itemRow[61])));
+                        temp.Add(new GenericSchoolData("30L", NumberFormatHelper.ConvertObjectToFloat(itemRow[62])));
+                        tempSPreport.listdata = temp;
+                        tSPCfelevel.P7.Add(tempSPreport);
+
+                        tempSPreport = new SPReport();
+                        tempSPreport.code = "ELT";
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("ALL", NumberFormatHelper.ConvertObjectToFloat(itemRow[63])));
+                        temp.Add(new GenericSchoolData("FSM", NumberFormatHelper.ConvertObjectToFloat(itemRow[64])));
+                        temp.Add(new GenericSchoolData("LAC", NumberFormatHelper.ConvertObjectToFloat(itemRow[65])));
+                        temp.Add(new GenericSchoolData("30M", NumberFormatHelper.ConvertObjectToFloat(itemRow[66])));
+                        temp.Add(new GenericSchoolData("40M", NumberFormatHelper.ConvertObjectToFloat(itemRow[67])));
+                        temp.Add(new GenericSchoolData("30L", NumberFormatHelper.ConvertObjectToFloat(itemRow[68])));
+                        tempSPreport.listdata = temp;
+                        tSPCfelevel.P7.Add(tempSPreport);
+
+                        tempSPreport = new SPReport();
+                        tempSPreport.code = "N";
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("ALL", NumberFormatHelper.ConvertObjectToFloat(itemRow[69])));
+                        temp.Add(new GenericSchoolData("FSM", NumberFormatHelper.ConvertObjectToFloat(itemRow[70])));
+                        temp.Add(new GenericSchoolData("LAC", NumberFormatHelper.ConvertObjectToFloat(itemRow[71])));
+                        temp.Add(new GenericSchoolData("30M", NumberFormatHelper.ConvertObjectToFloat(itemRow[72])));
+                        temp.Add(new GenericSchoolData("40M", NumberFormatHelper.ConvertObjectToFloat(itemRow[73])));
+                        temp.Add(new GenericSchoolData("30L", NumberFormatHelper.ConvertObjectToFloat(itemRow[74])));
+                        tempSPreport.listdata = temp;
+                        tSPCfelevel.P7.Add(tempSPreport);
+
+                        listSPCfelevel.Add(tSPCfelevel);
+                    }
+                }
+            }
+
+            return listSPCfelevel.OrderBy(x => x.year.year).ToList(); ;
+        }
+
+        //GetPrimaryINCASDataforReport 
+        protected List<SPCfEReport> GetPrimaryINCASDataforReport(IGenericRepository2nd rpGeneric2nd, string seedcode)
+        {
+            List<SPCfEReport> listSPCfelevel = new List<SPCfEReport>();
+            SPCfEReport tSPCfelevel = new SPCfEReport();
+            List<GenericSchoolData> temp = new List<GenericSchoolData>();
+            SPReport tempSPreport = new SPReport();
+            List<SPReport> tmplistSPReport = new List<SPReport>();
+
+            //get actual number 
+            string query = "Select * from view_incas_report where seedcode =" + seedcode;
+            var listResult = rpGeneric2nd.FindByNativeSQL(query);
+            if (listResult != null)
+            {
+                foreach (var itemRow in listResult)
+                {
+                    if (itemRow != null)
+                    {
+                        tSPCfelevel = new SPCfEReport();
+                        tmplistSPReport = new List<SPReport>();
+                        tSPCfelevel.year = new Year(itemRow[0].ToString());
+                        tSPCfelevel.stdstage = itemRow[2].ToString();
+
+                        tempSPreport = new SPReport();
+                        tempSPreport.code = "DevAbil";
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("ALL", NumberFormatHelper.ConvertObjectToFloat(itemRow[3])));
+                        temp.Add(new GenericSchoolData("FSM", NumberFormatHelper.ConvertObjectToFloat(itemRow[4])));
+                        temp.Add(new GenericSchoolData("LAC", NumberFormatHelper.ConvertObjectToFloat(itemRow[5])));
+                        temp.Add(new GenericSchoolData("30M", NumberFormatHelper.ConvertObjectToFloat(itemRow[6])));
+                        temp.Add(new GenericSchoolData("40M", NumberFormatHelper.ConvertObjectToFloat(itemRow[7])));
+                        temp.Add(new GenericSchoolData("30L", NumberFormatHelper.ConvertObjectToFloat(itemRow[8])));
+                        tempSPreport.listdata = temp;
+                        tmplistSPReport.Add(tempSPreport);
+
+                        tempSPreport = new SPReport();
+                        tempSPreport.code = "GenMaths";
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("ALL", NumberFormatHelper.ConvertObjectToFloat(itemRow[9])));
+                        temp.Add(new GenericSchoolData("FSM", NumberFormatHelper.ConvertObjectToFloat(itemRow[10])));
+                        temp.Add(new GenericSchoolData("LAC", NumberFormatHelper.ConvertObjectToFloat(itemRow[11])));
+                        temp.Add(new GenericSchoolData("30M", NumberFormatHelper.ConvertObjectToFloat(itemRow[12])));
+                        temp.Add(new GenericSchoolData("40M", NumberFormatHelper.ConvertObjectToFloat(itemRow[13])));
+                        temp.Add(new GenericSchoolData("30L", NumberFormatHelper.ConvertObjectToFloat(itemRow[14])));
+                        tempSPreport.listdata = temp;
+                        tmplistSPReport.Add(tempSPreport);
+
+                        tempSPreport = new SPReport();
+                        tempSPreport.code = "MentArith";
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("ALL", NumberFormatHelper.ConvertObjectToFloat(itemRow[15])));
+                        temp.Add(new GenericSchoolData("FSM", NumberFormatHelper.ConvertObjectToFloat(itemRow[16])));
+                        temp.Add(new GenericSchoolData("LAC", NumberFormatHelper.ConvertObjectToFloat(itemRow[17])));
+                        temp.Add(new GenericSchoolData("30M", NumberFormatHelper.ConvertObjectToFloat(itemRow[18])));
+                        temp.Add(new GenericSchoolData("40M", NumberFormatHelper.ConvertObjectToFloat(itemRow[19])));
+                        temp.Add(new GenericSchoolData("30L", NumberFormatHelper.ConvertObjectToFloat(itemRow[20])));
+                        tempSPreport.listdata = temp;
+                        tmplistSPReport.Add(tempSPreport);
+
+                        tempSPreport = new SPReport();
+                        tempSPreport.code = "Reading";
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("ALL", NumberFormatHelper.ConvertObjectToFloat(itemRow[21])));
+                        temp.Add(new GenericSchoolData("FSM", NumberFormatHelper.ConvertObjectToFloat(itemRow[22])));
+                        temp.Add(new GenericSchoolData("LAC", NumberFormatHelper.ConvertObjectToFloat(itemRow[23])));
+                        temp.Add(new GenericSchoolData("30M", NumberFormatHelper.ConvertObjectToFloat(itemRow[24])));
+                        temp.Add(new GenericSchoolData("40M", NumberFormatHelper.ConvertObjectToFloat(itemRow[25])));
+                        temp.Add(new GenericSchoolData("30L", NumberFormatHelper.ConvertObjectToFloat(itemRow[26])));
+                        tempSPreport.listdata = temp;
+                        tmplistSPReport.Add(tempSPreport);
+
+                        tempSPreport = new SPReport();
+                        tempSPreport.code = "Spelling";
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("ALL", NumberFormatHelper.ConvertObjectToFloat(itemRow[27])));
+                        temp.Add(new GenericSchoolData("FSM", NumberFormatHelper.ConvertObjectToFloat(itemRow[28])));
+                        temp.Add(new GenericSchoolData("LAC", NumberFormatHelper.ConvertObjectToFloat(itemRow[29])));
+                        temp.Add(new GenericSchoolData("30M", NumberFormatHelper.ConvertObjectToFloat(itemRow[30])));
+                        temp.Add(new GenericSchoolData("40M", NumberFormatHelper.ConvertObjectToFloat(itemRow[31])));
+                        temp.Add(new GenericSchoolData("30L", NumberFormatHelper.ConvertObjectToFloat(itemRow[32])));
+                        tempSPreport.listdata = temp;
+                        tmplistSPReport.Add(tempSPreport);
+
+                        switch (itemRow[2].ToString())
+                        {
+                            case "1":
+                                tSPCfelevel.P2 = new List<SPReport>();
+                                tSPCfelevel.P2 = tmplistSPReport;
+                                break;
+                            case "2":
+                                tSPCfelevel.P3 = new List<SPReport>();
+                                tSPCfelevel.P3 = tmplistSPReport;
+                                break;
+                            case "3": 
+                                tSPCfelevel.P4 = new List<SPReport>();
+                                tSPCfelevel.P4 = tmplistSPReport;
+                                break;
+                            case "4":
+                                tSPCfelevel.P5 = new List<SPReport>();
+                                tSPCfelevel.P5 = tmplistSPReport;
+                                break;
+                            case "5":
+                                tSPCfelevel.P6 = new List<SPReport>();
+                                tSPCfelevel.P6 = tmplistSPReport;
+                                break; 
+                        }
+                        listSPCfelevel.Add(tSPCfelevel);
+                    }
+                }
+            }
+
+            return listSPCfelevel.OrderBy(x => x.year.year).ToList(); ;
+        }
+
+        //GetPrimaryINCASDataforReport 
+        protected List<SPExclusion> GetExclusionDataforReport(IGenericRepository2nd rpGeneric2nd, string seedcode)
+        {
+            List<SPExclusion> listSPExclusion = new List<SPExclusion>();
+            List<GenericSchoolData> temp = new List<GenericSchoolData>();
+            SPExclusion tempSPExclusion = new SPExclusion();
+
+            //get actual number 
+            string query = "Select * from view_exclusion_report where seedcode =" + seedcode;
+            var listResult = rpGeneric2nd.FindByNativeSQL(query);
+            if (listResult != null)
+            {
+                foreach (var itemRow in listResult)
+                {
+                    if (itemRow != null)
+                    {
+                        tempSPExclusion = new SPExclusion();
+                        tempSPExclusion.YearInfo = new Year(itemRow[0].ToString());
+                        temp = new List<GenericSchoolData>();
+                        temp.Add(new GenericSchoolData("ALL", itemRow[2] == null ? 0 : Convert.ToInt16(itemRow[2].ToString())));
+                        temp.Add(new GenericSchoolData("FSM", itemRow[3] == null ? 0 : Convert.ToInt16(itemRow[3].ToString())));
+                        temp.Add(new GenericSchoolData("LAC", itemRow[4] == null ? 0 : Convert.ToInt16(itemRow[4].ToString())));
+                        tempSPExclusion.ListGenericSchoolData = temp;
+                        listSPExclusion.Add(tempSPExclusion);
+
+                    }
+                }
+            }
+
+            return listSPExclusion.OrderBy(x => x.YearInfo.year).ToList(); ;
         }
 
     }

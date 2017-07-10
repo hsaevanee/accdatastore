@@ -1123,6 +1123,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             GenericSchoolData tempobj = new GenericSchoolData();
             string queryExclusion, querySchoolRoll = "";
             int schoolroll = 0;
+            string yearNodata = "2016";
 
             foreach (Year year in listyear)
             {
@@ -1138,7 +1139,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 }
 
                 var listResult = rpGeneric2nd.FindByNativeSQL(queryExclusion);
-                if (listResult != null)
+                if (listResult.Count > 0)
                 {
                     tempdata = new List<GenericSchoolData>();
                     foreach (var itemRow in listResult)
@@ -1175,6 +1176,46 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     tempobj.sPercent = NumberFormatHelper.FormatNumber(tempobj.Percent, 1).ToString();
                     //tempdata.Add(tempobj);
                     SPExclusion.ListGenericSchoolData = new List<GenericSchoolData>() { tempdata.Where(x => x.Code.Equals("0")).First(), tempdata.Where(x => x.Code.Equals("1")).First(), tempobj };
+                    listExclusion.Add(SPExclusion);
+                }
+                else
+                {
+
+                    tempdata = new List<GenericSchoolData>();
+                    tempdata.Add(new GenericSchoolData()
+                    {
+                        Name = "Temporary Exclusions",
+                        Code = "0",
+                        count = 0,
+                        sCount = year.year.Equals(yearNodata) ? "n/a" : "0",
+                        sum = 0,
+                        Percent = year.year.Equals(yearNodata) ? null : (float?)0.0,
+                        sPercent = year.year.Equals(yearNodata) ? "n/a" : "0.0",
+                    });
+                    tempdata.Add(new GenericSchoolData()
+                    {
+                        Name = "Removed From Register",
+                        Code = "1",
+                        count = 0,
+                        sCount = year.year.Equals(yearNodata) ? "n/a" : "0",
+                        sum = 0,
+                        Percent = year.year.Equals(yearNodata) ? null : (float?)0.0,
+                        sPercent = year.year.Equals(yearNodata) ? "n/a" : "0.0",
+                    });
+                    tempdata.Add(new GenericSchoolData()
+                    {
+                        Name = "Number of days per 1000 pupils lost to exclusions",
+                        Code = "2",
+                        count = 0,
+                        sCount = year.year.Equals(yearNodata) ? "n/a" : "0",
+                        sum = 0,
+                        Percent = year.year.Equals(yearNodata) ? null : (float?)0.0,
+                        sPercent = year.year.Equals(yearNodata) ? "n/a" : "0.0",
+                    });
+
+                    SPExclusion = new SPExclusion();
+                    SPExclusion.YearInfo = new Year(year.year);
+                    SPExclusion.ListGenericSchoolData = tempdata;
                     listExclusion.Add(SPExclusion);
                 }
 

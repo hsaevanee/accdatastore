@@ -442,8 +442,8 @@
                                                                 <tr ng-repeat="eGenericSchoolData in mIndex.ListingData[0].SPExclusion.ListGenericSchoolData" ng-init="nParentIndex = $index">
                                                                     <td class="text-left">{{ eGenericSchoolData.Name }}</td>
                                                                     <td ng-hide="true" ng-repeat-start="eSchool in mIndex.ListingData"></td>
-                                                                    <td class="text-center" ng-if="eSchool.SPExclusion.ListGenericSchoolData[nParentIndex].Code==='0'">{{ eSchool.SPExclusion.ListGenericSchoolData[nParentIndex].count }}</td>
-                                                                    <td class="text-center" ng-if="eSchool.SPExclusion.ListGenericSchoolData[nParentIndex].Code==='1'">{{ eSchool.SPExclusion.ListGenericSchoolData[nParentIndex].count }}</td>
+                                                                    <td class="text-center" ng-if="eSchool.SPExclusion.ListGenericSchoolData[nParentIndex].Code==='0'">{{ eSchool.SPExclusion.ListGenericSchoolData[nParentIndex].sCount }}</td>
+                                                                    <td class="text-center" ng-if="eSchool.SPExclusion.ListGenericSchoolData[nParentIndex].Code==='1'">{{ eSchool.SPExclusion.ListGenericSchoolData[nParentIndex].sCount }}</td>
                                                                     <td class="text-center" ng-if="eSchool.SPExclusion.ListGenericSchoolData[nParentIndex].Code==='2'">{{ eSchool.SPExclusion.ListGenericSchoolData[nParentIndex].sPercent }}</td>
                                                                     <td ng-hide="true" ng-repeat-end></td>
                                                                 </tr>
@@ -1446,7 +1446,7 @@
                                                                 <tr>
                                                                     <td class="text-left"> {{ eSchool.SchoolName }} </td>
                                                                     <td ng-hide="true" ng-repeat-start="eExclusion in mIndex.ListingData[0].listExclusion" ng-init="nYearIndex = $index"></td><!-- main year loop, hide content -->
-                                                                    <td class="text-center">{{ eSchool.listExclusion[nYearIndex].ListGenericSchoolData[0].count }}</td>
+                                                                    <td class="text-center">{{ eSchool.listExclusion[nYearIndex].ListGenericSchoolData[0].sCount }}</td>
                                                                     <td ng-hide="true" ng-repeat-end></td>
                                                                 </tr>
                                                                 </tr>
@@ -1494,7 +1494,7 @@
                                                                 <tr>
                                                                     <td class="text-left"> {{ eSchool.SchoolName }} </td>
                                                                     <td ng-hide="true" ng-repeat-start="eExclusion in mIndex.ListingData[0].listExclusion" ng-init="nYearIndex = $index"></td><!-- main year loop, hide content -->
-                                                                    <td class="text-center">{{ eSchool.listExclusion[nYearIndex].ListGenericSchoolData[1].count }}</td>
+                                                                    <td class="text-center">{{ eSchool.listExclusion[nYearIndex].ListGenericSchoolData[1].sCount }}</td>
                                                                     <td ng-hide="true" ng-repeat-end></td>
                                                                 </tr>
                                                                 </tr>
