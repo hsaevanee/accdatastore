@@ -8,6 +8,8 @@ using ACCDataStore.Repository;
 using ACCDataStore.Web.Controllers;
 using ClosedXML.Excel;
 using Common.Logging;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -375,13 +377,13 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 }
             }
 
-            eColumnCharts.options.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
+            eColumnCharts.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
             {
                 enabled = true,
                 filename = "export"
             };
 
-            eColumnCharts.options.chart.options3d = new Entity.RenderObject.Charts.Generic.options3d() { enabled = true, alpha = 10, beta = 10 }; // enable 3d charts
+            eColumnCharts.chart.options3d = new Entity.RenderObject.Charts.Generic.options3d() { enabled = true, alpha = 10, beta = 10 }; // enable 3d charts
 
             return eColumnCharts;
         }
@@ -551,12 +553,12 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     indexColor++;
                 }
             }
-            eColumnCharts.options.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
+            eColumnCharts.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
             {
                 enabled = true,
                 filename = "export"
             };
-            eColumnCharts.options.chart.options3d = new Entity.RenderObject.Charts.Generic.options3d() { enabled = true, alpha = 10, beta = 10 }; // enable 3d charts
+            eColumnCharts.chart.options3d = new Entity.RenderObject.Charts.Generic.options3d() { enabled = true, alpha = 10, beta = 10 }; // enable 3d charts
 
             return eColumnCharts;
         }
@@ -593,13 +595,13 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 }
             }
 
-            eColumnCharts.options.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
+            eColumnCharts.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
             {
                 enabled = true,
                 filename = "export"
             };
 
-            eColumnCharts.options.chart.options3d = new Entity.RenderObject.Charts.Generic.options3d() { enabled = true, alpha = 10, beta = 10 }; // enable 3d charts
+            eColumnCharts.chart.options3d = new Entity.RenderObject.Charts.Generic.options3d() { enabled = true, alpha = 10, beta = 10 }; // enable 3d charts
 
             return eColumnCharts;
         }
@@ -718,14 +720,14 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 }
             }
 
-            eColumnCharts.options.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
+            eColumnCharts.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
             {
                 enabled = true,
                 filename = "export"
             };
 
 
-            eColumnCharts.options.chart.options3d = new Entity.RenderObject.Charts.Generic.options3d() { enabled = true, alpha = 10, beta = 10 }; // enable 3d charts
+            eColumnCharts.chart.options3d = new Entity.RenderObject.Charts.Generic.options3d() { enabled = true, alpha = 10, beta = 10 }; // enable 3d charts
 
             return eColumnCharts;
         }
@@ -837,13 +839,13 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 }
             }
 
-            eColumnCharts.options.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
+            eColumnCharts.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
             {
                 enabled = true,
                 filename = "export"
             };
 
-            eColumnCharts.options.chart.options3d = new Entity.RenderObject.Charts.Generic.options3d() { enabled = true, alpha = 10, beta = 10 }; // enable 3d charts
+            eColumnCharts.chart.options3d = new Entity.RenderObject.Charts.Generic.options3d() { enabled = true, alpha = 10, beta = 10 }; // enable 3d charts
 
             return eColumnCharts;
         }
@@ -1178,7 +1180,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 enabled = true
             };
 
-            eSplineCharts.options.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
+            eSplineCharts.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
             {
                 enabled = true,
                 filename = "export"
@@ -1347,7 +1349,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 enabled = true
             };
 
-            eSplineCharts.options.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
+            eSplineCharts.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
             {
                 enabled = true,
                 filename = "export"
@@ -1507,12 +1509,12 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 }
             }
 
-            eColumnCharts.options.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
+            eColumnCharts.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
             {
                 enabled = true,
                 filename = "export"
             };
-            eColumnCharts.options.chart.options3d = new Entity.RenderObject.Charts.Generic.options3d() { enabled = true, alpha = 10, beta = 10 }; // enable 3d charts
+            eColumnCharts.chart.options3d = new Entity.RenderObject.Charts.Generic.options3d() { enabled = true, alpha = 10, beta = 10 }; // enable 3d charts
 
             return eColumnCharts;
         }
@@ -1542,13 +1544,13 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     indexColor++;
                 }
             }
-            eColumnCharts.options.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
+            eColumnCharts.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
             {
                 enabled = true,
                 filename = "export"
             };
 
-            eColumnCharts.options.chart.options3d = new Entity.RenderObject.Charts.Generic.options3d() { enabled = true, alpha = 10, beta = 10 }; // enable 3d charts
+            eColumnCharts.chart.options3d = new Entity.RenderObject.Charts.Generic.options3d() { enabled = true, alpha = 10, beta = 10 }; // enable 3d charts
 
             return eColumnCharts;
         }
@@ -1648,7 +1650,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 enabled = true
             };
 
-            eSplineCharts.options.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
+            eSplineCharts.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
             {
                 enabled = true,
                 filename = "export"
@@ -1741,7 +1743,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             foreach (Year year in listyear)
             {
                 SPFSM = new FreeSchoolMeal();
-                var listResult = rpGeneric2nd.FindByNativeSQL("SELECT year,studentStage, stdroll, fsm, count FROM accdatastore.summary_fsm2 where schooltype= " + schooltype + " and year = " + year.year + " and seedcode = " + seedcode);
+                var listResult = rpGeneric2nd.FindByNativeSQL("SELECT year,studentStage, stdroll, fsm, count FROM summary_fsm2 where schooltype= " + schooltype + " and year = " + year.year + " and seedcode = " + seedcode);
                 if (listResult != null && listResult.Count >0 )
                 {
                     foreach (var itemRow in listResult)
@@ -1751,8 +1753,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                             SPFSM = new FreeSchoolMeal();
                             GenericSchoolData tempdata = new GenericSchoolData();
                             tempdata.Code = itemRow[1].ToString();
-                            tempdata.count = itemRow[3] == null ? 0 : Convert.ToInt16(itemRow[3].ToString());
-                            tempdata.sum = itemRow[2]== null ? 0 : Convert.ToInt16(itemRow[2].ToString());
+                            tempdata.count = itemRow[3] == null ? 0 : Convert.ToInt32(itemRow[3].ToString());
+                            tempdata.sum = itemRow[2]== null ? 0 : Convert.ToInt32(itemRow[2].ToString());
                             tempdata.Percent = itemRow[4] == null ? 0 : (float)Convert.ToDouble(itemRow[4].ToString());
                             tempdata.sPercent = itemRow[4] == null ? "n/a" : NumberFormatHelper.FormatNumber(Convert.ToDouble(itemRow[4].ToString()), 1).ToString();
 
@@ -1944,6 +1946,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     {
                         tSPCfelevel = new SPCfElevel();
                         tSPCfelevel.year = new Year(itemRow[0].ToString());
+                        tSPCfelevel.seedcode = itemRow[1].ToString();
+
                         temp = new List<GenericSchoolData>();
                         temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[3])));
                         temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[5])));
@@ -2056,7 +2060,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     {
                         tSPCfelevel = new SPCfElevel();
                         tSPCfelevel.year = new Year(itemRow[0].ToString());
-
+                        tSPCfelevel.seedcode = itemRow[1].ToString();
                         temp = new List<GenericSchoolData>();
                         temp.Add(new GenericSchoolData("Reading", NumberFormatHelper.ConvertObjectToFloat(itemRow[3])));
                         temp.Add(new GenericSchoolData("Writing", NumberFormatHelper.ConvertObjectToFloat(itemRow[4])));
@@ -2192,7 +2196,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             return listSPCfelevel.OrderBy(x => x.year.year).ToList(); ;
         }
 
-        //Historical InCAS data
+        //GetPrimaryCfeLevelDataforReport
         protected List<SPCfEReport> GetPrimaryCfeLevelDataforReport(IGenericRepository2nd rpGeneric2nd, string seedcode, string schooltype)
         {
             List<SPCfEReport> listSPCfelevel = new List<SPCfEReport>();
@@ -2381,11 +2385,11 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             var listResult = rpGeneric2nd.FindByNativeSQL(query);
             if (listResult != null)
             {
+                tSPCfelevel = new SPCfEReport();
                 foreach (var itemRow in listResult)
                 {
                     if (itemRow != null)
                     {
-                        tSPCfelevel = new SPCfEReport();
                         tmplistSPReport = new List<SPReport>();
                         tSPCfelevel.year = new Year(itemRow[0].ToString());
                         tSPCfelevel.stdstage = itemRow[2].ToString();
@@ -2473,9 +2477,10 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                                 tSPCfelevel.P6 = tmplistSPReport;
                                 break; 
                         }
-                        listSPCfelevel.Add(tSPCfelevel);
                     }
                 }
+                listSPCfelevel.Add(tSPCfelevel);
+
             }
 
             return listSPCfelevel.OrderBy(x => x.year.year).ToList(); ;
@@ -2511,6 +2516,468 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             }
 
             return listSPExclusion.OrderBy(x => x.YearInfo.year).ToList(); ;
+        }
+
+        // Change text in 1.1	School Roll table   
+        protected void ChangeTextInTBSchoolRoll(WordprocessingDocument doc, List<StudentStage> data, int schooltype, int tableid)
+        {
+            try
+            {
+                //remove 2011/12 data from list
+                data.RemoveAll(s => s.YearInfo.academicyear.Equals("2011/12"));
+                string[] codes = new string[] {}; // using i to reference
+
+                string[] years = new string[] { "2012/13", "2013/14", "2014/15", "2015/16", "2016/17" }; // using j to reference
+                string sdata = "n/a";
+                List<GenericSchoolData> tempdata;
+
+                if (schooltype == 2)
+                {
+                    //primary schools
+                    codes = new string[] { "P1", "P2", "P3", "P4", "P5", "P6", "P7" }; // using i to reference
+
+                }
+                else {
+                    //secondary schools
+                    codes = new string[] { "S1", "S2", "S3", "S4", "S5", "S6"}; // using i to reference
+                
+                }
+
+                // Find the first table in the document.
+                Table table = doc.MainDocumentPart.Document.Body.Elements<Table>().ElementAt(tableid);
+                for (int i = 1; i < table.Elements<TableRow>().Count(); i++) //loop row/year
+                {
+
+                    // travel through each row from row 1.
+                    TableRow row = table.Elements<TableRow>().ElementAt(i);
+                    for (int j = 1; j < row.Elements<TableCell>().Count(); j++)
+                    {
+                        //get list data by year
+                        tempdata = data.Where(x => x.YearInfo.academicyear.Equals(years[i - 1])).Select(x => x.ListGenericSchoolData).First();
+
+                        //the get data by code
+                        if (j == row.Elements<TableCell>().Count() - 1)
+                        {
+                            sdata = data.Where(x => x.YearInfo.academicyear.Equals(years[i - 1])).Select(x => x.totalschoolroll).First().ToString();
+                        }
+                        else
+                        {
+                            sdata = tempdata.Where(x => x.Code.Equals(codes[j - 1])).Select(x => x.sCount).First();
+                        }
+
+                        // travel through each column in each row.
+                        TableCell cell = row.Elements<TableCell>().ElementAt(j);
+                        // Find the first paragraph in the table cell.
+                        Paragraph p = cell.Elements<Paragraph>().First();
+
+                        // Find the first run in the paragraph.
+                        Run r = p.Elements<Run>().First();
+
+                        // Set the text for the run.
+                        Text t = r.Elements<Text>().First();
+                        t.Text = sdata;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                var sErrorMessage = "Error in ChangeTextInTB1: " + ex.Message + (ex.InnerException != null ? ", More Detail : " + ex.InnerException.Message : "");
+                log.Error(ex.Message, ex);
+            }
+
+        }
+
+        // Change text in 1.2	SIMD   
+        protected void ChangeTextInTBSIMD(WordprocessingDocument doc, SPSIMD data, int tableid)
+        {
+            try
+            {
+                string[] codes = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" }; // using i to reference
+                string sdata = "n/a";
+                List<GenericSchoolData> tempdata;
+
+                //using (WordprocessingDocument doc = WordprocessingDocument.Open(filepath, true))
+                //{
+                // Find the first table in the document.
+                Table table = doc.MainDocumentPart.Document.Body.Elements<Table>().ElementAt(tableid);
+
+                for (int i = 2; i < table.Elements<TableRow>().Count(); i++) //loop row/year
+                {
+                    tempdata = data.ListGenericSchoolData;
+
+                    // travel through each row from row 1.
+                    TableRow row = table.Elements<TableRow>().ElementAt(i);
+
+                    for (int j = 1; j < row.Elements<TableCell>().Count(); j++)
+                    {
+                        //the get data by code
+                        if (i == 2)
+                        {
+                            sdata = tempdata.Where(x => x.Code.Equals(codes[j - 1])).Select(x => x.sCount).First();
+                        }
+                        else
+                        {
+                            sdata = tempdata.Where(x => x.Code.Equals(codes[j - 1])).Select(x => x.sPercent).First();
+                        }
+
+                        // travel through each column in each row.
+                        TableCell cell = row.Elements<TableCell>().ElementAt(j);
+                        // Find the first paragraph in the table cell.
+                        Paragraph p = cell.Elements<Paragraph>().First();
+
+                        // Find the first run in the paragraph.
+                        Run r = p.Elements<Run>().First();
+
+                        // Set the text for the run.
+                        Text t = r.Elements<Text>().First();
+                        t.Text = sdata;
+
+                        //}
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                var sErrorMessage = "Error in ChangeTextInTB1: " + ex.Message + (ex.InnerException != null ? ", More Detail : " + ex.InnerException.Message : "");
+                log.Error(ex.Message, ex);
+            }
+
+        }
+
+        // Change text in 1.3 English as an additional language (EAL) table   
+        protected void ChangeTextInTBEAL(WordprocessingDocument doc, List<LevelOfEnglish> data, int tableid)
+        {
+            try
+            {
+                //remove 2011/12 data from list
+                data.RemoveAll(s => s.YearInfo.academicyear.Equals("2011/12"));
+                string[] codes = new string[] { "01", "02", "03", "04", "05", "EN", "LC", "NA" }; // using i to reference
+                string[] years = new string[] { "2012/13", "2013/14", "2014/15", "2015/16", "2016/17" }; // using j to reference
+                List<GenericSchoolData> tempdata;
+
+
+                //using (WordprocessingDocument doc = WordprocessingDocument.Open(filepath, true))
+                //{
+                // Find the first table in the document.
+                Table table = doc.MainDocumentPart.Document.Body.Elements<Table>().ElementAt(tableid);
+                for (int i = 1; i < table.Elements<TableRow>().Count(); i++)
+                {
+
+                    // travel through each row from row 1.
+                    TableRow row = table.Elements<TableRow>().ElementAt(i);
+                    for (int j = 1; j < row.Elements<TableCell>().Count(); j++)
+                    {
+                        //get list data by year
+                        tempdata = data.Where(x => x.YearInfo.academicyear.Equals(years[j - 1])).Select(x => x.ListGenericSchoolData).First();
+                        //the get data by code
+                        string sdata = tempdata.Where(x => x.Code.Equals(codes[i - 1])).Select(x => x.sPercent).First();
+
+                        // travel through each column in each row.
+                        TableCell cell = row.Elements<TableCell>().ElementAt(j);
+                        // Find the first paragraph in the table cell.
+                        Paragraph p = cell.Elements<Paragraph>().First();
+
+                        // Find the first run in the paragraph.
+                        Run r = p.Elements<Run>().First();
+
+                        // Set the text for the run.
+                        Text t = r.Elements<Text>().First();
+                        t.Text = sdata;
+
+                    }
+                }
+                //}
+
+            }
+            catch (Exception ex)
+            {
+                var sErrorMessage = "Error in ChangeTextInTBEAL: " + ex.Message + (ex.InnerException != null ? ", More Detail : " + ex.InnerException.Message : "");
+                log.Error(ex.Message, ex);
+            }
+        }
+
+        // Change text in 1.4 Additional Support needs (ASN) table   
+        protected void ChangeTextInTBASN(WordprocessingDocument doc, List<StudentNeed> data, int tableid)
+        {
+            try
+            {
+                //remove 2011/12 data from list
+                data.RemoveAll(s => s.year.academicyear.Equals("2011/12"));
+                string[] years = new string[] { "2012/13", "2013/14", "2014/15", "2015/16", "2016/17" }; // using j to reference
+                string sdata = "n/a";
+
+                //using (WordprocessingDocument doc = WordprocessingDocument.Open(filepath, true))
+                //{
+                // Find the first table in the document.
+                Table table = doc.MainDocumentPart.Document.Body.Elements<Table>().ElementAt(tableid);
+
+                for (int i = 1; i < table.Elements<TableRow>().Count(); i++)
+                {
+                    // Find the second row (CSP) in the table.
+                    TableRow row = table.Elements<TableRow>().ElementAt(i);
+                    // travel through each column from row 1.
+                    for (int j = 1; j < row.Elements<TableCell>().Count(); j++)
+                    {
+
+                        //the get data by code
+                        if (i == 1)
+                        {
+                            //get CSP data for CSP row
+                            sdata = data.Where(s => s.year.academicyear.Equals(years[j - 1])).Select(x => x.CSP.sPercent).First();
+
+                        }
+                        else if (i == 2)
+                        {
+                            //get IEP data for IEP row
+                            sdata = data.Where(s => s.year.academicyear.Equals(years[j - 1])).Select(x => x.IEP.sPercent).First();
+
+
+                        }
+                        else
+                        {
+                            //get IEP data for Childs Plan row
+                            sdata = data.Where(s => s.year.academicyear.Equals(years[j - 1])).Select(x => x.ChildPlan.sPercent).First();
+
+                        }
+                        // travel through each column in each row.
+                        TableCell cell = row.Elements<TableCell>().ElementAt(j);
+                        // Find the first paragraph in the table cell.
+                        Paragraph p = cell.Elements<Paragraph>().First();
+
+                        // Find the first run in the paragraph.
+                        Run r = p.Elements<Run>().First();
+
+                        // Set the text for the run.
+                        Text t = r.Elements<Text>().First();
+                        t.Text = sdata;
+                    }
+                }
+
+                //}
+
+            }
+            catch (Exception ex)
+            {
+                var sErrorMessage = "Error in ChangeTextInTBASN: " + ex.Message + (ex.InnerException != null ? ", More Detail : " + ex.InnerException.Message : "");
+                log.Error(ex.Message, ex);
+            }
+        }
+
+        // Change text in 1.5	Free School Meal
+        protected void ChangeTextInTBFSM(WordprocessingDocument doc, List<FreeSchoolMeal> data, int tableid)
+        {
+            try
+            {
+                //remove 2011/12 data from list
+                data.RemoveAll(s => s.year.academicyear.Equals("2011/12"));
+                string[] years = new string[] { "2012/13", "2013/14", "2014/15", "2015/16", "2016/17" }; // using j to reference
+                string sdata = "n/a";
+                GenericSchoolData tempdata;
+
+                //using (WordprocessingDocument doc = WordprocessingDocument.Open(filepath, true))
+                //{
+                // Find the forth table in the document.
+                Table table = doc.MainDocumentPart.Document.Body.Elements<Table>().ElementAt(tableid);
+                // travel through each row from row 1.
+                for (int i = 1; i < table.Elements<TableRow>().Count(); i++) //loop row/year
+                {
+
+
+                    TableRow row = table.Elements<TableRow>().ElementAt(i);
+                    // travel through each column in row i.
+                    for (int j = 1; j < row.Elements<TableCell>().Count(); j++)
+                    {
+                        //get list data by year
+                        tempdata = data.Where(x => x.year.academicyear.Equals(years[i - 1])).Select(x => x.GenericSchoolData).First();
+
+                        //the get data by code
+                        if (j == 1)
+                        {
+                            sdata = tempdata.sum.ToString();
+                        }
+                        else
+                        {
+                            sdata = tempdata.sPercent;
+                        }
+
+                        // travel through each column in each row.
+                        TableCell cell = row.Elements<TableCell>().ElementAt(j);
+                        // Find the first paragraph in the table cell.
+                        Paragraph p = cell.Elements<Paragraph>().First();
+
+                        // Find the first run in the paragraph.
+                        Run r = p.Elements<Run>().First();
+
+                        // Set the text for the run.
+                        Text t = r.Elements<Text>().First();
+                        t.Text = sdata;
+
+                        //}
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                var sErrorMessage = "Error in ChangeTextInTBFSM: " + ex.Message + (ex.InnerException != null ? ", More Detail : " + ex.InnerException.Message : "");
+                log.Error(ex.Message, ex);
+            }
+
+        }
+
+        // Change text in 1.6 AAE:5 Year trend
+        protected void ChangeTextInTBAAETrend(WordprocessingDocument doc, List<SPAttendance> data, int tableid)
+        {
+            try
+            {
+                //remove 2011/12 data from list
+                data.RemoveAll(s => s.YearInfo.academicyear.Equals("2011/12"));
+                string[] names = new string[] { "Attendance", "Authorised Absence", "Unauthorised Absence", "Absense due to Exclusion" }; // using i to reference
+                string[] years = new string[] { "2012/13", "2013/14", "2014/15", "2015/16", "2016/17" }; // using j to reference
+                List<GenericSchoolData> tempdata;
+
+                // Find the forth table in the document.
+                Table table = doc.MainDocumentPart.Document.Body.Elements<Table>().ElementAt(tableid);
+                // travel through each row from row 1.
+                for (int i = 2; i < table.Elements<TableRow>().Count(); i++) //loop row/year
+                {
+                    //get list data by year
+                    tempdata = data.Where(x => x.YearInfo.academicyear.Equals(years[i - 2])).Select(x => x.ListGenericSchoolData).FirstOrDefault();
+                    TableRow row = table.Elements<TableRow>().ElementAt(i);
+                    // travel through each column in row i.
+                    for (int j = 1; j < row.Elements<TableCell>().Count(); j++)
+                    {
+                        string sdata = tempdata == null ? "--" : tempdata.Where(x => x.Name.Equals(names[j - 1])).Select(x => x.sPercent).First();
+
+                        // travel through each column in each row.
+                        TableCell cell = row.Elements<TableCell>().ElementAt(j);
+                        // Find the first paragraph in the table cell.
+                        Paragraph p = cell.Elements<Paragraph>().First();
+
+                        // Find the first run in the paragraph.
+                        Run r = p.Elements<Run>().First();
+
+                        // Set the text for the run.
+                        Text t = r.Elements<Text>().First();
+                        t.Text = sdata.Equals("n/a") ? "--" : sdata.Equals("0.0") ? "-" : sdata;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                var sErrorMessage = "Error in ChangeTextInTBAAETrend : " + ex.Message + (ex.InnerException != null ? ", More Detail : " + ex.InnerException.Message : "");
+                log.Error(ex.Message, ex);
+            }
+
+        }
+
+        // Change text in 1.8 CfELevel by FSM and LAC
+        protected void ChangeTextInTBCfeLevel(WordprocessingDocument doc, List<SPReport> data, int tableid)
+        {
+            try
+            {
+                // code 0 = "Temporary Exclusions", 1="Removed From Register", 2="Number of days per 1000 pupils lost to exclusions" 
+                string[] datasets = new string[] { "ER", "EW", "ELT", "N" }; // using i to reference
+                string[] codes = new string[] { "ALL", "FSM", "LAC", "30M", "40M", "30L" }; // using j to reference
+                List<GenericSchoolData> tempdata;
+
+                // Find the forth table in the document.
+                Table table = doc.MainDocumentPart.Document.Body.Elements<Table>().ElementAt(tableid);
+                // travel through each row from row 1.
+                for (int i = 3; i < table.Elements<TableRow>().Count(); i++) //loop row/year
+                {
+                    //get list data by dataset names
+
+                    tempdata = data.Where(x => x.code.Equals(datasets[i - 3])).Select(x => x.listdata).First();
+                    TableRow row = table.Elements<TableRow>().ElementAt(i);
+                    // travel through each column in row i.
+                    for (int j = 1; j < row.Elements<TableCell>().Count(); j++)
+                    {
+                        string sdata = tempdata.Where(x => x.Code.Equals(codes[j - 1])).Select(x => x.sPercent).First();
+
+                        // travel through each column in each row.
+                        TableCell cell = row.Elements<TableCell>().ElementAt(j);
+                        // Find the first paragraph in the table cell.
+                        Paragraph p = cell.Elements<Paragraph>().First();
+
+                        // Find the first run in the paragraph.
+                        Run r = p.Elements<Run>().First();
+
+                        // Set the text for the run.
+                        Text t = r.Elements<Text>().First();
+                        t.Text = sdata.Equals("n/a")?"#":sdata.Equals("0.0")?"-":sdata;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                var sErrorMessage = "Error in ChangeTextInTBExclusionTrend : " + ex.Message + (ex.InnerException != null ? ", More Detail : " + ex.InnerException.Message : "");
+                log.Error(ex.Message, ex);
+            }
+
+        }
+
+        // Change text in 1.7 Exclusions:5 Year trend
+        protected void ChangeTextInTBExclusionTrend(WordprocessingDocument doc, List<SPExclusion> data,int tableid)
+        {
+            try
+            {
+                //remove 2011/12 data from list
+                data.RemoveAll(s => s.YearInfo.academicyear.Equals("2011/12"));
+                // code 0 = "Temporary Exclusions", 1="Removed From Register", 2="Number of days per 1000 pupils lost to exclusions" 
+                string[] years = new string[] { "2012/13", "2013/14", "2014/15", "2015/16", "2016/17" }; // using j to reference
+                List<GenericSchoolData> tempdata;
+                string sdata = "n/a";
+
+                // Find the forth table in the document.
+                Table table = doc.MainDocumentPart.Document.Body.Elements<Table>().ElementAt(tableid);
+                // travel through each row from row 1.
+                for (int i = 1; i < table.Elements<TableRow>().Count(); i++) //loop row/year
+                {
+                    //get list data by year
+                    tempdata = data.Where(x => x.YearInfo.academicyear.Equals(years[i - 1])).Select(x => x.ListGenericSchoolData).FirstOrDefault();
+                    TableRow row = table.Elements<TableRow>().ElementAt(i);
+                    // travel through each column in row i.
+                    for (int j = 1; j < row.Elements<TableCell>().Count(); j++)
+                    {
+                        if (j == 1)
+                        {
+                            sdata = tempdata.Where(x => x.Code.Equals("0")).Select(x => x.sCount).FirstOrDefault();
+                        }
+                        else if (j == 2)
+                        {
+                            sdata = tempdata.Where(x => x.Code.Equals("1")).Select(x => x.sCount).FirstOrDefault();
+                        }
+                        else
+                        {
+                            // Number of days Lost
+                            sdata = tempdata == null ? "--" : tempdata.Where(x => x.Code.Equals("2")).Select(x => x.sPercent).FirstOrDefault() == null ? "n/a" : tempdata.Where(x => x.Code.Equals("2")).Select(x => x.sPercent).First();
+                        }
+                        // travel through each column in each row.
+                        TableCell cell = row.Elements<TableCell>().ElementAt(j);
+                        // Find the first paragraph in the table cell.
+                        Paragraph p = cell.Elements<Paragraph>().First();
+
+                        // Find the first run in the paragraph.
+                        Run r = p.Elements<Run>().First();
+
+                        // Set the text for the run.
+                        Text t = r.Elements<Text>().First();
+                        t.Text = sdata.Equals("n/a") ? "--" : sdata.Equals("0.0") || sdata.Equals("0") ? "-" : sdata;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                var sErrorMessage = "Error in ChangeTextInTBExclusionTrend : " + ex.Message + (ex.InnerException != null ? ", More Detail : " + ex.InnerException.Message : "");
+                log.Error(ex.Message, ex);
+            }
+
         }
 
     }

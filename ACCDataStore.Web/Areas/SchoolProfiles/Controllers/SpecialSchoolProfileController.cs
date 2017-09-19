@@ -282,7 +282,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 enabled = true
             };
 
-            eSplineCharts.options.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
+            eSplineCharts.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
             {
                 enabled = true,
                 filename = "export"
@@ -330,7 +330,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 enabled = true
             };
 
-            eSplineCharts.options.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
+            eSplineCharts.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
             {
                 enabled = true,
                 filename = "export"

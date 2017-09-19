@@ -8,6 +8,7 @@ namespace ACCDataStore.Entity.SchoolProfiles.Census.Entity
 {
     public class SPCfEReport
     {
+        //use by CfE, INCAS data
         public Year year;
         public string stdstage { get; set; }
         public List<SPReport> P1 { get; set; }
@@ -17,5 +18,7 @@ namespace ACCDataStore.Entity.SchoolProfiles.Census.Entity
         public List<SPReport> P5 { get; set; }
         public List<SPReport> P6 { get; set; }
         public List<SPReport> P7 { get; set; }
+        public List<SPReport> S34 { get; set; }
+        public List<SPReport> S4 { get; set; }
     }
 }

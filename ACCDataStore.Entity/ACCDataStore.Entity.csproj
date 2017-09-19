@@ -82,6 +82,8 @@
     <Compile Include="SchoolProfiles\Census\AaeAttendanceObj.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\BaseSchoolProfile.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\ChartData.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\CityChartData.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\CitySchool.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\Ethnicbackground.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\FreeSchoolMeal.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\GenericSchoolData.cs" />
@@ -95,6 +97,7 @@
     <Compile Include="SchoolProfiles\Census\Entity\SPAttendance.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SPExclusion.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SPMiDYIS.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\SPMiDYISReport.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SPPIPS.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SchoolRoll.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SPInCAS.cs" />

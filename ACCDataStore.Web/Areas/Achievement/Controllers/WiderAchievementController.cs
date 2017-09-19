@@ -19,12 +19,12 @@ namespace ACCDataStore.Web.Areas.Achievement.Controllers
         private static ILog log = LogManager.GetLogger(typeof(WiderAchievementController));
 
         private readonly IGenericRepository rpGeneric;
-        private readonly IGenericRepository3nd rpGeneric3nd;
+        //private readonly IGenericRepository3nd rpGeneric3nd;
 
         public WiderAchievementController(IGenericRepository rpGeneric, IGenericRepository3nd rpGeneric3nd)
         {
             this.rpGeneric = rpGeneric;
-            this.rpGeneric3nd = rpGeneric3nd;
+            //this.rpGeneric3nd = rpGeneric3nd;
         }
 
         public ActionResult IndexHome(string schoolsubmitButton, string awardsubmitButton)

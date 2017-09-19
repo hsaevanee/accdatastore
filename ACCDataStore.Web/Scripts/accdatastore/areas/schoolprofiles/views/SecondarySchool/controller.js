@@ -12,22 +12,39 @@
     }, function (response) {
     });
     
-    //function getAvailableListingReports() {
-    //    indexService.getAvailableListingReports().then(function (response) {
+    $scope.doGetReport = function (listSeedCode, sYear) { // ex: '#my-table'
+        var listSeedCode = [];
+        var sYear = $scope.mIndex.YearSelected.Year;
 
-    //        $rootScope.bShowLoading = false;
-    //        $scope.mIndex = response.data;
-    //        }, function (response) {
-    //            $rootScope.bShowLoading = false;
-    //        });
+        angular.forEach($scope.mIndex.ListSchoolSelected, function (item, key) { // create list of selected school's id to send via http get
+            listSeedCode.push(item.SeedCode);
+        });
+
+        indexService.getReport(listSeedCode, sYear).then(function (response) {
+            $rootScope.bShowLoading = false;
+            $scope.exportInfo = response.data;
+            var anchor = angular.element('<a/>');
+            anchor.css({ display: 'none' });
+            angular.element(document.body).append(anchor);
+
+            anchor.attr({
+                href: sContextPath + $scope.exportInfo.DownloadUrl,
+                target: '_blank',
+                download: $scope.exportInfo.FileName
+            })[0].click();
+
+            anchor.remove();
+        }, function (response) {
+            $rootScope.bShowLoading = false;
+        });
+    }
+
+    //$scope.doTabClick = function () {
+    //    $timeout(function () {
+    //        $scope.$broadcast('highchartsng.reflow');
+    //    }, 10);
 
     //}
-
-    $scope.doTabClick = function () {
-        $timeout(function () {
-            $scope.$broadcast('highchartsng.reflow');
-        }, 10);
-    }
 
     $scope.doGetData = function () {
         var listSeedCode = [];

@@ -15,5 +15,6 @@ namespace ACCDataStore.Entity
         public virtual bool IsAdministrator { get; set; }
         public virtual bool IsScoolAdministrator { get; set; }
         public virtual bool IsDataHubAdministrator { get; set; }
+        public virtual bool IsPublicAdministrator { get; set; }
     }
 }

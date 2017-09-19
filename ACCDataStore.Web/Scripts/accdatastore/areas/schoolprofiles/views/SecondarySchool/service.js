@@ -8,10 +8,10 @@
         getData: function (listSeedCode, sYear) {
             $rootScope.bShowLoading = true;
             return $http.get(sContextPath + "SchoolProfiles/SecondarySchoolProfile/GetData", { params: { "listSeedCode": listSeedCode, "sYear": sYear } });
+        },
+        getReport: function (listSeedCode, sYear, tablename) {
+            $rootScope.bShowLoading = true;
+            return $http.get(sContextPath + "SchoolProfiles/SecondarySchoolProfile/GetReport/", { params: { "listSeedCode": listSeedCode, "sYear": sYear } });
         }
-        //getAvailableListingReports:function(){
-        //    $rootScope.bShowLoading = true;
-        //    return $http.get(sContextPath + "SchoolProfiles/PrimarySchoolProfile/GetCondition");
-        //}
     };
 });

@@ -25,35 +25,11 @@
                 <h3>Latest Updates</h3>
             </div>
         </div>
-        @*<div class="row">
-            <div class="col-md-3 text-center">
-                <div class="img-rounded">
-                    <a href="@Url.Action("IndexHome", "IndexPupilsPopulation", new { Area = "PupilsPopulation" }, null)">
-                        <img src="@Url.Content("~/Images/WIP.jpg")" alt="School Profile logo">
-                    </a>
+        
 
-                </div>
-                <div class="caption">
-                    <h4><a href="@Url.Action("IndexHome", "IndexPupilsPopulation", new { Area = "PupilsPopulation" }, null)">ELCC</a></h4>
-                </div>
-            </div>
-            <div class="col-md-3 text-center">
-
-                <div class="img-rounded">
-                    <a href="@Url.Action("ScotlandIndex", "IndexDatahub", new { Area = "DatahubProfile" }, null)">
-                        <img src="@Url.Content("~/Images/Aberdeen  Gaurtees logo.png")" alt="Aberdeen Gaurtees logo">
-                    </a>
-
-                </div>
-                <div class="caption">
-                    <h4><a href="@Url.Action("ScotlandIndex", "IndexDatahub", new { Area = "DatahubProfile" }, null)">DataHub Data</a></h4>
-                </div>
-            </div>   
-        </div>*@
-        <!-- /.row -->
         <!-- Page Features -->
         <div class="row text-center">
-            <div class="col-md-3 text-center">
+            <div class="col-md-4 text-center">
                 <div class="img-rounded">
                     <a href="@Url.Action("Index", "IndexSchoolProfiles", new { Area = "SchoolProfiles" }, null)">
                         <img src="@Url.Content("~/Images/schoolprofile.png")" alt="School Profile logo">
@@ -65,7 +41,7 @@
                 </div>              
             </div>        
             
-            <div class="col-md-3 text-center">
+            @*<div class="col-md-4 text-center">
                 <div class="img-rounded">
                     <a href="@Url.Action("IndexHome", "WiderAchievement", new { Area = "Achievement" }, null)">
                         <img src="@Url.Content("~/Images/AchievementLogo.png")" alt="Wider Achievement logo">
@@ -78,7 +54,7 @@
             </div>
 
   
-            <div class="col-md-3 text-center">
+            <div class="col-md-4 text-center">
                 
                 <div class="img-rounded">
                     <a href="@Url.Action("IndexHome", "IndexDatahub", new { Area = "DatahubProfile" }, null)">
@@ -89,7 +65,7 @@
                 <div class="caption">
                     <h4><a href="@Url.Action("IndexHome", "IndexDatahub", new { Area = "DatahubProfile" }, null)">DataHub Data</a></h4>
                 </div>
-            </div>   
+            </div>*@   
             
 
         </div>
@@ -102,16 +78,16 @@
             </div>
         </div>
 
-        <div class="row text-center">
-            <div class="col-md-3 text-center">
-                <div class="img-rounded">                   
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <div class="img-rounded">
                     <a href="http://communityplanningaberdeen.org.uk/ " target="_blank"><img src="@Url.Content("~/Images/community_planning_aberdeen.png")" alt=""></a>
                 </div>
                 <div class="caption">
                     <h4><a href="http://communityplanningaberdeen.org.uk/ " target="_blank">Community Planning Aberdeen</a></h4>
                 </div>
             </div>
-            <div class="col-md-3 text-center">
+            <div class="col-md-4 text-center">
                 <div class="img-rounded">
                     <a href="@Url.Action("Index", "Index", new { Area = "", id = "education" }, null)"><img src="@Url.Content("~/Images/education.jpg")" )" alt=""></a>
                 </div>
@@ -119,15 +95,22 @@
                     <h4><a href="@Url.Action("Index", "Index", new { Area = "", id = "education" }, null)">Education</a></h4>
                 </div>
             </div>
-            <div class="col-md-3 text-center">
+            <div class="col-md-4 text-center">
                 <div class="img-rounded">
-                    <a href="@Url.Action("Index", "Index", new { Area = "", id = "finance" }, null)"><img src="@Url.Content("~/Images/Finance.png")" alt=""></a>                 
+                    <a href="@Url.Action("Index", "Index", new { Area = "", id = "finance" }, null)"><img src="@Url.Content("~/Images/Finance.png")" alt=""></a>
                 </div>
                 <div class="caption">
                     <h4><a href="@Url.Action("Index", "Index", new { Area = "", id = "finance" }, null)">Finance</a></h4>
                 </div>
             </div>
-            <div class="col-md-3 text-center">
+
+        </div>
+        <div class="row">
+            <div style="margin-top:50px; margin-bottom:50px">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 text-center">
                 <div class="img-rounded">
                     <a href="http://www.aberdeengettingitright.org.uk" target="_blank"><img src="@Url.Content("~/Images/pupils.jpg")" alt=""></a>
                 </div>
@@ -136,37 +119,25 @@
                 </div>
 
             </div>
-        </div>
-
-        <div class="row">
-            <div class="col-lg-12"><p></p>
-            </div>
-        </div>
-
-        <div class="row text-center">
-            <div class="col-md-3 text-center">
+            <div class="col-md-4 text-center">
                 <div class="img-rounded">
                     <a href="@Url.Action("Index", "Index", new { Area = "", id = "management" }, null)" target="_blank"><img src="@Url.Content("~/Images/management.jpg")" alt=""></a>
                 </div>
                 <div class="caption">
-                    <h4><a href="@Url.Action("Index", "Index", new { Area = "", id = "management" }, null)" target="_blank" >Management</a></h4>
+                    <h4><a href="@Url.Action("Index", "Index", new { Area = "", id = "management" }, null)" target="_blank">Management</a></h4>
                 </div>
             </div>
-            <div class="col-md-3 text-center">
+            <div class="col-md-4 text-center">
                 <div class="img-rounded">
                     <a href="@Url.Action("Index", "Index", new { Area = "", id = "pandp" }, null)" target="_blank"><img src="@Url.Content("~/Images/Performance.jpg")" alt=""></a>
-                    
+
                 </div>
                 <div class="caption">
                     <h4><a href="@Url.Action("Index", "Index", new { Area = "", id = "pandp" }, null)" target="_blank">Performance and Information</a></h4>
                 </div>
             </div>
-            
         </div>
-        
-
-
-
+       
     </div>
 
 </body>

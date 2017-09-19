@@ -38,25 +38,25 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Helpers
 
         public IList<SummaryDataViewModel> GetSummaryDataForAllDataZones<T>(int month, int year) where T : SummaryData
         {
-            var result = rpGeneric2nd.QueryOver<T>().Where(x => x.type == "Data Zone" && x.dataMonth == month && x.dataYear == year).List<SummaryData>();
+            var result = rpGeneric2nd.QueryOver<T>().Where(x => x.type.Equals("Data Zone") && x.dataMonth == month && x.dataYear == year).List<SummaryData>();
             return _CreateListOfViewModels(result);
         }
 
         public SummaryDataViewModel GetSummaryDataForSingleDataZone<T>(string code, int month, int year) where T : SummaryData
         {
-            var result = rpGeneric2nd.QueryOver<T>().Where(x => x.type == "Data Zone" && x.dataCode == code && x.dataMonth == month && x.dataYear == year).SingleOrDefault();
+            var result = rpGeneric2nd.QueryOver<T>().Where(x => x.type.Equals("Data Zone") && x.dataCode == code && x.dataMonth == month && x.dataYear == year).SingleOrDefault();
             return new SummaryDataViewModel(result);
         }
 
         public SummaryDataViewModel GetSummaryDataForSingleIntermediateZone<T>(string code, int month, int year) where T : SummaryData
         {
-            var result = rpGeneric2nd.QueryOver<T>().Where(x => x.type == "Intermediate Zone" && x.dataCode == code && x.dataMonth == month && x.dataYear == year).SingleOrDefault();
+            var result = rpGeneric2nd.QueryOver<T>().Where(x => x.type.Equals("Intermediate Zone") && x.dataCode == code && x.dataMonth == month && x.dataYear == year).SingleOrDefault();
             return new SummaryDataViewModel(result);
         }
 
         public IList<SummaryDataViewModel> GetSummaryDataForAllIntermediateZones<T>(int month, int year) where T : SummaryData
         {
-            var result = rpGeneric2nd.QueryOver<T>().Where(x => x.type == "Intermediate Zone" && x.dataMonth == month && x.dataYear == year).List<SummaryData>();
+            var result = rpGeneric2nd.QueryOver<T>().Where(x => x.type.Equals("Intermediate Zone") && x.dataMonth == month && x.dataYear == year).List<SummaryData>();
 
             return _CreateListOfViewModels(result);
         }
@@ -74,7 +74,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Helpers
                 //System.Reflection.Assembly a = typeof(AberdeenSummary).Assembly;
 
                 SummaryData currentSummary = (SummaryData)this.rpGeneric2nd.Query<T>()
-                                            .Where(x => x.type == "School" && x.dataCode == school.seedCode && x.dataMonth == month && x.dataYear == year)
+                                            .Where(x => x.type.Equals("School") && x.dataCode.Equals(school.seedCode) && x.dataMonth == month && x.dataYear == year)
                                             .SingleOrDefault();
                 result.Add(currentSummary);
             }
@@ -84,7 +84,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Helpers
         public SummaryDataViewModel GetSummaryDataForSingleSchool<T>(string seedCode, int month, int year ) where T : SummaryData
         { 
             SummaryData currentSummary = (SummaryData) this.rpGeneric2nd.Query<T>()
-                                            .Where(x => x.type == "School" && x.dataCode == seedCode && x.dataMonth == month && x.dataYear == year)
+                                            .Where(x => x.type.Equals("School") && x.dataCode.Equals(seedCode) && x.dataMonth == month && x.dataYear == year)
                                             .SingleOrDefault();
             return new SummaryDataViewModel(currentSummary); 
         }

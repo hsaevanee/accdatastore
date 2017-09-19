@@ -19,21 +19,20 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" type="text/css" />
     <script src="~/Scripts/accdatastore/views/global.js"></script>
-    <script src="~/Scripts/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="~/bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="~/bower_components/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="~/bower_components/angular/angular.min.js"></script>
     <script type="text/javascript" src="~/bower_components/angular-sanitize/angular-sanitize.min.js"></script>
     <script type="text/javascript" src="~/bower_components/angular-route/angular-route.min.js"></script>
     <script type="text/javascript" src="~/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script type="text/javascript" src="~/bower_components/angular-ui-select/dist/select.min.js"></script>
     <script type="text/javascript" src="~/bower_components/angular-datatables/dist/angular-datatables.min.js"></script> 
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <script src="~/Scripts/jquery.js"></script>
-    <script type="text/javascript" src="/Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="~/Scripts/bootstrap-multiselect.js" type="text/javascript"></script>
-    <link href="~/Content/bootstrap-multiselect.css" rel="stylesheet" type="text/css" />
+
     <script>
         var sContextPath = '@Url.Content("~")';
     </script>
@@ -58,14 +57,11 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-left">
-                    <li class="dropdown active">
+                    @*<li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Data Categories<b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="@Url.Action("Compareable", "IndexSchoolProfile", new { Area = "SchoolProfile" }, null)">School Profile</a>
-                            </li>
-                            <li>
-                                <a href="@Url.Action("Index", "InsightProfile", new { Area = "InsightProfile" }, null)">Insight Data</a>
+                                <a href="@Url.Action("Index", "IndexSchoolProfiles", new { Area = "SchoolProfiles" }, null)">School Profile</a>
                             </li>
                             <li>
                                 <a href="@Url.Action("IndexHome", "IndexDatahub", new { Area = "DatahubProfile" }, null)">DataHub Data</a>
@@ -73,16 +69,16 @@
                             <li>
                                 <a href="@Url.Action("IndexHome", "WiderAchievement", new { Area = "Achievement" }, null)">Achievement Data</a>
                             </li>
-                            <li>
-                                <a href="@Url.Action("IndexHome", "IndexPupilsPopulation", new { Area = "PupilsPopulation" }, null)">Pupils Population</a>
-                            </li>
                         </ul>
-                    </li>
+                    </li>*@
                     <li>
                         <a href="@Url.Action("Index", "Index", new {  Area = "" ,id = "datacentre" }, null)">Data Centre</a>
                     </li>
                     <li>
                         <a href="@Url.Action("Index", "Index", new { Area = "", id = "contact" }, null)">Contact</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Index", new { Area = "", id = "about" }, null)">About us</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -134,8 +130,14 @@
             <footer>
                 <div class="row">
                     <div class="col-lg-12">
-                        @*<p>Copyright &copy; Your Website 2014</p>*@
-                        <p>Feedback Contact:-  <a href="mailto:HSaevanee@aberdeencity.gov.uk">HSaevanee@aberdeencity.gov.uk</a></p>
+                        <p class="text-center">Aberdeen City Council is not responsible for the content or accuracy of the data contained in any external sites.</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                    </div>
+                    <div class="col-lg-6">
+                        <p class="text-right"> Data Observatory Feedback Contact:-  <a href="mailto:HSaevanee@aberdeencity.gov.uk">HSaevanee@aberdeencity.gov.uk</a></p>
                     </div>
                 </div>
             </footer>

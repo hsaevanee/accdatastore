@@ -429,22 +429,22 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                                 indexofmonths = 0;
                                 year++;
                             }
-                            if (prop.Name == "school")
+                            if (prop.Name.Equals("school"))
                             {
                                 comparison = Helper2.ByName(selectionParams.councilName).GetSummaryDataForSingleSchool(currentSeries, indexofmonths + 1, year);
                                 //comparison = comparison.Where(x => !String.IsNullOrWhiteSpace(x.SEED_Code)).Where(x => x.SEED_Code.Equals(schoolSelection.seedcode)).ToList<DatahubDataObj>();
                             }
-                            if (prop.Name == "neighbourhood")
+                            if (prop.Name.Equals("neighbourhood"))
                             {
                                 comparison = Helper2.ByName(selectionParams.councilName).GetSummaryDataForSingleIntermediateZone(currentSeries, indexofmonths + 1, year);
                             }
                             allMonths.Add(comparison);
                         }
-                        if (prop.Name == "school")
+                        if (prop.Name.Equals("school"))
                         {
                             seriesName = listOfAllSchools.Where(x => x.seedcode.Equals(currentSeries)).SingleOrDefault().name;
                         }
-                        if (prop.Name == "neighbourhood")
+                        if (prop.Name.Equals("neighbourhood"))
                         {
                             seriesName = listOfAllNeighbourhoods.Where(x => x.seedcode.Equals(currentSeries)).SingleOrDefault().name;
                         }

@@ -48,37 +48,28 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-left">
-                    <li class="dropdown active">
+                    @*<li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Data Categories<b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="@Url.Action("Index", "IndexSchoolProfiles", new { Area = "SchoolProfiles" }, null)">School Profile</a>
                             </li>
-                            @*<li>
-                                <a href="@Url.Action("Index", "InsightProfile", new { Area = "InsightProfile" }, null)">Insight Data</a>
-                            </li>*@
                             <li>
                                 <a href="@Url.Action("IndexHome", "IndexDatahub", new { Area = "DatahubProfile" }, null)">DataHub Data</a>
                             </li>
                             <li>
                                 <a href="@Url.Action("IndexHome", "WiderAchievement", new { Area = "Achievement" }, null)">Achievement Data</a>
                             </li>
-                            @*<li>
-                                <a href="@Url.Action("IndexHome", "IndexPupilsPopulation", new { Area = "PupilsPopulation" }, null)">Pupils Population</a>
-                            </li>*@
                         </ul>
-                    </li>
-                    @*<li>
-                        <a href="@Url.Action("Index", "Index", new {  Area = "" ,id = "about" }, null)">About</a>
                     </li>*@
-                    @*<li>
-                <a href="@Url.Action("Index", "Index", new {  Area = "" ,id = "theTeam" }, null)">The Team</a>
-            </li>*@
                     <li>
                         <a href="@Url.Action("Index", "Index", new {  Area = "" ,id = "datacentre" }, null)">Data Centre</a>
                     </li>
                     <li>
                         <a href="@Url.Action("Index", "Index", new {  Area = "" ,id = "contact" }, null)">Contact</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Index", new { Area = "", id = "about" }, null)">About us</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">

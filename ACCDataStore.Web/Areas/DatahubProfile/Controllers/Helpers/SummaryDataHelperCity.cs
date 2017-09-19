@@ -168,7 +168,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Helpers
         {
             try
             {
-                var result = repository.QueryOver<T>().Where(x => x.type == "Council" && x.dataMonth == month && x.dataYear == year).SingleOrDefault();
+                var result = repository.QueryOver<T>().Where(x => x.type.Equals("Council") && x.dataMonth == month && x.dataYear == year).SingleOrDefault();
                 return new SummaryDataViewModel(result);
             }
             catch
@@ -186,7 +186,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Helpers
         /// <returns>A SummaryDataViewModel object</returns>
         public SummaryDataViewModel GetSummaryDataForSingleIntermediateZone(string code, int month, int year)
         {
-            var result = repository.QueryOver<T>().Where(x => x.type == "Intermediate Zone" && x.dataCode == code && x.dataMonth == month && x.dataYear == year).SingleOrDefault();
+            var result = repository.QueryOver<T>().Where(x => x.type.Equals("Intermediate Zone") && x.dataCode == code && x.dataMonth == month && x.dataYear == year).SingleOrDefault();
             SummaryDataViewModel output = null;
             if (result != null)
             {
@@ -203,7 +203,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Helpers
         /// <returns>An IList containing SummaryDataViewModel objects</returns>
         public IList<SummaryDataViewModel> GetSummaryDataForAllIntermediateZones(int month, int year)
         {
-            var result = repository.QueryOver<T>().Where(x => x.type == "Intermediate Zone" && x.dataMonth == month && x.dataYear == year).List<SummaryData>();
+            var result = repository.QueryOver<T>().Where(x => x.type.Equals("Intermediate Zone") && x.dataMonth == month && x.dataYear == year).List<SummaryData>();
 
             return _CreateListOfViewModels(result);
         }
@@ -217,7 +217,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Helpers
         /// <returns>A SummaryDataViewModel object</returns>
         public SummaryDataViewModel GetSummaryDataForSingleDataZone(string code, int month, int year)
         {
-            var result = repository.QueryOver<T>().Where(x => x.type == "Data Zone" && x.dataCode == code && x.dataMonth == month && x.dataYear == year).SingleOrDefault();
+            var result = repository.QueryOver<T>().Where(x => x.type.Equals("Data Zone") && x.dataCode == code && x.dataMonth == month && x.dataYear == year).SingleOrDefault();
             return new SummaryDataViewModel(result);
         }
 
@@ -229,7 +229,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Helpers
         /// <returns>An IList containing SummaryDataViewModel objects</returns>
         public IList<SummaryDataViewModel> GetSummaryDataForAllDataZones(int month, int year)
         {
-            var result = repository.QueryOver<T>().Where(x => x.type == "Data Zone" && x.dataMonth == month && x.dataYear == year).List<SummaryData>();
+            var result = repository.QueryOver<T>().Where(x => x.type.Equals("Data Zone") && x.dataMonth == month && x.dataYear == year).List<SummaryData>();
             return _CreateListOfViewModels(result);
         }
 
@@ -243,7 +243,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Helpers
         public SummaryDataViewModel GetSummaryDataForSingleSchool(string seedCode, int month, int year)
         {
             SummaryData currentSummary = (SummaryData)this.repository.Query<T>()
-                                            .Where(x => x.type == "School" && x.dataCode == seedCode && x.dataMonth == month && x.dataYear == year)
+                                            .Where(x => x.type.Equals("School") && x.dataCode == seedCode && x.dataMonth == month && x.dataYear == year)
                                             .SingleOrDefault();
             SummaryDataViewModel output = null;
             if (currentSummary != null)
@@ -273,7 +273,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Helpers
             foreach (var school in allSchoolsForCouncil)
             {
                 SummaryData currentSummary = (SummaryData)this.repository.Query<T>()
-                                            .Where(x => x.type == "School" && x.dataCode == school.seedCode && x.dataMonth == month && x.dataYear == year)
+                                            .Where(x => x.type.Equals("School") && x.dataCode.Equals(school.seedCode) && x.dataMonth == month && x.dataYear == year)
                                             .SingleOrDefault();
                 result.Add(currentSummary);
             }

@@ -57,9 +57,9 @@
     <Reference Include="Common.Logging.Log4Net1213">
       <HintPath>..\packages\Common.Logging.Log4Net1213.3.0.0\lib\net40\Common.Logging.Log4Net1213.dll</HintPath>
     </Reference>
-    <Reference Include="DocumentFormat.OpenXml, Version=2.5.5631.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\DocumentFormat.OpenXml.2.5\lib\DocumentFormat.OpenXml.dll</HintPath>
+    <Reference Include="DocumentFormat.OpenXml, Version=0.0.1.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\OpenXMLSDK-MOT.2.7.1\lib\net45\DocumentFormat.OpenXml.dll</HintPath>
     </Reference>
     <Reference Include="FluentNHibernate, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -110,8 +110,15 @@
     <Reference Include="Npgsql">
       <HintPath>..\packages\Npgsql.2.2.5\lib\net45\Npgsql.dll</HintPath>
     </Reference>
+    <Reference Include="OpenXmlPowerTools">
+      <HintPath>..\packages\OpenXmlPowerTools.4.5.3.1\lib\net45\OpenXmlPowerTools.dll</HintPath>
+    </Reference>
     <Reference Include="Rotativa">
       <HintPath>..\packages\Rotativa.1.6.4\lib\net40\Rotativa.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Management.Automation, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\System.Management.Automation.dll.10.0.10586.0\lib\net40\System.Management.Automation.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -190,6 +197,8 @@
     <Content Include="bower_components\bootstrap\dist\js\bootstrap.min.js" />
     <Content Include="bower_components\datatables.net\js\jquery.dataTables.min.js" />
     <Content Include="bower_components\file-saver\FileSaver.js" />
+    <Content Include="bower_components\highcharts-ng\dist\highcharts-ng.css" />
+    <Content Include="bower_components\highcharts-ng\dist\highcharts-ng.js" />
     <Content Include="bower_components\highcharts-ng\dist\highcharts-ng.min.js" />
     <Content Include="bower_components\highcharts\highcharts-3d.js" />
     <Content Include="bower_components\highcharts\highcharts.js" />
@@ -254,7 +263,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Areas\Nationality\Views\web.config" />
     <Content Include="Images\Aberdeen  Gaurtees logo.png" />
     <Content Include="Images\acc-logo.gif" />
     <Content Include="Images\AchievementLogo.png" />
@@ -310,9 +318,6 @@
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Map\app.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Map\controller.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\Map\service.js" />
-    <Content Include="Scripts\accdatastore\areas\insightprofile\views\benchmarkmeasure\IndexLeaver.js" />
-    <Content Include="Scripts\accdatastore\areas\insightprofile\views\benchmarkmeasure\MapLeaverDestinationIndex.js" />
-    <Content Include="Scripts\accdatastore\areas\nationality\views\nationality\nationality.js" />
     <Content Include="Scripts\accdatastore\areas\pupilspopulation\views\earlylearningchildcare\map-index\app.js" />
     <Content Include="Scripts\accdatastore\areas\pupilspopulation\views\earlylearningchildcare\map-index\controller.js" />
     <Content Include="Scripts\accdatastore\areas\pupilspopulation\views\earlylearningchildcare\map-index\service.js" />
@@ -387,7 +392,6 @@
     <Content Include="Scripts\jquery-ui.min-1.11.1.js" />
     <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\accdatastore\areas\nationality\views\indexnationality\index.js" />
     <Content Include="Scripts\accdatastore\views\index\index.js" />
     <Content Include="Scripts\pdfmake.min.js" />
     <Content Include="Scripts\vfs_fonts.js" />
@@ -427,19 +431,6 @@
     <Compile Include="Areas\DatahubProfile\ViewModels\Datahub\DatahubData.cs" />
     <Compile Include="Areas\DatahubProfile\ViewModels\Datahub\SummaryDataViewModel.cs" />
     <Compile Include="Areas\DatahubProfile\Views\IndexDatahub\Comparisons\ComparisonsViewModel.cs" />
-    <Compile Include="Areas\InsightProfile\Controllers\BenchmarkMeasureController.cs" />
-    <Compile Include="Areas\InsightProfile\Controllers\InsightProfileController.cs" />
-    <Compile Include="Areas\InsightProfile\InsightProfileAreaRegistration.cs" />
-    <Compile Include="Areas\InsightProfile\ViewModels\BenchmarkMeasure\BenchmarkMeasureViewModel.cs" />
-    <Compile Include="Areas\InsightProfile\ViewModels\BenchmarkMeasure\LeaverdestinationData.cs" />
-    <Compile Include="Areas\InsightProfile\ViewModels\BenchmarkMeasure\LeaverDestinationBreakdown.cs" />
-    <Compile Include="Areas\InsightProfile\ViewModels\BenchmarkMeasure\LeaverDestination.cs" />
-    <Compile Include="Areas\InsightProfile\ViewModels\CriteriaObjViewModel.cs" />
-    <Compile Include="Areas\Nationality\Controllers\IndexNationalityController.cs" />
-    <Compile Include="Areas\Nationality\Controllers\NationalityController.cs" />
-    <Compile Include="Areas\Nationality\NationalityAreaRegistration.cs" />
-    <Compile Include="Areas\Nationality\ViewModels\IndexNationality\IndexViewModel.cs" />
-    <Compile Include="Areas\Nationality\ViewModels\Nationality\NationalityViewModel.cs" />
     <Compile Include="Areas\PupilsPopulation\Controllers\EarlyLearningChildCareController.cs" />
     <Compile Include="Areas\PupilsPopulation\Controllers\IndexPupilsPopulationController.cs" />
     <Compile Include="Areas\PupilsPopulation\PupilsPopulationAreaRegistration.cs" />
@@ -452,8 +443,6 @@
     <Compile Include="Areas\SchoolProfiles\Controllers\IndexPrimaryProfileController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\IndexSchoolProfilesController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\PrimarySchoolProfileController.cs" />
-    <Compile Include="Areas\SchoolProfiles\Controllers\QueryController.cs" />
-    <Compile Include="Areas\SchoolProfiles\Controllers\ReportsController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\SecondarySchoolProfileController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\SpecialSchoolProfileController.cs" />
     <Compile Include="Areas\SchoolProfiles\SchoolProfilesAreaRegistration.cs" />
@@ -518,6 +507,7 @@
     <Compile Include="Helpers\Security\AdminAuthenticationAttribute.cs" />
     <Compile Include="Helpers\Security\DatahubAuthenticationAttribute.cs" />
     <Compile Include="Helpers\Security\GenericAuthenticationAttribute.cs" />
+    <Compile Include="Helpers\Security\PublicAuthenticationAttribute.cs" />
     <Compile Include="Helpers\Security\SchoolAuthenticationAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\IndexViewModel.cs" />
@@ -527,10 +517,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="packages.config" />
-    <Content Include="Areas\Nationality\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Nationality\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\Nationality\Views\IndexNationality\Index.cshtml" />
-    <Content Include="Areas\Nationality\Views\Nationality\Nationality.cshtml" />
     <Content Include="Areas\SchoolProfile\Views\web.config" />
     <Content Include="Areas\SchoolProfile\Views\_ViewStart.cshtml" />
     <Content Include="Areas\SchoolProfile\Views\Shared\_Layout.cshtml" />
@@ -549,14 +535,6 @@
     <Content Include="Areas\SchoolProfile\Views\Language\MapIndex.cshtml" />
     <Content Include="Areas\SchoolProfile\Views\StudentStage\MapIndex.cshtml" />
     <Content Include="Areas\SchoolProfile\Views\Curriculum\MapIndex.cshtml" />
-    <Content Include="Areas\InsightProfile\Views\web.config" />
-    <Content Include="Areas\InsightProfile\Views\InsightProfile\Index.cshtml" />
-    <Content Include="Areas\InsightProfile\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\InsightProfile\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\InsightProfile\Views\BenchmarkMeasure\IndexLeaver.cshtml" />
-    <Content Include="Areas\InsightProfile\Views\BenchmarkMeasure\IndexAttainment.cshtml" />
-    <Content Include="Areas\InsightProfile\Views\BenchmarkMeasure\IndexLeaverBreakdown.cshtml" />
-    <Content Include="Areas\InsightProfile\Views\BenchmarkMeasure\MapLeaverDestinationIndex.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\web.config" />
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Index.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\Shared\_Layout.cshtml" />
@@ -634,7 +612,6 @@
     <Content Include="Areas\SchoolProfiles\Views\SpecialSchoolProfile\Index.cshtml" />
     <Content Include="Areas\SchoolProfiles\Views\CitySchoolProfile\Index.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\Map\Index.cshtml" />
-    <Content Include="Areas\SchoolProfiles\Views\Query\Index.cshtml" />
     <Content Include="Areas\PupilsPopulation\Views\EarlyLearningChildCare\Index.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
@@ -658,13 +635,10 @@
     <Folder Include="Areas\Authorisation\Models\" />
     <Folder Include="Areas\DatahubProfile\Views\BaseDataHub\" />
     <Folder Include="Areas\DatahubProfile\Views\IndexDatahub\Map\" />
-    <Folder Include="Areas\InsightProfile\Models\" />
-    <Folder Include="Areas\Nationality\Models\" />
     <Folder Include="Areas\PupilsPopulation\Models\" />
     <Folder Include="Areas\SchoolProfiles\Models\" />
     <Folder Include="Areas\SchoolProfiles\Views\BaseSchoolProfiles\" />
     <Folder Include="Areas\SchoolProfiles\Views\BaseSchoolProfile\" />
-    <Folder Include="Areas\SchoolProfiles\Views\Reports\" />
     <Folder Include="Areas\SchoolProfile\Models\" />
     <Folder Include="Areas\SchoolRollForecast\Models\" />
     <Folder Include="Content\accdatastore\areas\Authorisation\" />
