@@ -67,6 +67,7 @@
     <Compile Include="DatahubProfile\Entities\GenericData.cs" />
     <Compile Include="DatahubProfile\Entities\PupilsDataHubObj.cs" />
     <Compile Include="DatahubProfile\Entities\SummaryData.cs" />
+    <Compile Include="DatahubProfile\Entities\SummaryDHdata.cs" />
     <Compile Include="DatahubProfile\Mappings\AllSchoolsMap.cs" />
     <Compile Include="DatahubProfile\Mappings\DatahubDataAberdeenMap.cs" />
     <Compile Include="DatahubProfile\Mappings\DatahubDataAberdeenshireMap.cs" />

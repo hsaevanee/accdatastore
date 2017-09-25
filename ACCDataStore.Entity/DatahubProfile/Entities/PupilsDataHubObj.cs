@@ -38,7 +38,7 @@ namespace ACCDataStore.Entity.DatahubProfile.Entities
         //public virtual string Preferred_Route { get; set; }
         //public virtual string Preferred_Route_Source { get; set; }
         public virtual string Current_Status { get; set; }
-        //public virtual string Status_Source { get; set; }
+        public virtual string status_code { get; set; }
         //public virtual string Conditional_Status { get; set; }
         //public virtual string Status_Start_Date { get; set; }
         //public virtual string Organisation_Name { get; set; }
