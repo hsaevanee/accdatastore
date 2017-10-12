@@ -58,7 +58,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseEntity.cs" />
-    <Compile Include="ChartData.cs" />
     <Compile Include="DatahubProfile\Entities\AllSchools.cs" />
     <Compile Include="DatahubProfile\Entities\ChartData.cs" />
     <Compile Include="DatahubProfile\Entities\DatahubCentre.cs" />
@@ -83,6 +82,9 @@
     <Compile Include="SchoolProfiles\Census\AaeAttendanceObj.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\BaseSchoolProfile.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\ChartData.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\LocalityChartData.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\SecondaryChartData.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\PrimaryChartData.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\CityChartData.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\CitySchool.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\Ethnicbackground.cs" />
@@ -113,6 +115,7 @@
     <Compile Include="SchoolProfiles\Census\ExclusionStudentObj.cs" />
     <Compile Include="SchoolProfiles\Census\SchoolForecastObj.cs" />
     <Compile Include="SchoolProfiles\Census\StudentNeedObj.cs" />
+    <Compile Include="SchoolProfiles\ChartData.cs" />
     <Compile Include="SchoolProfiles\DataSeries.cs" />
     <Compile Include="SchoolProfiles\EnglishLevel.cs" />
     <Compile Include="SchoolProfiles\EthnicBackground.cs" />

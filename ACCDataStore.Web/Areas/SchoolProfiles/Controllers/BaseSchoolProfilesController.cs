@@ -1660,6 +1660,74 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             return eSplineCharts;
         }
 
+        protected ColumnCharts GetChartCfETimelinebySIMDData(List<SPSchool> listSchool, string stage, string subject) // query from database and return charts object
+        {
+            List<BaseSchoolProfile> temp = new List<BaseSchoolProfile>();
+            string[] colors = new string[] { "#50B432", "#24CBE5", "#f969e8", "#DDDF00", "#64E572", "#FF9655", "#FFF263", "#6AF9C4" };
+            int indexColor = 0;
+            string gtype = "column";
+            var eColumnCharts = new ColumnCharts();
+            eColumnCharts.SetDefault(false);
+            eColumnCharts.title.text = listSchool[0].SchoolName;
+            eColumnCharts.subtitle.text = subject + ": " +stage+" Levels by SIMD 2016 Quintiles ";
+            eColumnCharts.yAxis.title.text = "% achieving expected CfE Levels";
+            eColumnCharts.yAxis.max = 100;
+
+            eColumnCharts.series = new List<ACCDataStore.Entity.RenderObject.Charts.ColumnCharts.series>();
+            if (listSchool != null && listSchool.Count > 0)
+            {
+                eColumnCharts.xAxis.categories = new List<string>() { "SIMD Q1", "SIMD Q2", "SIMD Q3", "SIMD Q4", "SIMD Q5" };
+                foreach (var eSchool in listSchool)
+                {
+                    indexColor = 0;
+
+                    if (!eSchool.SeedCode.Equals("1002"))
+                    {
+
+                        if (stage.Equals("P1"))
+                        {
+                            temp = eSchool.listSPCfElevel.Select(x => x.getP1EarlybySubjectAndSIMD(subject)).ToList();
+                        }
+                        else if (stage.Equals("P4"))
+                        {
+                            temp = eSchool.listSPCfElevel.Select(x => x.getP4FirstLevelbySubjectAndSIMD(subject)).ToList();
+                        }
+                        else
+                        {
+                            temp = eSchool.listSPCfElevel.Select(x => x.getP7SecondLevelbySubjectAndSIMD(subject)).ToList();
+                        }
+
+                        foreach (BaseSchoolProfile tempObj in temp)
+                        {
+                            eColumnCharts.series.Add(new ACCDataStore.Entity.RenderObject.Charts.ColumnCharts.series()
+                            {
+                                type = gtype,
+                                name = tempObj.YearInfo.academicyear,
+                                data = tempObj.ListGenericSchoolData.Select(x=>(float?)Convert.ToDouble(x.Percent)).ToList(), 
+                                //color = eSchool.SeedCode.Equals("1002") ? "#058DC7" : colors[indexColor]
+                                color = colors[indexColor]
+                            });
+                            indexColor++;
+                        
+                        }
+                        
+                    }
+                }
+            }
+
+            eColumnCharts.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
+            {
+                enabled = true,
+                filename = "export"
+            };
+
+            eColumnCharts.chart.options3d = new Entity.RenderObject.Charts.Generic.options3d() { enabled = true, alpha = 10, beta = 10 }; // enable 3d charts
+
+            return eColumnCharts;
+        }
+
+
+
         //Historical StudentStage data
         protected List<StudentStage> GetHistoricalStudentStageData(IGenericRepository2nd rpGeneric2nd, string sSchoolType, string seedcode, List<Year> listyear)
         {

@@ -39,12 +39,38 @@
         });
     }
 
-    //$scope.doTabClick = function () {
-    //    $timeout(function () {
-    //        $scope.$broadcast('highchartsng.reflow');
-    //    }, 10);
-
-    //}
+    $scope.GetPositiveChart = function () {
+        $scope.mIndex.ChartData.ChartTimelineDestinations.series[0].visible = true;
+        $scope.mIndex.ChartData.ChartTimelineDestinations.series[1].visible = false;
+        $scope.mIndex.ChartData.ChartTimelineDestinations.series[2].visible = false;
+        $scope.mIndex.ChartData.ChartTimelineDestinations.series[3].visible = true;
+        $scope.mIndex.ChartData.ChartTimelineDestinations.series[4].visible = false;
+        $scope.mIndex.ChartData.ChartTimelineDestinations.series[5].visible = false;
+    };
+    $scope.GetNonPositiveChart = function () {
+        $scope.mIndex.ChartData.ChartTimelineDestinations.series[0].visible = false;
+        $scope.mIndex.ChartData.ChartTimelineDestinations.series[1].visible = true;
+        $scope.mIndex.ChartData.ChartTimelineDestinations.series[2].visible = false;
+        $scope.mIndex.ChartData.ChartTimelineDestinations.series[3].visible = false;
+        $scope.mIndex.ChartData.ChartTimelineDestinations.series[4].visible = true;
+        $scope.mIndex.ChartData.ChartTimelineDestinations.series[5].visible = false;
+    };
+    $scope.GetUnknownChart = function () {
+        $scope.mIndex.ChartData.ChartTimelineDestinations.series[0].visible = false;
+        $scope.mIndex.ChartData.ChartTimelineDestinations.series[1].visible = false;
+        $scope.mIndex.ChartData.ChartTimelineDestinations.series[2].visible = true;
+        $scope.mIndex.ChartData.ChartTimelineDestinations.series[3].visible = false;
+        $scope.mIndex.ChartData.ChartTimelineDestinations.series[4].visible = false;
+        $scope.mIndex.ChartData.ChartTimelineDestinations.series[5].visible = true;
+    };
+    $scope.GetTimelineChart = function () {
+        $scope.mIndex.ChartData.ChartTimelineDestinations.series[0].visible = true;
+        $scope.mIndex.ChartData.ChartTimelineDestinations.series[1].visible = true;
+        $scope.mIndex.ChartData.ChartTimelineDestinations.series[2].visible = true;
+        $scope.mIndex.ChartData.ChartTimelineDestinations.series[3].visible = true;
+        $scope.mIndex.ChartData.ChartTimelineDestinations.series[4].visible = true;
+        $scope.mIndex.ChartData.ChartTimelineDestinations.series[5].visible = true;
+    };
 
     $scope.doGetData = function () {
         var listSeedCode = [];

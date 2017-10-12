@@ -2,8 +2,6 @@
     <script type="text/javascript" src="~/Scripts/accdatastore/areas/schoolprofiles/views/SecondarySchool/app.js"></script>
     <script type="text/javascript" src="~/Scripts/accdatastore/areas/schoolprofiles/views/SecondarySchool/controller.js"></script>
     <script type="text/javascript" src="~/Scripts/accdatastore/areas/schoolprofiles/views/SecondarySchool/service.js"></script>
-    <script type="text/javascript" src="~/bower_components/highcharts/modules/exporting.js"></script>
-    <script type="text/javascript" src="~/bower_components/highcharts/modules/offline-exporting.js"></script>
    }
 
 <div ng-app="rootApp" ng-controller="rootCtrl" ng-cloak="">
@@ -69,6 +67,7 @@
                                 <li role="presentation"><a id="tabcfe" role="tab" data-toggle="tab" href="#cfe" ng-click="doTabClick()">CfE</a></li>
                                 <li role="presentation"><a id="tabmidyis" role="tab" data-toggle="tab" href="#midyis" ng-click="doTabClick()">MidYIS</a></li>
                                 <li role="presentation"><a id="tabsosca" role="tab" data-toggle="tab" href="#sosca" ng-click="doTabClick()">SOSCA</a></li>
+                                <li role="presentation"><a id="tabdestination" role="tab" data-toggle="tab" href="#destination" ng-click="doTabClick()">16+ Participation</a></li>
                                 <li role="presentation"><a id="tabattendance" role="tab" data-toggle="tab" href="#attendance" ng-click="doTabClick()">Attendance</a></li>
                                 <li role="presentation"><a id="tabexclusions" role="tab" data-toggle="tab" href="#exclusions" ng-click="doTabClick()">Exclusions</a></li>
                                 <li role="presentation"><a id="tabiep" role="tab" data-toggle="tab" href="#iep" ng-click="doTabClick()">IEP</a></li>
@@ -81,7 +80,7 @@
                             </ul>
                         </div>
                         <div class="panel-body">
-                            <p><button type="button" class="btn btn-default" ng-click="doGetReport()">Download Report</button></p>
+                            @*<p><button type="button" class="btn btn-default" ng-click="doGetReport()">Download Report</button></p>*@
                             <div class="tab-content">
                                 <div class="tab-pane fade in active" id="summary">
                                     <h3> Summary  </h3>
@@ -303,7 +302,7 @@
                                                                         <td class="text-left">{{ eGenericSchoolData.Code }}</td><!-- topic name -->
                                                                         <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></td><!-- inner school loop, hide content -->
                                                                         <td>{{ eSchoolInfo.SPCfElevel.ListThirdlevel[nTopicIndex].sPercent }}</td><!-- percent data, based on nTopicIndex & nYearIndex -->
-                                                                        <td>{{ eSchoolInfo.SPCfElevel.ListForthlevel[nTopicIndex].sPercent }}
+                                                                        <td>{{ eSchoolInfo.SPCfElevel.ListForthlevel[nTopicIndex].sPercent }}</td>
                                                                         <td ng-hide="true" ng-repeat-end></td><!-- end school loop -->
                                                                     </tr>
                                                                 </tbody>
@@ -2090,6 +2089,23 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="tab-pane fade" id="destination">
+                                    <h3> 16+ Participation  </h3>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="panel panel-primary text-center">
+                                                <div class="panel-body">
+                                                    <button type="button" class="btn btn-info" ng-click="GetPositiveChart()">Participating</button>
+                                                    <button type="button" class="btn btn-info" ng-click="GetNonPositiveChart()">Not Participating</button>
+                                                    <button type="button" class="btn btn-info" ng-click="GetUnknownChart()">Unknown</button>
+                                                    <button type="button" class="btn btn-info" ng-click="GetTimelineChart()">All Participation</button>
+                                                    <highchart config="mIndex.ChartData.ChartTimelineDestinations"></highchart>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="tab-pane fade" id="otherlinks">
                                     <h3> Other Links  </h3>
                                     <div class="row">

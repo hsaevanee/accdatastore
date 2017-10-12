@@ -322,6 +322,9 @@
     <Content Include="Scripts\accdatastore\areas\pupilspopulation\views\earlylearningchildcare\map-index\controller.js" />
     <Content Include="Scripts\accdatastore\areas\pupilspopulation\views\earlylearningchildcare\map-index\service.js" />
     <Content Include="Scripts\accdatastore\areas\pupilspopulation\views\population\HeatMapIndex.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Locality\app.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Locality\controller.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Locality\service.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\CitySchool\app.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\CitySchool\controller.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\CitySchool\service.js" />
@@ -442,6 +445,7 @@
     <Compile Include="Areas\SchoolProfiles\Controllers\IndexInteractiveMapController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\IndexPrimaryProfileController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\IndexSchoolProfilesController.cs" />
+    <Compile Include="Areas\SchoolProfiles\Controllers\LocalitySchoolProfileController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\PrimarySchoolProfileController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\SecondarySchoolProfileController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\SpecialSchoolProfileController.cs" />
@@ -613,6 +617,8 @@
     <Content Include="Areas\SchoolProfiles\Views\CitySchoolProfile\Index.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\Map\Index.cshtml" />
     <Content Include="Areas\PupilsPopulation\Views\EarlyLearningChildCare\Index.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\LocalitySchoolProfile\Index1.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\LocalitySchoolProfile\Index.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\About.cshtml" />

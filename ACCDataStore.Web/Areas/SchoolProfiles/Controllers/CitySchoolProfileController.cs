@@ -150,6 +150,8 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 tempSchool.SPCfElevel = tempSchool.listSPCfElevel.Where(x => x.year.year.Equals(selectedyear.year) && x.seedcode.Equals("1002")).FirstOrDefault();
                 tempSchool.SPCfElevel_NCfElevel = tempSchool.listSPCfElevel.Where(x => x.year.year.Equals(selectedyear.year) && x.seedcode.Equals("9999")).FirstOrDefault();
                 listSchoolData.Add(tempSchool);
+                //List<List<GenericSchoolData>> aaa = tempSchool.listSPCfElevel.Select(x => x.getP1EarlybySubjectAndSIMD("")).ToList();
+
             }
             return listSchoolData;
         }
@@ -187,7 +189,20 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 chartdata.ChartFSMSecondary = listSchool[1].listFSM == null ? null : GetChartFSM(listSchool, "3");
                 chartdata.ChartFSMSpecial = listSchool[2].listFSM == null ? null : GetChartFSM(listSchool, "4");
                 chartdata.ChartFSMCity = listSchool[3].listFSM == null ? null : GetChartFSM(listSchool, "5");
+                chartdata.ChartP1TimelineCfEReading = GetChartCfETimelinebySIMDData(listSchool, "P1", "Reading");
+                chartdata.ChartP1TimelineCfEWriting = GetChartCfETimelinebySIMDData(listSchool, "P1", "Writing");
+                chartdata.ChartP1TimelineCfEELT = GetChartCfETimelinebySIMDData(listSchool, "P1", "Listening & Talking");
+                chartdata.ChartP1TimelineCfENumeracy = GetChartCfETimelinebySIMDData(listSchool, "P1", "Numeracy");
 
+                chartdata.ChartP4TimelineCfEReading = GetChartCfETimelinebySIMDData(listSchool, "P4", "Reading");
+                chartdata.ChartP4TimelineCfEWriting = GetChartCfETimelinebySIMDData(listSchool, "P4", "Writing");
+                chartdata.ChartP4TimelineCfEELT = GetChartCfETimelinebySIMDData(listSchool, "P4", "Listening & Talking");
+                chartdata.ChartP4TimelineCfENumeracy = GetChartCfETimelinebySIMDData(listSchool, "P4", "Numeracy");
+
+                chartdata.ChartP7TimelineCfEReading = GetChartCfETimelinebySIMDData(listSchool, "P7", "Reading");
+                chartdata.ChartP7TimelineCfEWriting = GetChartCfETimelinebySIMDData(listSchool, "P&", "Writing");
+                chartdata.ChartP7TimelineCfEELT = GetChartCfETimelinebySIMDData(listSchool, "P7", "Listening & Talking");
+                chartdata.ChartP7TimelineCfENumeracy = GetChartCfETimelinebySIMDData(listSchool, "P7", "Numeracy");
                 return chartdata; 
 
             }
@@ -1176,6 +1191,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         {
                             tempobj = new GenericSchoolData(itemRow[2].ToString(), itemRow[2].ToString().Equals("0") ? "Temporary Exclusions" : "Removed From Register");
                             tempobj.count = Convert.ToInt16(itemRow[3].ToString());
+                            tempobj.sCount = NumberFormatHelper.FormatNumber(tempobj.count, 0).ToString();
                             tempobj.sum = Convert.ToInt16(itemRow[4].ToString());
                             tempobj.Percent = Convert.ToInt16(itemRow[3].ToString());
                             tempobj.sPercent = NumberFormatHelper.FormatNumber(tempobj.Percent, 1).ToString();
@@ -1199,6 +1215,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     SPExclusion.YearInfo = new Year(year.year);
                     tempobj = new GenericSchoolData("2", "Number of days per 1000 pupils lost to exclusions");
                     tempobj.count = tempdata.Sum(x => x.sum);  //Sum length of exclusion
+                    tempobj.sCount = NumberFormatHelper.FormatNumber(tempobj.count, 0).ToString();
                     tempobj.sum = schoolroll;   //school Roll
                     tempobj.Percent = tempobj.count / 2.0F / schoolroll * 1000.0F;
                     tempobj.sPercent = NumberFormatHelper.FormatNumber(tempobj.Percent, 1).ToString();
@@ -2130,6 +2147,72 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             //eSplineCharts.options.chart.options3d = new Entity.RenderObject.Charts.Generic.options3d() { enabled = true, alpha = 10, beta = 10 }; // enable 3d charts
 
             return eSplineCharts;
+        }
+
+        protected new ColumnCharts GetChartCfETimelinebySIMDData(List<SPSchool> listSchool, string stage, string subject) // query from database and return charts object
+        {
+            List<BaseSchoolProfile> temp = new List<BaseSchoolProfile>();
+            string[] colors = new string[] { "#50B432", "#24CBE5", "#f969e8", "#DDDF00", "#64E572", "#FF9655", "#FFF263", "#6AF9C4" };
+            int indexColor = 0;
+            string gtype = "column";
+            var eColumnCharts = new ColumnCharts();
+            eColumnCharts.SetDefault(false);
+            eColumnCharts.title.text = listSchool[0].SchoolName;
+            eColumnCharts.subtitle.text = subject + ": "+stage+" Levels by SIMD 2016 Quintiles ";
+            eColumnCharts.yAxis.title.text = "% achieving expected CfE Levels";
+            eColumnCharts.yAxis.max = 100;
+
+            eColumnCharts.series = new List<ACCDataStore.Entity.RenderObject.Charts.ColumnCharts.series>();
+            if (listSchool != null && listSchool.Count > 0)
+            {
+                eColumnCharts.xAxis.categories = new List<string>() { "SIMD Q1", "SIMD Q2", "SIMD Q3", "SIMD Q4", "SIMD Q5" };
+                foreach (var eSchool in listSchool)
+                {
+                    indexColor = 0;
+
+                    if (eSchool.SeedCode.Equals("2"))
+                    {
+                        if (stage.Equals("P1")) {
+                            temp = eSchool.listSPCfElevel.Where(x => x.seedcode.Equals("1002")).Select(x => x.getP1EarlybySubjectAndSIMD(subject)).ToList();
+                        }
+                        else if (stage.Equals("P4"))
+                        {
+                            temp = eSchool.listSPCfElevel.Where(x => x.seedcode.Equals("1002")).Select(x => x.getP4FirstLevelbySubjectAndSIMD(subject)).ToList();                        
+                        }
+                        else 
+                        {
+                            temp = eSchool.listSPCfElevel.Where(x => x.seedcode.Equals("1002")).Select(x => x.getP7SecondLevelbySubjectAndSIMD(subject)).ToList();
+                        }
+                        
+
+                        foreach (BaseSchoolProfile tempObj in temp)
+                        {
+
+                            eColumnCharts.series.Add(new ACCDataStore.Entity.RenderObject.Charts.ColumnCharts.series()
+                            {
+                                type = gtype,
+                                name = tempObj.YearInfo.academicyear,
+                                data = tempObj.ListGenericSchoolData.Select(x => (float?)Convert.ToDouble(x.Percent)).ToList(),
+                                //color = eSchool.SeedCode.Equals("1002") ? "#058DC7" : colors[indexColor]
+                                color = colors[indexColor]
+                            });
+                            indexColor++;
+
+                        }
+
+                    }
+                }
+            }
+
+            eColumnCharts.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
+            {
+                enabled = true,
+                filename = "export"
+            };
+
+            eColumnCharts.chart.options3d = new Entity.RenderObject.Charts.Generic.options3d() { enabled = true, alpha = 10, beta = 10 }; // enable 3d charts
+
+            return eColumnCharts;
         }
     }
 }

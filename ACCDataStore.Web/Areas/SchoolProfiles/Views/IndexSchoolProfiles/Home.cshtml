@@ -36,11 +36,23 @@
                         <a href="@Url.Action("Index", "SpecialSchoolProfile", new { Area = "SchoolProfiles"}, null)">Special Schools</a>
                     </li>
                     <li>
+                        <a href="@Url.Action("Index", "LocalitySchoolProfile", new { Area = "SchoolProfiles" }, null)">Aberdeen Localities</a>
+                    </li>
+                    <li>
                         <a href="@Url.Action("Index", "CitySchoolProfile", new { Area = "SchoolProfiles"}, null)">Aberdeen City</a>
                     </li>
                 </ul>
             </p>
-            <p><a href="@Url.Action("Index", "CitySchoolProfile", new { Area = "SchoolProfiles"}, null)">Guidance to School Profiles</a></p>
+            <p>
+                <em>
+                    @*<a href="@Url.Content("~/Resources/Download/CEM-CfE compare 2017(update).xlsx")" target="_blank">
+                        Guidance to School Profiles
+                    </a>*@
+                    <a href="#">
+                        Guidance to School Profiles
+                    </a>
+                </em>
+            </p>
             <p>
                 Other Useful Links
             </p>

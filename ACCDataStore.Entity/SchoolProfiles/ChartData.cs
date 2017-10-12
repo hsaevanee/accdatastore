@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ACCDataStore.Entity
 {
-    public class ChartData
+    public class ChartData1
     {
-        public ChartData(string sName, List<double> listData)
+        public ChartData1(string sName, List<double> listData)
         {
             this.name = sName;
             this.data = listData;

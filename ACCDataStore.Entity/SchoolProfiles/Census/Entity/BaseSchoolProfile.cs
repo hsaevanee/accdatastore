@@ -11,5 +11,11 @@ namespace ACCDataStore.Entity.SchoolProfiles.Census.Entity
     {
         public Year YearInfo { get; set; }
         public List<GenericSchoolData> ListGenericSchoolData { get; set; }
+
+        public BaseSchoolProfile() {
+            this.YearInfo = new Year();
+            this.ListGenericSchoolData = new List<GenericSchoolData>();
+        
+        }
     }
 }
