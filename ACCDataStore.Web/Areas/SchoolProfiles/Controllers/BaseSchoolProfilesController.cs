@@ -352,7 +352,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         }
 
         // NationalityIdentity Chart
-        protected ColumnCharts GetChartNationalityIdentity(List<SPSchool> listSchool, Year selectedyear) // query from database and return charts object
+        protected ColumnCharts GetChartNationalityIdentity(List<BaseSPDataModel> listSchool, Year selectedyear) // query from database and return charts object
         {
             string[] colors = new string[] { "#50B432", "#24CBE5", "#f969e8", "#DDDF00", "#64E572", "#FF9655", "#FFF263", "#6AF9C4" };
             int indexColor = 0;
@@ -525,7 +525,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         }
 
         // Level of English Chart
-        protected ColumnCharts GetChartLevelofEnglish(List<SPSchool> listSchool, Year selectedyear) // query from database and return charts object
+        protected ColumnCharts GetChartLevelofEnglish(List<BaseSPDataModel> listSchool, Year selectedyear) // query from database and return charts object
         {
             string[] colors = new string[] { "#50B432", "#24CBE5", "#f969e8", "#DDDF00", "#64E572", "#FF9655", "#FFF263", "#6AF9C4" };
             int indexColor = 0;
@@ -564,7 +564,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         }
 
         // Level of English Chart by catagories
-        protected ColumnCharts GetChartLevelofEnglishbyCatagories(List<SPSchool> listSchool, Year selectedyear) // query from database and return charts object
+        protected ColumnCharts GetChartLevelofEnglishbyCatagories(List<BaseSPDataModel> listSchool, Year selectedyear) // query from database and return charts object
         {
             List<GenericSchoolData> temp = new List<GenericSchoolData>();
             var eColumnCharts = new ColumnCharts();
@@ -695,7 +695,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         }
 
         // Looked After Chart
-        protected ColumnCharts GetChartLookedAfter(List<SPSchool> listSchool) // query from database and return charts object
+        protected ColumnCharts GetChartLookedAfter(List<BaseSPDataModel> listSchool) // query from database and return charts object
         {
             string[] colors = new string[] { "#50B432", "#24CBE5", "#f969e8", "#DDDF00", "#64E572", "#FF9655", "#FFF263", "#6AF9C4" };
             int indexColor = 0;
@@ -810,7 +810,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         }
 
         // SIMD Chart
-        protected ColumnCharts GetChartSIMDDecile(List<SPSchool> listSchool, Year selectedyear) // query from database and return charts object
+        protected ColumnCharts GetChartSIMDDecile(List<BaseSPDataModel> listSchool, Year selectedyear) // query from database and return charts object
         {
             string[] colors = new string[] { "#50B432", "#24CBE5", "#f969e8", "#DDDF00", "#64E572", "#FF9655", "#FFF263", "#6AF9C4" };
             int indexColor = 0;
@@ -857,6 +857,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             List<GenericSchoolData> tempdata = new List<GenericSchoolData>();
             List<GenericSchoolData> foo = new List<GenericSchoolData>();
             SPAttendance SPAttendance = new SPAttendance();
+            int possibledays = 0;
 
             Dictionary<string, string> DictAttendance = GetDicAttendance(rpGeneric2nd);
 
@@ -884,12 +885,25 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                             count = y.Sum(x => x.count)
                         }).ToList();
                         groupedList.AddRange(foo.Where(x => groupedList.All(p1 => !p1.Code.Equals(x.Code))));
-                        int possibledays = groupedList.Where(x => x.Code.Equals("01")).Select(x => x.count).Sum() - groupedList.Where(x => x.Code.Equals("02")).Select(x => x.count).Sum();
-                        int sum = groupedList.Where(x => x.Code.Equals("10") || x.Code.Equals("11") || x.Code.Equals("12")).Select(x => x.count).Sum();
+
+                        if (Convert.ToInt16(year.year) < 2014)
+                        {
+                            possibledays = groupedList.Where(x => x.Code.Equals("01")).Select(x => x.count).Sum() - groupedList.Where(x => x.Code.Equals("02")).Select(x => x.count).Sum();
+
+                        }
+                        else
+                        {
+                            possibledays = groupedList.Where(x => x.Code.Equals("01")).Select(x => x.count).Sum();
+
+
+                        }
+                        
+                        
+                        int sum = groupedList.Where(x => x.Code.Equals("10") || x.Code.Equals("11") || x.Code.Equals("12") || x.Code.Equals("13")).Select(x => x.count).Sum();
                         tempdata.Add(new GenericSchoolData()
                         {
                             Name = "Attendance",
-                            Code = "10/11/12",
+                            Code = "10/11/12/13",
                             count = sum,
                             sum = possibledays,
                             Percent = sum * 100.00F / possibledays,
@@ -900,19 +914,19 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         tempdata.Add(new GenericSchoolData()
                         {
                             Name = "Unauthorised Absence",
-                            Code = "30/31/32",
+                            Code = "30/31/32/33",
                             count = sumUnauthorised,
                             sum = possibledays,
                             Percent = sumUnauthorised * 100.00F / possibledays,
                             sPercent = NumberFormatHelper.FormatNumber((sumUnauthorised * 100.00F / possibledays), 1).ToString()
                         });
 
-                        int sumAuthorised = groupedList.Where(x => x.Code.StartsWith("2") || x.Code.Equals("13")).Select(x => x.count).Sum();
+                        int sumAuthorised = groupedList.Where(x => x.Code.StartsWith("2")).Select(x => x.count).Sum();
 
                         tempdata.Add(new GenericSchoolData()
                         {
                             Name = "Authorised Absence",
-                            Code = "13/20/21/22/23/24",
+                            Code = "20/21/22/23/24",
                             count = sumAuthorised,
                             sum = possibledays,
                             Percent = sumAuthorised * 100.00F / possibledays,
@@ -951,7 +965,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         tempdata.Add(new GenericSchoolData()
                         {
                             Name = "Attendance",
-                            Code = "10/11/12",
+                            Code = "10/11/12/13",
                             count = 0,
                             sum = 0,
                             Percent = 0.0F,
@@ -960,7 +974,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         tempdata.Add(new GenericSchoolData()
                         {
                             Name = "Unauthorised Absence",
-                            Code = "30/31/32",
+                            Code = "30/31/32/33",
                             count = 0,
                             sum = 0,
                             Percent = 0.0F,
@@ -969,7 +983,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         tempdata.Add(new GenericSchoolData()
                         {
                             Name = "Authorised Absence",
-                            Code = "13/20/21/22/23/24",
+                            Code = "20/21/22/23/24",
                             count = 0,
                             sum = 0,
                             Percent = 0.0F,
@@ -1016,12 +1030,23 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                             count = y.Sum(x => x.count)
                         }).ToList();
                         groupedList.AddRange(foo.Where(x => groupedList.All(p1 => !p1.Code.Equals(x.Code))));
-                        int possibledays = groupedList.Where(x => x.Code.Equals("01")).Select(x => x.count).Sum() - groupedList.Where(x => x.Code.Equals("02")).Select(x => x.count).Sum();
-                        int sum = groupedList.Where(x => x.Code.Equals("10") || x.Code.Equals("11") || x.Code.Equals("12")).Select(x => x.count).Sum();
+
+                        if (Convert.ToInt16(year.year) < 2014)
+                        {
+                            possibledays = groupedList.Where(x => x.Code.Equals("01")).Select(x => x.count).Sum() - groupedList.Where(x => x.Code.Equals("02")).Select(x => x.count).Sum();
+
+                        }
+                        else
+                        {
+                            possibledays = groupedList.Where(x => x.Code.Equals("01")).Select(x => x.count).Sum();
+
+
+                        }
+                        int sum = groupedList.Where(x => x.Code.Equals("10") || x.Code.Equals("11") || x.Code.Equals("12") || x.Code.Equals("13")).Select(x => x.count).Sum();
                         tempdata.Add(new GenericSchoolData()
                         {
                             Name = "Attendance",
-                            Code = "10/11/12",
+                            Code = "10/11/12/13",
                             count = sum,
                             sum = possibledays,
                             Percent = sum * 100.00F / possibledays,
@@ -1032,19 +1057,19 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         tempdata.Add(new GenericSchoolData()
                         {
                             Name = "Unauthorised Absence",
-                            Code = "30/31/32",
+                            Code = "30/31/32/33",
                             count = sumUnauthorised,
                             sum = possibledays,
                             Percent = sumUnauthorised * 100.00F / possibledays,
                             sPercent = NumberFormatHelper.FormatNumber((sumUnauthorised * 100.00F / possibledays), 1).ToString()
                         });
 
-                        int sumAuthorised = groupedList.Where(x => x.Code.StartsWith("2") || x.Code.Equals("13")).Select(x => x.count).Sum();
+                        int sumAuthorised = groupedList.Where(x => x.Code.StartsWith("2")).Select(x => x.count).Sum();
 
                         tempdata.Add(new GenericSchoolData()
                         {
                             Name = "Authorised Absence",
-                            Code = "13/20/21/22/23/24",
+                            Code = "20/21/22/23/24",
                             count = sumAuthorised,
                             sum = possibledays,
                             Percent = sumAuthorised * 100.00F / possibledays,
@@ -1083,7 +1108,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         tempdata.Add(new GenericSchoolData()
                         {
                             Name = "Attendance",
-                            Code = "10/11/12",
+                            Code = "10/11/12/13",
                             count = 0,
                             sum = 0,
                             Percent = 0.0F,
@@ -1092,7 +1117,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         tempdata.Add(new GenericSchoolData()
                         {
                             Name = "Unauthorised Absence",
-                            Code = "30/31/32",
+                            Code = "30/31/32/33",
                             count = 0,
                             sum = 0,
                             Percent = 0.0F,
@@ -1101,7 +1126,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         tempdata.Add(new GenericSchoolData()
                         {
                             Name = "Authorised Absence",
-                            Code = "13/20/21/22/23/24",
+                            Code = "20/21/22/23/24",
                             count = 0,
                             sum = 0,
                             Percent = 0.0F,
@@ -1140,7 +1165,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         }
 
         // Attendance Chart
-        protected SplineCharts GetChartAttendance(List<SPSchool> listSchool, string ssubject) // query from database and return charts object
+        protected SplineCharts GetChartAttendance(List<BaseSPDataModel> listSchool, string ssubject) // query from database and return charts object
         {
             string[] colors = new string[] { "#50B432", "#24CBE5", "#f969e8", "#DDDF00", "#64E572", "#FF9655", "#FFF263", "#6AF9C4" };
             int indexColor = 0;
@@ -1306,7 +1331,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         }
 
         // Exclusion Chart
-        protected SplineCharts GetChartExclusion(List<SPSchool> listSchool, string dataset) // query from database and return charts object
+        protected SplineCharts GetChartExclusion(List<BaseSPDataModel> listSchool, string dataset) // query from database and return charts object
         {
             string[] colors = new string[] { "#50B432", "#24CBE5", "#f969e8", "#DDDF00", "#64E572", "#FF9655", "#FFF263", "#6AF9C4" };
             int indexColor = 0;
@@ -1484,7 +1509,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         }
 
         // StudentNeed Chart
-        protected ColumnCharts GetChartStudentNeedIEP(List<SPSchool> listSchool) // query from database and return charts object
+        protected ColumnCharts GetChartStudentNeedIEP(List<BaseSPDataModel> listSchool) // query from database and return charts object
         {
             string[] colors = new string[] { "#50B432", "#24CBE5", "#f969e8", "#DDDF00", "#64E572", "#FF9655", "#FFF263", "#6AF9C4" };
             int indexColor = 0;
@@ -1520,7 +1545,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         }
 
         // StudentNeed Chart
-        protected ColumnCharts GetChartStudentNeedCSP(List<SPSchool> listSchool) // query from database and return charts object
+        protected ColumnCharts GetChartStudentNeedCSP(List<BaseSPDataModel> listSchool) // query from database and return charts object
         {
             string[] colors = new string[] { "#50B432", "#24CBE5", "#f969e8", "#DDDF00", "#64E572", "#FF9655", "#FFF263", "#6AF9C4" };
             int indexColor = 0;
@@ -1597,7 +1622,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         }
        
         // SchoolRoll Forecast Chart
-        protected SplineCharts GetChartSchoolRollForecast(List<SPSchool> listSchool) // query from database and return charts object
+        protected SplineCharts GetChartSchoolRollForecast(List<BaseSPDataModel> listSchool) // query from database and return charts object
         {
 
             var eSplineCharts = new SplineCharts();
@@ -1660,7 +1685,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             return eSplineCharts;
         }
 
-        protected ColumnCharts GetChartCfETimelinebySIMDData(List<SPSchool> listSchool, string stage, string subject) // query from database and return charts object
+        protected ColumnCharts GetChartCfETimelinebySIMDData(List<BaseSPDataModel> listSchool, string stage, string subject) // query from database and return charts object
         {
             List<BaseSchoolProfile> temp = new List<BaseSchoolProfile>();
             string[] colors = new string[] { "#50B432", "#24CBE5", "#f969e8", "#DDDF00", "#64E572", "#FF9655", "#FFF263", "#6AF9C4" };

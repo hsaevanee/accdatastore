@@ -99,10 +99,10 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             }
         }
 
-        private List<SPSchool> GetSchoolData(List<School> tListSchoolSelected, string sYear)
+        private List<BaseSPDataModel> GetSchoolData(List<School> tListSchoolSelected, string sYear)
         {
             var listYear = GetListYear();
-            var listSchoolData = new List<SPSchool>();
+            var listSchoolData = new List<BaseSPDataModel>();
             CitySchool tempSchool = new CitySchool();
 
             //add Aberdeen Primary School data
@@ -156,7 +156,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             return listSchoolData;
         }
 
-        private ACCDataStore.Entity.SchoolProfiles.Census.Entity.ChartData GetChartData(List<SPSchool> listSchool, Year eYearSelected)
+        private ACCDataStore.Entity.SchoolProfiles.Census.Entity.ChartData GetChartData(List<BaseSPDataModel> listSchool, Year eYearSelected)
         {
             try {
                 Entity.SchoolProfiles.Census.Entity.CityChartData chartdata = new Entity.SchoolProfiles.Census.Entity.CityChartData();
@@ -342,7 +342,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         }
 
         // SchoolRoll Forecast Chart
-        private new SplineCharts GetChartSchoolRollForecast(List<SPSchool> listSchool) // query from database and return charts object
+        private new SplineCharts GetChartSchoolRollForecast(List<BaseSPDataModel> listSchool) // query from database and return charts object
         {
             string[] colors = new string[] { "#50B432", "#24CBE5", "#f969e8", "#DDDF00", "#64E572", "#FF9655", "#FFF263", "#6AF9C4" };
             int indexColor = 0;
@@ -1389,7 +1389,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         }
 
         // CfeP1Level Chart
-        protected ColumnCharts GetChartCfeP1LevelData(List<SPSchool> listSchool, Year selectedyear) // query from database and return charts object
+        protected ColumnCharts GetChartCfeP1LevelData(List<BaseSPDataModel> listSchool, Year selectedyear) // query from database and return charts object
         {
             string[] colors = new string[] { "#50B432", "#24CBE5", "#f969e8", "#DDDF00", "#64E572", "#FF9655", "#FFF263", "#6AF9C4" };
             int indexColor = 0;
@@ -1404,7 +1404,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             {
                 eColumnCharts.xAxis.categories = listSchool[0].SPCfElevel.P1EarlyLevel.Select(x => x.Code).ToList();
                 //select primary school
-                SPSchool tempschool = listSchool.Where(x => x.SeedCode.Equals("2")).FirstOrDefault();
+                BaseSPDataModel tempschool = listSchool.Where(x => x.SeedCode.Equals("2")).FirstOrDefault();
 
                 foreach (var eSPCfE in tempschool.listSPCfElevel)
                 {
@@ -1432,7 +1432,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         }
 
         // CfeP4Level Chart
-        protected ColumnCharts GetChartCfeP4LevelData(List<SPSchool> listSchool, Year selectedyear) // query from database and return charts object
+        protected ColumnCharts GetChartCfeP4LevelData(List<BaseSPDataModel> listSchool, Year selectedyear) // query from database and return charts object
         {
             string[] colors = new string[] { "#50B432", "#24CBE5", "#f969e8", "#DDDF00", "#64E572", "#FF9655", "#FFF263", "#6AF9C4" };
             int indexColor = 0;
@@ -1447,7 +1447,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             {
                 eColumnCharts.xAxis.categories = listSchool[0].SPCfElevel.P1EarlyLevel.Select(x => x.Code).ToList();
                 //select primary school
-                SPSchool tempschool = listSchool.Where(x => x.SeedCode.Equals("2")).FirstOrDefault();
+                BaseSPDataModel tempschool = listSchool.Where(x => x.SeedCode.Equals("2")).FirstOrDefault();
 
                 foreach (var eSPCfE in tempschool.listSPCfElevel)
                 {
@@ -1476,7 +1476,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         }
 
         // CfeP7Level Chart
-        protected ColumnCharts GetChartCfeP7LevelData(List<SPSchool> listSchool, Year selectedyear) // query from database and return charts object
+        protected ColumnCharts GetChartCfeP7LevelData(List<BaseSPDataModel> listSchool, Year selectedyear) // query from database and return charts object
         {
             string[] colors = new string[] { "#50B432", "#24CBE5", "#f969e8", "#DDDF00", "#64E572", "#FF9655", "#FFF263", "#6AF9C4" };
             int indexColor = 0;
@@ -1491,7 +1491,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             {
                 eColumnCharts.xAxis.categories = listSchool[0].SPCfElevel.P1EarlyLevel.Select(x => x.Code).ToList();
                 //select primary school
-                SPSchool tempschool = listSchool.Where(x => x.SeedCode.Equals("2")).FirstOrDefault();
+                BaseSPDataModel tempschool = listSchool.Where(x => x.SeedCode.Equals("2")).FirstOrDefault();
 
                 foreach (var eSPCfE in tempschool.listSPCfElevel)
                 {
@@ -1520,7 +1520,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         }
 
         // CfeP1Level by Quantile Chart
-        protected ColumnCharts GetChartCfeP1LevelbyQuantileData(List<SPSchool> listSchool, Year selectedyear) // query from database and return charts object
+        protected ColumnCharts GetChartCfeP1LevelbyQuantileData(List<BaseSPDataModel> listSchool, Year selectedyear) // query from database and return charts object
         {
             string[] colors = new string[] { "#50B432", "#24CBE5", "#f969e8", "#DDDF00", "#64E572", "#FF9655", "#FFF263", "#6AF9C4" };
             int indexColor = 0;
@@ -1537,7 +1537,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             {
                 eColumnCharts.xAxis.categories = listSchool[0].SPCfElevel.P1EarlyLevelQ1.Select(x => x.Code).ToList();
                 //select primary school
-                SPSchool tempschool = listSchool.Where(x => x.SeedCode.Equals("2")).FirstOrDefault();
+                BaseSPDataModel tempschool = listSchool.Where(x => x.SeedCode.Equals("2")).FirstOrDefault();
 
                 foreach (var eSPCfE in tempschool.listSPCfElevel)
                 {
@@ -1610,7 +1610,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         }
 
         // CfeP4Level by Quantile Chart
-        protected ColumnCharts GetChartCfeP4LevelbyQuantileData(List<SPSchool> listSchool, Year selectedyear) // query from database and return charts object
+        protected ColumnCharts GetChartCfeP4LevelbyQuantileData(List<BaseSPDataModel> listSchool, Year selectedyear) // query from database and return charts object
         {
             string[] colors = new string[] { "#50B432", "#24CBE5", "#f969e8", "#DDDF00", "#64E572", "#FF9655", "#FFF263", "#6AF9C4" };
             int indexColor = 0;
@@ -1627,7 +1627,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             {
                 eColumnCharts.xAxis.categories = listSchool[0].SPCfElevel.P1EarlyLevelQ1.Select(x => x.Code).ToList();
                 //select primary school
-                SPSchool tempschool = listSchool.Where(x => x.SeedCode.Equals("2")).FirstOrDefault();
+                BaseSPDataModel tempschool = listSchool.Where(x => x.SeedCode.Equals("2")).FirstOrDefault();
 
                 foreach (var eSPCfE in tempschool.listSPCfElevel)
                 {
@@ -1700,7 +1700,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         }
 
         // CfeP4Level by Quantile Chart
-        protected ColumnCharts GetChartCfeP7LevelbyQuantileData(List<SPSchool> listSchool, Year selectedyear) // query from database and return charts object
+        protected ColumnCharts GetChartCfeP7LevelbyQuantileData(List<BaseSPDataModel> listSchool, Year selectedyear) // query from database and return charts object
         {
             string[] colors = new string[] { "#50B432", "#24CBE5", "#f969e8", "#DDDF00", "#64E572", "#FF9655", "#FFF263", "#6AF9C4" };
             int indexColor = 0;
@@ -1717,7 +1717,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             {
                 eColumnCharts.xAxis.categories = listSchool[0].SPCfElevel.P1EarlyLevelQ1.Select(x => x.Code).ToList();
                 //select primary school
-                SPSchool tempschool = listSchool.Where(x => x.SeedCode.Equals("2")).FirstOrDefault();
+                BaseSPDataModel tempschool = listSchool.Where(x => x.SeedCode.Equals("2")).FirstOrDefault();
 
                 foreach (var eSPCfE in tempschool.listSPCfElevel)
                 {
@@ -1790,7 +1790,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         }
 
         // Cfe3Level Chart
-        protected ColumnCharts GetChartCfe3LevelData(List<SPSchool> listSchool, Year selectedyear) // query from database and return charts object
+        protected ColumnCharts GetChartCfe3LevelData(List<BaseSPDataModel> listSchool, Year selectedyear) // query from database and return charts object
         {
             string[] colors = new string[] { "#50B432", "#24CBE5", "#f969e8", "#DDDF00", "#64E572", "#FF9655", "#FFF263", "#6AF9C4" };
             int indexColor = 0;
@@ -1805,7 +1805,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             {
                 eColumnCharts.xAxis.categories = listSchool[1].SPCfElevel.ListThirdlevel.Select(x => x.Code).ToList();
                 //select primary school
-                SPSchool tempschool = listSchool.Where(x => x.SeedCode.Equals("3")).FirstOrDefault();
+                BaseSPDataModel tempschool = listSchool.Where(x => x.SeedCode.Equals("3")).FirstOrDefault();
 
                 foreach (var eSPCfE in tempschool.listSPCfElevel)
                 {
@@ -1834,7 +1834,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         }
 
         // Cfe4Level Chart
-        protected ColumnCharts GetChartCfe4LevelData(List<SPSchool> listSchool, Year selectedyear) // query from database and return charts object
+        protected ColumnCharts GetChartCfe4LevelData(List<BaseSPDataModel> listSchool, Year selectedyear) // query from database and return charts object
         {
             string[] colors = new string[] { "#50B432", "#24CBE5", "#f969e8", "#DDDF00", "#64E572", "#FF9655", "#FFF263", "#6AF9C4" };
             int indexColor = 0;
@@ -1849,7 +1849,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             {
                 eColumnCharts.xAxis.categories = listSchool[1].SPCfElevel.ListForthlevel.Select(x => x.Code).ToList();
                 //select primary school
-                SPSchool tempschool = listSchool.Where(x => x.SeedCode.Equals("3")).FirstOrDefault();
+                BaseSPDataModel tempschool = listSchool.Where(x => x.SeedCode.Equals("3")).FirstOrDefault();
 
                 foreach (var eSPCfE in tempschool.listSPCfElevel)
                 {
@@ -1878,7 +1878,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         }
 
         // CfeP4Level by Quantile Chart
-        protected ColumnCharts GetChartCfe3LevelbyQuantileData(List<SPSchool> listSchool, Year selectedyear) // query from database and return charts object
+        protected ColumnCharts GetChartCfe3LevelbyQuantileData(List<BaseSPDataModel> listSchool, Year selectedyear) // query from database and return charts object
         {
             string[] colors = new string[] { "#50B432", "#24CBE5", "#f969e8", "#DDDF00", "#64E572", "#FF9655", "#FFF263", "#6AF9C4" };
             int indexColor = 0;
@@ -1895,7 +1895,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             {
                 eColumnCharts.xAxis.categories = listSchool[1].SPCfElevel.ListThirdlevel.Select(x => x.Code).ToList();
                 //select secondary school
-                SPSchool tempschool = listSchool.Where(x => x.SeedCode.Equals("3")).FirstOrDefault();
+                BaseSPDataModel tempschool = listSchool.Where(x => x.SeedCode.Equals("3")).FirstOrDefault();
 
                 foreach (var eSPCfE in tempschool.listSPCfElevel)
                 {
@@ -1968,7 +1968,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         }
 
         // CfeP4Level by Quantile Chart
-        protected ColumnCharts GetChartCfe4LevelbyQuantileData(List<SPSchool> listSchool, Year selectedyear) // query from database and return charts object
+        protected ColumnCharts GetChartCfe4LevelbyQuantileData(List<BaseSPDataModel> listSchool, Year selectedyear) // query from database and return charts object
         {
             string[] colors = new string[] { "#50B432", "#24CBE5", "#f969e8", "#DDDF00", "#64E572", "#FF9655", "#FFF263", "#6AF9C4" };
             int indexColor = 0;
@@ -1985,7 +1985,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             {
                 eColumnCharts.xAxis.categories = listSchool[1].SPCfElevel.ListForthlevel.Select(x => x.Code).ToList();
                 //select primary school
-                SPSchool tempschool = listSchool.Where(x => x.SeedCode.Equals("3")).FirstOrDefault();
+                BaseSPDataModel tempschool = listSchool.Where(x => x.SeedCode.Equals("3")).FirstOrDefault();
 
                 foreach (var eSPCfE in tempschool.listSPCfElevel)
                 {
@@ -2058,7 +2058,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         }
 
         // FSM Chart
-        private SplineCharts GetChartFSM(List<SPSchool> templistSchool, string schooltype) // query from database and return charts object
+        private SplineCharts GetChartFSM(List<BaseSPDataModel> templistSchool, string schooltype) // query from database and return charts object
         {
 
             List<CitySchool> listSchool = templistSchool.Cast<CitySchool>().ToList();
@@ -2149,7 +2149,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             return eSplineCharts;
         }
 
-        protected new ColumnCharts GetChartCfETimelinebySIMDData(List<SPSchool> listSchool, string stage, string subject) // query from database and return charts object
+        protected new ColumnCharts GetChartCfETimelinebySIMDData(List<BaseSPDataModel> listSchool, string stage, string subject) // query from database and return charts object
         {
             List<BaseSchoolProfile> temp = new List<BaseSchoolProfile>();
             string[] colors = new string[] { "#50B432", "#24CBE5", "#f969e8", "#DDDF00", "#64E572", "#FF9655", "#FFF263", "#6AF9C4" };

@@ -100,11 +100,11 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             }
         }
 
-        private List<SPSchool> GetSchoolData(List<School> tListSchoolSelected, string sYear, string sSchoolType)
+        private List<BaseSPDataModel> GetSchoolData(List<School> tListSchoolSelected, string sYear, string sSchoolType)
         {
             var listYear = GetListYear();
-            var listSchoolData = new List<SPSchool>();
-            SPSchool tempSchool = new SPSchool();
+            var listSchoolData = new List<BaseSPDataModel>();
+            BaseSPDataModel tempSchool = new BaseSPDataModel();
 
             //add Aberdeen Primary School data
             tListSchoolSelected.Add(new School("1002", "Aberdeen Special Schools"));
@@ -113,7 +113,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
 
             foreach (School school in tListSchoolSelected)
             {
-                tempSchool = new SPSchool();
+                tempSchool = new BaseSPDataModel();
                 tempSchool.SeedCode = school.seedcode;
                 tempSchool.SchoolName = school.name;
                 tempSchool.listNationalityIdentity = GetHistoricalNationalityData(rpGeneric2nd, sSchoolType, school.seedcode, listYear);
@@ -142,7 +142,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             return listSchoolData;
         }
 
-        private ACCDataStore.Entity.SchoolProfiles.Census.Entity.ChartData GetChartData(List<SPSchool> listSchool, Year eYearSelected)
+        private ACCDataStore.Entity.SchoolProfiles.Census.Entity.ChartData GetChartData(List<BaseSPDataModel> listSchool, Year eYearSelected)
         {
             return new Entity.SchoolProfiles.Census.Entity.ChartData()
             {
@@ -241,7 +241,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         }
 
         // SchoolRoll Forecast Chart
-        private new SplineCharts GetChartSchoolRollForecast(List<SPSchool> listSchool) // query from database and return charts object
+        private new SplineCharts GetChartSchoolRollForecast(List<BaseSPDataModel> listSchool) // query from database and return charts object
         {
 
             var eSplineCharts = new SplineCharts();
@@ -293,7 +293,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         }
 
         // FSM Chart
-        private SplineCharts GetChartFSM(List<SPSchool> listSchool) // query from database and return charts object
+        private SplineCharts GetChartFSM(List<BaseSPDataModel> listSchool) // query from database and return charts object
         {
 
             var eSplineCharts = new SplineCharts();

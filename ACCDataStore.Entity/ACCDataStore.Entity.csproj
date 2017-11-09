@@ -81,6 +81,8 @@
     <Compile Include="SchoolProfiles\CensusObj.cs" />
     <Compile Include="SchoolProfiles\Census\AaeAttendanceObj.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\BaseSchoolProfile.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\SecondarySPDataModel.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\PrimarySPDataModel.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\ChartData.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\LocalityChartData.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SecondaryChartData.cs" />
@@ -96,6 +98,7 @@
     <Compile Include="SchoolProfiles\Census\Entity\NationalityIdentity.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SchoolPIPSTransform.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SchoolPIPSTransformRow.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\PrimaryCfElevel.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SPCfElevel.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SPAttendance.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SPExclusion.cs" />
@@ -107,7 +110,7 @@
     <Compile Include="SchoolProfiles\Census\Entity\SPCfEReport.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SPReport.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SPSchoolRollForecast.cs" />
-    <Compile Include="SchoolProfiles\Census\Entity\SPSchool.cs" />
+    <Compile Include="SchoolProfiles\Census\Entity\BaseSPDataModel.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\SPSIMD.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\StudentNeed.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\StudentStage.cs" />
