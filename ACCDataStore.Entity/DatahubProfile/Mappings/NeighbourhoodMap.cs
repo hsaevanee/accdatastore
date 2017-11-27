@@ -12,7 +12,7 @@ namespace ACCDataStore.Entity.DatahubProfile
     {
         public NeighbourhoodMap()
         {
-            Table("neighbourhood_postcodes");
+            Table("neighbourhood_postcodes1");
             Id(x => x.Id).Column("Id");
             Map(x => x.CSS_Postcode);
             Map(x => x.DataZone);

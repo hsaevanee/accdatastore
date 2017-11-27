@@ -1,18 +1,16 @@
-﻿angular.module('root.services', [])
+﻿//Map Controller
+angular.module('root.services', [])
 
-.factory('indexService', function ($http, $rootScope) {
+.factory('mapService', function ($http, $rootScope) {
     return {
+        getGeoJSON: function (layertype) {
+            return $http.get(sContextPath + "DatahubProfile/Map/GetGeoJson", { params: { "layertype": layertype } });
+        },
+        getData: function (layertype,RefNO, dataset) {
+            return $http.get(sContextPath + "DatahubProfile/Map/GetData", { params: { "layertype": layertype, "seedcode": RefNO, "dataset": dataset } });
+        },
         getCondition: function () {
-            return $http.get(sContextPath + "DatahubProfile/DataHub/GetCondition");
-        },
-        getData: function (listSeedCode, ListNeighbourhoodCode, sYear) {
-            $rootScope.bShowLoading = true;
-            return $http.get(sContextPath + "DatahubProfile/DataHub/GetData", { params: { "listSeedCode": listSeedCode, "ListNeighbourhoodCode": ListNeighbourhoodCode, "sYear": sYear } });
-        },
-        getListPupils: function (seedcode, centretype, dataname, sYear) {
-            return $http.get(sContextPath + "DatahubProfile/Datahub/GetListPupils", {
-                headers: { 'X-Requested-With': 'XMLHttpRequest'},
-                params: { "seedcode": seedcode, "centretype":centretype, "dataname": dataname, "sYear": sYear } });
-        }
+            return $http.get(sContextPath + "DatahubProfile/Map/GetCondition");
+    }
     };
 });

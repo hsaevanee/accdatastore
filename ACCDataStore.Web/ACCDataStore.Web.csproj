@@ -208,6 +208,7 @@
     <Content Include="bower_components\ngmap\build\scripts\ng-map.js" />
     <Content Include="bower_components\ngmap\build\scripts\ng-map.min.js" />
     <Content Include="Content\accdatastore\areas\DatahubProfile\views\datahub\datahub.css" />
+    <Content Include="Content\accdatastore\areas\DatahubProfile\views\datahub\map.css" />
     <Content Include="Content\accdatastore\areas\nationality\views\nationality\nationality.css" />
     <Content Include="Content\accdatastore\areas\SchoolProfiles\SchoolProfile.css" />
     <Content Include="Content\accdatastore\views\global.css" />

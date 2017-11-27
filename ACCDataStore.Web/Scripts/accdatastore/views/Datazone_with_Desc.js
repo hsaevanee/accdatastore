@@ -1,4 +1,4 @@
-﻿var datazone = {
+﻿{
     "type": "FeatureCollection",
     "features": [
         {
@@ -112762,4 +112762,4 @@
             }
         }
     ]
-};
+}
