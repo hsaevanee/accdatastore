@@ -47,7 +47,6 @@
 
     $scope.updateDataset = function () {
         //console.log($scope.dataset_item.code, $scope.dataset_item.name)
-        createLayer($scope.mMap.selectedDataset)
         $scope.mMap.selectedLayer = $scope.mMap.selectedLayer;
         $scope.mMap.selectedDataset = $scope.mMap.selectedDataset;
         $scope.mMap.bShowContent = false;
@@ -175,19 +174,30 @@
                 title: title
             });
 
-            //google.maps.event.addListener(marker, 'click', function () {
-            //    infowindow.setContent('<h2>' + marker.title + '</h2>');
-            //    infowindow.open($scope.map, marker);
-            //});
-
             (function (i, marker) {
                 google.maps.event.addListener(marker, 'click', function () {
                     infowindow.setContent('<h2>' + marker.title + '</h2>');
                     infowindow.open($scope.map, marker);
-                    //get data here
+
+                    var pos = map.getZoom();
+                    map.setZoom(17);
+                    map.setCenter(marker.getPosition());
+                    window.setTimeout(function () { map.setZoom(pos); }, 3000);
+
+                    var seedcode = InsightSchoollocationsjsondata.features[i].properties.SCHOCODE;
+
+                    mapService.getData($scope.mMap.selectedLayer.Code, seedcode, $scope.mMap.selectedDataset.Code).then(function (response) {
+                        $rootScope.bShowLoading = false;
+                        $scope.mMap = response.data;
+                        $scope.mMap.bShowContent = true;
+                    }, function (response) {
+                        $rootScope.bShowLoading = false;
+                    });
+
                 });
 
                 google.maps.event.addListener(marker, 'mouseover', function () {
+
                     infowindow.setContent(marker.title);
                     infowindow.open($scope.map, marker);
                 });
