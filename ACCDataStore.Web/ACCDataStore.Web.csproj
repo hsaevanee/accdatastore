@@ -191,6 +191,9 @@
     <Content Include="bower_components\angular-ui-router\release\angular-ui-router.min.js" />
     <Content Include="bower_components\angular-ui-select\dist\select.min.css" />
     <Content Include="bower_components\angular-ui-select\dist\select.min.js" />
+    <Content Include="bower_components\angularjs-slider\dist\rzslider.css" />
+    <Content Include="bower_components\angularjs-slider\dist\rzslider.js" />
+    <Content Include="bower_components\angularjs-slider\src\rzslider.js" />
     <Content Include="bower_components\angular\angular.js" />
     <Content Include="bower_components\angular\angular.min.js" />
     <Content Include="bower_components\bootstrap\dist\css\bootstrap.min.css" />

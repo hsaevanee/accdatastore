@@ -3,7 +3,7 @@
             width: 100%;
         }
 
-        .infoWindowContent {
+    .infoWindowContent {
             font-size: 14px !important;
             border-top: 1px solid #ccc;
             padding-top: 10px;
@@ -37,3 +37,5 @@
         text-align: center;
         /*margin-top: 20px;*/
     }
+
+     
