@@ -1,0 +1,108 @@
+﻿@section Header {
+    @*<link rel="stylesheet" href="~/Content/accds/areas/school_profiles/primary_school/index.css" />*@
+<link rel="stylesheet" href="~/bower_components/highcharts-ng/dist/highcharts-ng.css" />
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/datahubprofile/views/CityProfile/app.js"></script>
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/datahubprofile/views/CityProfile/controller.js"></script>
+    <script type="text/javascript" src="~/Scripts/accdatastore/areas/datahubprofile/views/CityProfile/service.js"></script>
+    @*<script type="text/javascript" src="~/bower_components/highcharts/modules/exporting.js"></script>
+    <script type="text/javascript" src="~/bower_components/highcharts/modules/offline-exporting.js"></script>*@
+}
+<div ng-app="rootApp">
+    <div ui-view>
+    </div>
+
+    <script id="templates/index.html" type="text/ng-template">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Please Select Schools</h3>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-left" width="10%">
+                                            Dataset
+                                        </td>
+                                        <td class="text-left">
+                                            <select ng-options="eYear.Name for eYear in mIndex.ListDataset track by eYear.Code"
+                                                    ng-model="mIndex.DatasetSelected"
+                                                    ng-change="Update(mIndex.DatasetSelected)"></select>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-info" ng-click="doGetDatabyCatagory()">View</button>
+                                        </td>
+                                    </tr>
+                                    @*<tr>
+                                        <td class="text-left" width="10%">
+                                            Center Types
+                                        </td>
+                                        <td class="text-left">
+                                            <ui-select multiple limit="5" ng-model="mIndex.ListCatagorySelected" theme="bootstrap" close-on-select="true">
+                                                <ui-select-match placeholder="Select Catagory...">{{ $item.Name }}</ui-select-match>
+                                                <ui-select-choices repeat="eCatagory in mIndex.ListCatagories">
+                                                    <div ng-bind-html="eCatagory.Name"></div>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-info" ng-click="doGetDatabyCatagory()">View</button>
+                                        </td>
+                                    </tr>*@
+                                <tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-12" align="center">
+                    <img height="100" width="100" src="@Url.Content("~/Resources/Download/loading.gif")" ng-show="bShowLoading" />
+                </div>
+            </div>
+         </div>
+
+        <div class="container" ng-if="mIndex.bShowContent">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-heading">
+                            <h4 class="panel-title text-center"> Participation Cohort by ASG - {{ mIndex.DatasetSelected.Name}}</h4>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center"></th>
+                                        <th class="text-center"  ng:repeat="(i,th) in mIndex.ListingData[0].listdata" ng:class="selectedCls(i)" ng:click="changeSorting(i)">{{th.Code}}</th>
+                                        @*<th class="text-center" ng-repeat="eSchool in mIndex.ListingData[0].listdata">{{ eSchool.Code}}</th>*@
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="eSchool in mIndex.ListingData" ng-init="nTopicIndex = $index">
+                                        <!-- topic loop -->
+                                        <td class="text-left">{{ eSchool.centrename }}</td><!-- topic name -->
+                                        <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData[0].listdata" ng-init="nParentIndex = $index"></td><!-- inner school loop, hide content -->
+                                        <td>{{ eSchool.listdata[nParentIndex].sPercent }}</td>
+                                       <td ng-hide="true" ng-repeat-end></td> 
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        @*<pre>
+            {{ mIndex | json }}
+        </pre>*@
+    </script>
+
+
+
+</div>

@@ -12,6 +12,7 @@ namespace ACCDataStore.Entity.DatahubProfile.Entities
         public int month;
         public string smonth;
         public string seedcode;
+        public string centrename;
         public List<GenericData> listdata;
         public DataSetDate sdataset;
     }

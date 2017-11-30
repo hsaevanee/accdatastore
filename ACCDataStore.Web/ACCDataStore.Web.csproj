@@ -306,6 +306,9 @@
     <Content Include="Scripts\accdatastore\areas\authorisation\controller.js" />
     <Content Include="Scripts\accdatastore\areas\authorisation\Login.js" />
     <Content Include="Scripts\accdatastore\areas\authorisation\service.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\CityProfile\app.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\CityProfile\controller.js" />
+    <Content Include="Scripts\accdatastore\areas\datahubprofile\views\CityProfile\service.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\DataHub\app.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\DataHub\controller.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\DataHub\service.js" />
@@ -420,6 +423,7 @@
     <Compile Include="Areas\Authorisation\Controllers\IndexAuthorisationController.cs" />
     <Compile Include="Areas\Authorisation\ViewModels\IndexAuthorisation\IndexViewModel.cs" />
     <Compile Include="Areas\DatahubProfile\Controllers\BaseDataHubController.cs" />
+    <Compile Include="Areas\DatahubProfile\Controllers\CityProfileController.cs" />
     <Compile Include="Areas\DatahubProfile\Controllers\DataHubController.cs" />
     <Compile Include="Areas\DatahubProfile\Controllers\IndexDatahubController.cs" />
     <Compile Include="Areas\DatahubProfile\Controllers\MapController.cs" />
@@ -623,6 +627,7 @@
     <Content Include="Areas\PupilsPopulation\Views\EarlyLearningChildCare\Index.cshtml" />
     <Content Include="Areas\SchoolProfiles\Views\LocalitySchoolProfile\Index1.cshtml" />
     <Content Include="Areas\SchoolProfiles\Views\LocalitySchoolProfile\Index.cshtml" />
+    <Content Include="Areas\DatahubProfile\Views\CityProfile\Index.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\About.cshtml" />

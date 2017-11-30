@@ -34,7 +34,7 @@
             center: new google.maps.LatLng(57.151810, -2.094451),
             mapTypeId: google.maps.MapTypeId.TERRAIN
         });
-        //initial layer set to Neighbourhoods
+
         createLayer($scope.mMap.selectedLayer);
     }
 
@@ -43,13 +43,6 @@
         $scope.mMap.selectedLayer = $scope.mMap.selectedLayer;
         $scope.mMap.selectedDataset = $scope.mMap.selectedDataset;
         $scope.mMap.bShowContent = false;
-
-        mapService.LoadHeatMapdata($scope.mMap.selectedDataset.Code).then(function (response) {
-            $scope.mMap.heatmapdata = response.data;
-            map.data.setStyle(styleFeature);
-        }, function (response) {
-            $rootScope.bShowLoading = false;
-        });
     }
 
     $scope.updateCatagory = function () {
@@ -99,15 +92,30 @@
         }
     };
 
-
     var styleFeature = function (feature) {
 
         var data = $scope.mMap.heatmapdata;
 
         var datacatagory = $scope.mMap.selecteddatacatagory;
 
-        let obj = data.find(x => x.seedcode === feature.getProperty('REFNO'));
+        var obj;
 
+        data.forEach( function( item ){
+            if( item.seedcode === feature.getProperty('REFNO') ){
+                obj = item;
+            }
+        } );
+
+
+
+        //let obj = $filter('filter')(data, {seedcode: feature.getProperty('REFNO') })[0];
+            
+            
+        //    data.filter(function(item) {
+        //    return item.seedcode === feature.getProperty('REFNO');
+        //})[0];
+            
+            
         if(!obj){
             alert('notfound');
         }
@@ -136,7 +144,6 @@
             if (feature.getProperty('isColorful')) {
                 color = shadeColor(color,-20);
             }
-
 
         return {
             zIndex: zIndex,
