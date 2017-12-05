@@ -12,7 +12,7 @@
     }, function (response) {
     });
 
-    $scope.doGetPupilList = function (seedcode, centretype, dataname) {
+    $scope.doGetDataDetails = function (seedcode, centretype, dataname) {
         var sYear = $scope.mIndex.DatasetSelected.Code
         $state.go('list', { seedcode: seedcode, centretype: centretype, dataname: dataname, sYear: sYear });
 
@@ -20,8 +20,9 @@
 
     $scope.doGetDatabyCatagory = function () {
         var sYear = $scope.mIndex.DatasetSelected.Code
+        var centretype = $scope.mIndex.ListCentreSelected.Code
 
-        indexService.getData(sYear).then(function (response) {
+        indexService.getData(sYear, centretype).then(function (response) {
             $rootScope.bShowLoading = false;
             $scope.mIndex = response.data;
             $scope.mIndex.bShowContent = true;
@@ -30,28 +31,10 @@
         });
     }
 
-    $scope.Update = function (item) {
+    $scope.Update = function () {
         $scope.mIndex.bShowContent = false;
     }
 
-    $scope.sort = {
-        column: 'b',
-        descending: false
-    };
-
-    $scope.selectedCls = function (column) {
-        return column == $scope.sort.column && 'sort-' + $scope.sort.descending;
-    };
-
-    $scope.changeSorting = function (column) {
-        var sort = $scope.sort;
-        if (sort.column == column) {
-            sort.descending = !sort.descending;
-        } else {
-            sort.column = column;
-            sort.descending = false;
-        }
-    };
 
     $scope.doGetDatabyNeighbourhood = function () {
         var listSeedCode = [];
@@ -111,13 +94,24 @@
 
 .controller('listCtrl', function ($scope, $rootScope, $state, $stateParams, $timeout, indexService) {
     $scope.mIndex = {};
+    $scope.mIndex.bShowContentA = false;
+    $scope.mIndex.bShowContentB = false;
 
-    indexService.getListPupils($stateParams.seedcode, $stateParams.centretype, $stateParams.dataname, $stateParams.sYear).then(function (response) {
-        $scope.mIndex.bShowContent = true;
+    indexService.getDataDetails($stateParams.seedcode, $stateParams.centretype, $stateParams.dataname, $stateParams.sYear).then(function (response) {
         $scope.mIndex = response.data;
+        $scope.mIndex.bShowContentA = true;
     }, function (response) {
-        window.location.href = sContextPath+"Authorisation/IndexAuthorisation";
+       //window.location.href = sContextPath+"Authorisation/IndexAuthorisation";
     });
 
+    $scope.doGetPupilList = function (seedcode, centretype, dataname) {
+        var sYear = $scope.mIndex.selectedDataset.Code
+        indexService.getListPupils(seedcode, centretype, dataname, sYear).then(function (response) {
+            $scope.mIndex = response.data;
+            $scope.mIndex.bShowContentB = true;
+        }, function (response) {
+            window.location.href = sContextPath + "Authorisation/IndexAuthorisation";
+        });
+    }
 });
     

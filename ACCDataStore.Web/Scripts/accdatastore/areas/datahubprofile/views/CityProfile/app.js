@@ -16,5 +16,11 @@
         controller: 'indexCtrl'
     })
 
+         .state('list', {
+             url: '/list/:seedcode/:centretype/:dataname/:sYear',
+             templateUrl: 'templates/list.html',
+             controller: 'listCtrl'
+         })
+
     $urlRouterProvider.otherwise('/index');
 });

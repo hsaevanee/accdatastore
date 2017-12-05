@@ -43,6 +43,7 @@
         $scope.mMap.selectedLayer = $scope.mMap.selectedLayer;
         $scope.mMap.selectedDataset = $scope.mMap.selectedDataset;
         $scope.mMap.bShowContent = false;
+        google.maps.event.addDomListener(window, 'load', initMap);
     }
 
     $scope.updateCatagory = function () {
