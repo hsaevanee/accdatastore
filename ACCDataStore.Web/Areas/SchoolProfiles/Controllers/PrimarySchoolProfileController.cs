@@ -1495,7 +1495,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             {
                 //remove 2011/12 data from list
                 string[] codes = new string[] { "Developed Ability", "Reading", "Spelling", "General Maths", "Mental Arithmetics"}; // using i to reference
-                string[] years = new string[] { "2012/13", "2013/14", "2014/15", "2015/16", "2016/17" }; // using j to reference
+                string[] years = new string[] { "2012/13", "2013/14", "2014/15", "2015/16", "2016/17", "2017/18" }; // using j to reference
                 List<GenericSchoolData> tempdata;
 
 
