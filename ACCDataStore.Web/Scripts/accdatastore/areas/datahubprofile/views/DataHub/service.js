@@ -6,9 +6,9 @@ angular.module('root.services', [])
         getCondition: function () {
             return $http.get(sContextPath + "DatahubProfile/DataHub/GetCondition");
         },
-        getData: function (listSeedCode, ListNeighbourhoodCode, sYear) {
+        getData: function (listSeedCode, ListNeighbourhoodCode, sYear, sReport) {
             $rootScope.bShowLoading = true;
-            return $http.get(sContextPath + "DatahubProfile/DataHub/GetData", { params: { "listSeedCode": listSeedCode, "ListNeighbourhoodCode": ListNeighbourhoodCode, "sYear": sYear } });
+            return $http.get(sContextPath + "DatahubProfile/DataHub/GetData", { params: { "listSeedCode": listSeedCode, "ListNeighbourhoodCode": ListNeighbourhoodCode, "sYear": sYear, "sReport": sReport } });
         },
         getListPupils: function (seedcode, centretype, dataname, sYear) {
             return $http.get(sContextPath + "DatahubProfile/Datahub/GetListPupils", {

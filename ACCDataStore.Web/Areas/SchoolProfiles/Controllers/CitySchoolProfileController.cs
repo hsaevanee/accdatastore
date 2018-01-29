@@ -46,7 +46,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
 
                 var listSchool = new List<School>() { new School("1002", "Aberdeen City") };
                 var listYear = GetListYear();
-                var eYearSelected = listYear != null ? listYear.Where(x => x.year.Equals("2016")).First() : null;
+                var eYearSelected = listYear != null ? listYear.Where(x => x.year.Equals("2017")).First() : null;
                 List<School> ListSchoolSelected = listSchool != null ? listSchool.Where(x => x.seedcode.Equals("1002")).ToList() : null;
                 oResult = new
                 {
@@ -134,13 +134,19 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 tempSchool.SchoolRollForecast = GetSchoolRollForecastData(rpGeneric2nd, school);
                 tempSchool.listStudentStage = GetHistoricalStudentStageData(rpGeneric2nd, school.seedcode, listYear);
                 tempSchool.StudentStage = tempSchool.listStudentStage.Where(x => x.YearInfo.year.Equals(selectedyear.year)).FirstOrDefault();
-                tempSchool.listSIMD = GetHistoricalSIMDData(rpGeneric2nd, school.schooltype, school.seedcode, listYear);
-                tempSchool.SIMD = tempSchool.listSIMD.Where(x => x.YearInfo.year.Equals("2016")).FirstOrDefault();
-                tempSchool.listFSM = GetHistoricalFSMData(rpGeneric2nd, school.schooltype, school.seedcode,listYear);
+                if (Convert.ToInt16(selectedyear.year) < 2016)
+                {
+                    tempSchool.listSIMD = null;
+                    tempSchool.SIMD = null;
+                } else {
+                    tempSchool.listSIMD = GetHistoricalSIMDData(rpGeneric2nd, school.schooltype, school.seedcode, listYear);
+                    tempSchool.SIMD = tempSchool.listSIMD.Where(x => x.YearInfo.year.Equals(selectedyear.year)).FirstOrDefault();               
+                }
+                tempSchool.listFSM = GetHistoricalFSMData(rpGeneric2nd, school.schooltype, school.seedcode, listYear);
                 tempSchool.FSM = tempSchool.listFSM.Where(x => x.year.year.Equals(selectedyear.year)).FirstOrDefault();
                 tempSchool.listFSM_National = GetHistoricalNationalFSMData(rpGeneric2nd, school.schooltype, "9999", listYear);
                 tempSchool.FSM_National = tempSchool.listFSM_National.Where(x => x.year.year.Equals(selectedyear.year)).FirstOrDefault();
-                tempSchool.listStudentNeed = GetHistoricalStudentNeed(rpGeneric2nd, school.schooltype, school.seedcode, tempSchool.SchoolRoll, listYear);
+                tempSchool.listStudentNeed = GetHistoricalStudentNeed(rpGeneric2nd, school.schooltype, school.seedcode, listYear);
                 tempSchool.StudentNeed = tempSchool.listStudentNeed.Where(x => x.year.year.Equals(selectedyear.year)).FirstOrDefault();
                 tempSchool.listAttendance = GetHistoricalAttendanceData(rpGeneric2nd, school.schooltype, school, listYear);
                 tempSchool.SPAttendance = tempSchool.listAttendance.Where(x => x.YearInfo.year.Equals(selectedyear.year)).FirstOrDefault();
@@ -163,7 +169,13 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 chartdata.ChartNationalityIdentity = GetChartNationalityIdentity(listSchool, eYearSelected);
                 chartdata.ChartLevelOfEnglish = GetChartLevelofEnglish(listSchool, eYearSelected);
                 chartdata.ChartLevelOfEnglishByCatagories = GetChartLevelofEnglishbyCatagories(listSchool, eYearSelected);
-                chartdata.ChartSIMD = GetChartSIMDDecile(listSchool, eYearSelected);
+                if (Convert.ToInt16(eYearSelected.year) < 2016) {
+                    chartdata.ChartSIMD = null;
+                }
+                else { 
+                    chartdata.ChartSIMD = GetChartSIMDDecile(listSchool, eYearSelected); 
+                }
+                
                 chartdata.CartSchoolRollForecast = GetChartSchoolRollForecast(listSchool);
                 chartdata.ChartIEP = GetChartStudentNeedIEP(listSchool);
                 chartdata.ChartCSP = GetChartStudentNeedCSP(listSchool);
@@ -189,20 +201,34 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 chartdata.ChartFSMSecondary = listSchool[1].listFSM == null ? null : GetChartFSM(listSchool, "3");
                 chartdata.ChartFSMSpecial = listSchool[2].listFSM == null ? null : GetChartFSM(listSchool, "4");
                 chartdata.ChartFSMCity = listSchool[3].listFSM == null ? null : GetChartFSM(listSchool, "5");
-                chartdata.ChartP1TimelineCfEReading = GetChartCfETimelinebySIMDData(listSchool, "P1", "Reading");
-                chartdata.ChartP1TimelineCfEWriting = GetChartCfETimelinebySIMDData(listSchool, "P1", "Writing");
-                chartdata.ChartP1TimelineCfEELT = GetChartCfETimelinebySIMDData(listSchool, "P1", "Listening & Talking");
-                chartdata.ChartP1TimelineCfENumeracy = GetChartCfETimelinebySIMDData(listSchool, "P1", "Numeracy");
 
-                chartdata.ChartP4TimelineCfEReading = GetChartCfETimelinebySIMDData(listSchool, "P4", "Reading");
-                chartdata.ChartP4TimelineCfEWriting = GetChartCfETimelinebySIMDData(listSchool, "P4", "Writing");
-                chartdata.ChartP4TimelineCfEELT = GetChartCfETimelinebySIMDData(listSchool, "P4", "Listening & Talking");
-                chartdata.ChartP4TimelineCfENumeracy = GetChartCfETimelinebySIMDData(listSchool, "P4", "Numeracy");
 
-                chartdata.ChartP7TimelineCfEReading = GetChartCfETimelinebySIMDData(listSchool, "P7", "Reading");
-                chartdata.ChartP7TimelineCfEWriting = GetChartCfETimelinebySIMDData(listSchool, "P&", "Writing");
-                chartdata.ChartP7TimelineCfEELT = GetChartCfETimelinebySIMDData(listSchool, "P7", "Listening & Talking");
-                chartdata.ChartP7TimelineCfENumeracy = GetChartCfETimelinebySIMDData(listSchool, "P7", "Numeracy");
+                chartdata.ChartP1TimelineCfEReading = listSchool[0].SPCfElevel == null ? null : GetChartCfESIMDComparisonData(listSchool, "P1", "Reading", eYearSelected);
+                chartdata.ChartP1TimelineCfEWriting = listSchool[0].SPCfElevel == null ? null : GetChartCfESIMDComparisonData(listSchool, "P1", "Writing", eYearSelected);
+                chartdata.ChartP1TimelineCfEELT = listSchool[0].SPCfElevel == null ? null : GetChartCfESIMDComparisonData(listSchool, "P1", "Listening & Talking", eYearSelected);
+                chartdata.ChartP1TimelineCfENumeracy = listSchool[0].SPCfElevel == null ? null : GetChartCfESIMDComparisonData(listSchool, "P1", "Numeracy", eYearSelected);
+
+                chartdata.ChartP4TimelineCfEReading = listSchool[0].SPCfElevel == null ? null : GetChartCfESIMDComparisonData(listSchool, "P4", "Reading", eYearSelected);
+                chartdata.ChartP4TimelineCfEWriting = listSchool[0].SPCfElevel == null ? null : GetChartCfESIMDComparisonData(listSchool, "P4", "Writing", eYearSelected);
+                chartdata.ChartP4TimelineCfEELT = listSchool[0].SPCfElevel == null ? null : GetChartCfESIMDComparisonData(listSchool, "P4", "Listening & Talking", eYearSelected);
+                chartdata.ChartP4TimelineCfENumeracy = listSchool[0].SPCfElevel == null ? null : GetChartCfESIMDComparisonData(listSchool, "P4", "Numeracy", eYearSelected);
+
+                chartdata.ChartP7TimelineCfEReading = listSchool[0].SPCfElevel == null ? null : GetChartCfESIMDComparisonData(listSchool, "P7", "Reading", eYearSelected);
+                chartdata.ChartP7TimelineCfEWriting = listSchool[0].SPCfElevel == null ? null : GetChartCfESIMDComparisonData(listSchool, "P7", "Writing", eYearSelected);
+                chartdata.ChartP7TimelineCfEELT = listSchool[0].SPCfElevel == null ? null : GetChartCfESIMDComparisonData(listSchool, "P7", "Listening & Talking", eYearSelected);
+                chartdata.ChartP7TimelineCfENumeracy = listSchool[0].SPCfElevel == null ? null : GetChartCfESIMDComparisonData(listSchool, "P7", "Numeracy", eYearSelected);
+
+                chartdata.ChartS3ThirdTimelineCfEReading = listSchool[0].SPCfElevel == null ? null : GetChartCfESIMDComparisonData(listSchool, "S3Third", "Reading", eYearSelected);
+                chartdata.ChartS3ThirdTimelineCfEWriting = listSchool[0].SPCfElevel == null ? null : GetChartCfESIMDComparisonData(listSchool, "S3Third", "Writing", eYearSelected);
+                chartdata.ChartS3ThirdTimelineCfEELT = listSchool[0].SPCfElevel == null ? null : GetChartCfESIMDComparisonData(listSchool, "S3Third", "Listening & Talking", eYearSelected);
+                chartdata.ChartS3ThirdTimelineCfENumeracy = listSchool[0].SPCfElevel == null ? null : GetChartCfESIMDComparisonData(listSchool, "S3Third", "Numeracy", eYearSelected);
+
+                chartdata.ChartS3FourthTimelineCfEReading = listSchool[0].SPCfElevel == null ? null : GetChartCfESIMDComparisonData(listSchool, "S3Fourth", "Reading", eYearSelected);
+                chartdata.ChartS3FourthTimelineCfEWriting = listSchool[0].SPCfElevel == null ? null : GetChartCfESIMDComparisonData(listSchool, "S3Fourth", "Writing", eYearSelected);
+                chartdata.ChartS3FourthTimelineCfEELT = listSchool[0].SPCfElevel == null ? null : GetChartCfESIMDComparisonData(listSchool, "S3Fourth", "Listening & Talking", eYearSelected);
+                chartdata.ChartS3FourthTimelineCfENumeracy = listSchool[0].SPCfElevel == null ? null : GetChartCfESIMDComparisonData(listSchool, "S3Fourth", "Numeracy", eYearSelected);
+
+                
                 return chartdata; 
 
             }
@@ -535,7 +561,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     groupedList.AddRange(foo.Where(x => groupedList.All(p1 => !p1.Code.Equals(x.Code))));
                     NationalityIdentity = new NationalityIdentity();
                     NationalityIdentity.YearInfo = year;
-                    NationalityIdentity.ListGenericSchoolData = groupedList;
+                    NationalityIdentity.ListGenericSchoolData = groupedList.OrderBy(x=>x.Code).ToList();
                     listNationalityIdentity.Add(NationalityIdentity);
                 }
             }
@@ -557,7 +583,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     groupedList.AddRange(foo.Where(x => groupedList.All(p1 => !p1.Code.Equals(x.Code))));
                     NationalityIdentity = new NationalityIdentity();
                     NationalityIdentity.YearInfo = year;
-                    NationalityIdentity.ListGenericSchoolData = groupedList;
+                    NationalityIdentity.ListGenericSchoolData = groupedList.OrderBy(x => x.Code).ToList(); ;
                     listNationalityIdentity.Add(NationalityIdentity);
                 }
 
@@ -603,7 +629,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     groupedList.AddRange(foo.Where(x => groupedList.All(p1 => !p1.Code.Equals(x.Code))));
                     Ethnicbackground = new Ethnicbackground();
                     Ethnicbackground.YearInfo = year;
-                    Ethnicbackground.ListGenericSchoolData = groupedList;
+                    Ethnicbackground.ListGenericSchoolData = groupedList.OrderBy(x => x.Code).ToList(); ;
                     listEthnicbackground.Add(Ethnicbackground);
                 }
             }
@@ -625,7 +651,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     groupedList.AddRange(foo.Where(x => groupedList.All(p1 => !p1.Code.Equals(x.Code))));
                     Ethnicbackground = new Ethnicbackground();
                     Ethnicbackground.YearInfo = year;
-                    Ethnicbackground.ListGenericSchoolData = groupedList;
+                    Ethnicbackground.ListGenericSchoolData = groupedList.OrderBy(x => x.Code).ToList(); ;
                     listEthnicbackground.Add(Ethnicbackground);
                 }
 
@@ -709,7 +735,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             List<GenericSchoolData> tempdata = new List<GenericSchoolData>();
             List<GenericSchoolData> foo = new List<GenericSchoolData>();
             SPAttendance SPAttendance = new SPAttendance();
-
+            int possibledays = 0;
             Dictionary<string, string> DictAttendance = GetDicAttendance(rpGeneric2nd);
 
             foreach (var item in DictAttendance)
@@ -736,12 +762,27 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                             count = y.Sum(x => x.count)
                         }).ToList();
                         groupedList.AddRange(foo.Where(x => groupedList.All(p1 => !p1.Code.Equals(x.Code))));
-                        int possibledays = groupedList.Where(x => x.Code.Equals("01")).Select(x => x.count).Sum() - groupedList.Where(x => x.Code.Equals("02")).Select(x => x.count).Sum();
-                        int sum = groupedList.Where(x => x.Code.Equals("10") || x.Code.Equals("11") || x.Code.Equals("12")).Select(x => x.count).Sum();
+
+
+                        if (Convert.ToInt16(year.year) < 2014)
+                        {
+                            possibledays = groupedList.Where(x => x.Code.Equals("01")).Select(x => x.count).Sum() - groupedList.Where(x => x.Code.Equals("02")).Select(x => x.count).Sum();
+
+                        }
+                        else
+                        {
+                            possibledays = groupedList.Where(x => x.Code.Equals("01")).Select(x => x.count).Sum();
+
+
+                        }
+
+
+                        //int possibledays = groupedList.Where(x => x.Code.Equals("01")).Select(x => x.count).Sum() - groupedList.Where(x => x.Code.Equals("02")).Select(x => x.count).Sum();
+                        int sum = groupedList.Where(x => x.Code.Equals("10") || x.Code.Equals("11") || x.Code.Equals("12") || x.Code.Equals("13")).Select(x => x.count).Sum();
                         tempdata.Add(new GenericSchoolData()
                         {
                             Name = "Attendance",
-                            Code = "10/11/12",
+                            Code = "10/11/12/13",
                             count = sum,
                             sum = possibledays,
                             Percent = sum * 100.00F / possibledays,
@@ -752,7 +793,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         tempdata.Add(new GenericSchoolData()
                         {
                             Name = "Unauthorised Absence",
-                            Code = "30/31/32",
+                            Code = "30/31/32/33",
                             count = sumUnauthorised,
                             sum = possibledays,
                             Percent = sumUnauthorised * 100.00F / possibledays,
@@ -764,7 +805,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         tempdata.Add(new GenericSchoolData()
                         {
                             Name = "Authorised Absence",
-                            Code = "13/20/21/22/23/24",
+                            Code = "20/21/22/23/24",
                             count = sumAuthorised,
                             sum = possibledays,
                             Percent = sumAuthorised * 100.00F / possibledays,
@@ -803,7 +844,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         tempdata.Add(new GenericSchoolData()
                         {
                             Name = "Attendance",
-                            Code = "10/11/12",
+                            Code = "10/11/12/13",
                             count = 0,
                             sum = 0,
                             Percent = 0.0F,
@@ -812,7 +853,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         tempdata.Add(new GenericSchoolData()
                         {
                             Name = "Unauthorised Absence",
-                            Code = "30/31/32",
+                            Code = "30/31/32/33",
                             count = 0,
                             sum = 0,
                             Percent = 0.0F,
@@ -821,7 +862,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         tempdata.Add(new GenericSchoolData()
                         {
                             Name = "Authorised Absence",
-                            Code = "13/20/21/22/23/24",
+                            Code = "20/21/22/23/24",
                             count = 0,
                             sum = 0,
                             Percent = 0.0F,
@@ -869,7 +910,20 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                             count = y.Sum(x => x.count)
                         }).ToList();
                         groupedList.AddRange(foo.Where(x => groupedList.All(p1 => !p1.Code.Equals(x.Code))));
-                        int possibledays = groupedList.Where(x => x.Code.Equals("01")).Select(x => x.count).Sum() - groupedList.Where(x => x.Code.Equals("02")).Select(x => x.count).Sum();
+
+                        if (Convert.ToInt16(year.year) < 2014)
+                        {
+                            possibledays = groupedList.Where(x => x.Code.Equals("01")).Select(x => x.count).Sum() - groupedList.Where(x => x.Code.Equals("02")).Select(x => x.count).Sum();
+
+                        }
+                        else
+                        {
+                            possibledays = groupedList.Where(x => x.Code.Equals("01")).Select(x => x.count).Sum();
+
+
+                        }
+
+                        //int possibledays = groupedList.Where(x => x.Code.Equals("01")).Select(x => x.count).Sum() - groupedList.Where(x => x.Code.Equals("02")).Select(x => x.count).Sum();
                         int sum = groupedList.Where(x => x.Code.Equals("10") || x.Code.Equals("11") || x.Code.Equals("12")).Select(x => x.count).Sum();
                         tempdata.Add(new GenericSchoolData()
                         {
@@ -1080,17 +1134,30 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         }
 
         //Historical StudentNeed
-        private List<StudentNeed> GetHistoricalStudentNeed(IGenericRepository2nd rpGeneric2nd, string sSchoolType, string seedcode, SchoolRoll schoolroll, List<Year> listyear)
+        private List<StudentNeed> GetHistoricalStudentNeed(IGenericRepository2nd rpGeneric2nd, string sSchoolType, string seedcode, List<Year> listyear)
         {
             StudentNeed StudentNeed = new StudentNeed(); ;
             List<StudentNeed> listStudentNeed = new List<StudentNeed>();
+            int yschoolroll = 0;
 
             List<ViewObj> listViewObj = GetListViewObj(rpGeneric2nd, sSchoolType, "needtype");
 
             if (seedcode.Equals("1002"))
             {
+                //citywide
                 foreach (Year year in listyear)
                 {
+                    var listResultSchoolRoll = rpGeneric2nd.FindByNativeSQL("Select Year, sum(Count) from summary_schoolroll where year = " + year.year);
+                    if (listResultSchoolRoll != null)
+                    {
+                        foreach (var itemRow in listResultSchoolRoll)
+                        {
+                            if (itemRow != null)
+                            {
+                                yschoolroll = Convert.ToInt16(itemRow[1].ToString());
+                            }
+                        }
+                    }
                     StudentNeed = new StudentNeed();
                     StudentNeed.year = year;
                     var listresult = listViewObj.Where(x => x.year.year.Equals(year.year)).ToList();
@@ -1101,9 +1168,9 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         Name = "IEP",
                         count = totalcount,
                         sCount = NumberFormatHelper.FormatNumber(totalcount, 0).ToString(),
-                        sum = schoolroll.schoolroll,
-                        Percent = schoolroll.schoolroll != 0 ? (totalcount * 100.00F / schoolroll.schoolroll) : 0.0F,
-                        sPercent = NumberFormatHelper.FormatNumber((schoolroll.schoolroll != 0 ? (totalcount * 100.00F / schoolroll.schoolroll) : 0.00F), 1).ToString()
+                        sum = yschoolroll,
+                        Percent = yschoolroll != 0 ? (totalcount * 100.00F / yschoolroll) : 0.0F,
+                        sPercent = NumberFormatHelper.FormatNumber((yschoolroll != 0 ? (totalcount * 100.00F / yschoolroll) : 0.00F), 1).ToString()
                     };
                     totalcount = listresult.Where(x => x.code.Equals("01")).Select(x => x.count).Sum();
                     StudentNeed.CSP = new GenericSchoolData()
@@ -1112,9 +1179,9 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         Name = "CSP",
                         count = totalcount,
                         sCount = NumberFormatHelper.FormatNumber(totalcount, 0).ToString(),
-                        sum = schoolroll.schoolroll,
-                        Percent = schoolroll.schoolroll != 0 ? (totalcount * 100.00F / schoolroll.schoolroll) : 0.0F,
-                        sPercent = NumberFormatHelper.FormatNumber((schoolroll.schoolroll != 0 ? (totalcount * 100.00F / schoolroll.schoolroll) : 0.00F), 1).ToString()
+                        sum = yschoolroll,
+                        Percent = yschoolroll != 0 ? (totalcount * 100.00F / yschoolroll) : 0.0F,
+                        sPercent = NumberFormatHelper.FormatNumber((yschoolroll != 0 ? (totalcount * 100.00F / yschoolroll) : 0.00F), 1).ToString()
                     };
                     listStudentNeed.Add(StudentNeed);
                 }
@@ -1123,6 +1190,18 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             {
                 foreach (Year year in listyear)
                 {
+
+                    var listResultSchoolRoll = rpGeneric2nd.FindByNativeSQL("Select Year, sum(Count) from summary_schoolroll where  SchoolType=" + sSchoolType + " and year = " + year.year);
+                    if (listResultSchoolRoll != null)
+                    {
+                        foreach (var itemRow in listResultSchoolRoll)
+                        {
+                            if (itemRow != null)
+                            {
+                                yschoolroll = Convert.ToInt16(itemRow[1].ToString());
+                            }
+                        }
+                    }
                     StudentNeed = new StudentNeed();
                     var listresult = listViewObj.Where(x => x.year.year.Equals(year.year) && x.schooltype.Equals(sSchoolType)).ToList();
                     StudentNeed.year = year;
@@ -1133,9 +1212,9 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         Name = "IEP",
                         count = totalcount,
                         sCount = NumberFormatHelper.FormatNumber(totalcount, 0).ToString(),
-                        sum = schoolroll.schoolroll,
-                        Percent = schoolroll.schoolroll != 0 ? (totalcount * 100.00F / schoolroll.schoolroll) : 0.0F,
-                        sPercent = NumberFormatHelper.FormatNumber((schoolroll.schoolroll != 0 ? (totalcount * 100.00F / schoolroll.schoolroll) : 0.00F), 1).ToString()
+                        sum = yschoolroll,
+                        Percent = yschoolroll != 0 ? (totalcount * 100.00F / yschoolroll) : 0.0F,
+                        sPercent = NumberFormatHelper.FormatNumber((yschoolroll != 0 ? (totalcount * 100.00F / yschoolroll) : 0.00F), 1).ToString()
                     };
                     totalcount = listresult.Where(x => x.code.Equals("01")).Select(x => x.count).Sum();
                     StudentNeed.CSP = new GenericSchoolData()
@@ -1144,9 +1223,9 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         Name = "CSP",
                         count = totalcount,
                         sCount = NumberFormatHelper.FormatNumber(totalcount, 0).ToString(),
-                        sum = schoolroll.schoolroll,
-                        Percent = schoolroll.schoolroll != 0 ? (totalcount * 100.00F / schoolroll.schoolroll) : 0.0F,
-                        sPercent = NumberFormatHelper.FormatNumber((schoolroll.schoolroll != 0 ? (totalcount * 100.00F / schoolroll.schoolroll) : 0.00F), 1).ToString()
+                        sum = yschoolroll,
+                        Percent = yschoolroll != 0 ? (totalcount * 100.00F / yschoolroll) : 0.0F,
+                        sPercent = NumberFormatHelper.FormatNumber((yschoolroll != 0 ? (totalcount * 100.00F / yschoolroll) : 0.00F), 1).ToString()
                     };
                     listStudentNeed.Add(StudentNeed);
                 }
@@ -1166,7 +1245,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             GenericSchoolData tempobj = new GenericSchoolData();
             string queryExclusion, querySchoolRoll = "";
             int schoolroll = 0;
-            string yearNodata = "2016";
+            string yearNodata = "2017";
 
             foreach (Year year in listyear)
             {
@@ -2149,15 +2228,18 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             return eSplineCharts;
         }
 
-        protected new ColumnCharts GetChartCfETimelinebySIMDData(List<BaseSPDataModel> listSchool, string stage, string subject) // query from database and return charts object
+        protected  ColumnCharts GetChartCfESIMDComparisonData(List<BaseSPDataModel> listSchool, string stage, string subject, Year selectedyear) // query from database and return charts object
         {
-            List<BaseSchoolProfile> temp = new List<BaseSchoolProfile>();
+            List<SPCfElevel> temp = new List<SPCfElevel>();
+            BaseSPDataModel tempschool = new BaseSPDataModel();
             string[] colors = new string[] { "#50B432", "#24CBE5", "#f969e8", "#DDDF00", "#64E572", "#FF9655", "#FFF263", "#6AF9C4" };
             int indexColor = 0;
-            string gtype = "column";
+            string gtype = "column", schoolname = "";
+            List<float?> data = new List<float?>() { };
+
             var eColumnCharts = new ColumnCharts();
             eColumnCharts.SetDefault(false);
-            eColumnCharts.title.text = listSchool[0].SchoolName;
+            
             eColumnCharts.subtitle.text = subject + ": "+stage+" Levels by SIMD 2016 Quintiles ";
             eColumnCharts.yAxis.title.text = "% achieving expected CfE Levels";
             eColumnCharts.yAxis.max = 100;
@@ -2166,44 +2248,77 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             if (listSchool != null && listSchool.Count > 0)
             {
                 eColumnCharts.xAxis.categories = new List<string>() { "SIMD Q1", "SIMD Q2", "SIMD Q3", "SIMD Q4", "SIMD Q5" };
-                foreach (var eSchool in listSchool)
+
+                if (stage.Equals("P1") || stage.Equals("P4") || stage.Equals("P7"))
                 {
-                    indexColor = 0;
+                    //select secondary school
+                    tempschool = listSchool.Where(x => x.SeedCode.Equals("2")).FirstOrDefault();
+                    temp = tempschool.listSPCfElevel.Where(x => x.year.year.Equals(selectedyear.year)).ToList();
+                    schoolname = tempschool.SchoolName;
+                }
+                else if (stage.Equals("S3Third") || stage.Equals("S3Fourth"))
+                {
+                    //select secondary school
+                    tempschool = listSchool.Where(x => x.SeedCode.Equals("3")).FirstOrDefault();
+                    temp = tempschool.listSPCfElevel.Where(x => x.year.year.Equals(selectedyear.year)).ToList();
+                    schoolname = tempschool.SchoolName;
+                }
+                //else if (stage.Equals("S3"))
+                //{
+                //    //select secondary school
+                //    tempschool = listSchool.Where(x => x.SeedCode.Equals("2")).FirstOrDefault();
+                //    temp = tempschool.listSPCfElevel.Where(x => x.year.year.Equals(selectedyear.year)).Select(x => x.getP4FirstLevelbySubjectAndSIMD(subject)).ToList();
 
-                    if (eSchool.SeedCode.Equals("2"))
+                //}
+                //else if (stage.Equals("P7"))
+                //{
+                //    //select secondary school
+                //    tempschool = listSchool.Where(x => x.SeedCode.Equals("2")).FirstOrDefault();
+                //    temp = tempschool.listSPCfElevel.Where(x => x.year.year.Equals(selectedyear.year)).Select(x => x.getP7SecondLevelbySubjectAndSIMD(subject)).ToList();
+
+                //}
+
+                foreach (SPCfElevel tempObj in temp)
+                {
+                  
+
+                    if (stage.Equals("P1"))
                     {
-                        if (stage.Equals("P1")) {
-                            temp = eSchool.listSPCfElevel.Where(x => x.seedcode.Equals("1002")).Select(x => x.getP1EarlybySubjectAndSIMD(subject)).ToList();
-                        }
-                        else if (stage.Equals("P4"))
-                        {
-                            temp = eSchool.listSPCfElevel.Where(x => x.seedcode.Equals("1002")).Select(x => x.getP4FirstLevelbySubjectAndSIMD(subject)).ToList();                        
-                        }
-                        else 
-                        {
-                            temp = eSchool.listSPCfElevel.Where(x => x.seedcode.Equals("1002")).Select(x => x.getP7SecondLevelbySubjectAndSIMD(subject)).ToList();
-                        }
-                        
-
-                        foreach (BaseSchoolProfile tempObj in temp)
-                        {
-
-                            eColumnCharts.series.Add(new ACCDataStore.Entity.RenderObject.Charts.ColumnCharts.series()
-                            {
-                                type = gtype,
-                                name = tempObj.YearInfo.academicyear,
-                                data = tempObj.ListGenericSchoolData.Select(x => (float?)Convert.ToDouble(x.Percent)).ToList(),
-                                //color = eSchool.SeedCode.Equals("1002") ? "#058DC7" : colors[indexColor]
-                                color = colors[indexColor]
-                            });
-                            indexColor++;
-
-                        }
+                        data = tempObj.getP1EarlybySubjectAndSIMD(subject).ListGenericSchoolData.Select(x => (float?)Convert.ToDouble(x.Percent)).ToList();
+                    }
+                    else if (stage.Equals("P4")) {
+                        data = tempObj.getP4FirstLevelbySubjectAndSIMD(subject).ListGenericSchoolData.Select(x => (float?)Convert.ToDouble(x.Percent)).ToList();
+                    
+                    }
+                    else if (stage.Equals("P7"))
+                    {
+                        data = tempObj.getP7SecondLevelbySubjectAndSIMD(subject).ListGenericSchoolData.Select(x => (float?)Convert.ToDouble(x.Percent)).ToList();
 
                     }
+                    else if (stage.Equals("S3Third"))
+                    {
+                        data = tempObj.getS3ThirdLevelbySubjectAndSIMD(subject).ListGenericSchoolData.Select(x => (float?)Convert.ToDouble(x.Percent)).ToList();
+
+                    }
+                    else if (stage.Equals("S3Fourth"))
+                    {
+                        data = tempObj.getS3ForthLevelbySubjectAndSIMD(subject).ListGenericSchoolData.Select(x => (float?)Convert.ToDouble(x.Percent)).ToList();
+
+                    }
+
+                    eColumnCharts.series.Add(new ACCDataStore.Entity.RenderObject.Charts.ColumnCharts.series()
+                    {
+                        type = gtype,
+                        name = tempObj.seedcode.Equals("1002") ? schoolname : "Scotland",
+                        data = data,
+                        //color = eSchool.SeedCode.Equals("1002") ? "#058DC7" : colors[indexColor]
+                        color = colors[indexColor]
+                    });
+                    indexColor++;
+
                 }
             }
-
+            eColumnCharts.title.text = schoolname;
             eColumnCharts.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
             {
                 enabled = true,

@@ -10,14 +10,17 @@ using ACCDataStore.Repository;
 using System.Web.Security;
 using System.Security.Cryptography;
 using ACCDataStore.Helpers.ORM;
+using ACCDataStore.Web.Areas.DatahubProfile.Controllers;
 
 namespace ACCDataStore.Web.Areas.Authorisation.Controllers
 {
-    public class IndexAuthorisationController : Controller
+    public class IndexAuthorisationController : BaseDataHubController
     {
         private static ILog log = LogManager.GetLogger(typeof(IndexAuthorisationController));
 
         private readonly IGenericRepository2nd rpGeneric2nd;
+
+        private const string sKey =  "ilovefood";
 
         public IndexAuthorisationController(IGenericRepository2nd rpGeneric2nd)
         {
@@ -36,7 +39,7 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
             var sTextDecrypt = DecryptString(sTextEncrypt, sKey);
 
 
-            return View("Login",vmIndex);           
+            return View();           
             //var listUsersFindAll = this.rpGeneric.FindAll<Users>();
 
             //// insert 1st db
@@ -59,106 +62,28 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
             {
                 bool isuservalid = ValidateUser(vmIndex.Username, vmIndex.Password);
 
-                //if (isuservalid)
-                //{
-                //    //read right from database and set to eUsers
-                    //Users eUsers = this.rpGeneric2nd.Find<Users>(" From Users where UserName = :userName ", new string[] { "userName" }, new object[] { vmIndex.Username }).FirstOrDefault();
-                //    Rights eRight = this.rpGeneric2nd.Find<Rights>(" From Rights where UserID = :userID ", new string[] { "userID" }, new object[] { eUsers.UserID}).FirstOrDefault();
-
-                //}
-                //else {
-                //    return RedirectToAction("Index", "IndexAuthorisation", new { Area = "Authorisation", id = "" });
-                //}
-
-                // user logined
-
-
-                var sKey = "IloveWine";
-                var sTextRaw = "Boss1232498!";
-                var sTextEncrypt = EncryptString(sTextRaw, sKey);
-                var sTextDecrypt = DecryptString(sTextEncrypt, sKey);
-
-                IList<Users> listUsers = this.rpGeneric2nd.Find<Users>(" from Users where UserName = :UserName ", new string[] { "UserName" }, new object[] { "admin" }).ToList(); 
-
-
-                if (vmIndex.Username.Equals("demo", StringComparison.CurrentCultureIgnoreCase) && vmIndex.Password.Equals("demo", StringComparison.CurrentCultureIgnoreCase))
+                if (isuservalid)
                 {
-                    // store user session for 'demo' user
-                    var eUsers = new Users();
-                    eUsers.UserID = 0; // just simulate
-                    eUsers.UserName = "demo";
-                    eUsers.IsAdministrator = false; // 'demo' is just normal user, not admin
+                    //read right from database and set to eUsers
+                    Users eUsers = this.rpGeneric2nd.Find<Users>(" From Users where UserName = :userName ", new string[] { "userName" }, new object[] { vmIndex.Username }).FirstOrDefault();
                     Session["SessionUser"] = eUsers;
-
-                    //ViewData["VDFriend"] = "Deepak K Gupta";
-                    //ViewBag.VBFriend = "Deepak K Gupta";
-                    //TempData["TDFriend"] = "Deepak K Gupta";
-
-                    return RedirectToAction("Index", "Index", new { Area = "", id = "" });
-                }
-                else if (vmIndex.Username.Equals("useracademic", StringComparison.CurrentCultureIgnoreCase) && vmIndex.Password.Equals("accado3241!", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    // store user session for 'admin' user
-                    var eUsers = new Users();
-                    eUsers.UserID = 1; // just simulate
-                    eUsers.UserName = "useracademic";
-                    eUsers.IsScoolAdministrator = true; // 'admin' is admin user
-                    eUsers.IsAdministrator = false;
-                    eUsers.IsDataHubAdministrator = false;
-                    eUsers.IsPublicAdministrator = true;
-                    Session["SessionUser"] = eUsers;
-                    //ValidateUser("admin", "admin");
-                    //Redirect page to previous page
-                    //Redirect(ControllerContext.HttpContext.Request.UrlReferrer.ToString()); 
-                    return RedirectToAction("Index", "IndexSchoolProfiles", new { Area = "SchoolProfiles", id = "" });
-                }
-                else if (vmIndex.Username.Equals("userdatahub", StringComparison.CurrentCultureIgnoreCase) && vmIndex.Password.Equals("Ado4787!", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    // store user session for 'admin' user
-                    var eUsers = new Users();
-                    eUsers.UserID = 1; // just simulate
-                    eUsers.UserName = "userdatahub";
-                    eUsers.IsScoolAdministrator = false; // 'admin' is admin user
-                    eUsers.IsAdministrator = false;
-                    eUsers.IsDataHubAdministrator = true;
-                    eUsers.IsPublicAdministrator = false;
-                    Session["SessionUser"] = eUsers;
-                    //ValidateUser("admin", "admin");
-                    return RedirectToAction("Index", "Datahub", new { Area = "DatahubProfile", id = "" });
-                }
-                else if (vmIndex.Username.Equals("userACC", StringComparison.CurrentCultureIgnoreCase) && vmIndex.Password.Equals("accado!", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    // store user session for 'admin' user
-                    var eUsers = new Users();
-                    eUsers.UserID = 1; // just simulate
-                    eUsers.UserName = "userACC";
-                    eUsers.IsScoolAdministrator = false; // 'admin' is admin user
-                    eUsers.IsAdministrator = false;
-                    eUsers.IsScoolAdministrator = false;
-                    eUsers.IsPublicAdministrator = true;
-                    Session["SessionUser"] = eUsers;
-                    //ValidateUser("admin", "admin");
-                    return RedirectToAction("Index", "IndexSchoolProfiles", new { Area = "SchoolProfiles", id = "" });
-                }
-
-                else if (vmIndex.Username.Equals("admin", StringComparison.CurrentCultureIgnoreCase) && vmIndex.Password.Equals("admin1980!", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    // store user session for 'admin' user
-                    var eUsers = new Users();
-                    eUsers.UserID = 1; // just simulate
-                    eUsers.UserName = "admin";
-                    eUsers.IsScoolAdministrator = true; // 'admin' is admin user
-                    eUsers.IsAdministrator = true;
-                    eUsers.IsDataHubAdministrator = true;
-                    eUsers.IsPublicAdministrator = true;
-                    Session["SessionUser"] = eUsers;
-                    //ValidateUser("admin", "admin");
                     return RedirectToAction("Index", "Index", new { Area = "", id = "" });
                 }
                 else
                 {
                     return RedirectToAction("Index", "IndexAuthorisation", new { Area = "Authorisation", id = "" });
                 }
+
+                // user logined
+
+
+                //var sKey = "IloveWine";
+                //var sTextRaw = "Boss1232498!";
+                //var sTextEncrypt = EncryptString(sTextRaw, sKey);
+                //var sTextDecrypt = DecryptString(sTextEncrypt, sKey);
+
+                //IList<Users> listUsers = this.rpGeneric2nd.Find<Users>(" from Users where UserName = :UserName ", new string[] { "UserName" }, new object[] { "admin" }).ToList(); 
+             
             }
             catch (Exception ex)
             {
@@ -174,6 +99,56 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
         {
             var nErrorType = -1;
             var sErrorMessage = "";
+
+            try {
+
+                var sUserName = eUsers.UserName;
+                var sPassword = eUsers.Password;
+
+                IList<Users> listUsers = this.rpGeneric2nd.Find<Users>(" From Users where UserName = :userName ", new string[] { "userName" }, new object[] { sUserName });
+
+
+                if (listUsers != null && listUsers.Count > 0)
+                {
+                    bool isuservalid = ValidateUser(sUserName, sPassword);
+
+                    if (isuservalid)
+                    {
+                        //read right from database and set to eUsers
+                        //eUsers = this.rpGeneric2nd.Find<Users>(" From Users where UserName = :userName ", new string[] { "userName" }, new object[] { sUserName }).FirstOrDefault();
+                        Session["SessionUser"] = eUsers;
+                        //return RedirectToAction("Index", "Index", new { Area = "", id = "" });
+                    }
+                    else
+                    {
+                        nErrorType = 1;
+                        sErrorMessage = "Invalid password";
+                        //return RedirectToAction("Index", "IndexAuthorisation", new { Area = "Authorisation", id = "" });
+                    }
+                
+                }
+                else
+                {
+                    nErrorType = 0;
+                    sErrorMessage = "Invalid username";
+                }
+
+                return Json(new
+                {
+                    RedirectUrl = "",
+                    IsRedirect = false,
+                    ErrorType = nErrorType,
+                    ErrorMessage = sErrorMessage
+                }, JsonRequestBehavior.AllowGet);
+            
+            }
+            catch (Exception ex)
+            {
+                nErrorType = 2;
+                sErrorMessage = ex.Message;
+                log.Error(ex.Message, ex);
+                return ThrowJsonError(ex);
+            }
 
             //try
             //{
@@ -233,14 +208,6 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
             //    log.Error(ex.Message, ex);
             //}
 
-            return Json(new
-            {
-                RedirectUrl = "",
-                IsRedirect = false,
-                ErrorType = nErrorType,
-                ErrorMessage = sErrorMessage
-            }, JsonRequestBehavior.AllowGet);
-
         }
 
         public ActionResult Logout(IndexViewModel vmIndex)
@@ -250,20 +217,29 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
             return RedirectToAction("Index");
         }
 
-        //public ActionResult Register(IndexViewModel vmIndex)
-        //{
-        //    try
-        //    {
-        //        this.rpGeneric2nd.SaveOrUpdate<User>(eUser);
-        //        return RedirectToAction("Index");
-        //     }
-        //    catch (Exception ex)
-        //    {
-        //        log.Error(ex.Message, ex);
-        //        return RedirectToAction("Index");
-        //    }
+        public ActionResult Register(IndexViewModel vmIndex)
+        {
+            try
+            {
 
-        //}
+                Users eUser = new Users();
+                eUser.UserName = vmIndex.Username;
+                eUser.Password = EncryptString(vmIndex.Password, sKey);
+                eUser.Firstname = vmIndex.firstname;
+                eUser.Lastname = vmIndex.lastname;
+                eUser.email = vmIndex.email;
+                eUser.job_title = vmIndex.jobtitle;
+                eUser.IsPublicUser = true;
+                this.rpGeneric2nd.SaveOrUpdate<Users>(eUser);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex.Message, ex);
+                return RedirectToAction("Index");
+            }
+
+        }
 
         private bool ValidateUser(string username, string password)
         {
@@ -274,7 +250,9 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
 
             Users eUsers = this.rpGeneric2nd.Find<Users>(" From Users where UserName = :userName ", new string[] { "userName" }, new object[] { username }).FirstOrDefault();
 
-            if (eUsers != null && eUsers.Password.Equals(password))
+            var sTextDecrypt = DecryptString(eUsers.Password, sKey);
+
+            if (eUsers != null && sTextDecrypt.Equals(password,StringComparison.Ordinal))
             {
 
                 isValid = true;

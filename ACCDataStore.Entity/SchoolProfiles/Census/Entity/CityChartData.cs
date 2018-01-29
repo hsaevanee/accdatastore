@@ -35,5 +35,13 @@ namespace ACCDataStore.Entity.SchoolProfiles.Census.Entity
         public BaseRenderObject ChartP7TimelineCfEWriting { get; set; }
         public BaseRenderObject ChartP7TimelineCfEELT { get; set; }
         public BaseRenderObject ChartP7TimelineCfENumeracy { get; set; }
+        public BaseRenderObject ChartS3ThirdTimelineCfEReading { get; set; }
+        public BaseRenderObject ChartS3ThirdTimelineCfEWriting { get; set; }
+        public BaseRenderObject ChartS3ThirdTimelineCfEELT { get; set; }
+        public BaseRenderObject ChartS3ThirdTimelineCfENumeracy { get; set; }
+        public BaseRenderObject ChartS3FourthTimelineCfEReading { get; set; }
+        public BaseRenderObject ChartS3FourthTimelineCfEWriting { get; set; }
+        public BaseRenderObject ChartS3FourthTimelineCfEELT { get; set; }
+        public BaseRenderObject ChartS3FourthTimelineCfENumeracy { get; set; }
     }
 }

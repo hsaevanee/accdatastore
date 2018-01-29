@@ -90,6 +90,7 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <p class="text-left"> Note: Percentages may not total 100% due to rounding</p>
                         </div>
                     </div>
                 </div>
@@ -155,7 +156,7 @@
                                 <tbody ng-if="mIndex.selecteddatacatagory.Code === 'Positive Destination'">
                                     <tr ng-repeat="eSchool in mIndex.listSchoolData[0].PositiveDestinations" ng-init="nTopicIndex = $index">
                                         <!-- topic loop -->
-                                        <td class="text-left">{{ eSchool.Code }}</td><!-- topic name -->
+                                        <td class="text-left">{{ eSchool.Name }}</td><!-- topic name -->
                                         <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.listSchoolData"></td><!-- inner school loop, hide content -->
                                         <td align="center">
                                             <button class="btn btn-info btn-xs" style="width: 50px; height:25px" ng-click="doGetPupilList(eSchoolInfo.SeedCode,eSchoolInfo.Centretype,eSchool.Code)">{{ eSchoolInfo.PositiveDestinations[nTopicIndex].scount}}</button>
@@ -168,7 +169,7 @@
                                 <tbody ng-if="mIndex.selecteddatacatagory.Code === 'Non-Positive Destination'">
                                     <tr ng-repeat="eSchool in mIndex.listSchoolData[0].NonPositiveDestinations" ng-init="nTopicIndex = $index">
                                         <!-- topic loop -->
-                                        <td class="text-left">{{ eSchool.Code }}</td><!-- topic name -->
+                                        <td class="text-left">{{ eSchool.Name }}</td><!-- topic name -->
                                         <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.listSchoolData"></td><!-- inner school loop, hide content -->
                                         <td align="center">
                                             <button class="btn btn-info btn-xs" style="width: 50px; height:25px" ng-click="doGetPupilList(eSchoolInfo.SeedCode,eSchoolInfo.Centretype,eSchool.Code)">{{ eSchoolInfo.NonPositiveDestinations[nTopicIndex].scount}}</button>

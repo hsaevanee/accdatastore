@@ -14,7 +14,14 @@ namespace ACCDataStore.Entity.Mapping
             Id(x => x.UserID);
             Map(x => x.UserName);
             Map(x => x.Password);
-            Map(x => x.FullName);
+            Map(x => x.Firstname);
+            Map(x => x.Lastname);
+            Map(x => x.job_title);
+            Map(x => x.email);
+            Map(x => x.IsAdministrator);
+            Map(x => x.IsSchoolAdministrator);
+            Map(x => x.IsDataHubAdministrator);
+            Map(x => x.IsPublicUser);
         }
     }
 }

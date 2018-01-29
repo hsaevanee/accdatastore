@@ -6,7 +6,11 @@
             var param = {
                 eUser: eUser
             };
-            return $http.get(sContextPath + "Authorisation/IndexAuthorisation/ProcessLogin", eUser);
+            return $http.get(sContextPath + "Authorisation/IndexAuthorisation/ProcessLogin", {
+                param: {
+                    eUser: eUser
+                }
+            });
         }
     };
 });

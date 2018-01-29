@@ -304,7 +304,6 @@
     <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\accdatastore\areas\authorisation\app.js" />
     <Content Include="Scripts\accdatastore\areas\authorisation\controller.js" />
-    <Content Include="Scripts\accdatastore\areas\authorisation\Login.js" />
     <Content Include="Scripts\accdatastore\areas\authorisation\service.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\CityProfile\app.js" />
     <Content Include="Scripts\accdatastore\areas\datahubprofile\views\CityProfile\controller.js" />
@@ -351,6 +350,9 @@
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\IndexSchoolProfile\Trending.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Language\LevelOfEnglish.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Language\MapIndex.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Map\app.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Map\controller.js" />
+    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Map\service.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Nationality\MapIndex.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\Nationality\Nationality.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\PrimarySchool\app.js" />
@@ -387,10 +389,12 @@
     <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\ScrumHub\Views\scrum_charts.js" />
     <Content Include="Scripts\accdatastore\areas\widerAchievement\IndexWiderAchievement.js" />
     <Content Include="Scripts\accdatastore\areas\widerAchievement\MapIndex.js" />
+    <Content Include="Scripts\accdatastore\views\Datazone_2016.js" />
     <Content Include="Scripts\accdatastore\views\DZGlasgow.js" />
     <Content Include="Scripts\accdatastore\views\Datazone_with_Desc.js" />
     <Content Include="Scripts\accdatastore\views\global.js" />
     <Content Include="Scripts\accdatastore\views\InsightSchoollocations.js" />
+    <Content Include="Scripts\accdatastore\views\Neighbourhoods2016.js" />
     <Content Include="Scripts\accdatastore\views\Neighbourhoods.js" />
     <Content Include="Scripts\accdatastore\views\PrimarySchoollocations.js" />
     <Content Include="Scripts\bootstrap-multiselect.js" />
@@ -454,6 +458,7 @@
     <Compile Include="Areas\SchoolProfiles\Controllers\IndexPrimaryProfileController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\IndexSchoolProfilesController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\LocalitySchoolProfileController.cs" />
+    <Compile Include="Areas\SchoolProfiles\Controllers\MapController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\PrimarySchoolProfileController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\SecondarySchoolProfileController.cs" />
     <Compile Include="Areas\SchoolProfiles\Controllers\SpecialSchoolProfileController.cs" />
@@ -592,7 +597,6 @@
     <Content Include="Areas\Authorisation\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Authorisation\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Authorisation\Views\IndexAuthorisation\Index.cshtml" />
-    <Content Include="Areas\Authorisation\Views\IndexAuthorisation\Login.cshtml" />
     <Content Include="bower.json" />
     <Content Include="Areas\PupilsPopulation\Views\IndexPupilsPopulation\Home.cshtml" />
     <Content Include="Areas\SchoolProfiles\Views\IndexSchoolProfiles\Home.cshtml" />
@@ -628,6 +632,7 @@
     <Content Include="Areas\SchoolProfiles\Views\LocalitySchoolProfile\Index1.cshtml" />
     <Content Include="Areas\SchoolProfiles\Views\LocalitySchoolProfile\Index.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\CityProfile\Index.cshtml" />
+    <Content Include="Areas\SchoolProfiles\Views\Map\Index.cshtml" />
     <None Include="Properties\PublishProfiles\ACCDataStore.Web.Publish.pubxml" />
     <Content Include="Views\Index\theTeam.cshtml" />
     <Content Include="Views\Index\About.cshtml" />

@@ -219,6 +219,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             temp.Add(new Year("2014"));
             temp.Add(new Year("2015"));
             temp.Add(new Year("2016"));
+            temp.Add(new Year("2017"));
             return temp;
 
         }
@@ -320,7 +321,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     groupedList.AddRange(foo.Where(x => groupedList.All(p1 => !p1.Code.Equals(x.Code))));
                     NationalityIdentity = new NationalityIdentity();
                     NationalityIdentity.YearInfo = year;
-                    NationalityIdentity.ListGenericSchoolData = groupedList;
+                    NationalityIdentity.ListGenericSchoolData = groupedList.OrderBy(x => x.Code).ToList();
                     listNationalityIdentity.Add(NationalityIdentity);
                 }
             }
@@ -342,7 +343,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     groupedList.AddRange(foo.Where(x => groupedList.All(p1 => !p1.Code.Equals(x.Code))));
                     NationalityIdentity = new NationalityIdentity();
                     NationalityIdentity.YearInfo = year;
-                    NationalityIdentity.ListGenericSchoolData = groupedList;
+                    NationalityIdentity.ListGenericSchoolData = groupedList.OrderBy(x => x.Code).ToList();
                     listNationalityIdentity.Add(NationalityIdentity);
                 }
 
@@ -354,38 +355,50 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         // NationalityIdentity Chart
         protected ColumnCharts GetChartNationalityIdentity(List<BaseSPDataModel> listSchool, Year selectedyear) // query from database and return charts object
         {
-            string[] colors = new string[] { "#50B432", "#24CBE5", "#f969e8", "#DDDF00", "#64E572", "#FF9655", "#FFF263", "#6AF9C4" };
-            int indexColor = 0;
-            var eColumnCharts = new ColumnCharts();
-            eColumnCharts.SetDefault(false);
-            eColumnCharts.title.text = "Nationality - Census " + selectedyear.academicyear;
-            eColumnCharts.yAxis.title.text = "% of pupils";
 
-            eColumnCharts.series = new List<ACCDataStore.Entity.RenderObject.Charts.ColumnCharts.series>();
-            if (listSchool != null && listSchool.Count > 0)
+            try
             {
-                eColumnCharts.xAxis.categories = listSchool[0].NationalityIdentity.ListGenericSchoolData.Select(x => x.Name).ToList();
-                foreach (var eSchool in listSchool)
+                string[] colors = new string[] { "#50B432", "#24CBE5", "#f969e8", "#DDDF00", "#64E572", "#FF9655", "#FFF263", "#6AF9C4" };
+                int indexColor = 0;
+                var eColumnCharts = new ColumnCharts();
+                eColumnCharts.SetDefault(false);
+                eColumnCharts.title.text = "Nationality - Census " + selectedyear.academicyear;
+                eColumnCharts.yAxis.title.text = "% of pupils";
+
+                eColumnCharts.series = new List<ACCDataStore.Entity.RenderObject.Charts.ColumnCharts.series>();
+                if (listSchool != null && listSchool.Count > 0)
                 {
-                    eColumnCharts.series.Add(new ACCDataStore.Entity.RenderObject.Charts.ColumnCharts.series()
+                    eColumnCharts.xAxis.categories = listSchool[0].NationalityIdentity.ListGenericSchoolData.Select(x => x.Name).ToList();
+                    foreach (var eSchool in listSchool)
                     {
-                        name = eSchool.SchoolName,
-                        data = eSchool.NationalityIdentity.ListGenericSchoolData.Select(x => (float?)Convert.ToDouble(x.Percent)).ToList(),
-                        color = eSchool.SeedCode == "1002" ? "#058DC7" : colors[indexColor]
-                    });
-                    indexColor++;
+                        eColumnCharts.series.Add(new ACCDataStore.Entity.RenderObject.Charts.ColumnCharts.series()
+                        {
+                            name = eSchool.SchoolName,
+                            data = eSchool.NationalityIdentity.ListGenericSchoolData.Select(x => (float?)Convert.ToDouble(x.Percent)).ToList(),
+                            color = eSchool.SeedCode == "1002" ? "#058DC7" : colors[indexColor]
+                        });
+                        indexColor++;
+                    }
                 }
+
+                eColumnCharts.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
+                {
+                    enabled = true,
+                    filename = "export"
+                };
+
+                eColumnCharts.chart.options3d = new Entity.RenderObject.Charts.Generic.options3d() { enabled = true, alpha = 10, beta = 10 }; // enable 3d charts
+
+                return eColumnCharts;
+
             }
-
-            eColumnCharts.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
+            catch (Exception ex)
             {
-                enabled = true,
-                filename = "export"
-            };
-
-            eColumnCharts.chart.options3d = new Entity.RenderObject.Charts.Generic.options3d() { enabled = true, alpha = 10, beta = 10 }; // enable 3d charts
-
-            return eColumnCharts;
+                var sErrorMessage = "Error in GetChartNationalityIdentity: " + ex.Message + (ex.InnerException != null ? ", More Detail : " + ex.InnerException.Message : "");
+                log.Error(ex.Message, ex);
+                return null;
+            }
+  
         }
 
         //Historical EthnicBackground data
@@ -425,7 +438,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     groupedList.AddRange(foo.Where(x => groupedList.All(p1 => !p1.Code.Equals(x.Code))));
                     Ethnicbackground = new Ethnicbackground();
                     Ethnicbackground.YearInfo = year;
-                    Ethnicbackground.ListGenericSchoolData = groupedList;
+                    Ethnicbackground.ListGenericSchoolData = groupedList.OrderBy(x=>x.Code).ToList();
                     listEthnicbackground.Add(Ethnicbackground);
                 }
             }
@@ -447,7 +460,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     groupedList.AddRange(foo.Where(x => groupedList.All(p1 => !p1.Code.Equals(x.Code))));
                     Ethnicbackground = new Ethnicbackground();
                     Ethnicbackground.YearInfo = year;
-                    Ethnicbackground.ListGenericSchoolData = groupedList;
+                    Ethnicbackground.ListGenericSchoolData = groupedList.OrderBy(x => x.Code).ToList(); ;
                     listEthnicbackground.Add(Ethnicbackground);
                 }
 
@@ -638,7 +651,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         count = y.Select(a => a.count).Sum(),
                         sum = total,
                         Percent = total != 0 ? (y.Select(a => a.count).Sum() * 100.00F / total) : 0.00F,
-                        sPercent = total != 0 ? NumberFormatHelper.FormatNumber((y.Select(a => a.count).Sum() * 100.00F / total), 1).ToString() : NumberFormatHelper.FormatNumber((float)0.00, 1).ToString()
+                        sPercent = total != 0 ? NumberFormatHelper.FormatNumber((y.Select(a => a.count).Sum() * 100.00F / total), 1).ToString() : NumberFormatHelper.FormatNumber((float)0.00, 2).ToString()
                     }).ToList();
                     groupedList.AddRange(foo.Where(x => groupedList.All(p1 => !p1.Code.Equals(x.Code))));
                     LookedAfter = new LookedAfter();
@@ -670,7 +683,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                         count = y.count,
                         sum = total,
                         Percent = total != 0 ? (y.count * 100.00F / total) : 0.00F,
-                        sPercent = NumberFormatHelper.FormatNumber((total != 0 ? (y.count * 100.00F / total) : 0.00F), 1).ToString()
+                        sPercent = NumberFormatHelper.FormatNumber((total != 0 ? (y.count * 100.00F / total) : 0.00F), 2).ToString()
                     }).ToList();
                     groupedList.AddRange(foo.Where(x => groupedList.All(p1 => !p1.Code.Equals(x.Code))));
                     LookedAfter = new LookedAfter();
@@ -812,42 +825,54 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         // SIMD Chart
         protected ColumnCharts GetChartSIMDDecile(List<BaseSPDataModel> listSchool, Year selectedyear) // query from database and return charts object
         {
-            string[] colors = new string[] { "#50B432", "#24CBE5", "#f969e8", "#DDDF00", "#64E572", "#FF9655", "#FFF263", "#6AF9C4" };
-            int indexColor = 0;
-            var eColumnCharts = new ColumnCharts();
-            eColumnCharts.SetDefault(false);
-            eColumnCharts.title.text = "Scottish Index of Multiple Deprivation";
-            eColumnCharts.subtitle.text = "% of pupils in Each Decile (Census 2016)";
-            eColumnCharts.yAxis.title.text = "% of pupils";
-            //eColumnCharts.yAxis.min = 0;
-            //eColumnCharts.yAxis.max = 100;
-            //eColumnCharts.yAxis.tickInterval = 20;
 
-            eColumnCharts.series = new List<ACCDataStore.Entity.RenderObject.Charts.ColumnCharts.series>();
-            if (listSchool != null && listSchool.Count > 0)
+            try
             {
-                eColumnCharts.xAxis.categories = listSchool[0].SIMD.ListGenericSchoolData.Select(x => "Decile " + x.Name).ToList();
-                foreach (var eSchool in listSchool)
+                //SIMD2016 matched with only pupil census 2016 and 2017 only 
+                //Query for historical data will return the latest census (2017)
+                int yeardata = Convert.ToInt32(selectedyear.year) < 2016 ? 2017 : Convert.ToInt32(selectedyear.year);
+                string[] colors = new string[] { "#50B432", "#24CBE5", "#f969e8", "#DDDF00", "#64E572", "#FF9655", "#FFF263", "#6AF9C4" };
+                int indexColor = 0;
+                var eColumnCharts = new ColumnCharts();
+                eColumnCharts.SetDefault(false);
+                eColumnCharts.title.text = "Scottish Index of Multiple Deprivation";
+                eColumnCharts.subtitle.text = "% of pupils in Each Decile (Census " + yeardata + ")";
+                eColumnCharts.yAxis.title.text = "% of pupils";
+
+                eColumnCharts.series = new List<ACCDataStore.Entity.RenderObject.Charts.ColumnCharts.series>();
+                if (listSchool != null && listSchool.Count > 0)
                 {
-                    eColumnCharts.series.Add(new ACCDataStore.Entity.RenderObject.Charts.ColumnCharts.series()
+                    eColumnCharts.xAxis.categories = listSchool[0].SIMD.ListGenericSchoolData.Select(x => "Decile " + x.Name).ToList();
+                    foreach (var eSchool in listSchool)
                     {
-                        name = eSchool.SchoolName,
-                        data = eSchool.SIMD.ListGenericSchoolData.Select(x => (float?)Convert.ToDouble(x.Percent)).ToList(),
-                        color = eSchool.SeedCode == "1002" ? "#058DC7" : colors[indexColor]
-                    });
-                    indexColor++;
+                        eColumnCharts.series.Add(new ACCDataStore.Entity.RenderObject.Charts.ColumnCharts.series()
+                        {
+                            name = eSchool.SchoolName,
+                            data = eSchool.SIMD.ListGenericSchoolData.Select(x => (float?)Convert.ToDouble(x.Percent)).ToList(),
+                            color = eSchool.SeedCode == "1002" ? "#058DC7" : colors[indexColor]
+                        });
+                        indexColor++;
+                    }
                 }
+
+                eColumnCharts.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
+                {
+                    enabled = true,
+                    filename = "export"
+                };
+
+                eColumnCharts.chart.options3d = new Entity.RenderObject.Charts.Generic.options3d() { enabled = true, alpha = 10, beta = 10 }; // enable 3d charts
+
+                return eColumnCharts;
+
+            }
+            catch (Exception ex)
+            {
+                var sErrorMessage = "Error in GetChartSIMDDecile: " + ex.Message + (ex.InnerException != null ? ", More Detail : " + ex.InnerException.Message : "");
+                log.Error(ex.Message, ex);
+                return null;
             }
 
-            eColumnCharts.exporting = new ACCDataStore.Entity.RenderObject.Charts.Generic.exporting()
-            {
-                enabled = true,
-                filename = "export"
-            };
-
-            eColumnCharts.chart.options3d = new Entity.RenderObject.Charts.Generic.options3d() { enabled = true, alpha = 10, beta = 10 }; // enable 3d charts
-
-            return eColumnCharts;
         }
 
         //Historical Attendance Data
@@ -1226,7 +1251,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             GenericSchoolData tempobj = new GenericSchoolData();
             string queryExclusion, querySchoolRoll = "";
             int schoolroll = 0;
-            string yearNodata = "2016";
+            string yearNodata = "2017";
 
             foreach (Year year in listyear)
             {
@@ -1598,7 +1623,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                     {
                         for (int i = 3; i <= 17; i++)
                         {
-                            if (i <= 11)
+                            if (i <= 12)
                             {
                                 tempdataActualnumber.Add(new GenericSchoolData(new Year((i + 2005).ToString()).academicyear, NumberFormatHelper.ConvertObjectToFloat(itemRow[i])));
                                 tempdataForecastnumber.Add(new GenericSchoolData(new Year((i + 2005).ToString()).academicyear.ToString(), 0));

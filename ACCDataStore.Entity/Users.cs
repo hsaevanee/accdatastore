@@ -11,10 +11,14 @@ namespace ACCDataStore.Entity
         public virtual int UserID { get; set; }
         public virtual string UserName { get; set; }
         public virtual string Password { get; set; }
-        public virtual string FullName { get; set; }
+        public virtual string Firstname { get; set; }
+        public virtual string Lastname { get; set; }
+        public virtual string job_title { get; set; }
+        public virtual string email { get; set; }
         public virtual bool IsAdministrator { get; set; }
-        public virtual bool IsScoolAdministrator { get; set; }
+        public virtual bool IsSchoolAdministrator { get; set; }
         public virtual bool IsDataHubAdministrator { get; set; }
-        public virtual bool IsPublicAdministrator { get; set; }
+        public virtual bool IsPublicUser { get; set; }
+
     }
 }

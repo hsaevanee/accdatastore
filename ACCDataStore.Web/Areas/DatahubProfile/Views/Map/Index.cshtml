@@ -37,7 +37,7 @@
                             </div>
                             <div class="row">
                                 <p>Select Dataset:</p>
-                                <select ng-options="dataset.Name for dataset in mMap.datasets track by dataset.Code" ng-model="mMap.selectedDataset" ng-change="updateDataset()"></select>
+                                <select ng-options="dataset.Name for dataset in mMap.datasets track by dataset.Code" ng-model="mMap.selectedDataset" ng-change="updateDataset(mMap.selectedDataset)"></select>
                             </div>
                             <div class="row" ng-if="mMap.bHeatMapShowContent">
                                 <p>Select Destinations:</p>

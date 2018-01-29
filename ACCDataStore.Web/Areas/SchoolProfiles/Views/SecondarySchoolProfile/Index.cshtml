@@ -360,7 +360,10 @@
                                                                     <td class="text-center">{{ eGenericdata.sPercent }}</td>
                                                                     <td ng-hide="true" ng-repeat-end></td>
                                                                 </tr>*@
-                                                                <tr>
+                                                                <tr ng-if=" mIndex.ListingData[0].SPMiDYIS===null">
+                                                                    <td colspan="3"><strong><i> Data is not available</i> </strong></td>
+                                                                </tr>
+                                                                <tr ng-if=" mIndex.ListingData[0].SPMiDYIS!==null">
                                                                     <td class="text-left">Average Score at the Start of S1</td>
                                                                     <td ng-repeat="eSchool in mIndex.ListingData">{{eSchool.SPMiDYIS.GenericSchoolData.sPercent }}</td>
                                                                 </tr>
@@ -392,7 +395,10 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr ng-repeat="eGenericSchoolData in mIndex.ListingData[0].SOSCA.ListGenericSchoolData" ng-init="nParentIndex = $index">
+                                                                <tr ng-if=" mIndex.ListingData[0].SOSCA===null">
+                                                                    <td colspan="3"><strong><i> Data is not available</i> </strong></td>
+                                                                </tr>
+                                                                <tr ng-if=" mIndex.ListingData[0].SOSCA!==null"  ng-repeat="eGenericSchoolData in mIndex.ListingData[0].SOSCA.ListGenericSchoolData" ng-init="nParentIndex = $index">
                                                                     <td class="text-left">{{ eGenericSchoolData.Code }}</td>
                                                                     <td ng-repeat="eSchool in mIndex.ListingData">{{ eSchool.SOSCA.ListGenericSchoolData[nParentIndex].sPercent }}</td>
                                                                 </tr>
@@ -499,7 +505,7 @@
                                             <div class="col-md-12">
                                                 <div class="panel panel-primary text-center">
                                                     <div class="panel-heading">
-                                                        <h4 class="panel-title"> <strong>Scottish Index of Multiple Deprivation 2016/2017</strong></h4>
+                                                        <h4 class="panel-title"> <strong>Scottish Index of Multiple Deprivation {{ mIndex.YearSelected.Academicyear }} </strong></h4>
                                                     </div>
                                                     <div class="panel-body">
                                                         <div class="table-responsive">
@@ -519,7 +525,10 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr ng-repeat="eGenericSchoolData in mIndex.ListingData[0].SIMD.ListGenericSchoolData" ng-init="nParentIndex = $index">
+                                                                    <tr ng-if="mIndex.ChartData.ChartSIMD ===null">
+                                                                        <td colspan="4"><strong><i> Data is not available</i> </strong></td>
+                                                                    </tr>
+                                                                    <tr ng-if="mIndex.ChartData.ChartSIMD !==null" ng-repeat="eGenericSchoolData in mIndex.ListingData[0].SIMD.ListGenericSchoolData" ng-init="nParentIndex = $index">
                                                                         <td class="text-left">{{ eGenericSchoolData.Name }}</td>
                                                                         <td ng-hide="true" ng-repeat-start="eSchool in mIndex.ListingData"></td>
                                                                         <td class="text-center" ng-if="eSchool.SeedCode!=='1002'">{{ eSchool.SIMD.ListGenericSchoolData[nParentIndex].count }}</td>
@@ -541,7 +550,9 @@
                                             <div class="col-md-12">
                                                 <div class="panel panel-primary text-center">
                                                     <div class="panel-body">
-                                                        <highchart config="mIndex.ChartData.ChartSIMD"></highchart>
+                                                        <highchart ng-if="mIndex.ChartData.ChartSIMD !==null" config="mIndex.ChartData.ChartSIMD"></highchart>
+                                                        <p ng-if="mIndex.ChartData.ChartSIMD ===null"> <strong> Graph is not available </strong></p>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -575,7 +586,7 @@
                                                             </tbody>
                                                         </table>
 
-                                                        <p class="text-right"><a href="http://www.gov.scot/Topics/Statistics/Browse/School-Education/SchoolMealsDatasets/schmeals2016" target="_blank">School Meals in Scotland 2016:Scottish Government Publication 2016</a></p>
+                                                        <p class="text-right"><a href="http://www.gov.scot/Topics/Statistics/Browse/School-Education/SchoolMealsDatasets/schmeals2017" target="_blank">School Meals in Scotland 2017:Scottish Government Publication 2017</a></p>
                                                     </div>
 
                                                 </div>
@@ -962,6 +973,9 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
+                                                                <tr ng-if="mIndex.ChartData.ChartSIMD ===null">
+                                                                    <td colspan="4"><strong><i> Data is not available</i> </strong></td>
+                                                                </tr>
                                                                 <tr ng-repeat="eGenericSchoolData in mIndex.ListingData[0].SIMD.ListGenericSchoolData" ng-init="nParentIndex = $index">
                                                                     <td class="text-left">{{ eGenericSchoolData.Name }}</td>
                                                                     <td ng-hide="true" ng-repeat-start="eSchool in mIndex.ListingData"></td>
@@ -982,7 +996,9 @@
                                         <div class="col-md-12">
                                             <div class="panel panel-primary text-center">
                                                 <div class="panel-body">
-                                                    <highchart config="mIndex.ChartData.ChartSIMD"></highchart>
+                                                    <highchart ng-if="mIndex.ChartData.ChartSIMD !==null" config="mIndex.ChartData.ChartSIMD"></highchart>
+                                                    <p ng-if="mIndex.ChartData.ChartSIMD ===null"> <strong> Graph is not available </strong></p>
+
                                                 </div>
                                             </div>
                                         </div>

@@ -333,7 +333,7 @@
                                             <div class="col-md-12">
                                                 <div class="panel panel-primary text-center">
                                                     <div class="panel-heading">
-                                                        <h4 class="panel-title"> <strong>Scottish Index of Multiple Deprivation 2016/2017</strong></h4>
+                                                        <h4 class="panel-title"> <strong>Scottish Index of Multiple Deprivation {{ mIndex.YearSelected.Academicyear }} </strong></h4>
                                                     </div>
                                                     <div class="panel-body">
                                                         <div class="table-responsive">
@@ -346,7 +346,10 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr ng-repeat="eGenericSchoolData in mIndex.ListingData[0].SIMD.ListGenericSchoolData" ng-init="nParentIndex = $index">
+                                                                    <tr ng-if="mIndex.ChartData.ChartSIMD ===null">
+                                                                        <td colspan="5"><strong><i> Data is not available</i> </strong></td>
+                                                                    </tr>
+                                                                    <tr ng-if="mIndex.ChartData.ChartSIMD !==null"  ng-repeat="eGenericSchoolData in mIndex.ListingData[0].SIMD.ListGenericSchoolData" ng-init="nParentIndex = $index">
                                                                         <td class="text-left">{{ eGenericSchoolData.Name }}</td>
                                                                         <td ng-hide="true" ng-repeat-start="eSchool in mIndex.ListingData"></td>
                                                                         <td class="text-center">{{ eSchool.SIMD.ListGenericSchoolData[nParentIndex].sPercent }}</td>
@@ -367,7 +370,9 @@
                                             <div class="col-md-12">
                                                 <div class="panel panel-primary text-center">
                                                     <div class="panel-body">
-                                                        <highchart config="mIndex.ChartData.ChartSIMD"></highchart>
+                                                        <highchart ng-if="mIndex.ChartData.ChartSIMD !==null" config="mIndex.ChartData.ChartSIMD"></highchart>
+                                                        <p ng-if="mIndex.ChartData.ChartSIMD ===null"> <strong> Graph is not available </strong></p>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -872,7 +877,7 @@
                                                             <tbody>
                                                                 <tr ng-repeat="eGenericSchoolData in mIndex.ListingData[0].NationalityIdentity.ListGenericSchoolData" ng-init="nParentIndex = $index">
                                                                     <td class="text-left">{{ eGenericSchoolData.Name }}</td>
-                                                                    <td ng-repeat="eSchool in mIndex.ListingData">{{ eSchool.NationalityIdentity.ListGenericSchoolData[nParentIndex].sPercent }}</td>
+                                                                    <td ng-repeat="eSchool in mIndex.ListingData">{{ eSchool.NationalityIdentity.ListGenericSchoolData[nParentIndex].sPercent}}</td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -981,14 +986,14 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr ng-repeat="eGenericSchoolData in mIndex.ListingData[0].listSIMD[0].ListGenericSchoolData" ng-init="nTopicIndex = $index">
-                                                                    <!-- topic loop -->
-                                                                    <td class="text-left">{{ eGenericSchoolData.Name }}</td><!-- topic name -->
-                                                                    <td ng-hide="true" ng-repeat-start="eLevelEthnicbackground in mIndex.ListingData[0].listSIMD" ng-init="nYearIndex = $index"></td><!-- main year loop, hide content -->
-                                                                    <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></td><!-- inner school loop, hide content -->
-                                                                    <td>{{ eSchoolInfo.listSIMD[nYearIndex].ListGenericSchoolData[nTopicIndex].sPercent }}</td><!-- percent data, based on nTopicIndex & nYearIndex -->
-                                                                    <td ng-hide="true" ng-repeat-end></td><!-- end school loop -->
-                                                                    <td ng-hide="true" ng-repeat-end></td><!-- end year loop -->
+                                                                <tr ng-if="mIndex.ChartData.ChartSIMD ===null">
+                                                                    <td colspan="5"><strong><i> Data is not available</i> </strong></td>
+                                                                </tr>
+                                                                <tr ng-if="mIndex.ChartData.ChartSIMD !==null" ng-repeat="eGenericSchoolData in mIndex.ListingData[0].SIMD.ListGenericSchoolData" ng-init="nParentIndex = $index">
+                                                                    <td class="text-left">{{ eGenericSchoolData.Name }}</td>
+                                                                    <td ng-hide="true" ng-repeat-start="eSchool in mIndex.ListingData"></td>
+                                                                    <td class="text-center">{{ eSchool.SIMD.ListGenericSchoolData[nParentIndex].sPercent }}</td>
+                                                                    <td ng-hide="true" ng-repeat-end></td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -1003,7 +1008,8 @@
                                         <div class="col-md-12">
                                             <div class="panel panel-primary text-center">
                                                 <div class="panel-body">
-                                                    <highchart config="mIndex.ChartData.ChartSIMD"></highchart>
+                                                    <highchart ng-if="mIndex.ChartData.ChartSIMD !==null" config="mIndex.ChartData.ChartSIMD"></highchart>
+                                                    <p ng-if="mIndex.ChartData.ChartSIMD ===null"><strong><i>Graph is not available</i></strong></p>
                                                 </div>
                                             </div>
 
@@ -1349,7 +1355,7 @@
                                                     <ul class="nav nav-tabs" role="tablist">
                                                         <li role="presentation" class="active"><a data-toggle="tab" href="#primarycfe2" ng-click="doTabClick()">Primary</a></li>
                                                         <li role="presentation"><a data-toggle="tab" href="#secondarycfe2" ng-click="doTabClick()">Secondary</a></li>
-                                                        <li role="presentation"><a data-toggle="tab" href="#primarycfetimeline" ng-click="doTabClick()">Primary Timeline</a></li>
+                                                        <li role="presentation"><a data-toggle="tab" href="#simdcomparison" ng-click="doTabClick()">SIMD Comparison</a></li>
                                                     </ul>
                                                 </div>
                                                 <div class="panel-body">
@@ -1553,7 +1559,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div id="primarycfetimeline" class="tab-pane fade">
+                                                        <div id="simdcomparison" class="tab-pane fade">
                                                             <div class="row">
                                                                 <div class="col-md-12">
                                                                     <div class="panel panel-primary text-center">
@@ -1562,8 +1568,10 @@
                                                                                 <li role="presentation" class="active"><a data-toggle="tab" href="#p1timeline" ng-click="doTabClick()">P1</a></li>
                                                                                 <li role="presentation"><a data-toggle="tab" href="#p4timeline" ng-click="doTabClick()">P4</a></li>
                                                                                 <li role="presentation"><a data-toggle="tab" href="#p7timeline" ng-click="doTabClick()">P7</a></li>
+                                                                                <li role="presentation"><a data-toggle="tab" href="#s3thirdtimeline" ng-click="doTabClick()">S3 Third Level or better</a></li>
+                                                                                <li role="presentation"><a data-toggle="tab" href="#s3fourthtimeline" ng-click="doTabClick()">S3 Fourth Level</a></li>
                                                                             </ul>
-                                                                        </div>    
+                                                                        </div>
                                                                         <div class="panel-body">
                                                                             <div class="tab-content">
                                                                                 <div class="tab-pane fade in active" id="p1timeline">
@@ -1571,14 +1579,16 @@
                                                                                         <div class="col-md-6">
                                                                                             <div class="panel panel-primary text-center" style="width: 100%;">
                                                                                                 <div class="panel-body">
-                                                                                                    <highchart config="mIndex.ChartData.ChartP1TimelineCfEReading"></highchart>
+                                                                                                    <highchart ng-if="mIndex.ChartData.ChartP1TimelineCfEReading!=null" config="mIndex.ChartData.ChartP1TimelineCfEReading"></highchart>
+                                                                                                    <p ng-if="mIndex.ChartData.ChartP1TimelineCfEReading==null"> <strong> Graph is not available </strong></p>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="col-md-6">
                                                                                             <div class="panel panel-primary text-center" style="width: 100%;">
                                                                                                 <div class="panel-body">
-                                                                                                    <highchart config="mIndex.ChartData.ChartP1TimelineCfEWriting"></highchart>
+                                                                                                    <highchart ng-if="mIndex.ChartData.ChartP1TimelineCfEWriting!=null" config="mIndex.ChartData.ChartP1TimelineCfEWriting"></highchart>
+                                                                                                    <p ng-if="mIndex.ChartData.ChartP1TimelineCfEWriting==null"> <strong> Graph is not available </strong></p>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -1587,14 +1597,16 @@
                                                                                         <div class="col-md-6">
                                                                                             <div class="panel panel-primary text-center" style="width: 100%;">
                                                                                                 <div class="panel-body">
-                                                                                                    <highchart config="mIndex.ChartData.ChartP1TimelineCfEELT"></highchart>
+                                                                                                    <highchart ng-if="mIndex.ChartData.ChartP1TimelineCfEELT!=null" config="mIndex.ChartData.ChartP1TimelineCfEELT"></highchart>
+                                                                                                    <p ng-if="mIndex.ChartData.ChartP1TimelineCfEELT==null"> <strong> Graph is not available </strong></p>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="col-md-6">
                                                                                             <div class="panel panel-primary text-center" style="width: 100%;">
                                                                                                 <div class="panel-body">
-                                                                                                    <highchart config="mIndex.ChartData.ChartP1TimelineCfENumeracy"></highchart>
+                                                                                                    <highchart ng-if="mIndex.ChartData.ChartP1TimelineCfENumeracy!=null" config="mIndex.ChartData.ChartP1TimelineCfENumeracy"></highchart>
+                                                                                                    <p ng-if="mIndex.ChartData.ChartP1TimelineCfENumeracy==null"> <strong> Graph is not available </strong></p>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -1606,14 +1618,16 @@
                                                                                         <div class="col-md-6">
                                                                                             <div class="panel panel-primary text-center" style="width: 100%;">
                                                                                                 <div class="panel-body">
-                                                                                                    <highchart config="mIndex.ChartData.ChartP4TimelineCfEReading"></highchart>
+                                                                                                    <highchart ng-if="mIndex.ChartData.ChartP4TimelineCfEReading!=null" config="mIndex.ChartData.ChartP4TimelineCfEReading"></highchart>
+                                                                                                    <p ng-if="mIndex.ChartData.ChartP4TimelineCfEReading==null"> <strong> Graph is not available </strong></p>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="col-md-6">
                                                                                             <div class="panel panel-primary text-center" style="width: 100%;">
                                                                                                 <div class="panel-body">
-                                                                                                    <highchart config="mIndex.ChartData.ChartP4TimelineCfEWriting"></highchart>
+                                                                                                    <highchart ng-if="mIndex.ChartData.ChartP4TimelineCfEWriting!=null" config="mIndex.ChartData.ChartP4TimelineCfEWriting"></highchart>
+                                                                                                    <p ng-if="mIndex.ChartData.ChartP4TimelineCfEWriting==null"> <strong> Graph is not available </strong></p>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -1622,14 +1636,16 @@
                                                                                         <div class="col-md-6">
                                                                                             <div class="panel panel-primary text-center" style="width: 100%;">
                                                                                                 <div class="panel-body">
-                                                                                                    <highchart config="mIndex.ChartData.ChartP4TimelineCfEELT"></highchart>
+                                                                                                    <highchart ng-if ="mIndex.ChartData.ChartP4TimelineCfEELT!=null" config="mIndex.ChartData.ChartP4TimelineCfEELT"></highchart>
+                                                                                                    <p ng-if="mIndex.ChartData.ChartP4TimelineCfEELT==null"> <strong> Graph is not available </strong></p>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="col-md-6">
                                                                                             <div class="panel panel-primary text-center" style="width: 100%;">
                                                                                                 <div class="panel-body">
-                                                                                                    <highchart config="mIndex.ChartData.ChartP4TimelineCfENumeracy"></highchart>
+                                                                                                    <highchart ng-if="mIndex.ChartData.ChartP4TimelineCfENumeracy!=null" config="mIndex.ChartData.ChartP4TimelineCfENumeracy"></highchart>
+                                                                                                    <p ng-if="mIndex.ChartData.ChartP4TimelineCfENumeracy==null"> <strong> Graph is not available </strong></p>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -1640,14 +1656,16 @@
                                                                                         <div class="col-md-6">
                                                                                             <div class="panel panel-primary text-center" style="width: 100%;">
                                                                                                 <div class="panel-body">
-                                                                                                    <highchart config="mIndex.ChartData.ChartP7TimelineCfEReading"></highchart>
+                                                                                                    <highchart ng-if="mIndex.ChartData.ChartP7TimelineCfEReading!=null" config="mIndex.ChartData.ChartP7TimelineCfEReading"></highchart>
+                                                                                                    <p ng-if="mIndex.ChartData.ChartP7TimelineCfEReading==null"> <strong> Graph is not available </strong></p>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="col-md-6">
                                                                                             <div class="panel panel-primary text-center" style="width: 100%;">
                                                                                                 <div class="panel-body">
-                                                                                                    <highchart config="mIndex.ChartData.ChartP7TimelineCfEWriting"></highchart>
+                                                                                                    <highchart ng-if="mIndex.ChartData.ChartP7TimelineCfEWriting!=null" config="mIndex.ChartData.ChartP7TimelineCfEWriting"></highchart>
+                                                                                                    <p ng-if="mIndex.ChartData.ChartP7TimelineCfEWriting==null"> <strong> Graph is not available </strong></p>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -1656,14 +1674,96 @@
                                                                                         <div class="col-md-6">
                                                                                             <div class="panel panel-primary text-center" style="width: 100%;">
                                                                                                 <div class="panel-body">
-                                                                                                    <highchart config="mIndex.ChartData.ChartP7TimelineCfEELT"></highchart>
+                                                                                                    <highchart ng-if="mIndex.ChartData.ChartP7TimelineCfEELT!=null" config="mIndex.ChartData.ChartP7TimelineCfEELT"></highchart>
+                                                                                                    <p ng-if="mIndex.ChartData.ChartP7TimelineCfEELT==null"> <strong> Graph is not available </strong></p>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="col-md-6">
                                                                                             <div class="panel panel-primary text-center" style="width: 100%;">
                                                                                                 <div class="panel-body">
-                                                                                                    <highchart config="mIndex.ChartData.ChartP7TimelineCfENumeracy"></highchart>
+                                                                                                    <highchart ng-if="mIndex.ChartData.ChartP7TimelineCfENumeracy!=null" config="mIndex.ChartData.ChartP7TimelineCfENumeracy"></highchart>
+                                                                                                    <p ng-if="mIndex.ChartData.ChartP7TimelineCfENumeracy==null"> <strong> Graph is not available </strong></p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="tab-pane fade" id="s3thirdtimeline">
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="panel panel-primary text-center" style="width: 100%;">
+                                                                                                <div class="panel-body">
+                                                                                                    @*<highchart config="mIndex.ChartData.ChartS3thirdTimelineCfEReading"></highchart>*@
+                                                                                                    <highchart ng-if="mIndex.ChartData.ChartS3ThirdTimelineCfEReading!=null" config="mIndex.ChartData.ChartS3ThirdTimelineCfEReading"></highchart>
+                                                                                                    <p ng-if="mIndex.ChartData.ChartS3ThirdTimelineCfEReading==null"> <strong> Graph is not available </strong></p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="panel panel-primary text-center" style="width: 100%;">
+                                                                                                <div class="panel-body">
+                                                                                                    <highchart ng-if="mIndex.ChartData.ChartS3ThirdTimelineCfEWriting!=null" config="mIndex.ChartData.ChartS3ThirdTimelineCfEWriting"></highchart>
+                                                                                                    <p ng-if="mIndex.ChartData.ChartS3ThirdTimelineCfEWriting==null"> <strong> Graph is not available </strong></p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="panel panel-primary text-center" style="width: 100%;">
+                                                                                                <div class="panel-body">
+                                                                                                    <highchart ng-if="mIndex.ChartData.ChartS3ThirdTimelineCfEELT!=null" config="mIndex.ChartData.ChartS3ThirdTimelineCfEELT"></highchart>
+                                                                                                    <p ng-if="mIndex.ChartData.ChartS3ThirdTimelineCfEELT==null"> <strong> Graph is not available </strong></p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="panel panel-primary text-center" style="width: 100%;">
+                                                                                                <div class="panel-body">
+                                                                                                    @*<highchart config="mIndex.ChartData.ChartP7TimelineCfENumeracy"></highchart>*@
+                                                                                                    <highchart ng-if="mIndex.ChartData.ChartS3ThirdTimelineCfENumeracy!=null" config="mIndex.ChartData.ChartS3ThirdTimelineCfENumeracy"></highchart>
+                                                                                                    <p ng-if="mIndex.ChartData.ChartS3ThirdTimelineCfENumeracy==null"> <strong> Graph is not available </strong></p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="tab-pane fade" id="s3fourthtimeline">
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="panel panel-primary text-center" style="width: 100%;">
+                                                                                                <div class="panel-body">
+                                                                                                    <highchart ng-if="mIndex.ChartData.ChartS3FourthTimelineCfEReading!=null" config="mIndex.ChartData.ChartS3FourthTimelineCfEReading"></highchart>
+                                                                                                    <p ng-if="mIndex.ChartData.ChartS3FourthTimelineCfEReading==null"> <strong> Graph is not available </strong></p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="panel panel-primary text-center" style="width: 100%;">
+                                                                                                <div class="panel-body">
+                                                                                                    @*<highchart config="mIndex.ChartData.ChartP7TimelineCfEWriting"></highchart>*@
+                                                                                                    <highchart ng-if="mIndex.ChartData.ChartS3FourthTimelineCfEWriting!=null" config="mIndex.ChartData.ChartS3FourthTimelineCfEWriting"></highchart>
+                                                                                                    <p ng-if="mIndex.ChartData.ChartS3FourthTimelineCfEWriting==null"> <strong> Graph is not available </strong></p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="panel panel-primary text-center" style="width: 100%;">
+                                                                                                <div class="panel-body">
+                                                                                                    <highchart ng-if="mIndex.ChartData.ChartS3FourthTimelineCfEELT!=null" config="mIndex.ChartData.ChartS3FourthTimelineCfEELT"></highchart>
+                                                                                                    <p ng-if="mIndex.ChartData.ChartS3FourthTimelineCfEELT==null"> <strong> Graph is not available </strong></p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="panel panel-primary text-center" style="width: 100%;">
+                                                                                                <div class="panel-body">
+                                                                                                    @*<highchart config="mIndex.ChartData.ChartP7TimelineCfENumeracy"></highchart>*@
+                                                                                                    <highchart ng-if="mIndex.ChartData.ChartS3FourthTimelineCfENumeracy!=null" config="mIndex.ChartData.ChartS3FourthTimelineCfENumeracy"></highchart>
+                                                                                                    <p ng-if="mIndex.ChartData.ChartS3FourthTimelineCfENumeracy==null"> <strong> Graph is not available </strong></p>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -1671,11 +1771,11 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
+                                                                    </div>
                                                                 </div>
+
                                                             </div>
-                                                          
                                                         </div>
-                                                    </div>
                                                 
                                                     </div>
                                                 </div>

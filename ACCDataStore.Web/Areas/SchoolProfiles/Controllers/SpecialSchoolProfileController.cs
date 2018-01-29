@@ -44,7 +44,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
 
                 var listSchool = GetListSchool(rpGeneric2nd, "4");
                 var listYear = GetListYear();
-                var eYearSelected = listYear != null ? listYear.Where(x => x.year.Equals("2016")).First() : null;
+                var eYearSelected = listYear != null ? listYear.Where(x => x.year.Equals("2017")).First() : null;
                 List<School> ListSchoolSelected = listSchool != null ? listSchool.Where(x => x.seedcode.Equals("5245044")).ToList() : null;
                 oResult = new
                 {
@@ -126,8 +126,37 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 tempSchool.LookedAfter = tempSchool.listLookedAfter.Where(x => x.YearInfo.year.Equals(selectedyear.year)).FirstOrDefault();
                 tempSchool.SchoolRoll = GetSchoolRollData(school, selectedyear);
                 tempSchool.SchoolRollForecast = GetSchoolRollForecastData(rpGeneric2nd, school);
-                tempSchool.listSIMD = GetHistoricalSIMDData(rpGeneric2nd, sSchoolType, school.seedcode, listYear);
-                tempSchool.SIMD = tempSchool.listSIMD.Where(x => x.YearInfo.year.Equals("2016")).FirstOrDefault();
+                //tempSchool.listSIMD = GetHistoricalSIMDData(rpGeneric2nd, sSchoolType, school.seedcode, listYear);
+
+                if (Convert.ToInt16(selectedyear.year) < 2016)
+                {
+                    tempSchool.listSIMD = null;
+                    tempSchool.SIMD = null;
+                }
+                else
+                {
+                    if (school.seedcode.Equals("1004140"))
+                    {
+                        if (Convert.ToInt16(selectedyear.year) == 2016)
+                        {
+                            tempSchool.listSIMD = null;
+                            tempSchool.SIMD = null;
+                        }
+                        else {
+                            tempSchool.listSIMD = GetHistoricalSIMDData(rpGeneric2nd, sSchoolType, school.seedcode, listYear);
+                            tempSchool.SIMD = tempSchool.listSIMD.Where(x => x.YearInfo.year.Equals(selectedyear.year)).FirstOrDefault();
+
+                        }
+
+                    }
+                    else
+                    {
+
+                        tempSchool.listSIMD = GetHistoricalSIMDData(rpGeneric2nd, sSchoolType, school.seedcode, listYear);
+                        tempSchool.SIMD = tempSchool.listSIMD.Where(x => x.YearInfo.year.Equals(selectedyear.year)).FirstOrDefault();
+                    }
+                }
+
                 tempSchool.listFSM = GetHistoricalFSMData(rpGeneric2nd, school.seedcode, listYear, sSchoolType);
                 tempSchool.FSM = tempSchool.listFSM.Where(x => x.year.year.Equals(selectedyear.year)).FirstOrDefault();
                 tempSchool.listStudentNeed = GetHistoricalStudentNeed(rpGeneric2nd, sSchoolType, school.seedcode,listYear);
@@ -144,25 +173,60 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
 
         private ACCDataStore.Entity.SchoolProfiles.Census.Entity.ChartData GetChartData(List<BaseSPDataModel> listSchool, Year eYearSelected)
         {
-            return new Entity.SchoolProfiles.Census.Entity.ChartData()
+
+            try
             {
-                ChartNationalityIdentity = GetChartNationalityIdentity(listSchool, eYearSelected),
-                ChartLevelOfEnglish = GetChartLevelofEnglish(listSchool, eYearSelected),
-                ChartLevelOfEnglishByCatagories = GetChartLevelofEnglishbyCatagories(listSchool, eYearSelected),
-                ChartSIMD = GetChartSIMDDecile(listSchool, eYearSelected),
-                CartSchoolRollForecast = GetChartSchoolRollForecast(listSchool),
-                ChartIEP = GetChartStudentNeedIEP(listSchool),
-                ChartCSP = GetChartStudentNeedCSP(listSchool),
-                ChartLookedAfter = GetChartLookedAfter(listSchool),
-                ChartAttendance = GetChartAttendance(listSchool, "Attendance"),
-                ChartAuthorisedAbsence = GetChartAttendance(listSchool, "Authorised Absence"),
-                ChartUnauthorisedAbsence = GetChartAttendance(listSchool, "Unauthorised Absence"),
-                ChartTotalAbsence = GetChartAttendance(listSchool, "Total Absence"),
-                ChartNumberofDaysLostExclusion = GetChartExclusion(listSchool, "Number of Days Lost Per 1000 Pupils Through Exclusions"),
-                ChartNumberofExclusionRFR = GetChartExclusion(listSchool, "Number of Removals from the Register"),
-                ChartNumberofExclusionTemporary = GetChartExclusion(listSchool, "Number of Temporary Exclusions"),
-                ChartFSM = GetChartFSM(listSchool)
-            };
+                Entity.SchoolProfiles.Census.Entity.ChartData chartdata = new Entity.SchoolProfiles.Census.Entity.ChartData();
+                chartdata.ChartNationalityIdentity = GetChartNationalityIdentity(listSchool, eYearSelected);
+                chartdata.ChartLevelOfEnglish = GetChartLevelofEnglish(listSchool, eYearSelected);
+                chartdata.ChartLevelOfEnglishByCatagories = GetChartLevelofEnglishbyCatagories(listSchool, eYearSelected);
+
+                if (Convert.ToInt16(eYearSelected.year) < 2016)
+                {
+                    chartdata.ChartSIMD = null;
+                }
+                else
+                {
+                    if (listSchool.FirstOrDefault(i => i.SeedCode.Equals("1004140")) !=null) //school.seedcode.Equals("1004140")
+                    {
+                        if (Convert.ToInt16(eYearSelected.year) == 2016)
+                        {
+                            chartdata.ChartSIMD = null;
+                        }
+                        else
+                        {
+                            chartdata.ChartSIMD = GetChartSIMDDecile(listSchool, eYearSelected);
+                        }
+
+                    }
+                    else
+                    {
+
+                        chartdata.ChartSIMD = GetChartSIMDDecile(listSchool, eYearSelected);
+                    }
+                }
+                chartdata.CartSchoolRollForecast = GetChartSchoolRollForecast(listSchool);
+                chartdata.ChartIEP = GetChartStudentNeedIEP(listSchool);
+                chartdata.ChartCSP = GetChartStudentNeedCSP(listSchool);
+                chartdata.ChartLookedAfter = GetChartLookedAfter(listSchool);
+                chartdata.ChartAttendance = GetChartAttendance(listSchool, "Attendance");
+                chartdata.ChartAuthorisedAbsence = GetChartAttendance(listSchool, "Authorised Absence");
+                chartdata.ChartUnauthorisedAbsence = GetChartAttendance(listSchool, "Unauthorised Absence");
+                chartdata.ChartTotalAbsence = GetChartAttendance(listSchool, "Total Absence");
+                chartdata.ChartNumberofDaysLostExclusion = GetChartExclusion(listSchool, "Number of Days Lost Per 1000 Pupils Through Exclusions");
+                chartdata.ChartNumberofExclusionRFR = GetChartExclusion(listSchool, "Number of Removals from the Register");
+                chartdata.ChartNumberofExclusionTemporary = GetChartExclusion(listSchool, "Number of Temporary Exclusions");
+                chartdata.ChartFSM = GetChartFSM(listSchool);
+                return chartdata;
+
+            }
+            catch (Exception ex)
+            {
+                var sErrorMessage = "Error : " + ex.Message + (ex.InnerException != null ? ", More Detail : " + ex.InnerException.Message : "");
+                log.Error(ex.Message, ex);
+                return null;
+            }
+
         }
 
         //Get SchoolRoll data
@@ -184,7 +248,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                             SchoolRoll = new SchoolRoll();
                             SchoolRoll.year = year;
                             SchoolRoll.capacity = school.schoolCapacity;
-                            SchoolRoll.schoolroll = Convert.ToInt16(itemRow[1].ToString());
+                            SchoolRoll.schoolroll = itemRow[1] == null ? 0 : Convert.ToInt16(itemRow[1].ToString());
                             SchoolRoll.percent = 0.00F;
                         }
                     }
@@ -203,7 +267,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                             SchoolRoll = new SchoolRoll();
                             SchoolRoll.year = year;
                             SchoolRoll.capacity = 0;
-                            SchoolRoll.schoolroll = Convert.ToInt16(itemRow[1].ToString());
+                            SchoolRoll.schoolroll = itemRow[1]==null ? 0 : Convert.ToInt16(itemRow[1].ToString());
                             SchoolRoll.percent = 0.00F;
                         }
                     }

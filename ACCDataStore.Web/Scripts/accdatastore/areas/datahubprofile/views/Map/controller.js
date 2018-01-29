@@ -12,6 +12,8 @@
 
     var infowindow = new google.maps.InfoWindow();
 
+    var heatmapdata = [];
+
     $scope.mMap = {
     };
 
@@ -21,6 +23,7 @@
         $scope.mMap = response.data;
         $scope.mMap.bShowContent = false;
         $scope.mMap.bHeatMapShowContent = true;
+        heatmapdata = $scope.mMap.heatmapdata ;
     }, function (response) {
         $scope.mMap.bShowContent = false;
         $scope.mMap.bHeatMapShowContent = true;
@@ -38,12 +41,25 @@
         createLayer($scope.mMap.selectedLayer);
     }
 
-    $scope.updateDataset = function () {
+    $scope.updateDataset = function (selectedDataset) {
         //console.log($scope.dataset_item.code, $scope.dataset_item.name)
+        //alert(selectedDataset.Code);
         $scope.mMap.selectedLayer = $scope.mMap.selectedLayer;
         $scope.mMap.selectedDataset = $scope.mMap.selectedDataset;
         $scope.mMap.bShowContent = false;
-        google.maps.event.addDomListener(window, 'load', initMap);
+
+        var myDataPromise = mapService.LoadHeatMapdata($scope.mMap.selectedDataset.Code);
+        myDataPromise.then(function(result) {  
+
+            // this is only run after getData() resolves
+            $scope.mMap.heatmapdata = result;
+            //console.log("data.name"+ $scope.mMap.heatmapdata.length);
+        });
+
+
+        heatmapdata = $scope.mMap.heatmapdata ;
+
+        createLayer($scope.mMap.selectedLayer);
     }
 
     $scope.updateCatagory = function () {
@@ -79,15 +95,15 @@
     }
 
     $scope.slider = {
-        minValue: 70,
-        maxValue: 85,
+        minValue: 80,
+        maxValue: 95,
         options: {
             floor: 0,
             ceil: 100,
             vertical: false,
             showOuterSelectionBars: false,
             onEnd: function() {
-                console.info( $scope.slider.minValue + ' ' + $scope.slider.maxValue)
+                //console.info( $scope.slider.minValue + ' ' + $scope.slider.maxValue)
                 map.data.setStyle(styleFeature);
             }
         }
@@ -95,46 +111,32 @@
 
     var styleFeature = function (feature) {
 
-        var data = $scope.mMap.heatmapdata;
+        //var heatmapdata = $scope.mMap.heatmapdata;
 
         var datacatagory = $scope.mMap.selecteddatacatagory;
 
-        var obj;
+        var datavariable;
 
-        data.forEach( function( item ){
-            if( item.seedcode === feature.getProperty('REFNO') ){
-                obj = item;
+        for (var i = 0; i < heatmapdata.length; i++) {
+            if (heatmapdata[i].seedcode === feature.getProperty('REFNO')){
+                datavariable = heatmapdata[i].listdata.find(x => x.Code === datacatagory.Code).Percent;
+                break;
             }
-        } );
-
-
-
-        //let obj = $filter('filter')(data, {seedcode: feature.getProperty('REFNO') })[0];
-            
-            
-        //    data.filter(function(item) {
-        //    return item.seedcode === feature.getProperty('REFNO');
-        //})[0];
-            
-            
-        if(!obj){
-            alert('notfound');
         }
 
-        var temp = obj.listdata.find(x => x.Code === datacatagory.Code);
 
-        if(temp.Percent < $scope.slider.minValue){
-            if(datacatagory.Code === 'Positive Destination'){
-                color = '#ff0000'//green
+        if(datavariable < $scope.slider.minValue){
+            if(datacatagory.Code === 'Participating Destination'){
+                color = '#ff0000'//red
             }else{
                 color = '#1fc600'//green    
             }
         
-        }else if(temp.Percent > $scope.slider.maxValue){
-            if(datacatagory.Code === 'Positive Destination'){
+        }else if(datavariable > $scope.slider.maxValue){
+            if(datacatagory.Code === 'Participating Destination'){
                 color = '#1fc600'//green
             }else{
-                color = '#ff0000'//green    
+                color = '#ff0000'//red    
             }
         }else{
             color = '#fcf823'

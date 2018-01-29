@@ -225,7 +225,7 @@
                                             <div class="col-md-12">
                                                 <div class="panel panel-primary text-center">
                                                     <div class="panel-heading">
-                                                        <h4 class="panel-title"> <strong>Scottish Index of Multiple Deprivation 2016/2017</strong></h4>
+                                                        <h4 class="panel-title"> <strong>Scottish Index of Multiple Deprivation {{ mIndex.YearSelected.Academicyear }}</strong></h4>
                                                     </div>
                                                     <div class="panel-body">
                                                         <div class="table-responsive">
@@ -245,7 +245,10 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr ng-repeat="eGenericSchoolData in mIndex.ListingData[0].SIMD.ListGenericSchoolData" ng-init="nParentIndex = $index">
+                                                                    <tr ng-if="mIndex.ChartData.ChartSIMD ===null">
+                                                                        <td colspan="4"><strong><i> Data is not available</i> </strong></td>
+                                                                    </tr>
+                                                                    <tr ng-if="mIndex.ChartData.ChartSIMD !==null" ng-repeat="eGenericSchoolData in mIndex.ListingData[0].SIMD.ListGenericSchoolData" ng-init="nParentIndex = $index">
                                                                         <td class="text-left">{{ eGenericSchoolData.Name }}</td>
                                                                         <td ng-hide="true" ng-repeat-start="eSchool in mIndex.ListingData"></td>
                                                                         <td class="text-center" ng-if="eSchool.SeedCode!=='1002'">{{ eSchool.SIMD.ListGenericSchoolData[nParentIndex].count }}</td>
@@ -267,7 +270,9 @@
                                             <div class="col-md-12">
                                                 <div class="panel panel-primary text-center">
                                                     <div class="panel-body">
-                                                        <highchart config="mIndex.ChartData.ChartSIMD"></highchart>
+                                                        <highchart ng-if="mIndex.ChartData.ChartSIMD !==null" config="mIndex.ChartData.ChartSIMD"></highchart>
+                                                        <p ng-if="mIndex.ChartData.ChartSIMD ===null"> <strong> Graph is not available </strong></p>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -637,7 +642,10 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr ng-repeat="eGenericSchoolData in mIndex.ListingData[0].SIMD.ListGenericSchoolData" ng-init="nParentIndex = $index">
+                                                                <tr ng-if="mIndex.ChartData.ChartSIMD ===null">
+                                                                    <td colspan="4"><strong><i> Data is not available</i> </strong></td>
+                                                                </tr>
+                                                                <tr ng-if="mIndex.ChartData.ChartSIMD !==null"  ng-repeat="eGenericSchoolData in mIndex.ListingData[0].SIMD.ListGenericSchoolData" ng-init="nParentIndex = $index">
                                                                     <td class="text-left">{{ eGenericSchoolData.Name }}</td>
                                                                     <td ng-hide="true" ng-repeat-start="eSchool in mIndex.ListingData"></td>
                                                                     <td class="text-center" ng-if="eSchool.SeedCode!=='1002'">{{ eSchool.SIMD.ListGenericSchoolData[nParentIndex].count }}</td>
@@ -657,7 +665,9 @@
                                         <div class="col-md-12">
                                             <div class="panel panel-primary text-center">
                                                 <div class="panel-body">
-                                                    <highchart config="mIndex.ChartData.ChartSIMD"></highchart>
+                                                    <highchart ng-if="mIndex.ChartData.ChartSIMD !==null" config="mIndex.ChartData.ChartSIMD"></highchart>
+                                                    <p ng-if="mIndex.ChartData.ChartSIMD ===null"> <strong> Graph is not available </strong></p>
+
                                                 </div>
                                             </div>
 

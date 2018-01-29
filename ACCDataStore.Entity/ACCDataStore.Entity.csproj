@@ -63,8 +63,10 @@
     <Compile Include="DatahubProfile\Entities\DatahubCentre.cs" />
     <Compile Include="DatahubProfile\Entities\DataHubData.cs" />
     <Compile Include="DatahubProfile\Entities\DataSetDate.cs" />
+    <Compile Include="DatahubProfile\Entities\Status.cs" />
     <Compile Include="DatahubProfile\Entities\GenericData.cs" />
     <Compile Include="DatahubProfile\Entities\PupilsDataHubObj.cs" />
+    <Compile Include="DatahubProfile\Entities\SDSGroup.cs" />
     <Compile Include="DatahubProfile\Entities\SummaryData.cs" />
     <Compile Include="DatahubProfile\Entities\SummaryDHdata.cs" />
     <Compile Include="DatahubProfile\Mappings\AllSchoolsMap.cs" />

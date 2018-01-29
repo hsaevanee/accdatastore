@@ -32,6 +32,7 @@ namespace ACCDataStore.Entity.SchoolProfiles.Census.Entity
         public List<SPInCAS> listInCASP5 { get; set; }
         public List<SPInCAS> listInCASP6 { get; set; }
         public SPInCAS InCASP2 { get; set; }
+        public SPInCAS InCASP3 { get; set; }
         public SPInCAS InCASP4 { get; set; }
         public SPInCAS InCASP5 { get; set; }
         public SPInCAS InCASP6 { get; set; }

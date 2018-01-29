@@ -16,7 +16,7 @@ namespace ACCDataStore.Helpers.ORM.Helpers.Security
         public void OnAuthentication(AuthenticationContext filterContext)
         {
             var eUsers = filterContext.HttpContext.Session["SessionUser"] as Users;
-            if (eUsers != null && eUsers.IsScoolAdministrator)
+            if (eUsers != null && eUsers.IsSchoolAdministrator)
             {
                 // only administrator can access this action
             }
