@@ -1726,7 +1726,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             eColumnCharts.series = new List<ACCDataStore.Entity.RenderObject.Charts.ColumnCharts.series>();
             if (listSchool != null && listSchool.Count > 0)
             {
-                eColumnCharts.xAxis.categories = new List<string>() { "SIMD Q1", "SIMD Q2", "SIMD Q3", "SIMD Q4", "SIMD Q5" };
+                eColumnCharts.xAxis.categories = new List<string>() { "SIMD Q1 - Most Deprived", "SIMD Q2", "SIMD Q3", "SIMD Q4", "SIMD Q5 - Least Deprived" };
                 foreach (var eSchool in listSchool)
                 {
                     indexColor = 0;
@@ -2645,7 +2645,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 data.RemoveAll(s => s.YearInfo.academicyear.Equals("2011/12"));
                 string[] codes = new string[] {}; // using i to reference
 
-                string[] years = new string[] { "2012/13", "2013/14", "2014/15", "2015/16", "2016/17", "2017/18" }; // using j to reference
+                string[] years = new string[] {"2013/14", "2014/15", "2015/16", "2016/17", "2017/18" }; // using j to reference
                 string sdata = "n/a";
                 List<GenericSchoolData> tempdata;
 
@@ -2772,7 +2772,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 //remove 2011/12 data from list
                 data.RemoveAll(s => s.YearInfo.academicyear.Equals("2011/12"));
                 string[] codes = new string[] { "01", "02", "03", "04", "05", "EN", "LC", "NA" }; // using i to reference
-                string[] years = new string[] { "2012/13", "2013/14", "2014/15", "2015/16", "2016/17", "2017/18" }; // using j to reference
+                string[] years = new string[] { "2013/14", "2014/15", "2015/16", "2016/17", "2017/18" }; // using j to reference
                 List<GenericSchoolData> tempdata;
 
 
@@ -2823,7 +2823,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             {
                 //remove 2011/12 data from list
                 data.RemoveAll(s => s.year.academicyear.Equals("2011/12"));
-                string[] years = new string[] { "2012/13", "2013/14", "2014/15", "2015/16", "2016/17", "2017/18" }; // using j to reference
+                string[] years = new string[] {"2013/14", "2014/15", "2015/16", "2016/17", "2017/18" }; // using j to reference
                 string sdata = "n/a";
 
                 //using (WordprocessingDocument doc = WordprocessingDocument.Open(filepath, true))
@@ -2890,7 +2890,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             {
                 //remove 2011/12 data from list
                 data.RemoveAll(s => s.year.academicyear.Equals("2011/12"));
-                string[] years = new string[] { "2012/13", "2013/14", "2014/15", "2015/16", "2016/17", "2017/18" }; // using j to reference
+                string[] years = new string[] {"2013/14", "2014/15", "2015/16", "2016/17", "2017/18" }; // using j to reference
                 string sdata = "n/a";
                 GenericSchoolData tempdata;
 
@@ -2953,7 +2953,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 //remove 2011/12 data from list
                 data.RemoveAll(s => s.YearInfo.academicyear.Equals("2011/12"));
                 string[] names = new string[] { "Attendance", "Authorised Absence", "Unauthorised Absence", "Absense due to Exclusion" }; // using i to reference
-                string[] years = new string[] { "2012/13", "2013/14", "2014/15", "2015/16", "2016/17" }; // using j to reference
+                string[] years = new string[] { "2013/14", "2014/15", "2015/16", "2016/17", "2017/18" }; // using j to reference
                 List<GenericSchoolData> tempdata;
 
                 // Find the forth table in the document.
@@ -3047,7 +3047,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
                 //remove 2011/12 data from list
                 data.RemoveAll(s => s.YearInfo.academicyear.Equals("2011/12"));
                 // code 0 = "Temporary Exclusions", 1="Removed From Register", 2="Number of days per 1000 pupils lost to exclusions" 
-                string[] years = new string[] { "2012/13", "2013/14", "2014/15", "2015/16", "2016/17" }; // using j to reference
+                string[] years = new string[] { "2013/14", "2014/15", "2015/16", "2016/17", "2017/18" }; // using j to reference
                 List<GenericSchoolData> tempdata;
                 string sdata = "n/a";
 

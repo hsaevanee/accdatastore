@@ -32,7 +32,7 @@ namespace ACCDataStore.Helpers.ORM.Helpers.Security
                 else
                 {
                     //login page
-                    filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary { { "action", "Index" }, { "controller", "IndexAuthorisation" }, { "area", "Authorisation" } });
+                    filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary { { "action", "Index" }, { "controller", "IndexAuthorisation" }, { "area", "Authorisation" }, { "from", filterContext.HttpContext.Request.CurrentExecutionFilePath } });
                 }
             }
         }

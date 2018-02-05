@@ -1020,7 +1020,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
         [Route("SchoolProfiles/SecondarySchoolProfile/GetReport")]
         public JsonResult GetReport(List<string> listSeedCode, string sYear)
         {
-            List<SecondarySPDataModel> listSchoolData = Session["listSchoolData"] as List<SecondarySPDataModel>;
+            List<BaseSPDataModel> listSchoolData = Session["listSchoolData"] as List<BaseSPDataModel>;
             List<SPCfEReport> CFElevle = GetSecondaryCfeLevelDataforReport(rpGeneric2nd, listSchoolData[0].SeedCode, "3");
             List<SPMiDYISReport> SOSCA = GetSecondarySOSCADataforReport(rpGeneric2nd, listSchoolData[0].SeedCode);
             List<SPCfElevel> listSPCfElevel = new List<SPCfElevel>();

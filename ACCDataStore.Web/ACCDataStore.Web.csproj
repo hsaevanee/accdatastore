@@ -386,7 +386,6 @@
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\StudentStage\StudentStage.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\WiderAchievement\IndexWiderAchievement.js" />
     <Content Include="Scripts\accdatastore\areas\schoolprofile\views\WiderAchievement\MapIndex.js" />
-    <Content Include="Scripts\accdatastore\areas\schoolprofiles\views\ScrumHub\Views\scrum_charts.js" />
     <Content Include="Scripts\accdatastore\areas\widerAchievement\IndexWiderAchievement.js" />
     <Content Include="Scripts\accdatastore\areas\widerAchievement\MapIndex.js" />
     <Content Include="Scripts\accdatastore\views\Datazone_2016.js" />
@@ -494,10 +493,6 @@
     <Compile Include="Areas\SchoolRollForecast\Controllers\IndexSchoolRollForecastController.cs" />
     <Compile Include="Areas\SchoolRollForecast\SchoolRollForecastAreaRegistration.cs" />
     <Compile Include="Areas\SchoolRollForecast\ViewModels\SchoolRollForecastViewModel.cs" />
-    <Compile Include="Areas\ScrumHub\Controllers\ScrumHubController.cs" />
-    <Compile Include="Areas\ScrumHub\Models\ScrumViewModel.cs" />
-    <Compile Include="Areas\ScrumHub\Models\UserCourses.cs" />
-    <Compile Include="Areas\ScrumHub\ScrumHubAreaRegistration.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\IndexController.cs" />
     <Compile Include="Global.asax.cs">
@@ -607,10 +602,6 @@
     <Content Include="Areas\SchoolProfiles\Views\IndexSchoolProfiles\SchoolWebsites.cshtml" />
     <Content Include="Areas\SchoolProfiles\Views\IndexAberdeenProfile\IndexAberdeenCity.cshtml" />
     <Content Include="Areas\SchoolProfiles\Views\IndexInteractiveMap\MapIndex.cshtml" />
-    <Content Include="Areas\ScrumHub\Views\web.config" />
-    <Content Include="Areas\ScrumHub\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\ScrumHub\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\ScrumHub\Views\ScrumHub\ScrumIndex.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\ScotlandIndex.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Comparisons\Comparisons.cshtml" />
     <Content Include="Areas\DatahubProfile\Views\IndexDatahub\Comparisons\_DataTables.cshtml" />
