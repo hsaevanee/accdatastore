@@ -2424,19 +2424,20 @@
                                         <div class="col-md-12">
                                             <div class="panel panel-primary text-center">
                                                 <div class="panel-heading">
-                                                    <h4 class="panel-title"> <strong>Ethnicity</strong></h4>
+                                                    <h4 class="panel-title"> <strong>Ethnicity</strong> (% of pupils)</h4>
                                                 </div>
 
-                                                <div class="panel-body">
-                                                    <div class="table-responsive">
-                                                        <p> <strong> % of pupils </strong></p>
-                                                        <table class="table table-bordered table-hover">
+                                                <div class="zui-wrapper">
+                                                    <div class="zui-scroller" style="margin-left:300px;">
+                                                        @*<p> <strong> % of pupils </strong></p>*@
+                                                        <table class="zui-table">
                                                             <thead>
                                                                 <tr>
-                                                                    <th rowspan="2">Ethnicity</th>
+                                                                    <th class="zui-sticky-col" style="width:300px">Ethnicity</th>
                                                                     <th colspan="4" class="text-center" ng-repeat="eLevelEthnicbackground in mIndex.ListingData[0].listEthnicbackground">{{ eLevelEthnicbackground.YearInfo.academicyear }}</th><!-- year loop on header row 1 -->
                                                                 </tr>
                                                                 <tr>
+                                                                    <th class="zui-sticky-col" style="width:300px">&nbsp;</th>
                                                                     <th ng-hide="true" class="text-center" ng-repeat-start="eLevelEthnicbackground in mIndex.ListingData[0].listEthnicbackground"></th><!-- main year loop, hide content -->
                                                                     <th ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></th><!-- inner shcool loop for each year, hide content -->
                                                                     <th class="text-center">{{ eSchoolInfo.SchoolName }}</th><!-- school name on header row 2 -->
@@ -2447,7 +2448,7 @@
                                                             <tbody>
                                                                 <tr ng-repeat="eGenericSchoolData in mIndex.ListingData[0].listEthnicbackground[0].ListGenericSchoolData" ng-init="nTopicIndex = $index">
                                                                     <!-- topic loop -->
-                                                                    <td class="text-left">{{ eGenericSchoolData.Name }}</td><!-- topic name -->
+                                                                    <td class="text-left zui-sticky-col" style="width:300px">{{ eGenericSchoolData.Name }}</td><!-- topic name -->
                                                                     <td ng-hide="true" ng-repeat-start="eLevelEthnicbackground in mIndex.ListingData[0].listEthnicbackground" ng-init="nYearIndex = $index"></td><!-- main year loop, hide content -->
                                                                     <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></td><!-- inner school loop, hide content -->
                                                                     <td>{{ eSchoolInfo.listEthnicbackground[nYearIndex].ListGenericSchoolData[nTopicIndex].sPercent }}</td><!-- percent data, based on nTopicIndex & nYearIndex -->
@@ -2477,19 +2478,19 @@
                                         <div class="col-md-12">
                                             <div class="panel panel-primary text-center">
                                                 <div class="panel-heading">
-                                                    <h4 class="panel-title"> <strong>Nationality</strong></h4>
+                                                    <h4 class="panel-title"> <strong>Nationality</strong> (% of pupils)</h4>
                                                 </div>
 
-                                                <div class="panel-body">
-                                                    <div class="table-responsive">
-                                                        <p> <strong> % of pupils </strong></p>
-                                                        <table class="table table-bordered table-hover">
+                                                <div class="zui-wrapper">
+                                                    <div class="zui-scroller" style="margin-left:150px">
+                                                        <table class="zui-table">
                                                             <thead>
                                                                 <tr>
-                                                                    <th rowspan="2">Nationality</th>
+                                                                    <th class="zui-sticky-col" style="width:150px">Nationality</th>
                                                                     <th colspan="4" class="text-center" ng-repeat="eLevelNationality in mIndex.ListingData[0].listNationalityIdentity">{{ eLevelNationality.YearInfo.academicyear }}</th><!-- year loop on header row 1 -->
                                                                 </tr>
                                                                 <tr>
+                                                                    <th class="zui-sticky-col" style="width:150px">&nbsp;</th>
                                                                     <th ng-hide="true" class="text-center" ng-repeat-start="eLevelNationality in mIndex.ListingData[0].listNationalityIdentity"></th><!-- main year loop, hide content -->
                                                                     <th ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></th><!-- inner shcool loop for each year, hide content -->
                                                                     <th class="text-center">{{ eSchoolInfo.SchoolName }}</th><!-- school name on header row 2 -->
@@ -2500,7 +2501,7 @@
                                                             <tbody>
                                                                 <tr ng-repeat="eGenericSchoolData in mIndex.ListingData[0].listNationalityIdentity[0].ListGenericSchoolData" ng-init="nTopicIndex = $index">
                                                                     <!-- topic loop -->
-                                                                    <td class="text-left">{{ eGenericSchoolData.Name }}</td><!-- topic name -->
+                                                                    <td class="text-left zui-sticky-col" style="width:150px">{{ eGenericSchoolData.Name }}</td><!-- topic name -->
                                                                     <td ng-hide="true" ng-repeat-start="eLevelNationality in mIndex.ListingData[0].listNationalityIdentity" ng-init="nYearIndex = $index"></td><!-- main year loop, hide content -->
                                                                     <td ng-hide="true" ng-repeat-start="eSchoolInfo in mIndex.ListingData"></td><!-- inner school loop, hide content -->
                                                                     <td>{{ eSchoolInfo.listNationalityIdentity[nYearIndex].ListGenericSchoolData[nTopicIndex].sPercent }}</td><!-- percent data, based on nTopicIndex & nYearIndex -->

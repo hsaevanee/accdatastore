@@ -31,6 +31,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
             temp.Add(new DataSetDate("November 2017", "112017", "11", "2017"));
             temp.Add(new DataSetDate("December 2017", "122017", "12", "2017"));
             temp.Add(new DataSetDate("January 2018", "12018", "1", "2018"));
+            temp.Add(new DataSetDate("February 2018", "22018", "2", "2018"));
             return temp;
 
         }
@@ -226,6 +227,10 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                 case "22017":
                     //to calculate IEP CSP
                     query = "Select Cohort, Forename, Surname, Age, Gender, CSS_Address, CSS_Postcode, Telephone_Number, SEED_Code, Current_Status, status_code, SDS_Client_Ref  from datahub_february";
+                    break;
+                case "22018":
+                    //to calculate IEP CSP
+                    query = "Select Cohort, Forename, Surname, Age, Gender, CSS_Address, CSS_Postcode, Telephone_Number, SEED_Code, Current_Status, status_code, SDS_Client_Ref  from datahub_february where data_date = 22018";
                     break;
                 case "3":
                     //to calculate IEP CSP

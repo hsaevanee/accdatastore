@@ -58,6 +58,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseEntity.cs" />
+    <Compile Include="CSSF\Entity\ChildAgreements.cs" />
+    <Compile Include="CSSF\Entity\ChildPlacements.cs" />
+    <Compile Include="CSSF\Entity\Placements.cs" />
+    <Compile Include="CSSF\Mapping\ChildAgreementsMap.cs" />
+    <Compile Include="CSSF\Mapping\ChildPlacementsMap.cs" />
+    <Compile Include="CSSF\Mapping\PlacementsMap.cs" />
     <Compile Include="DatahubProfile\Entities\AllSchools.cs" />
     <Compile Include="DatahubProfile\Entities\ChartData.cs" />
     <Compile Include="DatahubProfile\Entities\DatahubCentre.cs" />
@@ -76,10 +82,8 @@
     <Compile Include="DatahubProfile\Mappings\PupilsDataHubMap.cs" />
     <Compile Include="DatahubProfile\Mappings\SummaryDataMap.cs" />
     <Compile Include="Mapping\RightMp.cs" />
-    <Compile Include="MonthOnMonthOverview\Models\MonthOnMonthObj.cs" />
     <Compile Include="Mapping\MSAccess\SchoolProfiles\EnglishLevelMap.cs" />
     <Compile Include="Mapping\MSAccess\SchoolProfiles\NationalIdentityMap.cs" />
-    <Compile Include="PupilsPopulation\ERCentre.cs" />
     <Compile Include="SchoolProfiles\CensusObj.cs" />
     <Compile Include="SchoolProfiles\Census\AaeAttendanceObj.cs" />
     <Compile Include="SchoolProfiles\Census\Entity\BaseSchoolProfile.cs" />
@@ -131,8 +135,6 @@
     <Compile Include="Gender.cs" />
     <Compile Include="GeneralCounter.cs" />
     <Compile Include="GenderObj.cs" />
-    <Compile Include="InsightProfile\DestinationObj.cs" />
-    <Compile Include="Mapping\MSAccess\Age05sInfoMap.cs" />
     <Compile Include="Mapping\MSAccess\SchoolProfiles\EthnicBackgroundMap.cs" />
     <Compile Include="Mapping\MSAccess\LuEnglishLevelMap.cs" />
     <Compile Include="DatahubProfile\Mappings\NeighbourhoodMap.cs" />
@@ -197,17 +199,10 @@
     <Compile Include="SchoolProfile\SchPrimarySchool.cs" />
     <Compile Include="SchoolProfile\SchStudent.cs" />
     <Compile Include="Mapping\MSAccess\WiderAchievementMap.cs" />
-    <Compile Include="PupilsPopulation\PupilsInfoObj.cs" />
     <Compile Include="School.cs" />
-    <Compile Include="Mapping\MySQL\LA100PupilsMap.cs" />
-    <Compile Include="Mapping\MySQL\LA100SchoolsMap.cs" />
-    <Compile Include="MySQL\LA100Pupils.cs" />
-    <Compile Include="MySQL\LA100Schools.cs" />
     <Compile Include="SchoolProfile\CurriculumObj.cs" />
     <Compile Include="SchoolProfile\EthnicObj.cs" />
-    <Compile Include="Mapping\Nationality2012Map.cs" />
     <Compile Include="Mapping\MSAccess\StudentSIMDMap.cs" />
-    <Compile Include="Nationality2012.cs" />
     <Compile Include="SchoolProfile\FSMObj.cs" />
     <Compile Include="SchoolProfile\NationalityObj.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -216,26 +211,19 @@
     <Compile Include="SchoolProfile\StdStageObj.cs" />
     <Compile Include="SchoolProfile\StudentSIMD.cs" />
     <Compile Include="SchoolProfile\WiderAchievementObj.cs" />
-    <Compile Include="SchoolRollForecast\SchoolRollForecastObj.cs" />
     <Compile Include="ScotlandMapData\Entities\CouncilObj.cs" />
     <Compile Include="ScotlandMapData\Entities\DataZoneObj.cs" />
     <Compile Include="ScotlandMapData\Entities\IntermediateZoneObj.cs" />
     <Compile Include="ScotlandMapData\Mappings\CouncilMap.cs" />
     <Compile Include="ScotlandMapData\Mappings\DataZoneMap.cs" />
     <Compile Include="ScotlandMapData\Mappings\IntermediateZoneMap.cs" />
-    <Compile Include="ScrumHub\ScrumCourseMap.cs" />
-    <Compile Include="ScrumHub\ScrumCourseModel.cs" />
-    <Compile Include="ScrumHub\ScrumHubMap.cs" />
-    <Compile Include="ScrumHub\ScrumHubModel.cs" />
     <Compile Include="Users.cs" />
     <Compile Include="Year.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="MonthOnMonthOverview\Mapping\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\ACCDataStore.Core\ACCDataStore.Core.csproj">
       <Project>{1089dbbb-7b0b-482b-aae0-d40cc98d8d75}</Project>

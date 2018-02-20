@@ -46,14 +46,14 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
 
                 object oResult = null;
                 //Load datahub summary for creating heatmap  
-                List<SummaryDHdata> heatmapdata = GetHeatMapdata("12018");
+                List<SummaryDHdata> heatmapdata = GetHeatMapdata("22018");
 
                 oResult = new
                 {
                     layers = layers,
                     selectedLayer =  new { Code = "S01", Name = "Neighbourhood Zones" },
                     datasets = listdatasetdate.Select(x => x.GetJson()),
-                    selectedDataset = listdatasetdate.Where(x => x.code.Equals("12018")).Select(x => x.GetJson()).First(),
+                    selectedDataset = listdatasetdate.Where(x => x.code.Equals("22018")).Select(x => x.GetJson()).First(),
                     selecteddatacatagory = new { Code = "Participating Destination", Name = "Participating Destination" },
                     heatmapdata = heatmapdata,
                     datacatagories = datacatagories

@@ -7,23 +7,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Data Hub</title>
-    @*<title>@HttpContext.Current.Application["APP_NAME"]</title>*@
-    @*<link rel="stylesheet" href="~/Content/accdatastore/areas/DatahubProfile/views/datahub/datahub.css" type="text/css" />*@
-    @*<script src="~/Scripts/accdatastore/views/global.js"></script>
-    <script src="~/Scripts/jquery-2.1.1.min.js"></script>*@
-    @*<script src="~/Scripts/highcharts.js"></script>*@
-    @*<link href="~/Content/bootstrap.min.css" rel="stylesheet">*@
-    @*<script src="~/Scripts/accdatastore/views/global.js"></script>*@
-    @*<script src="~/Scripts/jquery-2.1.1.min.js"></script>
-    <script>
-        var sContextPath = '@Url.Content("~")';
-    </script>*@
-
-    @*@RenderSection("Header")
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")*@
-
+    <title>CSSF</title>
+    <!-- Bootstrap Core CSS -->
+    <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
+    <!-- Custom CSS -->
+    <!--<link href="css/heroic-features.css" rel="stylesheet">-->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  
     @RenderSection("style", required: false)
     <link rel="stylesheet" href="~/Content/bootstrap.min.css">
     <link rel="stylesheet" href="~/bower_components/angular-ui-select/dist/select.min.css">
@@ -51,7 +46,6 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
-
 <body>
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -69,20 +63,6 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-left">
-                    @*<li class="dropdown active">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Data Categories<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="@Url.Action("Index", "IndexSchoolProfiles", new { Area = "SchoolProfiles" }, null)">School Profile</a>
-                            </li>
-                            <li>
-                                <a href="@Url.Action("IndexHome", "IndexDatahub", new { Area = "DatahubProfile" }, null)">DataHub Data</a>
-                            </li>
-                            <li>
-                                <a href="@Url.Action("IndexHome", "WiderAchievement", new { Area = "Achievement" }, null)">Achievement Data</a>
-                            </li>
-                        </ul>
-                    </li>*@
                     <li>
                         <a href="@Url.Action("Index", "Index", new {  Area = "" ,id = "datacentre" }, null)">Data Centre</a>
                     </li>
@@ -130,63 +110,31 @@
         </div>
         <!-- /.container -->
     </nav>
-
     <!-- Subheading Content -->
     <div class="container">
         <!-- Page Heading/Breadcrumbs -->
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">
-                    Data Hub Statistics:
-                    <small>
-                        @{ string Council = Session["Council"] as string;
-                         if (Council != null)
-                         {
-                            <span>@Council</span>
-                         }
-                         else
-                         {
-                            <span>Aberdeen City</span>
-                         }
-                    }Wide
-                </small>
-            </h1>
-
-                 <ol class="breadcrumb">
+                    CSSF
+                    @*<small>Subheading</small>*@
+                </h1>
+                <ol class="breadcrumb">
+                    @*<li>
+                            <a href="@Url.Action("Index", "Index", new { Area = "" }, null)">Home</a>
+                        </li>*@
                     <li>
-                        <a href="@Url.Action("IndexHome", "IndexDatahub", new { Area = "DatahubProfile" }, null)">Home</a>
+                        <a href="@Url.Action("IndexHome", "IndexCSSF", new { Area = "CSSF" }, null)">Home</a>
                     </li>
                     <li>
-                        <a href="@Url.Action("Index", "Datahub", new { Area = "DatahubProfile" }, null)">Data</a>
+                        <a href="@Url.Action("Index", "IndexCSSF", new { Area = "CSSF" }, null)">Data</a>
                     </li>
-                    @{
-                        string council = Session["Council"] as string;
-                        if (council != null)
-                        {
-                            <li>
-                                <a href="@Url.Action("Data", "IndexDatahub", new { Area = "DatahubProfile" }, null)">@council</a>
-                            </li>
-                            @*<li>
-                                    <a href="@Url.Action("IndexCoucil", "IndexDatahub", new { Area = "DatahubProfile", sCouncilname = @council.name, sCouncilcode = @council.seedcode }, null)">Work in Progress</a>
-                                </li>*@
-                                <li>
-                                    <a href="@Url.Action("Map", "IndexDatahub", new { Area = "DatahubProfile", sSchoolName = "" }, null)">Interactive HeatMap</a>
-                                </li>
-
-                        }
-
-
-                    }
-                     <li>
-                         <a href="@Url.Action("Index", "CityProfile", new { Area = "DatahubProfile" }, null)">Aberdeen City</a>
-                     </li>
                     <li>
-                        <a href="@Url.Action("Index", "Map", new { Area = "DatahubProfile"}, null)">Interactive Map</a>
+                        <a href="@Url.Action("Index", "CityWideCSSF", new { Area = "CSSF" }, null)">City Wide</a>
                     </li>
                 </ol>
             </div>
         </div>
-        <marquee>Last  data update was on 5 February 2018</marquee>
     </div>
     <div>
         @RenderBody()
@@ -196,30 +144,24 @@
         <hr>
         <footer>
             <div class="row">
+                <marquee>Last data update was on 8 January 2018</marquee>
                 <div class="col-lg-12">
-                                
-                    <div class="col-lg-2">
-                        <img src="@Url.Content("~/Images/acc-logo.gif")" alt="Aberdeen City Council" width="130" height="108" />
-                    </div>
-                    <div class="col-lg-3">
-                        <img src="@Url.Content("~/Images/Aberdeen  Gaurtees logo.png")" alt="Aberdeen Gaurtees logo" width="250" height="108" />
-                    </div>
-                    <div class="col-lg-3">
-                        <img src="@Url.Content("~/Images/Skilldevelopmentlogo.png")" alt="Skills Development Scotland logo" width="200" height="108" />
-                    </div> 
-                    <div class="col-lg-4">
-                        <p>Feedback Contact:-  <a href="mailto:HSaevanee@aberdeencity.gov.uk">HSaevanee@aberdeencity.gov.uk</a></p>
-                    </div>
-            
+                    <p class="text-center">Aberdeen City Council is not responsible for the content or accuracy of the data contained in any external sites.</p>
+                </div>
             </div>
-
-               @*<p>Copyright &copy; Your Website 2014</p>*@     
-                
+            <div class="row">
+                <div class="col-lg-6">
+                    <p class="text-left"> CSSF and Feedback Contact: - <a href=" ">XXXXX@aberdeencity.gov.uk</a>  </p>
+                </div>
+                <div class="col-lg-6">
+                    <p class="text-right"> Data Observatory Feedback Contact:-  <a href="mailto:HSaevanee@aberdeencity.gov.uk">HSaevanee@aberdeencity.gov.uk</a></p>
+                </div>
             </div>
         </footer>
     </div>
 
     <div id="divSpinner" class="modal" style="display: none;">
     </div>
+
 </body>
 </html>

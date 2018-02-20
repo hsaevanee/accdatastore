@@ -17,6 +17,7 @@ namespace ACCDataStore.Entity.RenderObject.Charts.PieCharts
         public plotOptions plotOptions { get; set; }
         public List<series> series { get; set; }
         public credits credits { get; set; }
+        public exporting exporting { get; set; }
 
         public void SetDefault(bool bIsCreateConfigFile)
         {
@@ -45,17 +46,22 @@ namespace ACCDataStore.Entity.RenderObject.Charts.PieCharts
                 pie = new pie() { animation = true, allowPointSelect = true, cursor = "pointer", dataLabels = new dataLabels() { enabled = true, format = "<b>{point.name}</b>: {point.percentage:.2f} %" } }
             };
 
+            this.exporting = new exporting()
+            {
+                enabled = true
+            };
+
             this.series = new List<series>()
             {
-                new Charts.PieCharts.series() { name = "Brands", colorByPoint = true, data = new List<dataItem>()
-                    {
-                        new dataItem() { name = "Microsoft Internet Explorer", y = 56.33f },
-                        new dataItem() { name = "Chrome", y = 24.03f },
-                        new dataItem() { name = "Firefox", y = 10.38f },
-                        new dataItem() { name = "Safari", y = 4.77f },
-                        new dataItem() { name = "Opera", y = 0.91f }
-                    }
-                }
+                //new Charts.PieCharts.series() { name = "Brands", colorByPoint = true, data = new List<dataItem>()
+                //    {
+                //        new dataItem() { name = "Microsoft Internet Explorer", y = 56.33f },
+                //        new dataItem() { name = "Chrome", y = 24.03f },
+                //        new dataItem() { name = "Firefox", y = 10.38f },
+                //        new dataItem() { name = "Safari", y = 4.77f },
+                //        new dataItem() { name = "Opera", y = 0.91f }
+                //    }
+                //}
             };
 
             this.credits = new credits()
@@ -64,12 +70,12 @@ namespace ACCDataStore.Entity.RenderObject.Charts.PieCharts
             };
 
             // hightcharts-ng need this
-            this.options = new options()
-            {
-                chart = this.chart,
-                plotOptions = this.plotOptions,
-                tooltip = this.tooltip
-            };
+            //this.options = new options()
+            //{
+            //    chart = this.chart,
+            //    plotOptions = this.plotOptions,
+            //    tooltip = this.tooltip
+            //};
 
             //var chart = new chart();
             //chart.type = "pie";

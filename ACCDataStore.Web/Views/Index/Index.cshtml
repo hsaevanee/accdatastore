@@ -40,20 +40,7 @@
                     <h4><a href="@Url.Action("Index", "IndexSchoolProfiles", new { Area = "SchoolProfiles" }, null)">School Profiles</a></h4>
                 </div>              
             </div>        
-            
-            @*<div class="col-md-4 text-center">
-        <div class="img-rounded">
-            <a href="@Url.Action("IndexHome", "WiderAchievement", new { Area = "Achievement" }, null)">
-                <img src="@Url.Content("~/Images/AchievementLogo.png")" alt="Wider Achievement logo">
-            </a>
-
-        </div>
-        <div class="caption">
-            <h4><a href="@Url.Action("IndexHome", "WiderAchievement", new { Area = "Achievement" }, null)">Wider Achievement</a></h4>
-        </div>
-    </div>*@  
-
-  
+                       
             <div class="col-md-4 text-center">
                 
                 <div class="img-rounded">
@@ -67,6 +54,17 @@
                 </div>
             </div> 
             
+            <div class="col-md-4 text-center">
+                <div class="img-rounded">
+                    <a href="@Url.Action("Index", "IndexCSSF", new { Area = "CSSF" }, null)">
+                        <img src="@Url.Content("~/Images/AchievementLogo.png")" alt="Wider Achievement logo">
+                    </a>
+
+                </div>
+                <div class="caption">
+                    <h4><a href="@Url.Action("IndexHome", "IndexCSSF", new { Area = "CSSF" }, null)">CSSF</a></h4>
+                </div>
+            </div>  
 
         </div>
         <!-- /.row -->

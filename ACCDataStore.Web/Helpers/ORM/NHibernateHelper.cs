@@ -29,7 +29,7 @@ namespace ACCDataStore.Helpers.ORM
                             .ConnectionString(sConnectionString)
                             .ShowSql
                         )
-                    .Mappings(m => m.FluentMappings.AddFromAssemblyOf<ACCDataStore.Entity.Mapping.Nationality2012Map>())
+                    //.Mappings(m => m.FluentMappings.AddFromAssemblyOf<ACCDataStore.Entity.Mapping.Nationality2012Map>())
                     .BuildConfiguration();
                     break;
                 case "3":
@@ -41,7 +41,7 @@ namespace ACCDataStore.Helpers.ORM
                             .ConnectionString(sConnectionString)
                             .ShowSql
                         )
-                    .Mappings(m => m.FluentMappings.AddFromAssemblyOf<ACCDataStore.Entity.Mapping.Nationality2012Map>())
+                    //.Mappings(m => m.FluentMappings.AddFromAssemblyOf<ACCDataStore.Entity.Mapping.Nationality2012Map>())
                     .BuildConfiguration();
                     break;
                 case "4":
@@ -65,7 +65,7 @@ namespace ACCDataStore.Helpers.ORM
                             .ConnectionString(sConnectionString)
                             .ShowSql
                         )
-                    .Mappings(m => m.FluentMappings.AddFromAssemblyOf<ACCDataStore.Entity.Mapping.MySQL.LA100SchoolsMap>())
+                    //.Mappings(m => m.FluentMappings.AddFromAssemblyOf<ACCDataStore.Entity.Mapping.MySQL.LA100SchoolsMap>())
                     .BuildConfiguration();
                     break;
             }
@@ -96,7 +96,7 @@ namespace ACCDataStore.Helpers.ORM
                             .ConnectionString(sConnectionString)
                             .ShowSql
                         )
-                    .Mappings(m => m.FluentMappings.AddFromAssemblyOf<ACCDataStore.Entity.Mapping.Nationality2012Map>())
+                    //.Mappings(m => m.FluentMappings.AddFromAssemblyOf<ACCDataStore.Entity.Mapping.Nationality2012Map>())
                     .BuildConfiguration();
                     break;
                 case "3":
@@ -108,7 +108,7 @@ namespace ACCDataStore.Helpers.ORM
                             .ConnectionString(sConnectionString)
                             .ShowSql
                         )
-                    .Mappings(m => m.FluentMappings.AddFromAssemblyOf<ACCDataStore.Entity.Mapping.Nationality2012Map>())
+                    //.Mappings(m => m.FluentMappings.AddFromAssemblyOf<ACCDataStore.Entity.Mapping.Nationality2012Map>())
                     .BuildConfiguration();
                     break;
                 case "4":
@@ -163,7 +163,7 @@ namespace ACCDataStore.Helpers.ORM
                             .ConnectionString(sConnectionString)
                             .ShowSql
                         )
-                    .Mappings(m => m.FluentMappings.AddFromAssemblyOf<ACCDataStore.Entity.Mapping.Nationality2012Map>())
+                    //.Mappings(m => m.FluentMappings.AddFromAssemblyOf<ACCDataStore.Entity.Mapping.Nationality2012Map>())
                     .BuildConfiguration();
                     break;
                 case "3":
@@ -175,7 +175,7 @@ namespace ACCDataStore.Helpers.ORM
                             .ConnectionString(sConnectionString)
                             .ShowSql
                         )
-                    .Mappings(m => m.FluentMappings.AddFromAssemblyOf<ACCDataStore.Entity.Mapping.Nationality2012Map>())
+                    //.Mappings(m => m.FluentMappings.AddFromAssemblyOf<ACCDataStore.Entity.Mapping.Nationality2012Map>())
                     .BuildConfiguration();
                     break;
                 case "4":
@@ -199,7 +199,7 @@ namespace ACCDataStore.Helpers.ORM
                             .ConnectionString(sConnectionString)
                             .ShowSql
                         )
-                    .Mappings(m => m.FluentMappings.AddFromAssemblyOf<ACCDataStore.Entity.Mapping.MySQL.LA100SchoolsMap>())
+                    //.Mappings(m => m.FluentMappings.AddFromAssemblyOf<ACCDataStore.Entity.Mapping.MySQL.LA100SchoolsMap>())
                     .BuildConfiguration();
                     break;
             }

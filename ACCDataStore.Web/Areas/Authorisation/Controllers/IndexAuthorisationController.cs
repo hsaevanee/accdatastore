@@ -56,7 +56,7 @@ namespace ACCDataStore.Web.Areas.Authorisation.Controllers
 
         }
 
-        public ActionResult Login(IndexViewModel vmIndex)
+        public ActionResult Login(string from, IndexViewModel vmIndex)
         {
             try
             {

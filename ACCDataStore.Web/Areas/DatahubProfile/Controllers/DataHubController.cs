@@ -53,7 +53,7 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                     ListSchool = listSchool.Select(x => x.GetJson()),
                     ListNeighbourhood = listNeighbourhoodName.Select(x => x.GetJson()),
                     ListDataset = listdatasetdate.Select(x => x.GetJson()),
-                    DatasetSelected = listdatasetdate.Where(x => x.code.Equals("12018")).Select(x => x.GetJson()).First(),
+                    DatasetSelected = listdatasetdate.Where(x => x.code.Equals("22018")).Select(x => x.GetJson()).First(),
                     ListSchoolSelected = listSchool.Where(x => x.seedcode.Equals("5244439")).Select(x => x.GetJson()),
                     ListReport = listReport,
                     ReportsetSelected = listReport.Where(x => x.Code.Equals("01")).First(),
@@ -558,78 +558,9 @@ namespace ACCDataStore.Web.Areas.DatahubProfile.Controllers
                     case "pupils19":
                         listpupils = (from a in templistpupils where a.Age == 19 select a).ToList();
                         break;
-                    //case "112": //"school pupil":
-                    //    listpupils = (from a in templistpupils where a.status_code.ToLower().Equals("112") select a).ToList();
-                    //    break;
-                    //case "113": //"school pupil - in transition":
-                    //    listpupils = (from a in templistpupils where a.status_code.ToLower().Equals("113") select a).ToList();
-                    //    break;
-                    //case "101": //"activity agreement":
-                    //    listpupils = (from a in templistpupils where a.status_code.ToLower().Equals("101") select a).ToList();
-                    //    break;
-                    //case "102": //"employability fund stage 2":
-                    //    listpupils = (from a in templistpupils where a.status_code.ToLower().Equals("102") select a).ToList();
-                    //    break;
-                    //case "103": //"employability fund stage 3":
-                    //    listpupils = (from a in templistpupils where a.status_code.ToLower().Equals("103") select a).ToList();
-                    //    break;
-                    //case "104": //"employability fund stage 4":
-                    //    listpupils = (from a in templistpupils where a.status_code.ToLower().Equals("104") select a).ToList();
-                    //    break;
-                    //case "105": //"full-time employment":
-                    //    listpupils = (from a in templistpupils where a.status_code.ToLower().Equals("105") select a).ToList();
-                    //    break;
-                    //case "106": //"further education":
-                    //    listpupils = (from a in templistpupils where a.status_code.ToLower().Equals("106") select a).ToList();
-                    //    break;
-                    //case "107": //"higher education":
-                    //    listpupils = (from a in templistpupils where a.status_code.ToLower().Equals("107") select a).ToList();
-                    //    break;
-                    //case "108": //"modern apprenticeship":
-                    //    listpupils = (from a in templistpupils where a.status_code.ToLower().Equals("108") select a).ToList();
-                    //    break;
-                    //case "110": //"part-time employment":
-                    //    listpupils = (from a in templistpupils where a.status_code.ToLower().Equals("110") select a).ToList();
-                    //    break;
-                    //case "111": //"personal/ skills development":
-                    //    listpupils = (from a in templistpupils where a.status_code.ToLower().Equals("111") select a).ToList();
-                    //    break;
-                    //case "114": //"self-employed":
-                    //    listpupils = (from a in templistpupils where a.status_code.ToLower().Equals("self-employed") select a).ToList();
-                    //    break;
-                    //case "109": //"training (non ntp) and other formal training":
-                    //    listpupils = (from a in templistpupils where a.status_code.ToLower().Equals("training (non ntp)") select a).ToList();
-                    //    break;
-                    //case "115": //"voluntary work":
-                    //    listpupils = (from a in templistpupils where a.status_code.ToLower().Equals("voluntary work") select a).ToList();
-                    //    break;
-                    //case "001": //"custody":
-                    //    listpupils = (from a in templistpupils where a.status_code.ToLower().Equals("custody") select a).ToList();
-                    //    break;
-                    //case "002": //"economically inactive":
-                    //    listpupils = (from a in templistpupils where a.status_code.ToLower().Equals("economically inactive") select a).ToList();
-                    //    break;
-                    //case "003": //"unavailable - ill health":
-                    //    listpupils = (from a in templistpupils where a.status_code.ToLower().Equals("unavailable - ill health") select a).ToList();
-                    //    break;
-                    //case "004": //"unemployed":
-                    //    listpupils = (from a in templistpupils where a.status_code.ToLower().Equals("unemployed") select a).ToList();
-                    //    break;
-                    //case "999": //"unknown":
-                    //    listpupils = (from a in templistpupils where a.status_code.ToLower().Equals("unknown") select a).ToList();
-                    //    break;
                     case "movedoutwithscotland":
                         listpupils = (from a in templistpupils where a.status_code.ToLower().Equals("000") select a).ToList();
                         break;
-                    //case "116": //"psd (social and health)":
-                    //    listpupils = (from a in templistpupils where a.status_code.ToLower().Equals("psd (social and health)") select a).ToList();
-                    //    break;
-                    //case "117": //"psd (employability)":
-                    //    listpupils = (from a in templistpupils where a.status_code.ToLower().Equals("psd (employability)") select a).ToList();
-                    //    break;
-                    //case "005": //"economically inactive - tott":
-                    //    listpupils = (from a in templistpupils where a.status_code.ToLower().Equals("economically inactive - tott") select a).ToList();
-                    //    break;
                     default:
                         listpupils = (from a in templistpupils where a.status_code.ToLower().Equals(dataname.ToLower()) select a).ToList();
                         break;

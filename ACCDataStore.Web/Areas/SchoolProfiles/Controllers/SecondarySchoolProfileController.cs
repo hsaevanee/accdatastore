@@ -1347,6 +1347,7 @@ namespace ACCDataStore.Web.Areas.SchoolProfiles.Controllers
             temp.Add(new DataSetDate("November 2017", "112017", "11", "2017"));
             temp.Add(new DataSetDate("December 2017", "122017", "12", "2017"));
             temp.Add(new DataSetDate("January 2018", "12018", "1", "2018"));
+            temp.Add(new DataSetDate("February 2018", "22018", "2", "2018"));
             return temp;
 
         }

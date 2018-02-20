@@ -52,12 +52,14 @@
     border-right: solid 1px #ddd;
     border-collapse: separate;
     border-spacing: 0;
+    /*border-top: solid 1px #ddd;*/
     font: normal 13px Arial, sans-serif;
 }
 .zui-table thead th {
     background-color: #ffffff;
     border: 1px;
     border-bottom: solid 1px #ddd;
+    border-top: solid 1px #ddd;
     border-right: solid 1px #ddd;
     /*color: #336B6B;*/
     padding: 10px;
